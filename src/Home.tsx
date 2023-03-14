@@ -8,15 +8,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Footer from './component/Footer';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 import Nav from './component/Nav';
 import SignIn from './component/SignIn';
 
 const mdTheme = createTheme();
 
-function HomeContent() {
 
+
+function HomeContent() {
+  
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -37,13 +39,10 @@ function HomeContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              <Router>
                 <Routes>
-                  <Route path='/'>
-                  </Route>
+                  <Route path='/'></Route>
                   <Route path='/signin' Component={SignIn}></Route>
                 </Routes>
-              </Router>
             </Grid>
             <Footer sx={{ pt: 4 }} />
           </Container>
