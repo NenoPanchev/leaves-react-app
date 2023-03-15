@@ -20,13 +20,17 @@ interface AdminBarProps {
 const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
     return (
 <>
-          <ListItemButton href='/'
-            selected={props.currentLocation === '/' ? true : false}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItemButton>
+            <Link to='/' style={{textDecoration: 'none'}}>
+                <ListItemButton
+                selected={props.currentLocation === '/' ? true : false}>
+                <ListItemIcon>
+                <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+                
+            </ListItemButton>
+            </Link>
+
           <ListItemButton href='/users'
             selected={props.currentLocation === '/users' ? true : false}>
             <ListItemIcon>
