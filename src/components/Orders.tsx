@@ -55,6 +55,7 @@ const rows = [
   ),
 ];
 
+
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
@@ -66,8 +67,8 @@ export default function Orders() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
+            <TableCell>Permissions</TableCell>
             <TableCell>Ship To</TableCell>
             <TableCell>Payment Method</TableCell>
             <TableCell align="right">Sale Amount</TableCell>

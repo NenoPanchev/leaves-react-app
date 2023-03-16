@@ -123,7 +123,7 @@ function NavContent() {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <AdminBar currentLocation={currentLocation.pathname}></AdminBar>
+        <AdminBar  currentLocation={currentLocation.pathname}></AdminBar>
       </List>
     </Drawer>
   </>
