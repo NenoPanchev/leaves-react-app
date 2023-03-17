@@ -41,6 +41,8 @@ export default function ViewButton(props: ViewButtonProps) {
                 fullScreen={fullScreen}
                 open={open}
                 onClose={handleClose}
+                fullWidth
+                maxWidth='md'
                 aria-labelledby="responsive-dialog-title"
             >
 

@@ -1,3 +1,6 @@
 .tableHeader th {
     font-weight: bold;
 }
+.MuiTableCell-head {
+    font-weight: bold;
+}

@@ -10,9 +10,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { Grid, Card } from '@mui/material';
+import { Grid, Card, Table } from '@mui/material';
 import { Label } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import './RoleView.css'
 
 interface RoleViewProp {
     id: number
@@ -43,11 +46,16 @@ const withAuthHeader = {
 export default function RoleView(props:RoleViewProp) {
     const theme = useTheme();
     const [role, setRole] = useState<Role>();
-
-
+    const getFormattedDate = (dateStr:string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleString;
+    }
+    const createdAtData = role?.createdAt;
+    
   useEffect(() => {
     loadRoles();
   }, []);
+  
 
   const loadRoles = async () => {
     const result = await axios.get(baseUrl + props.id, withAuthHeader)
@@ -55,37 +63,35 @@ export default function RoleView(props:RoleViewProp) {
       .catch(error => console.log(error))
   }
   console.log(role);
+//   const createdAtFormatted = getFormattedDate(role!.createdAt);
   
 
     return (
         <React.Fragment>
             <DialogTitle id="responsive-dialog-title">
-                 {"Role:"}
+                 {"Role Details"}
             </DialogTitle>
-            <DialogContent>
-            <Grid   container direction={'row'}>
+            <DialogContent className='dialog'>
+            <Grid container direction={'row'}>
                 <Card style={{width: '50%'}}>
-                    <Label>Id</Label>
-                    <Typography>{role?.id}</Typography>
-                    <Label>Name</Label>
-                    <Typography>{role?.name}</Typography>
-                    <Label></Label>
+                    <Table>
+                        <TableRow>
+                            <TableCell className='tableHeader' variant='head'>Id:</TableCell>
+                            <TableCell>{role?.id}</TableCell>
+                        </TableRow>
+                    </Table>
+                    <Typography>{"Id: " + role?.id}</Typography>
+                    <Typography>{"Name: " + role?.name}</Typography>
+                    <Typography>{"Permissions: " + role?.permissions.map(p => p.name).join(', ')}</Typography>
                 </Card>
-                <Card >
-                    <Label>Id</Label>
-                    <Typography>{role?.createdAt}</Typography>
-                    <Label>Name</Label>
+                <Card style={{width: '50%'}}>
+                    <Typography>{"Created at: " + role?.createdAt}</Typography>
                     <Typography>{role?.createdBy}</Typography>
                     <Typography>{role?.lastModifiedAt}</Typography>
                     <Typography>{role?.lastModifiedBy}</Typography>
-                    <Label></Label>
                 </Card>
                 
             </Grid>
-                <DialogContentText>
-                    Let Google help apps determine location. This means sending anonymous
-                    location data to Google, even when no apps are running.
-                </DialogContentText>
             </DialogContent>
             
         </ React.Fragment>
