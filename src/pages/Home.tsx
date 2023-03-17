@@ -4,13 +4,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Footer from './components/footer/Footer';
+import Footer from '../components/footer/Footer';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
-import Nav from './components/nav/Nav';
-import SignIn from './components/SignIn';
-import StickyFooter from './components/footer/StickyFooter';
-import Roles from './components/roles/AllRoles'
+import Nav from '../components/nav/Nav';
+import SignIn from './SignIn';
+import StickyFooter from '../components/footer/StickyFooter';
+import Roles from '../components/roles/AllRoles'
 
 const mdTheme = createTheme();
 
@@ -18,7 +18,7 @@ function HomeContent() {
   
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex'}}>
         <CssBaseline />
           <Nav />
         <Box
@@ -42,8 +42,8 @@ function HomeContent() {
                   <Route path='/signin' Component={SignIn}></Route>
                 </Routes>
             </Grid>
-            <StickyFooter />
           </Container>
+          <StickyFooter />
         </Box>
       </Box>
     </ThemeProvider>

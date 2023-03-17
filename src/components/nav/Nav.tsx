@@ -66,7 +66,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 function NavContent() {
-  const currentLocation = useLocation();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -123,7 +122,7 @@ function NavContent() {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <AdminBar  currentLocation={currentLocation.pathname}></AdminBar>
+        <AdminBar/>
       </List>
     </Drawer>
   </>

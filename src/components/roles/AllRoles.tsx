@@ -1,140 +1,97 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from '@mui/material/Link';
+import Link from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from '../Title';
-import { light } from '@mui/material/styles/createPalette';
+import MuiLink from '@mui/material/Link';
+import { Box, Container } from '@mui/system';
+import Title from '../common/Title';
+import ViewButton from '../common/ViewButton';
+import './AllRoles.css'
 
-// Generate Order Data
-function createData(
-    id: number,
-    date: string,
-    name: string,
-    shipTo: string,
-    paymentMethod: string,
-    amount: number,
-  ) {
-    return { id, date, name, shipTo, paymentMethod, amount };
-  }
-  
-  const rows = [
-    createData(
-      0,
-      '16 Mar, 2019',
-      'Elvis Presley',
-      'Tupelo, MS',
-      'VISA ⠀•••• 3719',
-      312.44,
-    ),
-    createData(
-      1,
-      '16 Mar, 2019',
-      'Paul McCartney',
-      'London, UK',
-      'VISA ⠀•••• 2574',
-      866.99,
-    ),
-    createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-    createData(
-      3,
-      '16 Mar, 2019',
-      'Michael Jackson',
-      'Gary, IN',
-      'AMEX ⠀•••• 2000',
-      654.39,
-    ),
-    createData(
-      4,
-      '15 Mar, 2019',
-      'Bruce Springsteen',
-      'Long Branch, NJ',
-      'VISA ⠀•••• 5919',
-      212.79,
-    ),
-  ];
 
-  function preventDefault(event: React.MouseEvent) {
-    event.preventDefault();
-  }
 
-const baseUrl = 'http://localhost:8080/roles';
-const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2Nzg5OTUzMjksImlhdCI6MTY3ODk1OTMyOX0.V6e1EFFNCzS4sOTqOAN0nd5M_oCnPDkYPcKtId2XaiDAchB26-ZCpJTNO94Otu1uAKSB8QgmruN-PzEDa8WMcw';
-
-interface Role {
-    id: number,
-    name: string
-    
+function preventDefault(event: React.MouseEvent) {
+  event.preventDefault();
 }
 
-const axiosConfig = {
-    headers: {
-      "Content-Type": "application/json",
-      'Authorization': 'Bearer ' + jwt
-
-    },
-    responseType: JSON.stringify,
-    data: {}
-  };
+const baseUrl = 'http://localhost:8080/roles';
+const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2NzkwNzMzNjMsImlhdCI6MTY3OTAzNzM2M30.ed85L0RTIMffrm7w6JbxkfhZkHzR-nQr2-jZNanVnStuuCWOL6wlrNn5DyzUh-CbQlnecgGY5FGdHLCNiWTfBQ';
+const withAuthHeader = {
+  headers: {
+    'Content-Type': 'aplication/json',
+    'Authorization': 'Bearer ' + jwt
+  }
+}
+type Role = {
+  id: number,
+  name: string,
+  permissions: [{
+    name: string
+  }]
+}
 
 export default function Roles() {
 
-    const [roles, setRoles] = useState<Role>();
-    const [allRoles, setAllRoles] = useState([]);
+  const [roles, setRoles] = useState<Role[]>([]);
 
 
-    useEffect(() => {
-        fetch(baseUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'aplication/json',
-                'Authorization': 'Bearer ' + jwt
-            }
-        })
-        .then(res => res.json())
-        .then(roles => setRoles(roles))
-        .catch(error => console.log(error)
-        )
-    }, [])
+  useEffect(() => {
+    loadRoles();
+  }, []);
 
-        //   const result = axios.get(baseUrl, axiosConfig);
+  const loadRoles = async () => {
+    const result = await axios.get(baseUrl, withAuthHeader)
+      .then(response => setRoles(response.data))
+      .catch(error => console.log(error))
+  }
 
-    console.log(roles);
+  console.log(roles);
 
-    return (
-      <React.Fragment>
-        <ul>
-            {/* {roles.map((role) => <li key={role}>role</li>)} */}
-        </ul>
+  return (
+    <React.Fragment>
+      <Container >
         <Title>Roles</Title>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
+        <Box
+          sx={{
+            marginTop: 3,
+            flexDirection: 'column',
+            alignItems: 'center',
+            bgcolor: 'white'
+          }}
+        >
+        <Table size="small" style={{borderRadius: '5'}}>
+          <TableHead style={{backgroundColor: '#b1c900'}}>
+            <TableRow className='tableHeader'>
+              <TableCell>Id</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Permissions</TableCell>
-              <TableCell>Payment Method</TableCell>
-              <TableCell align="right">Sale Amount</TableCell>
+              <TableCell></TableCell>
+              <TableCell>Actions</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.shipTo}</TableCell>
-                <TableCell>{row.paymentMethod}</TableCell>
-                <TableCell align="right">{`$${row.amount}`}</TableCell>
+            {roles.map((role) => (
+              <TableRow key={role.id}>
+                <TableCell>{role.id}</TableCell>
+                <TableCell>{role.name}</TableCell>
+                <TableCell>{role.permissions.map(p => p.name).join(', ')}</TableCell>
+                <TableCell>
+                  <ViewButton id={role.id}></ViewButton>
+                </TableCell>
+                <TableCell>Edit</TableCell>
+                <TableCell>Delete</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-          See more orders
-        </Link>
-      </React.Fragment>
-    );
-  }
+      </Box>
+      </Container>
+    </React.Fragment>
+  );
+}

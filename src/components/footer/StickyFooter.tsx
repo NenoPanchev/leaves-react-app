@@ -20,14 +20,14 @@ function Copyright(props: any) {
 
 export default function StickyFooter() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '87vh',
-      }}
-    >
-      <CssBaseline />
+    // <Box
+    //   sx={{
+    //     display: 'flex',
+    //     flexDirection: 'column',
+    //     minHeight: '87vh',
+    //   }}
+    // >
+      // <CssBaseline />
 
       <Box
         component="footer"
@@ -35,6 +35,8 @@ export default function StickyFooter() {
           py: 3,
           px: 2,
           mt: 'auto',
+          bottom: 0,
+          
           backgroundColor: (theme) =>
             theme.palette.mode === 'light'
               ? theme.palette.grey[200]
@@ -46,6 +48,6 @@ export default function StickyFooter() {
           <Copyright sx={{ pt: 4 }} />
         </Container>
       </Box>
-    </Box>
+    // </Box>
   );
 }

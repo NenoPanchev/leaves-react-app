@@ -14,12 +14,9 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { styled } from '@mui/material';
 
-interface AdminBarProps {
-  currentLocation: string
-}
 
-
-const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
+const AdminBar = () => {
+  const currentLocation = useLocation();
   return (
     <>
       <Link to='/' style={{
@@ -27,7 +24,7 @@ const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
         color: 'black'
       }}>
         <ListItemButton
-          selected={props.currentLocation === '/' ? true : false}>
+          selected={currentLocation.pathname === '/' ? true : false}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
@@ -40,7 +37,7 @@ const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
         color: 'black'
       }}>
         <ListItemButton
-          selected={props.currentLocation === '/users' ? true : false}>
+          selected={currentLocation.pathname === '/users' ? true : false}>
           <ListItemIcon>
             <PeopleIcon />
 
@@ -52,7 +49,7 @@ const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
         textDecoration: 'none',
         color: 'black'}}>
         <ListItemButton
-          selected={props.currentLocation === '/departments' ? true : false}>
+          selected={currentLocation.pathname === '/departments' ? true : false}>
 
 
           <ListItemIcon>
@@ -66,7 +63,7 @@ const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
         color: 'black'
       }}>
         <ListItemButton
-          selected={props.currentLocation === '/roles' ? true : false}>
+          selected={currentLocation.pathname === '/roles' ? true : false}>
           <ListItemIcon>
             <AccountTreeIcon />
           </ListItemIcon>
@@ -85,7 +82,7 @@ const AdminBar: FC<AdminBarProps> = (props): JSX.Element => {
       }}>
         <ListItemButton
 
-          selected={props.currentLocation === '/signin' ? true : false}>
+          selected={currentLocation.pathname === '/signin' ? true : false}>
 
           <ListItemIcon>
             <LoginIcon />

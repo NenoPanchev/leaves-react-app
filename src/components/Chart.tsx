@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import Title from './Title';
+import Title from './common/Title';
 
 // Generate Sales Data
 function createData(time: string, amount?: number) {
