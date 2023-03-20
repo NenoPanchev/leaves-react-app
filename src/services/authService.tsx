@@ -1,48 +1,31 @@
-const baseUrl = 'http://localhost:8080';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export const login = async (email:string, password:string) => {
-    let res = await fetch(`${baseUrl}/authenticate`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    });
+const loginUrl = "http://localhost:8080/authenticate";
 
-    let jsonResult = await res.json();
+export const Authenticate = async () => {
+  await axios.post(loginUrl, { email: 'super@admin.com', password: '1234' })
+  .then((response) => {
 
-    if (res.ok) {
-        return jsonResult;
-    } else {
-        throw jsonResult.message;
-    }
-};
+    const token = response.data.jwt;
 
-export const register = (email:string, password:string) => {
-    return fetch(`${baseUrl}/users/register`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    })
-        .then(res => res.json()); 
-};
+    localStorage.setItem("SavedToken", 'Bearer ' + token);
+    console.log(localStorage.getItem('SavedToken'));
+    
+    // axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+  })
+  .catch(error => console.log(error)
+  )
+}
 
-export const logout = (token:string) => {
-    return fetch(`${baseUrl}/users/logout`, {
-        headers: {
-            'X-Authorization': token,
-        }
-    })
-};
-
-export const getUser = () => {
-    let username = localStorage.getItem('username');
-
-    return username;
-};
-
-export const isAuthenticated = () => {
-    return Boolean(getUser())
-};
+export const LogOut = () => {
+  const navigate = useNavigate();
+  localStorage.setItem("SavedToken", '');
+  // axios.defaults.headers.common['Authorization'] = ''; 
+  useEffect(() => {
+    navigate('/');
+  }, []);
+  
+  return null;
+}

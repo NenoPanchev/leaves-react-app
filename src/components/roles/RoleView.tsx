@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Button from '@mui/material/Button';
@@ -15,85 +15,68 @@ import { Label } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import Box from '@mui/material/Box';
+import * as roleService from '../../services/roleService';
+
 import './RoleView.css'
 
 interface RoleViewProp {
-    id: number
+  id: number
 }
 
-type Role = {
-    id: number,
-    name: string,
-    permissions: [{
-      name: string
-    }]
-    createdAt: string
-    createdBy?: string
-    lastModifiedAt?: string
-    lastModifiedBy?: string
-  }
 
-const baseUrl = 'http://localhost:8080/roles/';
-const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2NzkwNzMzNjMsImlhdCI6MTY3OTAzNzM2M30.ed85L0RTIMffrm7w6JbxkfhZkHzR-nQr2-jZNanVnStuuCWOL6wlrNn5DyzUh-CbQlnecgGY5FGdHLCNiWTfBQ';
-const withAuthHeader = {
-  headers: {
-    'Content-Type': 'aplication/json',
-    'Authorization': 'Bearer ' + jwt
-  }
-}
-  
+export default function RoleView(props: RoleViewProp) {
 
-export default function RoleView(props:RoleViewProp) {
-    const theme = useTheme();
-    const [role, setRole] = useState<Role>();
-    const getFormattedDate = (dateStr:string) => {
-        const date = new Date(dateStr);
-        return date.toLocaleString;
-    }
-    const createdAtData = role?.createdAt;
-    
-  useEffect(() => {
-    loadRoles();
-  }, []);
-  
+  const role = roleService.GetOne(props.id);
 
-  const loadRoles = async () => {
-    const result = await axios.get(baseUrl + props.id, withAuthHeader)
-      .then(response => setRole(response.data))
-      .catch(error => console.log(error))
-  }
-  console.log(role);
-//   const createdAtFormatted = getFormattedDate(role!.createdAt);
-  
+  return (
+    <React.Fragment>
+      <DialogTitle id="responsive-dialog-title">
+        {"Role Details"}
+      </DialogTitle>
+      <DialogContent className='dialog'>
+        <Grid container direction={'row'}>
+          <Card style={{ width: '50%' }}>
 
-    return (
-        <React.Fragment>
-            <DialogTitle id="responsive-dialog-title">
-                 {"Role Details"}
-            </DialogTitle>
-            <DialogContent className='dialog'>
-            <Grid container direction={'row'}>
-                <Card style={{width: '50%'}}>
-                    <Table>
-                        <TableRow>
-                            <TableCell className='tableHeader' variant='head'>Id:</TableCell>
-                            <TableCell>{role?.id}</TableCell>
-                        </TableRow>
-                    </Table>
-                    <Typography>{"Id: " + role?.id}</Typography>
-                    <Typography>{"Name: " + role?.name}</Typography>
-                    <Typography>{"Permissions: " + role?.permissions.map(p => p.name).join(', ')}</Typography>
-                </Card>
-                <Card style={{width: '50%'}}>
-                    <Typography>{"Created at: " + role?.createdAt}</Typography>
-                    <Typography>{role?.createdBy}</Typography>
-                    <Typography>{role?.lastModifiedAt}</Typography>
-                    <Typography>{role?.lastModifiedBy}</Typography>
-                </Card>
-                
-            </Grid>
-            </DialogContent>
-            
-        </ React.Fragment>
-    );
+            <Table>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Id:</TableCell>
+                <TableCell>{role?.id}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Name:</TableCell>
+                <TableCell>{role?.name}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Permissions:</TableCell>
+                <TableCell>{role?.permissions.map(p => p.name).join(', ')}</TableCell>
+              </TableRow>
+            </Table>
+          </Card>
+          <Card style={{ width: '50%' }}>
+            <Table>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Created At:</TableCell>
+                <TableCell>{role?.createdAt}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Created By:</TableCell>
+                <TableCell>{role?.createdBy}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Last Modified At:</TableCell>
+                <TableCell>{role?.lastModifiedAt}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='tableHeader' variant='head'>Last Modified By:</TableCell>
+                <TableCell>{role?.lastModifiedBy}</TableCell>
+              </TableRow>
+            </Table>
+          </Card>
+
+        </Grid>
+      </DialogContent>
+
+    </ React.Fragment>
+  );
 }

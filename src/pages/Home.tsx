@@ -11,6 +11,7 @@ import Nav from '../components/nav/Nav';
 import SignIn from './SignIn';
 import StickyFooter from '../components/footer/StickyFooter';
 import Roles from '../components/roles/AllRoles'
+import { LogOut } from '../services/authService';
 
 const mdTheme = createTheme();
 
@@ -39,7 +40,8 @@ function HomeContent() {
                 <Routes>
                   <Route path='/'></Route>
                   <Route path='/roles' Component={Roles}></Route>
-                  <Route path='/signin' Component={SignIn}></Route>
+                  <Route path='/login' Component={SignIn}></Route>
+                  <Route path='/logout'  Component={LogOut}></Route>
                 </Routes>
             </Grid>
           </Container>

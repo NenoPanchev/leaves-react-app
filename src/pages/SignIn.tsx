@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,21 +10,28 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import * as authService from '../services/authService';
 
 const theme = createTheme();
 
 
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log(data);
+    
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    authService.Authenticate();
+    navigate('/');
   };
 
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

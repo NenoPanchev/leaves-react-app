@@ -1,27 +1,75 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-// const baseUrl = 'http://localhost:8080/roles';
-// const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2Nzg5OTUzMjksImlhdCI6MTY3ODk1OTMyOX0.V6e1EFFNCzS4sOTqOAN0nd5M_oCnPDkYPcKtId2XaiDAchB26-ZCpJTNO94Otu1uAKSB8QgmruN-PzEDa8WMcw';
+const baseRoleUrl = 'http://localhost:8080/roles/'
 
-// export const getAll = async () => {
-//     let result = null;
-//     result = fetch(baseUrl), {
-//         method: 'GET',
-//         headers: {
-//             'content-type': 'aplication/json',
-//             'Authorization': 'Bearer ' + jwt
-//         }
-//     }
-//     console.log(result.then(responseHandler));
+const withAuthHeader = {
+    headers: {
+      'Authorization': localStorage.getItem('SavedToken')
+    }
+  }
+
+
+type Role = {
+    id: number,
+    name: string,
+    permissions: [{
+      name: string
+    }]
+}
+
+  interface RoleViewProp {
+    id: number
+}
+
+type RoleDetails = {
+    id: number,
+    name: string,
+    permissions: [{
+      name: string
+    }]
+    createdAt: string
+    createdBy?: string
+    lastModifiedAt?: string
+    lastModifiedBy?: string
+}
+
+export const GetAll = () => {
+    const [roles, setRoles] = useState<Role[]>([]);
+
+
+    useEffect(() => {
+      loadRoles();
+    }, []);
+  
+    const loadRoles = async () => {
+      const result = await axios.get(baseRoleUrl, withAuthHeader)
+        .then(response => setRoles(response.data))
+        .catch(error => console.log(error))
+    }
+  
+    console.log(roles);
+
+    return roles;
+}
+
+export const GetOne = (props:number) => {
+    const [role, setRole] = useState<RoleDetails>();
+    const getFormattedDate = (dateStr:string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleString;
+    }
+    const createdAtData = role?.createdAt;
     
-//     return result.then(responseHandler);
-// } 
+  useEffect(() => {
+    loadRoles();
+  }, []);
+  
 
-// async function responseHandler(res:any) {
-//     let jsonData = await res.json();
-
-//     if (res.ok) {
-//         return Object.values(jsonData);
-//     } else {
-//         throw jsonData;
-//     }
-// };
+  const loadRoles = async () => {
+    const result = await axios.get(baseRoleUrl + props, withAuthHeader)
+      .then(response => setRole(response.data))
+      .catch(error => console.log(error))
+  }
+  return role;
+}

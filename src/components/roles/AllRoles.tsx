@@ -11,6 +11,7 @@ import MuiLink from '@mui/material/Link';
 import { Box, Container } from '@mui/system';
 import Title from '../common/Title';
 import ViewButton from '../common/ViewButton';
+import * as roleService from '../../services/roleService';
 import './AllRoles.css'
 
 
@@ -20,7 +21,7 @@ function preventDefault(event: React.MouseEvent) {
 }
 
 const baseUrl = 'http://localhost:8080/roles';
-const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2NzkwNzMzNjMsImlhdCI6MTY3OTAzNzM2M30.ed85L0RTIMffrm7w6JbxkfhZkHzR-nQr2-jZNanVnStuuCWOL6wlrNn5DyzUh-CbQlnecgGY5FGdHLCNiWTfBQ';
+const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2NzkzMzE2NzAsImlhdCI6MTY3OTI5NTY3MH0.BkPdZPYAGxve83WypcBnbL4rX9zfr-ij4uz5nKq1XcTh-VQJMdBh0CSEQbR9Ph6P9zpBVtepIBWX3eDB1GwK-g';
 const withAuthHeader = {
   headers: {
     'Content-Type': 'aplication/json',
@@ -37,18 +38,19 @@ type Role = {
 
 export default function Roles() {
 
-  const [roles, setRoles] = useState<Role[]>([]);
+  // const [roles, setRoles] = useState<Role[]>([]);
 
 
-  useEffect(() => {
-    loadRoles();
-  }, []);
+  // useEffect(() => {
+  //   loadRoles();
+  // }, []);
 
-  const loadRoles = async () => {
-    const result = await axios.get(baseUrl, withAuthHeader)
-      .then(response => setRoles(response.data))
-      .catch(error => console.log(error))
-  }
+  // const loadRoles = async () => {
+  //   const result = await axios.get(baseUrl, withAuthHeader)
+  //     .then(response => setRoles(response.data))
+  //     .catch(error => console.log(error))
+  // }
+  const roles = roleService.GetAll();
 
   console.log(roles);
 

@@ -45,9 +45,10 @@ const AdminBar = () => {
           <ListItemText primary="Employees" />
         </ListItemButton>
       </Link>
-      <NavLink  to='/departments'  style={{
+      <NavLink to='/departments' style={{
         textDecoration: 'none',
-        color: 'black'}}>
+        color: 'black'
+      }}>
         <ListItemButton
           selected={currentLocation.pathname === '/departments' ? true : false}>
 
@@ -76,13 +77,13 @@ const AdminBar = () => {
         Authentication
       </ListSubheader>
 
-      <Link to={'/signin'} style={{
+      <Link to={'/login'} style={{
         textDecoration: 'none',
         color: 'black'
       }}>
         <ListItemButton
 
-          selected={currentLocation.pathname === '/signin' ? true : false}>
+          selected={currentLocation.pathname === '/login' ? true : false}>
 
           <ListItemIcon>
             <LoginIcon />
@@ -90,13 +91,17 @@ const AdminBar = () => {
           <ListItemText primary="Login" />
         </ListItemButton>
       </Link>
-      <ListItemButton>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </ListItemButton>
-
+      <Link to={'/logout'} style={{
+        textDecoration: 'none',
+        color: 'black'
+      }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </Link>
     </>
   );
 }
