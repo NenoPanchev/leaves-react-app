@@ -3,11 +3,11 @@ import axios from 'axios';
 
 const baseRoleUrl = 'http://localhost:8080/roles/'
 
-const withAuthHeader = {
+const withAuthHeader = () => ({
     headers: {
       'Authorization': localStorage.getItem('SavedToken')
     }
-  }
+  });
 
 
 type Role = {
@@ -34,7 +34,7 @@ type RoleDetails = {
     lastModifiedBy?: string
 }
 
-export const GetAll = () => {
+export const useFetchAll = () => {
     const [roles, setRoles] = useState<Role[]>([]);
 
 
@@ -43,17 +43,17 @@ export const GetAll = () => {
     }, []);
   
     const loadRoles = async () => {
-      const result = await axios.get(baseRoleUrl, withAuthHeader)
+      const result = await axios.get(baseRoleUrl, withAuthHeader())
         .then(response => setRoles(response.data))
         .catch(error => console.log(error))
     }
   
-    console.log(roles);
+    console.log(roles);    
 
     return roles;
 }
 
-export const GetOne = (props:number) => {
+export const useFetchOne = (props:number) => {
     const [role, setRole] = useState<RoleDetails>();
     const getFormattedDate = (dateStr:string) => {
         const date = new Date(dateStr);
@@ -62,12 +62,12 @@ export const GetOne = (props:number) => {
     const createdAtData = role?.createdAt;
     
   useEffect(() => {
-    loadRoles();
+    loadRole();
   }, []);
   
 
-  const loadRoles = async () => {
-    const result = await axios.get(baseRoleUrl + props, withAuthHeader)
+  const loadRole = async () => {
+    const result = await axios.get(baseRoleUrl + props, withAuthHeader())
       .then(response => setRole(response.data))
       .catch(error => console.log(error))
   }

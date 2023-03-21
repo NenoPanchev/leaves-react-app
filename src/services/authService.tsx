@@ -11,9 +11,6 @@ export const Authenticate = async () => {
     const token = response.data.jwt;
 
     localStorage.setItem("SavedToken", 'Bearer ' + token);
-    console.log(localStorage.getItem('SavedToken'));
-    
-    // axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
   })
   .catch(error => console.log(error)
   )
@@ -22,9 +19,9 @@ export const Authenticate = async () => {
 export const LogOut = () => {
   const navigate = useNavigate();
   localStorage.setItem("SavedToken", '');
-  // axios.defaults.headers.common['Authorization'] = ''; 
+
   useEffect(() => {
-    navigate('/');
+    navigate('/login');
   }, []);
   
   return null;

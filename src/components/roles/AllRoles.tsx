@@ -11,6 +11,7 @@ import MuiLink from '@mui/material/Link';
 import { Box, Container } from '@mui/system';
 import Title from '../common/Title';
 import ViewButton from '../common/ViewButton';
+import DeleteButton from '../common/DeleteButton';
 import * as roleService from '../../services/roleService';
 import './AllRoles.css'
 
@@ -20,14 +21,6 @@ function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-const baseUrl = 'http://localhost:8080/roles';
-const jwt = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlckBhZG1pbi5jb20iLCJleHAiOjE2NzkzMzE2NzAsImlhdCI6MTY3OTI5NTY3MH0.BkPdZPYAGxve83WypcBnbL4rX9zfr-ij4uz5nKq1XcTh-VQJMdBh0CSEQbR9Ph6P9zpBVtepIBWX3eDB1GwK-g';
-const withAuthHeader = {
-  headers: {
-    'Content-Type': 'aplication/json',
-    'Authorization': 'Bearer ' + jwt
-  }
-}
 type Role = {
   id: number,
   name: string,
@@ -38,21 +31,7 @@ type Role = {
 
 export default function Roles() {
 
-  // const [roles, setRoles] = useState<Role[]>([]);
-
-
-  // useEffect(() => {
-  //   loadRoles();
-  // }, []);
-
-  // const loadRoles = async () => {
-  //   const result = await axios.get(baseUrl, withAuthHeader)
-  //     .then(response => setRoles(response.data))
-  //     .catch(error => console.log(error))
-  // }
-  const roles = roleService.GetAll();
-
-  console.log(roles);
+  const roles = roleService.useFetchAll();
 
   return (
     <React.Fragment>
@@ -87,7 +66,9 @@ export default function Roles() {
                   <ViewButton id={role.id}></ViewButton>
                 </TableCell>
                 <TableCell>Edit</TableCell>
-                <TableCell>Delete</TableCell>
+                <TableCell>
+                  <DeleteButton id={role.id}></DeleteButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
