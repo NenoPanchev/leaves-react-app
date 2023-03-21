@@ -46,9 +46,7 @@ export const useFetchAll = () => {
       const result = await axios.get(baseRoleUrl, withAuthHeader())
         .then(response => setRoles(response.data))
         .catch(error => console.log(error))
-    }
-  
-    console.log(roles);    
+    } 
 
     return roles;
 }
