@@ -14,7 +14,7 @@ interface DeleteProp {
     path: string
 }
 
-export const useDelete = (props: DeleteProp) => {
+export const deleteItem = (props: DeleteProp) => {
     console.log(props.path);
     
 }

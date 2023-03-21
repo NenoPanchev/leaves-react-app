@@ -8,8 +8,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { useLocation } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
+import { redirect, useLocation } from 'react-router-dom';
+import { deleteItem } from '../../services/deleteService';
+
+import DeletePage from '../../pages/DeletePage';
 
 
 import RoleView from '../roles/RoleView';
@@ -33,6 +35,13 @@ export default function DeleteButton(props: DeleteButtonProps) {
         setOpen(false);
     };
 
+    // const redirectToDelete = () => {
+    //     return <DeletePage id={props.id} path={path}></DeletePage>
+    // }
+    
+    
+    
+
 
     return (
         <React.Fragment>
@@ -53,12 +62,12 @@ export default function DeleteButton(props: DeleteButtonProps) {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            {
+                            {/* {
                                 {
                                     '/roles': <RoleView id={props.id} />,
                                     //   'bar': <Bar />
                                 }[path]
-                            }
+                            } */}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -67,7 +76,7 @@ export default function DeleteButton(props: DeleteButtonProps) {
                         </Button>
                         <Button onClick={() => {
                             handleClose();
-                            // useDelete({id, path});
+                            deleteItem(id={});
                             }} autoFocus style={{color: 'red'}}>
                             Agree
                         </Button>
