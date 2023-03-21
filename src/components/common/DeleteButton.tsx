@@ -67,8 +67,8 @@ export default function DeleteButton(props: DeleteButtonProps) {
                         </Button>
                         <Button onClick={() => {
                             handleClose();
-                            useDelete({id, path});
-                            } autoFocus style={{color: 'red'}}>
+                            // useDelete({id, path});
+                            }} autoFocus style={{color: 'red'}}>
                             Agree
                         </Button>
                     </DialogActions>
