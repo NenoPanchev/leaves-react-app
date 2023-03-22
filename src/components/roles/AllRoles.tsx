@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Link from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,8 +12,7 @@ import ViewButton from '../common/ViewButton';
 import DeleteButton from '../common/DeleteButton';
 import * as roleService from '../../services/roleService';
 import './AllRoles.css'
-
-
+import { useLocation } from 'react-router-dom';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -30,8 +27,8 @@ type Role = {
 }
 
 export default function Roles() {
-
-  const roles = roleService.useFetchAll();
+  const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
+  const roles = roleService.useFetchAll(refreshCurrentState);
 
   return (
     <React.Fragment>
@@ -67,7 +64,7 @@ export default function Roles() {
                 </TableCell>
                 <TableCell>Edit</TableCell>
                 <TableCell>
-                  <DeleteButton id={role.id}></DeleteButton>
+                  <DeleteButton id={role.id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
                 </TableCell>
               </TableRow>
             ))}
