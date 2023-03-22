@@ -34,13 +34,13 @@ type RoleDetails = {
     lastModifiedBy?: string
 }
 
-export const useFetchAll = () => {
+export const useFetchAll = (refresh: number) => {
     const [roles, setRoles] = useState<Role[]>([]);
 
 
     useEffect(() => {
       loadRoles();
-    }, []);
+    }, [refresh]);
   
     const loadRoles = async () => {
       const result = await axios.get(baseRoleUrl, withAuthHeader())

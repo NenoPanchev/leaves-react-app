@@ -8,17 +8,15 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { redirect, useLocation } from 'react-router-dom';
-import { deleteItem } from '../../services/deleteService';
-
-import DeletePage from '../../pages/DeletePage';
-
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useDelete } from '../../services/deleteService';
 
 import RoleView from '../roles/RoleView';
 
-
 interface DeleteButtonProps {
     id: number
+    refreshCurrentState: number
+    refresh: (value: number) => void;
 }
 
 export default function DeleteButton(props: DeleteButtonProps) {
@@ -26,6 +24,9 @@ export default function DeleteButton(props: DeleteButtonProps) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const deleteItem = useDelete({path: path});
+    const navigate = useNavigate();
+    const [deleted, setDeleted] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -35,12 +36,13 @@ export default function DeleteButton(props: DeleteButtonProps) {
         setOpen(false);
     };
 
-    // const redirectToDelete = () => {
-    //     return <DeletePage id={props.id} path={path}></DeletePage>
-    // }
-    
-    
-    
+    function handleDelete() {
+        deleteItem(props.id)
+        .then(() => props.refresh(props.refreshCurrentState + 1))
+        .then(() => navigate(path));
+        
+    }
+
 
 
     return (
@@ -62,12 +64,12 @@ export default function DeleteButton(props: DeleteButtonProps) {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            {/* {
+                            {
                                 {
                                     '/roles': <RoleView id={props.id} />,
                                     //   'bar': <Bar />
                                 }[path]
-                            } */}
+                            }
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -76,8 +78,8 @@ export default function DeleteButton(props: DeleteButtonProps) {
                         </Button>
                         <Button onClick={() => {
                             handleClose();
-                            deleteItem(id={});
-                            }} autoFocus style={{color: 'red'}}>
+                            handleDelete();
+                        }} autoFocus style={{ color: 'red' }}>
                             Agree
                         </Button>
                     </DialogActions>

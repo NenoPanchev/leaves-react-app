@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
 
-const baseRoleUrl = 'http://localhost:8080/'
+const baseUrl = 'http://localhost:8080'
 
 const withAuthHeader = () => ({
     headers: {
@@ -10,11 +10,19 @@ const withAuthHeader = () => ({
   });
 
 interface DeleteProp {
-    id: number
     path: string
 }
 
-export const deleteItem = (props: DeleteProp) => {
-    console.log(props.path);
+export const useDelete = (props: DeleteProp) : (id: number) => Promise<void> => {
     
+
+
+  const deleteItem = async (id: number) => {
+
+    const deleteUrl = baseUrl + props.path + '/' + id;
+      const result = await axios.delete(deleteUrl, withAuthHeader())
+          .then(response => console.log(response))
+          .catch(error => console.log(error))
+  }
+  return deleteItem;
 }
