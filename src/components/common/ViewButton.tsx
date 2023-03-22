@@ -1,16 +1,12 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 
-
-import RoleView from '../roles/RoleView';
+import RoleView from '../../models/roles/RoleView';
+import DepartmentView from '../../models/departments/DepartmentView';
 
 
 interface ViewButtonProps {
@@ -49,7 +45,7 @@ export default function ViewButton(props: ViewButtonProps) {
                 {
                     {
                         '/roles': <RoleView id={props.id} />,
-                        //   'bar': <Bar />
+                        '/departments': <DepartmentView id={props.id}/>
                     }[path]
                 }
             </Dialog>

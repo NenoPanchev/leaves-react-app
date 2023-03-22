@@ -1,31 +1,19 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { Grid, Card, Table } from '@mui/material';
-import { Label } from '@mui/icons-material';
-import Typography from '@mui/material/Typography';
+
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
-import Box from '@mui/material/Box';
 import * as roleService from '../../services/roleService';
 
-import './RoleView.css'
+import '../SingleItemView.css'
 
 interface RoleViewProp {
   id: number
 }
-
 
 export default function RoleView(props: RoleViewProp) {
 

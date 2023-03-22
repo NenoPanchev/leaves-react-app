@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
 
-import RoleView from '../roles/RoleView';
+import RoleView from '../../models/roles/RoleView';
 
 interface DeleteButtonProps {
     id: number
@@ -40,7 +40,6 @@ export default function DeleteButton(props: DeleteButtonProps) {
         deleteItem(props.id)
         .then(() => props.refresh(props.refreshCurrentState + 1))
         .then(() => navigate(path));
-        
     }
 
 
@@ -63,14 +62,14 @@ export default function DeleteButton(props: DeleteButtonProps) {
                         {"Do you really want to delete this item?"}
                     </DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
+                        
                             {
                                 {
                                     '/roles': <RoleView id={props.id} />,
                                     //   'bar': <Bar />
                                 }[path]
                             }
-                        </DialogContentText>
+                        
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>

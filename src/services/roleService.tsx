@@ -11,8 +11,8 @@ const withAuthHeader = () => ({
 
 
 type Role = {
-    id: number,
-    name: string,
+    id: number
+    name: string
     permissions: [{
       name: string
     }]
@@ -23,8 +23,8 @@ type Role = {
 }
 
 type RoleDetails = {
-    id: number,
-    name: string,
+    id: number
+    name: string
     permissions: [{
       name: string
     }]
@@ -53,11 +53,6 @@ export const useFetchAll = (refresh: number) => {
 
 export const useFetchOne = (props:number) => {
     const [role, setRole] = useState<RoleDetails>();
-    const getFormattedDate = (dateStr:string) => {
-        const date = new Date(dateStr);
-        return date.toLocaleString;
-    }
-    const createdAtData = role?.createdAt;
     
   useEffect(() => {
     loadRole();

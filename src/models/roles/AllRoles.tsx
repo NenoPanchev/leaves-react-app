@@ -1,29 +1,18 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MuiLink from '@mui/material/Link';
 import { Box, Container } from '@mui/system';
-import Title from '../common/Title';
-import ViewButton from '../common/ViewButton';
-import DeleteButton from '../common/DeleteButton';
+import Title from '../../components/common/Title';
+import ViewButton from '../../components/common/ViewButton';
+import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
-import './AllRoles.css'
-import { useLocation } from 'react-router-dom';
+import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
-}
-
-type Role = {
-  id: number,
-  name: string,
-  permissions: [{
-    name: string
-  }]
 }
 
 export default function Roles() {
