@@ -10,8 +10,12 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+
 
 import RoleView from '../../models/roles/RoleView';
+import DepartmentView from '../../models/departments/DepartmentView';
+import UserView from '../../models/users/UserView';
 
 interface DeleteButtonProps {
     id: number
@@ -26,7 +30,6 @@ export default function DeleteButton(props: DeleteButtonProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
     const navigate = useNavigate();
-    const [deleted, setDeleted] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -46,9 +49,12 @@ export default function DeleteButton(props: DeleteButtonProps) {
 
     return (
         <React.Fragment>
-            <Button variant="outlined" onClick={handleClickOpen} style={{ color: 'red' }}>
-                <DeleteIcon />
-            </Button>
+            <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          color='error'
+          onClick={handleClickOpen}
+        />
             <Dialog
                 fullScreen={fullScreen}
                 open={open}
@@ -66,20 +72,21 @@ export default function DeleteButton(props: DeleteButtonProps) {
                             {
                                 {
                                     '/roles': <RoleView id={props.id} />,
-                                    //   'bar': <Bar />
+                                    '/departments': <DepartmentView id={props.id} />,
+                                    '/users': <UserView id={props.id} />,
                                 }[path]
                             }
                         
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>
-                            Disagree
+                            Close
                         </Button>
                         <Button onClick={() => {
                             handleClose();
                             handleDelete();
                         }} autoFocus style={{ color: 'red' }}>
-                            Agree
+                            Delete
                         </Button>
                     </DialogActions>
 

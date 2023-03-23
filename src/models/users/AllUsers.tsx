@@ -3,66 +3,64 @@ import { Box, Container } from '@mui/system';
 import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
-import * as roleService from '../../services/roleService';
+import * as userService from '../../services/userService';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
-import { GridRowParams } from '@mui/x-data-grid';
-
-import AddRoleButton from './AddRole';
+import AddUserButton from './AddUser';
 import '../ViewAll.css'
-import EditRoleButton from './EditRole';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-interface Role {
-  id: number
-  name: string
-  permissions: [{
-    name: string
-  }]
-}
-
-export default function Roles() {
+export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const roles = roleService.useFetchAll(refreshCurrentState);
+  const users = userService.useFetchAll(refreshCurrentState);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
-  }
-
-  const renderEditButton = (role: Role) => {  
-    return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
   }
 
-
+  
 
   const columns: GridColDef[] = [
-    {
-      field: 'id',
+    { field: 'id',
       headerName: 'ID',
       headerClassName: 'grid-header',
       width: 70,
-
+      
     },
     {
       field: 'name',
       headerName: 'Name',
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1,
+      flex: 1, 
     },
     {
-      field: 'permissions',
-      headerName: 'Permissions',
+        field: 'email',
+        headerName: 'Email',
+        headerClassName: 'grid-header',
+        width: 150,
+        flex: 1, 
+      },
+      {
+        field: 'department',
+        headerName: 'Department',
+        headerClassName: 'grid-header',
+        width: 150,
+        flex: 1, 
+      },
+    {
+      field: 'roles',
+      headerName: 'Roles',
       headerClassName: 'grid-header',
       width: 200,
-      flex: 1,
+      flex: 1, 
     },
     {
       field: 'actions',
@@ -70,30 +68,32 @@ export default function Roles() {
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
-      flex: 1,
-      getActions: (params: GridRowParams<Role>) => [
+      flex: 1, 
+      getActions: (params) => [
         renderViewButton(params.row.id),
-        renderEditButton(params.row),
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"      
+        />,
         renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
       ]
     },
   ];
 
-  const rows = roles.map(role => {
+  const rows = users.map(user => {
     return {
-      id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', '),
-      actions: renderViewButton(role.id), edit: '', delete: renderDeleteButton(role.id, refreshCurrentState, setRefreshCurrentState)
+      id: user.id, name: user?.name, email: user.email, department: user?.department, roles: user.roles.map(role => role.name).join(', '),
+      actions: renderViewButton(user.id), edit: '', delete: renderDeleteButton(user.id, refreshCurrentState, setRefreshCurrentState)
     }
   });
 
   return (
     <React.Fragment>
       <Container >
-        <Title>Roles</Title>
+        <Title>Users</Title>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
         </Box>
-
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
             rows={rows}

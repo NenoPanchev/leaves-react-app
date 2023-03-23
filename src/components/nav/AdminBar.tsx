@@ -42,7 +42,7 @@ const AdminBar = () => {
             <PeopleIcon />
 
           </ListItemIcon>
-          <ListItemText primary="Employees" />
+          <ListItemText primary="Users" />
         </ListItemButton>
       </Link>
       <NavLink to='/departments' style={{

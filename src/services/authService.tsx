@@ -4,16 +4,18 @@ import axios from 'axios';
 
 const loginUrl = "http://localhost:8080/authenticate";
 
-export const Authenticate = async () => {
-  await axios.post(loginUrl, { email: 'super@admin.com', password: '1234' })
-  .then((response) => {
+export const useLogin = () => {
 
-    const token = response.data.jwt;
-
-    localStorage.setItem("SavedToken", 'Bearer ' + token);
-  })
-  .catch(error => console.log(error)
-  )
+  const authenticate = async (user: FormData) => {  
+    await axios.post(loginUrl, axios.formToJSON(user))
+      .then((response) => {
+        const token = response.data.jwt;
+        localStorage.setItem("SavedToken", 'Bearer ' + token);
+      })
+      .catch(error => console.log(error)
+      )
+  }
+  return authenticate;
 }
 
 export const LogOut = () => {
@@ -23,6 +25,6 @@ export const LogOut = () => {
   useEffect(() => {
     navigate('/login');
   }, []);
-  
+
   return null;
 }

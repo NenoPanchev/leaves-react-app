@@ -65,3 +65,16 @@ export const useFetchOne = (props:number) => {
   }
   return department;
 }
+
+export const useCreate = () => {
+
+  const addDepartment = async (department: FormData) => {
+
+    const result = await axios.post(baseDepartmentUrl, axios.formToJSON(department), withAuthHeader())
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => console.log(error))
+  }
+  return addDepartment;
+}

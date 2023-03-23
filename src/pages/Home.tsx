@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Footer from '../components/footer/Footer';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 import Nav from '../components/nav/Nav';
@@ -13,6 +12,7 @@ import StickyFooter from '../components/footer/StickyFooter';
 import Roles from '../models/roles/AllRoles'
 import { LogOut } from '../services/authService';
 import Departments from '../models/departments/AllDepartments';
+import Users from '../models/users/AllUsers';
 
 const mdTheme = createTheme();
 
@@ -40,6 +40,7 @@ function HomeContent() {
             <Grid container spacing={3}>
                 <Routes>
                   <Route path='/'></Route>
+                  <Route path='/users' Component={Users}></Route>
                   <Route path='/departments' Component={Departments}></Route>
                   <Route path='/roles' Component={Roles}></Route>
                   <Route path='/login' Component={SignIn}></Route>

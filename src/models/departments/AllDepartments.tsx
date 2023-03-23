@@ -1,16 +1,14 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+
 import { Container } from '@mui/system';
 import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as departmentService from '../../services/departmentService';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
+import EditIcon from '@mui/icons-material/Edit';
+import AddDepartmentButton from './AddDepartment';
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
@@ -26,52 +24,61 @@ export default function Departments() {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void ) => {
+  const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
   }
+
   
-  const 
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id',
+      headerName: 'ID',
+      headerClassName: 'grid-header',
+      width: 70,
+      
+    },
     {
       field: 'name',
       headerName: 'Name',
+      headerClassName: 'grid-header',
       width: 150,
+      flex: 1, 
     },
     {
       field: 'admin',
       headerName: 'Admin',
+      headerClassName: 'grid-header',
       width: 150,
+      flex: 1, 
     },
     {
       field: 'employees',
       headerName: 'Employees',
-      renderCell: (params) => renderEmployeeEmails(),
+      headerClassName: 'grid-header',
+      // renderCell: (params) => renderEmployeeEmails(),
       width: 200,
+      flex: 1, 
     },
     {
-      field: 'views',
-      renderCell: (params) => renderViewButton(params.row.id),
-      headerName: '',
-      width: 110,
-    },
-    {
-      field: 'edit',
+      field: 'actions',
       headerName: 'Actions',
-      width: 110,
+      headerClassName: 'grid-header',
+      type: 'actions',
+      width: 120,
+      flex: 1, 
+      getActions: (params) => [
+        renderViewButton(params.row.id),
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"      
+        />,
+        renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
+      ]
     },
-    {
-      field: 'delete',
-      renderCell: (params) => renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState),
-      headerName: '',
-      width: 110,
-    },
-
   ];
 
-  
-  
+
+
   const rows = departments.map(dpt => {
     return {
       id: dpt.id, name: dpt.name, admin: dpt.adminEmail, employees: dpt.employeeEmails ? dpt.employeeEmails.join("\n") : '',
@@ -84,21 +91,24 @@ export default function Departments() {
     <React.Fragment>
       <Container >
         <Title>Departments</Title>
+        <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
+          <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+        </Box>
         <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
-    </Box>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Container>
     </React.Fragment>
   );
