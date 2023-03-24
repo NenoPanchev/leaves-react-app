@@ -78,3 +78,18 @@ export const useCreate = () => {
   }
   return addDepartment;
 }
+
+export const useEdit = () => {
+
+  const editDepartment = async (id: number, role: FormData) => {
+
+    const updateUrl = baseDepartmentUrl + id;
+
+    const result = await axios.put(updateUrl, axios.formToJSON(role), withAuthHeader())
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => console.log(error))
+  }
+  return editDepartment;
+}

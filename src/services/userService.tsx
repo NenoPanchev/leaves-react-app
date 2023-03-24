@@ -90,3 +90,18 @@ export const useCreate = () => {
   }
   return addUser;
 }
+
+export const useEdit = () => {
+
+  const editUser = async (id: number, role: FormData) => {
+
+    const updateUrl = baseUserUrl + id;
+
+    const result = await axios.put(updateUrl, axios.formToJSON(role), withAuthHeader())
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => console.log(error))
+  }
+  return editUser;
+}

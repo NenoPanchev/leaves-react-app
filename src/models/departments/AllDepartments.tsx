@@ -9,12 +9,19 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import AddDepartmentButton from './AddDepartment';
+import EditDepartmentButton from './EditDepartment';
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
+interface Department {
+  id: number
+  name: string
+  adminEmail: string
+  employeeEmails: string[]
+}
 
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -22,6 +29,10 @@ export default function Departments() {
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
+  }
+
+  const renderEditButton = (department: Department) => {  
+    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -68,10 +79,7 @@ export default function Departments() {
       flex: 1, 
       getActions: (params) => [
         renderViewButton(params.row.id),
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Edit"      
-        />,
+        renderEditButton(params.row),
         renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
       ]
     },

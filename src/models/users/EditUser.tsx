@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import AddIcon from '@mui/icons-material/Add';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -13,31 +12,36 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
-import { useEdit } from '../../services/roleService';
+import { useEdit } from '../../services/userService';
 
 interface EditButtonProps {
-    role: Role
+    user: User
     refreshCurrentState: number
     refresh: (value: number) => void;
 }
 
-interface Role {
+interface User {
     id: number
     name: string
-    permissions: [{
-      name: string
-    }]
-  }
-  
-export default function EditRoleButton(props: EditButtonProps) {
+    email: string
+    department: string
+    password: string
+    passwordConfirm: string
+}
+
+export default function EditUserButton(props: EditButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
-    const [name, setName] = React.useState(props.role.name);
     const theme = useTheme();
+    const [name, setName] = React.useState(props.user.name);
+    const [email, setEmail] = React.useState(props.user.email);
+    const [department, setDepartment] = React.useState(props.user.department);
+    const [password, setPassword] = React.useState(props.user.password);
+    const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({ path: path });
     const navigate = useNavigate();
-    const editRole = useEdit();
+    const editUser = useEdit();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,7 +54,7 @@ export default function EditRoleButton(props: EditButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        editRole(props.role.id, data)
+        editUser(props.user.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
 
@@ -73,7 +77,7 @@ export default function EditRoleButton(props: EditButtonProps) {
                 <React.Fragment>
 
                     <DialogTitle id="form-dialog-title">
-                        {"Edit Role"}
+                        {"Edit User"}
                     </DialogTitle>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -89,6 +93,51 @@ export default function EditRoleButton(props: EditButtonProps) {
                                 autoFocus
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                id="department"
+                                label="Department"
+                                name="department"
+                                autoComplete="department"
+                                autoFocus
+                                value={department}
+                                onChange={(e) => setDepartment(e.target.value)}
+                            />
+
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="confirmPassword"
+                                label="Password Confirm"
+                                type="password"
+                                id="confirm-password"
+                                onChange={(e) => setPasswordConfirm(e.target.value)}
                             />
                         </DialogContent>
                         <DialogActions>

@@ -39,7 +39,7 @@ export default function AddUserButton(props: AddButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log(data.get('password'));
-                
+
         addUser(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
@@ -56,88 +56,82 @@ export default function AddUserButton(props: AddButtonProps) {
                 Add User
             </Button>
             <Dialog
-                
+
                 open={open}
                 onClose={handleClose}
                 maxWidth='md'
                 aria-labelledby="form-dialog-title"
             >
-                <React.Fragment>
+                <DialogTitle id="form-dialog-title">
+                    {"Add User"}
+                </DialogTitle>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
-                    <DialogTitle id="form-dialog-title">
-                        {"Add User"}
-                    </DialogTitle>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <DialogContent>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="name"
+                            label="Name"
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                        />
 
-                        <DialogContent>
-                            {/* <Box> */}
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                name="name"
-                                autoComplete="name"
-                                autoFocus
-                            />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="department"
+                            label="Department"
+                            name="department"
+                            autoComplete="department"
+                            autoFocus
+                        />
 
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                id="department"
-                                label="Department"
-                                name="department"
-                                autoComplete="department"
-                                autoFocus
-                            />
-
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="password"
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="confirmPassword"
-                                label="Password Confirm"
-                                type="password"
-                                id="confirm-password"
-                            />
-                            {/* </Box> */}
-                        </DialogContent>
-                        <DialogActions>
-                            <Button autoFocus onClick={handleClose}>
-                                Close
-                            </Button>
-                            <Button
-                                type='submit'
-                                onClick={() => {
-                                    handleClose();
-                                }} autoFocus>
-                                Submit
-                            </Button>
-                        </DialogActions>
-                    </Box>
-                </ React.Fragment>
-
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="password"
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="confirmPassword"
+                            label="Password Confirm"
+                            type="password"
+                            id="confirm-password"
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button
+                            type='submit'
+                            onClick={() => {
+                                handleClose();
+                            }} autoFocus>
+                            Submit
+                        </Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
         </ React.Fragment>
     );

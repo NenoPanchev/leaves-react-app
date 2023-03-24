@@ -5,12 +5,21 @@ import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as userService from '../../services/userService';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
 import AddUserButton from './AddUser';
+import EditUserButton from './EditUser';
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
+}
+
+interface User {
+  id: number
+  name: string
+  email: string
+  department: string
+  password: string
+  passwordConfirm: string
 }
 
 export default function Users() {
@@ -19,6 +28,10 @@ export default function Users() {
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
+  }
+
+  const renderEditButton = (user: User) => {  
+    return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -71,10 +84,7 @@ export default function Users() {
       flex: 1, 
       getActions: (params) => [
         renderViewButton(params.row.id),
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Edit"      
-        />,
+        renderEditButton(params.row),
         renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
       ]
     },
