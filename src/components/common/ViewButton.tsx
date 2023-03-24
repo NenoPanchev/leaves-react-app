@@ -8,13 +8,10 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
+import { ViewProps } from '../../models/interfaces/common/commonInterfaces';
 
 
-interface ViewButtonProps {
-    id: number
-}
-
-export default function ViewButton(props: ViewButtonProps) {
+export default function ViewButton(props: ViewProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();

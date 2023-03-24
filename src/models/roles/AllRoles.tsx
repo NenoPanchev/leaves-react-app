@@ -4,39 +4,35 @@ import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
-import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { IRole } from '../interfaces/role/roleInterfaces'
 import { GridRowParams } from '@mui/x-data-grid';
 
 import AddRoleButton from './AddRole';
-import '../ViewAll.css'
 import EditRoleButton from './EditRole';
+import RoleSearchFilter from './RoleSearchFilter';
+import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-interface Role {
-  id: number
-  name: string
-  permissions: [{
-    name: string
-  }]
-}
 
 export default function Roles() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
+  const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>();
   const roles = roleService.useFetchAll(refreshCurrentState);
+  const allFilteredRoles = '';
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (role: Role) => {  
+  const renderEditButton = (role: IRole) => {  
     return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
-  const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
+  const renderDeleteButton = (id: number) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
   }
 
@@ -71,10 +67,10 @@ export default function Roles() {
       type: 'actions',
       width: 120,
       flex: 1,
-      getActions: (params: GridRowParams<Role>) => [
+      getActions: (params: GridRowParams<IRole>) => [
         renderViewButton(params.row.id),
         renderEditButton(params.row),
-        renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
+        renderDeleteButton(params.row.id)
       ]
     },
   ];
@@ -82,7 +78,7 @@ export default function Roles() {
   const rows = roles.map(role => {
     return {
       id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', '),
-      actions: renderViewButton(role.id), edit: '', delete: renderDeleteButton(role.id, refreshCurrentState, setRefreshCurrentState)
+      actions: renderViewButton(role.id), edit: '', delete: renderDeleteButton(role.id)
     }
   });
 
@@ -90,6 +86,9 @@ export default function Roles() {
     <React.Fragment>
       <Container >
         <Title>Roles</Title>
+        <Box sx={{display: 'flex', flexDirection: 'row'}}>
+          <RoleSearchFilter refreshCurrentState={refreshCurrentState} setRoles={setFilteredRoles}></RoleSearchFilter>
+        </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
         </Box>

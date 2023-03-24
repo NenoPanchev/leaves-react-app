@@ -1,24 +1,17 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import AddIcon from '@mui/icons-material/Add';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
-import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
 import { useCreate } from '../../services/departmentService';
-
-interface AddButtonProps {
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
+import { AddButtonProps } from '../interfaces/common/commonInterfaces';
 
 export default function AddDepartmentButton(props: AddButtonProps) {
     const path = useLocation().pathname;

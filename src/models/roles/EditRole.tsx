@@ -1,35 +1,21 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import AddIcon from '@mui/icons-material/Add';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit } from '../../services/roleService';
-
-interface EditButtonProps {
-    role: Role
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
-
-interface Role {
-    id: number
-    name: string
-    permissions: [{
-      name: string
-    }]
-  }
+import { EditRoleButtonProps } from '../interfaces/role/roleInterfaces';
   
-export default function EditRoleButton(props: EditButtonProps) {
+export default function EditRoleButton(props: EditRoleButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.role.name);

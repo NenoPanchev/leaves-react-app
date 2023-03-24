@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { IDepartment, IDepartmentDetails } from '../models/interfaces/department/departmentInterfaces'
 
 const baseDepartmentUrl = 'http://localhost:8080/departments/'
 
@@ -10,30 +11,8 @@ const withAuthHeader = () => ({
   });
 
 
-type Department = {
-    id: number
-    name: string
-    adminEmail: string
-    employeeEmails: string[]
-}
-
-  interface DepartmentViewProp {
-    id: number
-}
-
-type DepartmentDetails = {
-    id: number,
-    name: string,
-    adminEmail: string,
-    employeeEmails: string[]
-    createdAt: string
-    createdBy?: string
-    lastModifiedAt?: string
-    lastModifiedBy?: string
-}
-
 export const useFetchAll = (refresh: number) => {
-    const [department, setDepartment] = useState<Department[]>([]);
+    const [department, setDepartment] = useState<IDepartment[]>([]);
 
 
     useEffect(() => {
@@ -51,7 +30,7 @@ export const useFetchAll = (refresh: number) => {
 }
 
 export const useFetchOne = (props:number) => {
-    const [department, setDepartment] = useState<DepartmentDetails>();
+    const [department, setDepartment] = useState<IDepartmentDetails>();
     
   useEffect(() => {
     loadDepartment();

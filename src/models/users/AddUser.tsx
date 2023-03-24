@@ -12,11 +12,7 @@ import { useDelete } from '../../services/deleteService';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useCreate } from '../../services/userService';
-
-interface AddButtonProps {
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
+import { AddButtonProps } from '../interfaces/common/commonInterfaces';
 
 export default function AddUserButton(props: AddButtonProps) {
     const path = useLocation().pathname;

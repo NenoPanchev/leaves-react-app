@@ -4,11 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 
@@ -16,12 +15,8 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
+import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
 
-interface DeleteButtonProps {
-    id: number
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
 
 export default function DeleteButton(props: DeleteButtonProps) {
     const path = useLocation().pathname;

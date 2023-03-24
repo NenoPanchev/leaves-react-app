@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { IUser, IUserDetails } from '../models/interfaces/user/userInterfaces'
 
 const baseUserUrl = 'http://localhost:8080/users/'
 
@@ -10,41 +11,8 @@ const withAuthHeader = () => ({
   });
 
 
-type User = {
-    id: number
-    name: string
-    email: string
-    department: string
-    roles: [{
-      name: string
-    }]
-}
-
-  interface UserViewProp {
-    id: number
-}
-
-type UserDetails = {
-    id: number
-    name: string
-    email: string
-    department: string
-    roles: [{
-      name: string
-      permissions: Permissions[]
-    }]
-    createdAt: string
-    createdBy?: string
-    lastModifiedAt?: string
-    lastModifiedBy?: string
-}
-
-interface Permissions {
-  name: string
-}
-
 export const useFetchAll = (refresh: number) => {
-    const [user, setUser] = useState<User[]>([]);
+    const [user, setUser] = useState<IUser[]>([]);
 
 
     useEffect(() => {
@@ -62,7 +30,7 @@ export const useFetchAll = (refresh: number) => {
 }
 
 export const useFetchOne = (props:number) => {
-    const [user, setUser] = useState<UserDetails>();
+    const [user, setUser] = useState<IUserDetails>();
     
   useEffect(() => {
     loadDepartment();

@@ -10,12 +10,10 @@ import TableBody from '@mui/material/TableBody';
 import * as departmentService from '../../services/departmentService';
 
 import '../SingleItemView.css'
+import { ViewProps } from '../interfaces/common/commonInterfaces';
 
-interface DepartmentViewProp {
-  id: number
-}
 
-export default function DepartmentView(props: DepartmentViewProp) {
+export default function DepartmentView(props: ViewProps) {
 
   const department = departmentService.useFetchOne(props.id);
 

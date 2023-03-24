@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
 
 const baseRoleUrl = 'http://localhost:8080/roles/'
 
@@ -10,32 +11,8 @@ const withAuthHeader = () => ({
 });
 
 
-type Role = {
-  id: number
-  name: string
-  permissions: [{
-    name: string
-  }]
-}
-
-interface RoleViewProp {
-  id: number
-}
-
-type RoleDetails = {
-  id: number
-  name: string
-  permissions: [{
-    name: string
-  }]
-  createdAt: string
-  createdBy?: string
-  lastModifiedAt?: string
-  lastModifiedBy?: string
-}
-
 export const useFetchAll = (refresh: number) => {
-  const [roles, setRoles] = useState<Role[]>([]);
+  const [roles, setRoles] = useState<IRole[]>([]);
 
 
   useEffect(() => {
@@ -52,7 +29,7 @@ export const useFetchAll = (refresh: number) => {
 }
 
 export const useFetchOne = (props: number) => {
-  const [role, setRole] = useState<RoleDetails>();
+  const [role, setRole] = useState<IRoleDetails>();
 
   useEffect(() => {
     loadRole();
@@ -95,8 +72,8 @@ export const useEdit = () => {
   return editRole;
 }
 
-export const useFetchAllFiltered = (refresh: number) => {
-  const [roles, setRoles] = useState<Role[]>([]);
+export const useFetchAllFiltered = (refresh: number, filter: FormData) => {
+  const [roles, setRoles] = useState<IRole[]>([]);
 
 
   useEffect(() => {
@@ -104,7 +81,7 @@ export const useFetchAllFiltered = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(baseRoleUrl, withAuthHeader())
+    const result = await axios.post(baseRoleUrl + 'filter', axios.formToJSON(filter), withAuthHeader())
       .then(response => setRoles(response.data))
       .catch(error => console.log(error))
   }

@@ -8,16 +8,14 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import * as roleService from '../../services/roleService';
+import { ViewProps } from '../interfaces/common/commonInterfaces';
 
 import '../SingleItemView.css'
 
-interface RoleViewProp {
-  id: number
-}
+export default function RoleView(props: ViewProps) {
+  const {id} = props;
 
-export default function RoleView(props: RoleViewProp) {
-
-  const role = roleService.useFetchOne(props.id);
+  const role = roleService.useFetchOne(id);
 
   return (
     <React.Fragment>

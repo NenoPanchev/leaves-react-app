@@ -6,22 +6,16 @@ import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as departmentService from '../../services/departmentService';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
+import { IDepartment } from '../interfaces//department/departmentInterfaces';
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-interface Department {
-  id: number
-  name: string
-  adminEmail: string
-  employeeEmails: string[]
-}
 
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -31,7 +25,7 @@ export default function Departments() {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (department: Department) => {  
+  const renderEditButton = (department: IDepartment) => {  
     return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 

@@ -14,19 +14,7 @@ import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit } from '../../services/departmentService';
-
-interface EditButtonProps {
-    department: Department
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
-
-interface Department {
-    id: number
-    name: string
-    adminEmail: string
-    employeeEmails: string[]
-}
+import { EditButtonProps } from '../interfaces/department/departmentInterfaces';
 
 export default function EditDepartmentButton(props: EditButtonProps) {
     const path = useLocation().pathname;
