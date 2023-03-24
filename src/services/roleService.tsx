@@ -82,9 +82,9 @@ export const useCreate = () => {
 
 export const useEdit = () => {
 
-  const editRole = async (role: FormData) => {
+  const editRole = async (id: number, role: FormData) => {
 
-    const updateUrl = baseRoleUrl + '/' + role.get('id');
+    const updateUrl = baseRoleUrl + id;
 
     const result = await axios.put(updateUrl, axios.formToJSON(role), withAuthHeader())
       .then(response => {
@@ -93,4 +93,21 @@ export const useEdit = () => {
       .catch(error => console.log(error))
   }
   return editRole;
+}
+
+export const useFetchAllFiltered = (refresh: number) => {
+  const [roles, setRoles] = useState<Role[]>([]);
+
+
+  useEffect(() => {
+    loadRoles();
+  }, [refresh]);
+
+  const loadRoles = async () => {
+    const result = await axios.get(baseRoleUrl, withAuthHeader())
+      .then(response => setRoles(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return roles;
 }
