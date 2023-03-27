@@ -8,6 +8,15 @@ export interface IUser {
     }]
 }
 
+export interface IUserEdit {
+  id: number
+  name: string
+  email: string
+  department: string
+  password: string
+  passwordConfirm: string
+}
+
 export interface IUserDetails {
     id: number
     name: string
@@ -22,4 +31,12 @@ export interface IUserDetails {
     createdBy?: string
     lastModifiedAt?: string
     lastModifiedBy?: string
+}
+
+export interface UserSearchFilterProps {
+  refreshCurrentState: number
+  refresh: (value: number) => void;
+  setUsers: (value: IUser[]) => void;
+  setFilter: (value: FormData) => void;
+  setShouldFilter: (value: boolean) => void;
 }

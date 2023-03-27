@@ -21,3 +21,11 @@ export interface EditButtonProps {
     refreshCurrentState: number
     refresh: (value: number) => void;
 }
+
+export interface DepartmentSearchFilterProps {
+  refreshCurrentState: number
+  refresh: (value: number) => void;
+  setRoles: (value: IDepartment[]) => void;
+  setFilter: (value: FormData) => void;
+  setShouldFilter: (value: boolean) => void;
+}

@@ -1,18 +1,19 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { RoleSearchFilterProps } from '../interfaces/role/roleInterfaces';
-import * as roleService from '../../services/roleService';
+import { DepartmentSearchFilterProps } from '../interfaces/department/departmentInterfaces';
+import * as departmentService from '../../services/departmentService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 
 
 
-function RoleSearchFilter(props: RoleSearchFilterProps) {
+function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
-    const [permissions, setPermissions] = React.useState<string[] | null>(null);
-    const fetchAllFiltered = roleService.useFetchAllFiltered();
+    const [admin, setAdmin] = React.useState('');
+    const [employees, setEmployees] = React.useState<string[] | null>(null);
+    const fetchAllFiltered = departmentService.useFetchAllFiltered();
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -20,20 +21,20 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
         event.preventDefault();
         const filter = new FormData(event.currentTarget);
         
-        if(permissions) {
-            permissions.forEach(p => {
-                filter.append('permissions[]', p);
+        if(employees) {
+            employees.forEach(p => {
+                filter.append('employees[]', p);
             })
             
         }
         
         console.log(filter);
-        const roles = fetchAllFiltered(props.refreshCurrentState, filter);
-        props.setRoles(roles);
+        const departments = fetchAllFiltered(props.refreshCurrentState, filter);
+        props.setRoles(departments);
         props.setFilter(filter);
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
-        console.log(roles);
+        console.log(departments);
     }
 
 
@@ -55,24 +56,17 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                         setName(e.target.value);
                     }}
                 />
-                <Autocomplete
-                    multiple
-                    id="permissions"
-                    options={PERMISSIONS}
-                    size='medium'
-                    sx={{minWidth: '30%'}}
-                    onChange={( event, newValue) => {
-                        setPermissions(newValue)
-                        console.log(newValue);
+                <TextField
+                    margin="normal"
+                    size='small'
+                    id="admin"
+                    label="Admin"
+                    name="admin"
+                    autoComplete="admin"
+                    value={admin}
+                    onChange={(e) => {
+                        setAdmin(e.target.value);
                     }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="standard"
-                            label="Permissions"
-                            placeholder="Permissions"
-                        />
-                    )}
                 />
                 <Button
                     type='submit'
@@ -88,4 +82,4 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
     )
 }
 
-export default RoleSearchFilter;
+export default DepartmentSearchFilter;

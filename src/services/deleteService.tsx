@@ -1,12 +1,7 @@
 import axios from 'axios';
+import { BASE_URL } from '../constants/GlobalConstants';
+import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
 
-const baseUrl = 'http://localhost:8080'
-
-const withAuthHeader = () => ({
-    headers: {
-      'Authorization': localStorage.getItem('SavedToken')
-    }
-  });
 
 interface DeleteProp {
     path: string
@@ -14,12 +9,10 @@ interface DeleteProp {
 
 export const useDelete = (props: DeleteProp) : (id: number) => Promise<void> => {
     
-
-
   const deleteItem = async (id: number) => {
 
-    const deleteUrl = baseUrl + props.path + '/' + id;
-      const result = await axios.delete(deleteUrl, withAuthHeader())
+    const deleteUrl = BASE_URL + props.path + '/' + id;
+      const result = await axios.delete(deleteUrl, WITH_AUTH_HEADER())
           .then(response => console.log(response))
           .catch(error => console.log(error))
   }

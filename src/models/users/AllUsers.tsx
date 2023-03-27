@@ -4,33 +4,30 @@ import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as userService from '../../services/userService';
-import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
+import UserSearchFilter from './UserSearchFilter';
 import '../ViewAll.css'
+import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-interface User {
-  id: number
-  name: string
-  email: string
-  department: string
-  password: string
-  passwordConfirm: string
-}
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const users = userService.useFetchAll(refreshCurrentState);
+  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
+  const [filter, setFilter] = React.useState<FormData>(new FormData);
+  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+  const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (user: User) => {  
+  const renderEditButton = (user: IUserEdit) => {  
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
@@ -101,6 +98,11 @@ export default function Users() {
     <React.Fragment>
       <Container >
         <Title>Users</Title>
+        <Box sx={{display: 'flex', flexDirection: 'row'}}>
+          <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
+          setUsers={setFilteredUsers} setFilter={setFilter}
+          setShouldFilter={setShouldFilter}></UserSearchFilter>
+        </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
         </Box>

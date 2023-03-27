@@ -10,6 +10,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
 import { IDepartment } from '../interfaces//department/departmentInterfaces';
+import DepartmentSearchFilter from './DepartmentSearchFilter';
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
@@ -19,7 +20,10 @@ function preventDefault(event: React.MouseEvent) {
 
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const departments = departmentService.useFetchAll(refreshCurrentState);
+  const [filteredDepartments, setFilteredDepartments] = React.useState<IDepartment[]>([]);
+  const [filter, setFilter] = React.useState<FormData>(new FormData);
+  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+  const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -93,6 +97,11 @@ export default function Departments() {
     <React.Fragment>
       <Container >
         <Title>Departments</Title>
+        <Box sx={{display: 'flex', flexDirection: 'row'}}>
+          <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
+          setRoles={setFilteredDepartments} setFilter={setFilter}
+          setShouldFilter={setShouldFilter}></DepartmentSearchFilter>
+        </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
         </Box>

@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { IUser, IUserDetails } from '../models/interfaces/user/userInterfaces'
-
-const baseUserUrl = 'http://localhost:8080/users/'
-
-const withAuthHeader = () => ({
-    headers: {
-      'Authorization': localStorage.getItem('SavedToken')
-    }
-  });
+import { IUser, IUserDetails, IUserEdit } from '../models/interfaces/user/userInterfaces'
+import { BASE_USER_URL } from '../constants/GlobalConstants';
+import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -20,7 +14,7 @@ export const useFetchAll = (refresh: number) => {
     }, [refresh]);
   
     const loadUsers = async () => {
-      const result = await axios.get(baseUserUrl, withAuthHeader())
+      const result = await axios.get(BASE_USER_URL, WITH_AUTH_HEADER())
         .then(response => setUser(response.data))
         .catch(error => console.log(error))
         
@@ -38,7 +32,7 @@ export const useFetchOne = (props:number) => {
   
 
   const loadDepartment = async () => {
-    const result = await axios.get(baseUserUrl + props, withAuthHeader())
+    const result = await axios.get(BASE_USER_URL + props, WITH_AUTH_HEADER())
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
   }
@@ -50,7 +44,7 @@ export const useCreate = () => {
   const addUser = async (user: FormData) => {
     console.log(axios.formToJSON(user));
     
-    const result = await axios.post(baseUserUrl, axios.formToJSON(user), withAuthHeader())
+    const result = await axios.post(BASE_USER_URL, axios.formToJSON(user), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -63,13 +57,66 @@ export const useEdit = () => {
 
   const editUser = async (id: number, role: FormData) => {
 
-    const updateUrl = baseUserUrl + id;
+    const updateUrl = BASE_USER_URL + id;
 
-    const result = await axios.put(updateUrl, axios.formToJSON(role), withAuthHeader())
+    const result = await axios.put(updateUrl, axios.formToJSON(role), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
       .catch(error => console.log(error))
   }
   return editUser;
+}
+
+export const useFetchAllFiltered = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  const fetchAllFiltered = (refresh: number, filter: FormData) => {
+    
+    const loadUsers = async () => {
+      const result = await axios.post(BASE_USER_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+        .then(response =>  {
+          
+          setUsers(response.data)
+          
+        })
+        .catch(error => console.log(error))
+    }
+    loadUsers();      
+    return users;
+  }
+  return fetchAllFiltered;
+}
+
+
+export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldFilter: boolean) => {
+  const [users, setUsers] = useState<IUser[]>([]);
+    
+    useEffect(() => {
+      if (shouldFilter) {
+        loadFilteredUsers();
+      } else {
+        loadUsers();
+      }
+    }, [refresh]);
+
+    const loadFilteredUsers = async () => {
+      const result = await axios.post(BASE_USER_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+        .then(response =>  {
+          
+          setUsers(response.data)
+          
+        })
+        .catch(error => console.log(error))
+    }
+
+  
+    const loadUsers = async () => {
+      const result = await axios.get(BASE_USER_URL, WITH_AUTH_HEADER())
+        .then(response => setUsers(response.data))
+        .catch(error => console.log(error))
+    }
+
+    return users;
+
 }

@@ -20,9 +20,11 @@ function preventDefault(event: React.MouseEvent) {
 
 export default function Roles() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>();
-  const roles = roleService.useFetchAll(refreshCurrentState);
-  const allFilteredRoles = '';
+  const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
+  const [filter, setFilter] = React.useState<FormData>(new FormData);
+  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+
+  const roles = roleService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter)
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -33,7 +35,8 @@ export default function Roles() {
   }
 
   const renderDeleteButton = (id: number) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
+    refresh={setRefreshCurrentState}></DeleteButton>
   }
 
 
@@ -87,7 +90,9 @@ export default function Roles() {
       <Container >
         <Title>Roles</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
-          <RoleSearchFilter refreshCurrentState={refreshCurrentState} setRoles={setFilteredRoles}></RoleSearchFilter>
+          <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
+          setRoles={setFilteredRoles} setFilter={setFilter}
+          setShouldFilter={setShouldFilter}></RoleSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>

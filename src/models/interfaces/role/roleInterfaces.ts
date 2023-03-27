@@ -26,5 +26,8 @@ export interface EditRoleButtonProps {
 
 export interface RoleSearchFilterProps {
     refreshCurrentState: number
+    refresh: (value: number) => void;
     setRoles: (value: IRole[]) => void;
+    setFilter: (value: FormData) => void;
+    setShouldFilter: (value: boolean) => void;
 }
