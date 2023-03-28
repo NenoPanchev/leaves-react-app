@@ -98,7 +98,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                         />
                         <Autocomplete
                             multiple
-                            id="users"
+                            id="roles"
                             options={props.roleNames}
                             size='small'
                             sx={{ minWidth: '20%' }}
@@ -108,7 +108,6 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    name='permissions'
                                     margin='normal'
                                     label="Roles"
                                     placeholder="Roles"

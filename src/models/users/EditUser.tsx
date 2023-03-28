@@ -4,42 +4,23 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useEdit } from '../../services/userService';
+import { EditUserButtonProps } from '../interfaces/user/userInterfaces';
 
-interface EditButtonProps {
-    user: User
-    refreshCurrentState: number
-    refresh: (value: number) => void;
-}
-
-interface User {
-    id: number
-    name: string
-    email: string
-    department: string
-    password: string
-    passwordConfirm: string
-}
-
-export default function EditUserButton(props: EditButtonProps) {
+export default function EditUserButton(props: EditUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState(props.user.department);
     const [password, setPassword] = React.useState(props.user.password);
     const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const deleteItem = useDelete({ path: path });
     const navigate = useNavigate();
     const editUser = useEdit();
 
@@ -106,16 +87,42 @@ export default function EditUserButton(props: EditButtonProps) {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            <TextField
-                                margin="normal"
-                                fullWidth
+                            <Autocomplete
                                 id="department"
-                                label="Department"
-                                name="department"
-                                autoComplete="department"
-                                autoFocus
+                                options={props.departmentNames}
+                                size='medium'
+                                sx={{ minWidth: '20%' }}
                                 value={department}
-                                onChange={(e) => setDepartment(e.target.value)}
+                                onChange={(event, newValue) => {
+                                    setDepartment(newValue!);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name='department'
+                                        margin='normal'
+                                        label="Department"
+                                        placeholder="Department"
+                                    />
+                                )}
+                            />
+                            <Autocomplete
+                                multiple
+                                id="roles"
+                                options={props.roleNames}
+                                size='small'
+                                sx={{ minWidth: '20%' }}
+                                onChange={(event, newValue) => {
+                                    setRoles(mapRoleName(newValue))
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        margin='normal'
+                                        label="Roles"
+                                        placeholder="Roles"
+                                    />
+                                )}
                             />
 
                             <TextField
