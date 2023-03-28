@@ -33,7 +33,8 @@ export default function Users() {
   }
 
   const renderEditButton = (user: IUserEdit) => {  
-    return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+    return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    departmentNames={departmentNames} roleNames={roleNames}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {

@@ -47,3 +47,11 @@ export interface AddUserButtonProps {
   departmentNames: string[]
   roleNames: string[]
 }
+
+export interface EditUserButtonProps {
+  user: IUserEdit
+  refreshCurrentState: number
+  refresh: (value: number) => void;
+  departmentNames: string[]
+  roleNames: string[]
+}
