@@ -8,8 +8,11 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
-import '../ViewAll.css'
+import { useFetchAllNames as fetchDepartmentNames } from '../../services/departmentService';
+import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
 import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces';
+
+import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -22,6 +25,8 @@ export default function Users() {
   const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
   const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
+  const departmentNames = fetchDepartmentNames(refreshCurrentState);
+  const roleNames = fetchRoleNames(refreshCurrentState);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -104,7 +109,8 @@ export default function Users() {
           setShouldFilter={setShouldFilter}></UserSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
+          departmentNames={departmentNames} roleNames={roleNames}/>
         </Box>
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid

@@ -12,3 +12,7 @@ export interface AddButtonProps {
     refreshCurrentState: number
     refresh: (value: number) => void;
 }
+
+export interface IPermission {
+    name: string
+}

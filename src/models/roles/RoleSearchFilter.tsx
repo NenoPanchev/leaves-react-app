@@ -59,8 +59,8 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     multiple
                     id="permissions"
                     options={PERMISSIONS}
-                    size='medium'
-                    sx={{minWidth: '30%'}}
+                    size='small'
+                    sx={{minWidth: '40%'}}
                     onChange={( event, newValue) => {
                         setPermissions(newValue)
                         console.log(newValue);
@@ -68,7 +68,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            variant="standard"
+                            margin='normal'
                             label="Permissions"
                             placeholder="Permissions"
                         />
@@ -79,6 +79,8 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     variant='outlined'
                     color='success'
                     size='small'
+                    sx={{marginTop: '16px', marginBottom: '8px'}}
+
                 >
                     Search
                 </Button>

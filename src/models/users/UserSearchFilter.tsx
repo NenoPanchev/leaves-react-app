@@ -12,7 +12,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');
-    let [roles, setRoles] = React.useState<string[] | null>(null);
+    const [roles, setRoles] = React.useState<string[] | null>(null);
     const fetchAllFiltered = userService.useFetchAllFiltered();
     const roleNames = useFetchAllNames(props.refreshCurrentState)
 
@@ -21,19 +21,17 @@ function UserSearchFilter(props: UserSearchFilterProps) {
         event.preventDefault();
         const filter = new FormData(event.currentTarget);
         
-        // if(roles) {
-        //     roles.forEach(r => {
-        //         filter.append('roles[]', r);
-        //     })   
-        // }
+        if(roles) {
+            roles.forEach(r => {
+                filter.append('roles[]', r);
+            })   
+        }
         
         console.log(filter);
-        const roles = fetchAllFiltered(props.refreshCurrentState, filter);
-        // props.setRoles(roles);
+        const users = fetchAllFiltered(props.refreshCurrentState, filter);
         props.setFilter(filter);
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
-        console.log(roles);
     }
 
 
@@ -84,15 +82,15 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     multiple
                     id="users"
                     options={roleNames}
-                    size='medium'
-                    sx={{minWidth: '30%'}}
+                    size='small'
+                    sx={{minWidth: '20%'}}
                     onChange={( event, newValue) => {
                         setRoles(newValue)
                     }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            variant="standard"
+                            margin='normal'
                             label="Roles"
                             placeholder="Roles"
                         />
@@ -103,6 +101,8 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     variant='outlined'
                     color='success'
                     size='small'
+                    sx={{marginTop: '16px',
+                        marginBottom: '8px'}}
                 >
                     Search
                 </Button>

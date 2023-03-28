@@ -40,3 +40,10 @@ export interface UserSearchFilterProps {
   setFilter: (value: FormData) => void;
   setShouldFilter: (value: boolean) => void;
 }
+
+export interface AddUserButtonProps {
+  refreshCurrentState: number
+  refresh: (value: number) => void;
+  departmentNames: string[]
+  roleNames: string[]
+}

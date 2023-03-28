@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IUser, IUserDetails, IUserEdit } from '../models/interfaces/user/userInterfaces'
 import { BASE_USER_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
+import { Role } from '../models/objects/Role';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -110,7 +111,6 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
         .catch(error => console.log(error))
     }
 
-  
     const loadUsers = async () => {
       const result = await axios.get(BASE_USER_URL, WITH_AUTH_HEADER())
         .then(response => setUsers(response.data))
@@ -118,5 +118,28 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }
 
     return users;
+}
 
+export const useFetchAllEmails = (refresh: number) => {
+  const [userEmails, setUserEmails] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadRoles();
+  }, [refresh]);
+
+  const loadRoles = async () => {
+    const result = await axios.get(BASE_USER_URL + 'emails', WITH_AUTH_HEADER())
+      .then(response => setUserEmails(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return userEmails;
+}
+
+export function appendRolesToFormData(formData: FormData, roles: Role[]) {
+  roles!.forEach((obj, index) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      formData.append(`roles[${index}][${key}]`, value.toString());
+    });
+  });
 }

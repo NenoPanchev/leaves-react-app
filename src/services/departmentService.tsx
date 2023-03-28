@@ -118,3 +118,19 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     return departments;
 
 }
+
+export const useFetchAllNames = (refresh: number) => {
+  const [departmentNames, setDepartmentNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadDepartment();
+  }, [refresh]);
+
+  const loadDepartment = async () => {
+    const result = await axios.get(BASE_DEPARTMENT_URL + 'names', WITH_AUTH_HEADER())
+      .then(response => setDepartmentNames(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return departmentNames;
+}

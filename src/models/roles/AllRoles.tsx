@@ -95,7 +95,7 @@ export default function Roles() {
           setShouldFilter={setShouldFilter}></RoleSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+          <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
         </Box>
 
         <Box sx={{ height: 400, width: '100%' }}>

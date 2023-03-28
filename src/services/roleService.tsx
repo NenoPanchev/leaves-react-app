@@ -3,6 +3,8 @@ import axios from 'axios';
 import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
 import { BASE_ROLE_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
+import { Permission } from '../models/objects/Permission';
+import { Role } from '../models/objects/Role';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -132,10 +134,30 @@ export const useFetchAllNames = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_ROLE_URL + '/names', WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_ROLE_URL + 'names', WITH_AUTH_HEADER())
       .then(response => setRoleNames(response.data))
       .catch(error => console.log(error))
   }
 
   return roleNames;
+}
+
+export function appendPermissionsToFormData(formData: FormData, permissions: Permission[]) {
+  permissions!.forEach((obj, index) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      formData.append(`permissions[${index}][${key}]`, value.toString());
+    });
+  });
+}
+
+export function mapRoleName(roleNames: string[]) {
+  let roleArray = new Array<Role>;
+  if (roleNames) {
+      roleNames.forEach(name => {
+          let perm = new Role();
+          perm.setName(name)
+          roleArray.push(perm);
+      })
+  }
+  return roleArray;
 }

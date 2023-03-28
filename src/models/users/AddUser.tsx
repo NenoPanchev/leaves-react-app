@@ -1,25 +1,22 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import AddIcon from '@mui/icons-material/Add';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { useCreate } from '../../services/userService';
-import { AddButtonProps } from '../interfaces/common/commonInterfaces';
+import { appendRolesToFormData, useCreate } from '../../services/userService';
+import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
+import Autocomplete from '@mui/material/Autocomplete';
+import { Role } from '../objects/Role';
+import { mapRoleName } from '../../services/roleService';
 
-export default function AddUserButton(props: AddButtonProps) {
+export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const deleteItem = useDelete({ path: path });
+    const [roles, setRoles] = React.useState<Role[] | null>(null);
     const navigate = useNavigate();
     const addUser = useCreate();
 
@@ -34,8 +31,7 @@ export default function AddUserButton(props: AddButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log(data.get('password'));
-
+        appendRolesToFormData(data, roles!);
         addUser(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
@@ -71,8 +67,7 @@ export default function AddUserButton(props: AddButtonProps) {
                             id="name"
                             label="Name"
                             name="name"
-                            autoComplete="name"
-                            autoFocus
+                            autoComplete="name"                        
                         />
 
                         <TextField
@@ -85,14 +80,40 @@ export default function AddUserButton(props: AddButtonProps) {
                             autoComplete="email"
                             autoFocus
                         />
-                        <TextField
-                            margin="normal"
-                            fullWidth
-                            id="department"
-                            label="Department"
-                            name="department"
-                            autoComplete="department"
-                            autoFocus
+                        <Autocomplete
+                            id="users"
+                            options={props.departmentNames}
+                            size='medium'
+                            sx={{ minWidth: '20%' }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    name='department'
+                                    margin='normal'
+                                    label="Department"
+                                    placeholder="Department"
+                                    onChange={(e) => e.target.value}
+                                />
+                            )}
+                        />
+                        <Autocomplete
+                            multiple
+                            id="users"
+                            options={props.roleNames}
+                            size='small'
+                            sx={{ minWidth: '20%' }}
+                            onChange={(event, newValue) => {
+                                setRoles(mapRoleName(newValue))
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    name='permissions'
+                                    margin='normal'
+                                    label="Roles"
+                                    placeholder="Roles"
+                                />
+                            )}
                         />
 
                         <TextField

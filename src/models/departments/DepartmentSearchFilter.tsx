@@ -5,8 +5,7 @@ import { DepartmentSearchFilterProps } from '../interfaces/department/department
 import * as departmentService from '../../services/departmentService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
-import { PERMISSIONS } from '../../constants/GlobalConstants';
-
+import { useFetchAllEmails } from '../../services/userService';
 
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
@@ -14,6 +13,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [admin, setAdmin] = React.useState('');
     const [employees, setEmployees] = React.useState<string[] | null>(null);
     const fetchAllFiltered = departmentService.useFetchAllFiltered();
+    const userEmails = useFetchAllEmails(props.refreshCurrentState);    
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -22,19 +22,16 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
         const filter = new FormData(event.currentTarget);
         
         if(employees) {
-            employees.forEach(p => {
-                filter.append('employees[]', p);
+            employees.forEach(empl => {
+                filter.append('employees[]', empl);
             })
-            
         }
         
-        console.log(filter);
         const departments = fetchAllFiltered(props.refreshCurrentState, filter);
         props.setRoles(departments);
         props.setFilter(filter);
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
-        console.log(departments);
     }
 
 
@@ -68,11 +65,30 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                         setAdmin(e.target.value);
                     }}
                 />
+                <Autocomplete
+                    multiple
+                    id="employees"
+                    options={userEmails}
+                    size='small'
+                    sx={{minWidth: '30%'}}
+                    onChange={( event, newValue) => {
+                        setEmployees(newValue)
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            margin='normal'
+                            label="Employees"
+                            placeholder="Employees"
+                        />
+                    )}
+                />
                 <Button
                     type='submit'
                     variant='outlined'
                     color='success'
                     size='small'
+                    sx={{marginTop: '16px', marginBottom: '8px'}}
                 >
                     Search
                 </Button>
