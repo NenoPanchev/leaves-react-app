@@ -16,10 +16,11 @@ export interface IDepartmentDetails {
     lastModifiedBy?: string
   }
 
-export interface EditButtonProps {
+export interface EditDepartmentButtonProps {
     department: IDepartment
     refreshCurrentState: number
     refresh: (value: number) => void;
+    userEmails: string[]
 }
 
 export interface DepartmentSearchFilterProps {
@@ -28,4 +29,10 @@ export interface DepartmentSearchFilterProps {
   setRoles: (value: IDepartment[]) => void;
   setFilter: (value: FormData) => void;
   setShouldFilter: (value: boolean) => void;
+}
+
+export interface AddDepartmentButtonProps {
+  refreshCurrentState: number
+  refresh: (value: number) => void;
+  userEmails: string[]
 }

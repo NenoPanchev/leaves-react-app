@@ -1,15 +1,9 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import { appendRolesToFormData, useCreate } from '../../services/userService';
 import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
-import Autocomplete from '@mui/material/Autocomplete';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 
@@ -81,7 +75,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             autoFocus
                         />
                         <Autocomplete
-                            id="users"
+                            id="department"
                             options={props.departmentNames}
                             size='medium'
                             sx={{ minWidth: '20%' }}
@@ -100,7 +94,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             multiple
                             id="roles"
                             options={props.roleNames}
-                            size='small'
+                            filterSelectedOptions
+                            size='medium'
                             sx={{ minWidth: '20%' }}
                             onChange={(event, newValue) => {
                                 setRoles(mapRoleName(newValue))

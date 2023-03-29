@@ -1,24 +1,13 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
-import { Box } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import { useCreate } from '../../services/departmentService';
-import { AddButtonProps } from '../interfaces/common/commonInterfaces';
+import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 
-export default function AddDepartmentButton(props: AddButtonProps) {
+export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const deleteItem = useDelete({ path: path });
     const navigate = useNavigate();
     const addDepartment = useCreate();
 
@@ -32,10 +21,10 @@ export default function AddDepartmentButton(props: AddButtonProps) {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);      
+        const data = new FormData(event.currentTarget);
         addDepartment(data)
-        .then(() => props.refresh(props.refreshCurrentState + 1))
-        .then(() => navigate(path))
+            .then(() => props.refresh(props.refreshCurrentState + 1))
+            .then(() => navigate(path))
 
     }
 
@@ -73,16 +62,32 @@ export default function AddDepartmentButton(props: AddButtonProps) {
                                 autoComplete="name"
                                 autoFocus
                             />
+                            <Autocomplete
+                                id="adminEmail"
+                                options={props.userEmails}
+                                size='medium'
+                                sx={{ minWidth: '20%' }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name='adminEmail'
+                                        margin='normal'
+                                        label="Admin"
+                                        placeholder="Admin"
+                                        onChange={(e) => e.target.value}
+                                    />
+                                )}
+                            />
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>
                                 Close
                             </Button>
-                            <Button 
-                            type='submit'
-                            onClick={() => {
-                                handleClose();
-                            }} autoFocus>
+                            <Button
+                                type='submit'
+                                onClick={() => {
+                                    handleClose();
+                                }} autoFocus>
                                 Submit
                             </Button>
                         </DialogActions>

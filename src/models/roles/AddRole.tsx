@@ -1,19 +1,9 @@
 import * as React from 'react';
-import axios from 'axios'
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
-import { Box } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import { useCreate } from '../../services/roleService';
 import { AddButtonProps, IPermission } from '../interfaces/common/commonInterfaces';
-import Autocomplete from '@mui/material/Autocomplete';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
@@ -24,9 +14,6 @@ export default function AddRoleButton(props: AddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const deleteItem = useDelete({ path: path });
     const navigate = useNavigate();
     const addRole = useCreate();
 
@@ -86,6 +73,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                             multiple
                             id="users"
                             options={PERMISSIONS}
+                            filterSelectedOptions
                             size='small'
                             sx={{ minWidth: '20%' }}
                             onChange={(event, newValue) => {

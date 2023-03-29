@@ -11,6 +11,8 @@ import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
 import { IDepartment } from '../interfaces//department/departmentInterfaces';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
+import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
+
 import '../ViewAll.css'
 
 function preventDefault(event: React.MouseEvent) {
@@ -24,13 +26,14 @@ export default function Departments() {
   const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
   const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
-
+  const userEmails = fetchUserEmails(refreshCurrentState);
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
   const renderEditButton = (department: IDepartment) => {  
-    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} 
+    refresh={setRefreshCurrentState} userEmails={userEmails}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -54,14 +57,14 @@ export default function Departments() {
       flex: 1, 
     },
     {
-      field: 'admin',
+      field: 'adminEmail',
       headerName: 'Admin',
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
-      field: 'employees',
+      field: 'employeeEmailss',
       headerName: 'Employees',
       headerClassName: 'grid-header',
       // renderCell: (params) => renderEmployeeEmails(),
@@ -87,8 +90,8 @@ export default function Departments() {
 
   const rows = departments.map(dpt => {
     return {
-      id: dpt.id, name: dpt.name, admin: dpt.adminEmail, employees: dpt.employeeEmails ? dpt.employeeEmails.join("\n") : '',
-      actions: renderViewButton(dpt.id), edit: '', delete: renderDeleteButton(dpt.id, refreshCurrentState, setRefreshCurrentState)
+      id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail, 
+      employeeEmails: dpt.employeeEmails ? dpt.employeeEmails.join("\n") : ''
     }
   });
 
@@ -103,7 +106,8 @@ export default function Departments() {
           setShouldFilter={setShouldFilter}></DepartmentSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+          <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+          userEmails={userEmails}/>
         </Box>
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid

@@ -95,8 +95,8 @@ export default function Users() {
 
   const rows = users.map(user => {
     return {
-      id: user.id, name: user?.name, email: user.email, department: user?.department, roles: user.roles.map(role => role.name).join(', '),
-      actions: renderViewButton(user.id), edit: '', delete: renderDeleteButton(user.id, refreshCurrentState, setRefreshCurrentState)
+      id: user.id, name: user?.name, email: user.email, department: user.department, 
+      roles: user.roles.map(role => role.name).join(', ')
     }
   });
 

@@ -80,8 +80,7 @@ export default function Roles() {
 
   const rows = roles.map(role => {
     return {
-      id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', '),
-      actions: renderViewButton(role.id), edit: '', delete: renderDeleteButton(role.id)
+      id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', ')
     }
   });
 

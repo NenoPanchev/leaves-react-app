@@ -1,28 +1,28 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useEdit } from '../../services/userService';
+import { appendRolesToFormData, useEdit } from '../../services/userService';
 import { EditUserButtonProps } from '../interfaces/user/userInterfaces';
+import { Role } from '../objects/Role';
+import { mapRoleName } from '../../services/roleService';
 
 export default function EditUserButton(props: EditUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
-    const [department, setDepartment] = React.useState(props.user.department);
+    const [department, setDepartment] = React.useState<string>(props.user.department);
+    const [roles, setRoles] = React.useState<Role[]>([]);
     const [password, setPassword] = React.useState(props.user.password);
     const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
+    const str = props.user.roles.toString();
+    const arr = str.split(', ');
+    const [roleNames, setRoleNames] = React.useState<string[] | null>(arr);
     const navigate = useNavigate();
-    const editUser = useEdit();
+    const editUser = useEdit();   
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -35,6 +35,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        appendRolesToFormData(data, roles);
         editUser(props.user.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
@@ -110,9 +111,12 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 multiple
                                 id="roles"
                                 options={props.roleNames}
-                                size='small'
+                                filterSelectedOptions
+                                size='medium'
                                 sx={{ minWidth: '20%' }}
+                                value={roleNames!}
                                 onChange={(event, newValue) => {
+                                    setRoleNames(newValue)
                                     setRoles(mapRoleName(newValue))
                                 }}
                                 renderInput={(params) => (

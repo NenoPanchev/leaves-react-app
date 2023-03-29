@@ -13,6 +13,9 @@ export interface IUserEdit {
   name: string
   email: string
   department: string
+  roles: [{
+    name: string
+  }]
   password: string
   passwordConfirm: string
 }

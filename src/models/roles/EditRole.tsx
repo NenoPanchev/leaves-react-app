@@ -1,21 +1,12 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDelete } from '../../services/deleteService';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit, appendPermissionsToFormData } from '../../services/roleService';
 import { EditRoleButtonProps } from '../interfaces/role/roleInterfaces';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
-import Autocomplete from '@mui/material/Autocomplete';
 import mapPermissionName from '../../services/permissionService'
 import { Permission } from '../objects/Permission';
 
@@ -25,9 +16,6 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.role.name);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const deleteItem = useDelete({ path: path });
     const navigate = useNavigate();
     const editRole = useEdit();
     const str = props.role.permissions.toString();
@@ -90,6 +78,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                 multiple
                                 id="permissions"
                                 options={PERMISSIONS}
+                                filterSelectedOptions
                                 size='small'
                                 sx={{ minWidth: '20%' }}
                                 value={permissionNames!}
