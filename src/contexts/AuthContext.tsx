@@ -1,5 +1,13 @@
-import React from 'react';
+// import {createContext} from 'react';
+// import { UserDetails } from '../models/objects/UserDetails';
 
-const AuthContext = React.createContext({});
+// interface IAuthContext {
+//     user: UserDetails | null;
+//     setUser: (user: UserDetails | null) => void;
+//     setUser2: React.Dispatch<React.SetStateAction<UserDetails | null>>
+// }
 
-export default AuthContext;
+// export const AuthContext = createContext({
+//     user: UserDetails,
+//     setUser: React.Dispatch<React.SetStateAction<UserDetails | null>>
+// });
