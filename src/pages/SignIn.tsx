@@ -25,7 +25,6 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     authenticate(data);
-    navigate('/');
   };
 
   

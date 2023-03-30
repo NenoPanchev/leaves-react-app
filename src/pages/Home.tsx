@@ -4,8 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Nav from '../components/nav/Nav';
 import SignIn from './SignIn';
@@ -15,6 +14,7 @@ import { LogOut } from '../services/authService';
 import Departments from '../models/departments/AllDepartments';
 import Users from '../models/users/AllUsers';
 import isAuth from '../hoc/isAuth';
+import DashBoard from './DashBoard';
 
 const mdTheme = createTheme();
 
@@ -41,7 +41,7 @@ function HomeContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
                 <Routes>
-                  <Route path='/'></Route>
+                  <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
