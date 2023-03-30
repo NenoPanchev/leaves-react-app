@@ -12,6 +12,8 @@ import AddRoleButton from './AddRole';
 import EditRoleButton from './EditRole';
 import RoleSearchFilter from './RoleSearchFilter';
 import '../ViewAll.css'
+import AuthContext from '../../contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -31,10 +33,16 @@ export default function Roles() {
   }
 
   const renderEditButton = (role: IRole) => {  
+    // if (role.id == 1) {
+    //   return null;
+    // }
     return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
   const renderDeleteButton = (id: number) => {
+    // if (id == 1) {
+    //   return null;
+    // }
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
     refresh={setRefreshCurrentState}></DeleteButton>
   }
@@ -71,9 +79,11 @@ export default function Roles() {
       width: 120,
       flex: 1,
       getActions: (params: GridRowParams<IRole>) => [
+        
         renderViewButton(params.row.id),
         renderEditButton(params.row),
         renderDeleteButton(params.row.id)
+
       ]
     },
   ];

@@ -37,6 +37,7 @@ export const LogOut = () => {
   useEffect(() => {
     setUser(null);
     localStorage.setItem("Authenticated", 'false');
+    localStorage.setItem("User", '');
     navigate('/login');
   }, []);
 

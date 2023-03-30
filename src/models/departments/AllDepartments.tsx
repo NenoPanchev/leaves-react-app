@@ -14,6 +14,8 @@ import DepartmentSearchFilter from './DepartmentSearchFilter';
 import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
 
 import '../ViewAll.css'
+import path from 'path';
+import { useLocation } from 'react-router-dom';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -37,7 +39,8 @@ export default function Departments() {
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
+    refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   

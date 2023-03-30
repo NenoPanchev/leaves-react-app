@@ -16,7 +16,7 @@ export default function DashBoard() {
     })
     return (
         <React.Fragment>
-            <Grid container direction={'column'} sx={{backgroundColor: 'white'}}>
+            <Grid container direction={'column'} sx={{backgroundColor: 'white', textAlign: 'center'}}>
                 <Typography component={'h1'} variant={'h5'}>{'Hello, ' + user?.getEmail()}</Typography>
                 <Typography component={'h2'} >These are your roles and permissions:</Typography>
                 <Typography component={'h2'} >{'Roles: ' + roles.join(', ')}</Typography>

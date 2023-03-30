@@ -14,6 +14,7 @@ import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces
 
 import '../ViewAll.css'
 import AuthContext from '../../contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -28,7 +29,6 @@ export default function Users() {
   const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
-  const {user} = React.useContext(AuthContext);
   
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -40,7 +40,8 @@ export default function Users() {
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
+    refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   

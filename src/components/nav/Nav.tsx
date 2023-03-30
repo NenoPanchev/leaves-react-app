@@ -14,6 +14,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useLocation } from 'react-router-dom';
 import AdminBar from './AdminBar';
+import AuthContext from '../../contexts/AuthContext';
 
 const drawerWidth: number = 240;
 
@@ -67,6 +68,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 function NavContent() {
   const [open, setOpen] = React.useState(true);
+  const {user} = React.useContext(AuthContext);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -100,11 +102,7 @@ function NavContent() {
         >
           Dashboard
         </Typography>
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
+        <Typography component={'h6'} variant='h6'>{user?.getEmail()}</Typography>
       </Toolbar>
     </AppBar>
     <Drawer variant="permanent" open={open}>

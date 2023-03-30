@@ -6,11 +6,6 @@ export class UserDetails {
 
     }
 
-    // public UserDetails(email: string, authorities: string[]) {
-    //     this.email = email;
-    //     this.authorities = authorities;
-    // }
-
     public getEmail(): string {
         return this.email;
     }

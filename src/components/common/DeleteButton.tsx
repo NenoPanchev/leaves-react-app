@@ -16,6 +16,7 @@ import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
 import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
+import AuthContext from '../../contexts/AuthContext';
 
 
 export default function DeleteButton(props: DeleteButtonProps) {
@@ -25,6 +26,7 @@ export default function DeleteButton(props: DeleteButtonProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
     const navigate = useNavigate();
+    const {user} = React.useContext(AuthContext);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,7 +42,9 @@ export default function DeleteButton(props: DeleteButtonProps) {
         .then(() => navigate(path));
     }
 
-
+    if (user?.hasAuthority('DELETE') || (props.id == 1 && path != '/departments')) {
+        return null;
+    }
 
     return (
         <React.Fragment>
