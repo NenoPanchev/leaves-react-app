@@ -8,17 +8,20 @@ import { UserDetails } from '../models/objects/UserDetails';
 
 export const useLogin = () => {
   var {user, setUser} = useContext(AuthContext);
+  const navigate = useNavigate();
   const userDetails = new UserDetails();
 
-  const authenticate = (userForm: FormData) => {
+  const authenticate = async (userForm: FormData) => {
 
-     axios.post(LOGIN_URL, axios.formToJSON(userForm))
+     await axios.post(LOGIN_URL, axios.formToJSON(userForm))
       .then((response) => {
         const token = response.data.jwt;
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
         localStorage.setItem("SavedToken", 'Bearer ' + token);
+        localStorage.setItem("Authenticated", 'true');
         setUser(userDetails);  
+        navigate('/')
       })
       .catch(error => console.log(error)
       )
@@ -33,6 +36,7 @@ export const LogOut = () => {
   localStorage.setItem("SavedToken", '');
   useEffect(() => {
     setUser(null);
+    localStorage.setItem("Authenticated", 'false');
     navigate('/login');
   }, []);
 
