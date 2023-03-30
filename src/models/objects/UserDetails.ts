@@ -32,6 +32,6 @@ export class UserDetails {
     }
 
     public hasAuthority(authority: string): boolean {
-        return this.authorities.includes(authority.toUpperCase +'');
+        return this.authorities.includes(authority.toUpperCase + '');
     }
 }

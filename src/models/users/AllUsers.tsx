@@ -13,6 +13,7 @@ import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
 import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces';
 
 import '../ViewAll.css'
+import AuthContext from '../../contexts/AuthContext';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -27,7 +28,9 @@ export default function Users() {
   const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
-
+  const {user} = React.useContext(AuthContext);
+  console.log(user);
+  
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
