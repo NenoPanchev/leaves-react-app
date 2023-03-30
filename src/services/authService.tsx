@@ -19,14 +19,10 @@ export const useLogin = () => {
         userDetails.setAuthorities(response.data.authorities);
         localStorage.setItem("SavedToken", 'Bearer ' + token);
         setUser(userDetails);  
-        console.log('details: ', userDetails);
-        
-              
       })
       .catch(error => console.log(error)
       )
   }
-  console.log('user: ', user);
   return authenticate;
 }
 

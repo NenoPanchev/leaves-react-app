@@ -29,7 +29,6 @@ export default function Users() {
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
   const {user} = React.useContext(AuthContext);
-  console.log(user);
   
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
