@@ -6,12 +6,14 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit } from '../../services/departmentService';
 import { EditDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
+import AuthContext from '../../contexts/AuthContext';
 
 export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.department.name);
     const [adminEmail, setAdminEmail] = React.useState(props.department.adminEmail);
+    const {user} = React.useContext(AuthContext);
     const navigate = useNavigate();
     const editDepartment = useEdit();    
 
@@ -32,7 +34,12 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
 
     }
 
+    if (!user?.hasAuthority('WRITE')) {
+        return null;
+    }
+
     return (
+
         <React.Fragment>
             <GridActionsCellItem
                 icon={<EditIcon />}

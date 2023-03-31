@@ -1,0 +1,48 @@
+{
+    "Dashboard": "Dashboard",
+    "Users": "Users",
+    "User": "User",
+    "Departments": "Departments",
+    "Department": "Department",
+    "Roles": "Roles",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Authentication": "Authentication",
+    "Hello": "Hello",
+    "These are your roles and permissions:": "These are your roles and permissions:",
+    "Permissions": "Permissions",
+    "Use them with caution!": "Use them with caution!",
+    "Email": "Email",
+    "Email Address": "Email Address",
+    "Id": "Id",
+    "Search": "SEARCH",
+    "Add User": "Add User",
+    "Add Department": "Add Department",
+    "Add Role": "Add Role",
+    "Admin": "Admin",
+    "Employees": "Employees",
+    "Name": "Name",
+    "Sign in": "Sign in",
+    "SIGN IN": "SIGN IN",
+    "Actions": "Actions",
+    "Role Details": "Role Details",
+    "User Details": "User Details",
+    "Department Details": "Department Details",
+    "Created At": "Created At",
+    "Created By": "Created By",
+    "Last Modified At": "Last Modified At",
+    "Last Modified By": "Last Modified By",
+    "Password": "Password",
+    "Password Confirm": "Password Confirm",
+    "Edit": "Edit ",
+    "Delete": "Delete",
+    "Close": "Close",
+    "Submit": "Submit",
+    "Do you really want to delete this item?": "Do you really want to delete this item?"
+
+
+
+
+
+
+}

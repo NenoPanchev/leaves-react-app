@@ -8,13 +8,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useLocation } from 'react-router-dom';
 import AdminBar from './AdminBar';
 import AuthContext from '../../contexts/AuthContext';
+import { useTranslation } from "react-i18next";
 
 const drawerWidth: number = 240;
 
@@ -69,9 +67,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 function NavContent() {
   const [open, setOpen] = React.useState(true);
   const {user} = React.useContext(AuthContext);
+  const { t, i18n } = useTranslation();
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const onClickSetLanguageEN = (e: any) => {
+    i18n.changeLanguage('en'); //change the language   
+}
+const onClickSetLanguageBG = (e: any) => {
+  i18n.changeLanguage('bg'); //change the language  
+}
+
+  const onClickLanguageChange = (e: any) => {
+      const language = e.target.value;
+      i18n.changeLanguage(language); //change the language
+  }
 
 
   return (<>
@@ -100,9 +111,11 @@ function NavContent() {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Dashboard
+          {t('Dashboard')}
         </Typography>
         <Typography component={'h6'} variant='h6'>{user?.getEmail()}</Typography>
+        <IconButton onClick={onClickSetLanguageEN}>EN</IconButton>
+        <IconButton onClick={onClickSetLanguageBG}>BG</IconButton>
       </Toolbar>
     </AppBar>
     <Drawer variant="permanent" open={open}>

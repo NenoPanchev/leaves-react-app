@@ -8,6 +8,8 @@ import { appendRolesToFormData, useEdit } from '../../services/userService';
 import { EditUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
+import AuthContext from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export default function EditUserButton(props: EditUserButtonProps) {
     const path = useLocation().pathname;
@@ -16,13 +18,18 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState<string>(props.user.department);
     const [roles, setRoles] = React.useState<Role[]>([]);
+    const { t } = useTranslation();
+
     const [password, setPassword] = React.useState(props.user.password);
     const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
+    const {user} = React.useContext(AuthContext);
     const str = props.user.roles.toString();
     const arr = str.split(', ');
     const [roleNames, setRoleNames] = React.useState<string[] | null>(arr);
     const navigate = useNavigate();
     const editUser = useEdit();   
+    const departmentPlaceholder = t('Department')
+    const rolesPlaceholder = t('Roles')
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -41,12 +48,15 @@ export default function EditUserButton(props: EditUserButtonProps) {
             .then(() => navigate(path))
 
     }
+    if (!user?.hasAuthority('WRITE') || (props.user.id === 1)) {      
+        return null;
+    }
 
     return (
         <React.Fragment>
             <GridActionsCellItem
                 icon={<EditIcon />}
-                label="Edit"
+                label={t('Edit')}
                 onClick={handleClickOpen}
             />
             <Dialog
@@ -59,7 +69,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                 <React.Fragment>
 
                     <DialogTitle id="form-dialog-title">
-                        {"Edit User"}
+                        {t('Edit') + t('User')}
                     </DialogTitle>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -69,7 +79,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 required
                                 fullWidth
                                 id="name"
-                                label="Name"
+                                label={t('Name')}
                                 name="name"
                                 autoComplete="name"
                                 autoFocus
@@ -81,7 +91,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email"
+                                label={t('Email')}
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
@@ -102,8 +112,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                         {...params}
                                         name='department'
                                         margin='normal'
-                                        label="Department"
-                                        placeholder="Department"
+                                        label={t('Department')}
+                                        placeholder={departmentPlaceholder}
                                     />
                                 )}
                             />
@@ -123,8 +133,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                     <TextField
                                         {...params}
                                         margin='normal'
-                                        label="Roles"
-                                        placeholder="Roles"
+                                        label={t('Roles')}
+                                        placeholder={rolesPlaceholder}
                                     />
                                 )}
                             />
@@ -134,7 +144,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={t('Password')}
                                 type="password"
                                 id="password"
                                 autoComplete="password"
@@ -145,7 +155,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 required
                                 fullWidth
                                 name="confirmPassword"
-                                label="Password Confirm"
+                                label={t('Password Confirm')}
                                 type="password"
                                 id="confirm-password"
                                 onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -153,14 +163,14 @@ export default function EditUserButton(props: EditUserButtonProps) {
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>
-                                Close
+                                {t('Close')}
                             </Button>
                             <Button
                                 type='submit'
                                 onClick={() => {
                                     handleClose();
                                 }} autoFocus>
-                                Submit
+                                {t('Submit')}
                             </Button>
                         </DialogActions>
                     </Box>

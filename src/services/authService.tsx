@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LOGIN_URL } from '../constants/GlobalConstants';
+import { LOGIN_URL, WITH_AUTH_HEADER, WITH_TEXT_HEADER } from '../constants/GlobalConstants';
 import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
 
@@ -27,6 +27,29 @@ export const useLogin = () => {
       )
   }
   return authenticate;
+}
+
+export const useRefresh = () => {
+  var {user, setUser} = useContext(AuthContext);
+  // const navigate = useNavigate();
+  // const path = useLocation().pathname;
+  const userDetails = new UserDetails();
+
+  const refreshUser = async () => {
+    const jwt = localStorage.getItem('SavedToken')?.replaceAll('Bearer ', '');
+    
+     await axios.post(LOGIN_URL + '/refresh', {jwt: jwt})
+      .then((response) => {
+        userDetails.setEmail(response.data.email);
+        userDetails.setAuthorities(response.data.authorities);
+        // setUser(userDetails);
+        // navigate(path)
+      })
+      .catch(error => console.log(error)
+      )
+      return(userDetails);
+  }
+  return refreshUser;
 }
 
 export const LogOut = () => {

@@ -42,7 +42,7 @@ export default function DeleteButton(props: DeleteButtonProps) {
         .then(() => navigate(path));
     }
 
-    if (user?.hasAuthority('DELETE') || (props.id == 1 && path != '/departments')) {
+    if (!user?.hasAuthority('DELETE') || (props.id == 1 && path != '/departments')) {
         return null;
     }
 

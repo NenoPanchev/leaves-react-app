@@ -8,12 +8,14 @@ import { PERMISSIONS } from '../../constants/GlobalConstants';
 import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
 import { appendPermissionsToFormData } from '../../services/roleService';
+import AuthContext from '../../contexts/AuthContext';
 
 
 export default function AddRoleButton(props: AddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
+    const {user} = React.useContext(AuthContext);
     const navigate = useNavigate();
     const addRole = useCreate();
 
@@ -35,6 +37,10 @@ export default function AddRoleButton(props: AddButtonProps) {
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
 
+    }
+
+    if (!user?.hasRole('SUPER_ADMIN')) {        
+        return null;
     }
 
     return (

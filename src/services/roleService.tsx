@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
 import { BASE_ROLE_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
 import { Permission } from '../models/objects/Permission';
 import { Role } from '../models/objects/Role';
+import { UserDetails } from '../models/objects/UserDetails';
+import AuthContext from '../contexts/AuthContext';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -127,7 +129,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
 
 export const useFetchAllNames = (refresh: number) => {
   const [roleNames, setRoleNames] = useState<string[]>([]);
-
+  const {user} = useContext(AuthContext);
 
   useEffect(() => {
     loadRoles();
@@ -135,7 +137,13 @@ export const useFetchAllNames = (refresh: number) => {
 
   const loadRoles = async () => {
     const result = await axios.get(BASE_ROLE_URL + 'names', WITH_AUTH_HEADER())
-      .then(response => setRoleNames(response.data))
+      .then(response => {
+        let initArr = (response.data).filter((names: string) => names !== 'SUPER_ADMIN');
+        if (!user?.hasRole('SUPER_ADMIN')) {
+          initArr = initArr.filter((name: string) => name !== 'ADMIN')
+        }
+        setRoleNames(initArr)
+      })
       .catch(error => console.log(error))
   }
 

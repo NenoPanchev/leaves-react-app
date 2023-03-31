@@ -6,6 +6,7 @@ import * as userService from '../../services/userService';
 import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 
 
 function UserSearchFilter(props: UserSearchFilterProps) {
@@ -14,7 +15,10 @@ function UserSearchFilter(props: UserSearchFilterProps) {
     const [department, setDepartment] = React.useState('');
     const [roles, setRoles] = React.useState<string[] | null>(null);
     const fetchAllFiltered = userService.useFetchAllFiltered();
-    const roleNames = useFetchAllNames(props.refreshCurrentState)
+    const roleNames = useFetchAllNames(props.refreshCurrentState);
+    const { t } = useTranslation();
+    const rolesPlaceholder = t('Roles');
+
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
@@ -44,7 +48,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     size='small'
                     required
                     id="name"
-                    label="Name"
+                    label={t('Name')}
                     name="name"
                     autoComplete="name"
                     value={name}
@@ -57,7 +61,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     size='small'
                     required
                     id="email"
-                    label="Email"
+                    label={t('Email')}
                     name="email"
                     autoComplete="email"
                     value={email}
@@ -70,7 +74,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     size='small'
                     required
                     id="department"
-                    label="Department"
+                    label={t('Department')}
                     name="department"
                     autoComplete="department"
                     value={department}
@@ -91,8 +95,8 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                         <TextField
                             {...params}
                             margin='normal'
-                            label="Roles"
-                            placeholder="Roles"
+                            label={t('Roles')}
+                            placeholder={rolesPlaceholder}
                         />
                     )}
                 />
@@ -104,7 +108,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     sx={{marginTop: '16px',
                         marginBottom: '8px'}}
                 >
-                    Search
+                    {t('Search')}
                 </Button>
 
             </Box>

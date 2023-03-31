@@ -1,22 +1,18 @@
-import React, { Component, FC, ReactElement } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import Divider from '@mui/material/Divider';
+import { ListItemButton, ListItemIcon, ListItemText, ListSubheader, Divider} from '@mui/material';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import PeopleIcon from '@mui/icons-material/People';
-import AccountTreeIcon from '@mui/icons-material/AccountTree'; import LayersIcon from '@mui/icons-material/Layers';
+import AccountTreeIcon from '@mui/icons-material/AccountTree'; 
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { styled } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 
 const AdminBar = () => {
   const currentLocation = useLocation();
+  const { t, i18n } = useTranslation();
   return (
     <>
       <Link to='/' style={{
@@ -28,7 +24,7 @@ const AdminBar = () => {
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary={t('Dashboard')} />
 
         </ListItemButton>
       </Link>
@@ -42,7 +38,7 @@ const AdminBar = () => {
             <PeopleIcon />
 
           </ListItemIcon>
-          <ListItemText primary="Users" />
+          <ListItemText primary={t('Users')} />
         </ListItemButton>
       </Link>
       <NavLink to='/departments' style={{
@@ -56,7 +52,7 @@ const AdminBar = () => {
           <ListItemIcon>
             <LocationCityIcon />
           </ListItemIcon>
-          <ListItemText primary="Departments" />
+          <ListItemText primary={t('Departments')} />
         </ListItemButton>
       </NavLink>
       <Link to='/roles' style={{
@@ -68,13 +64,13 @@ const AdminBar = () => {
           <ListItemIcon>
             <AccountTreeIcon />
           </ListItemIcon>
-          <ListItemText primary="Roles" />
+          <ListItemText primary={t('Roles')} />
         </ListItemButton>
       </Link>
       <Divider sx={{ my: 1 }} />
 
       <ListSubheader component="div" inset>
-        Authentication
+        {t('Authentication')}
       </ListSubheader>
 
       <Link to={'/login'} style={{
@@ -88,7 +84,7 @@ const AdminBar = () => {
           <ListItemIcon>
             <LoginIcon />
           </ListItemIcon>
-          <ListItemText primary="Login" />
+          <ListItemText primary={t('Login')} />
         </ListItemButton>
       </Link>
       <Link to={'/logout'} style={{
@@ -99,7 +95,7 @@ const AdminBar = () => {
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText primary={t('Logout')} />
         </ListItemButton>
       </Link>
     </>

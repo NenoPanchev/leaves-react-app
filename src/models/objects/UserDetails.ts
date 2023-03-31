@@ -23,10 +23,10 @@ export class UserDetails {
     }
 
     public hasRole(role: string): boolean {
-        return this.authorities.includes('ROLE_' + role.toUpperCase);
+        return this.authorities.includes('ROLE_' + role);
     }
 
-    public hasAuthority(authority: string): boolean {
-        return this.authorities.includes(authority.toUpperCase + '');
+    public hasAuthority(authority: string): boolean {               
+        return this.authorities.includes(authority);
     }
 }

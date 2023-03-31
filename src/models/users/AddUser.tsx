@@ -6,13 +6,17 @@ import { appendRolesToFormData, useCreate } from '../../services/userService';
 import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
+import { useTranslation } from 'react-i18next';
 
 export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [roles, setRoles] = React.useState<Role[] | null>(null);
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const addUser = useCreate();
+    const departmentPlaceholder = t('Department');
+    const rolesPlaceholder = t('Roles');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -39,7 +43,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                 color='success'
                 onClick={handleClickOpen}
             >
-                Add User
+                {t('Add User')}
             </Button>
             <Dialog
 
@@ -49,7 +53,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    {"Add User"}
+                    {t('ADD USER')}
                 </DialogTitle>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -59,7 +63,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             required
                             fullWidth
                             id="name"
-                            label="Name"
+                            label={t('Name')}
                             name="name"
                             autoComplete="name"                        
                         />
@@ -69,7 +73,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             required
                             fullWidth
                             id="email"
-                            label="Email"
+                            label={t('Email')}
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -84,8 +88,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                     {...params}
                                     name='department'
                                     margin='normal'
-                                    label="Department"
-                                    placeholder="Department"
+                                    label={t('Department')}
+                                    placeholder={departmentPlaceholder}
                                     onChange={(e) => e.target.value}
                                 />
                             )}
@@ -104,8 +108,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                 <TextField
                                     {...params}
                                     margin='normal'
-                                    label="Roles"
-                                    placeholder="Roles"
+                                    label={t('Roles')}
+                                    placeholder={rolesPlaceholder}
                                 />
                             )}
                         />
@@ -115,7 +119,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label={t('Password')}
                             type="password"
                             id="password"
                             autoComplete="password"
@@ -125,21 +129,21 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             required
                             fullWidth
                             name="confirmPassword"
-                            label="Password Confirm"
+                            label={t('Password Confirm')}
                             type="password"
                             id="confirm-password"
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>
-                            Close
+                            {t('Close')}
                         </Button>
                         <Button
                             type='submit'
                             onClick={() => {
                                 handleClose();
                             }} autoFocus>
-                            Submit
+                            {t('Submit')}
                         </Button>
                     </DialogActions>
                 </Box>

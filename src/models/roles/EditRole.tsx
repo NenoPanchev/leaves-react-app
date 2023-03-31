@@ -9,6 +9,7 @@ import { EditRoleButtonProps } from '../interfaces/role/roleInterfaces';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import mapPermissionName from '../../services/permissionService'
 import { Permission } from '../objects/Permission';
+import AuthContext from '../../contexts/AuthContext';
 
 
 export default function EditRoleButton(props: EditRoleButtonProps) {
@@ -16,6 +17,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.role.name);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
+    const {user} = React.useContext(AuthContext);
     const navigate = useNavigate();
     const editRole = useEdit();
     const str = props.role.permissions.toString();
@@ -38,6 +40,10 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
 
+    }
+
+    if (!user?.hasAuthority('WRITE') || (props.role.id == 1)) {        
+        return null;
     }
 
     return (

@@ -14,12 +14,14 @@ import * as authService from '../services/authService';
 import { LOGIN_URL } from '../constants/GlobalConstants';
 // import { AuthContext } from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
+import { useTranslation } from 'react-i18next';
 
 const theme = createTheme();
 
 export default function SignIn() {
-  const navigate = useNavigate();
   const authenticate = authService.useLogin();
+  const { t, i18n } = useTranslation();
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +46,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {t('Sign in')}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -52,7 +54,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={t('Email Address')}
               name="email"
               autoComplete="email"
               autoFocus
@@ -62,7 +64,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t('Password')}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -74,7 +76,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t('Sign in')}
             </Button>
             
           </Box>

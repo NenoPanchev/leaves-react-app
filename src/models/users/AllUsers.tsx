@@ -13,8 +13,7 @@ import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
 import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces';
 
 import '../ViewAll.css'
-import AuthContext from '../../contexts/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -29,6 +28,14 @@ export default function Users() {
   const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
+  const { t, i18n } = useTranslation();
+  const name = t('Name');
+  const id = t('Id');
+  const email = t('Email');
+  const department = t('Department');
+  const roles = t('Roles');
+  const actions = t('Actions');
+
   
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -48,42 +55,42 @@ export default function Users() {
 
   const columns: GridColDef[] = [
     { field: 'id',
-      headerName: 'ID',
+      headerName: id,
       headerClassName: 'grid-header',
       width: 70,
       
     },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: name,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
         field: 'email',
-        headerName: 'Email',
+        headerName: email,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
       {
         field: 'department',
-        headerName: 'Department',
+        headerName: department,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
     {
       field: 'roles',
-      headerName: 'Roles',
+      headerName: roles,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1, 
     },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: actions,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
@@ -106,7 +113,7 @@ export default function Users() {
   return (
     <React.Fragment>
       <Container >
-        <Title>Users</Title>
+        <Title>{t('Users')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           setUsers={setFilteredUsers} setFilter={setFilter}
