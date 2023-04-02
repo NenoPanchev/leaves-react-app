@@ -6,6 +6,7 @@ import * as roleService from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -13,6 +14,9 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [permissions, setPermissions] = React.useState<string[] | null>(null);
     const fetchAllFiltered = roleService.useFetchAllFiltered();
+    const { t } = useTranslation();
+    const permissionsPlaceholder = t('Permissions');
+
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -26,14 +30,12 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
             })
             
         }
-        
-        console.log(filter);
+
         const roles = fetchAllFiltered(props.refreshCurrentState, filter);
         props.setRoles(roles);
         props.setFilter(filter);
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
-        console.log(roles);
     }
 
 
@@ -46,7 +48,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     size='small'
                     required
                     id="name"
-                    label="Name"
+                    label={t('Name')}
                     name="name"
                     autoComplete="name"
                     autoFocus
@@ -69,8 +71,8 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                         <TextField
                             {...params}
                             margin='normal'
-                            label="Permissions"
-                            placeholder="Permissions"
+                            label={t('Permissions')}
+                            placeholder={permissionsPlaceholder}
                         />
                     )}
                 />
@@ -82,7 +84,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     sx={{marginTop: '16px', marginBottom: '8px'}}
 
                 >
-                    Search
+                    {t('Search')}
                 </Button>
 
             </Box>

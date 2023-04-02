@@ -16,6 +16,7 @@ import { useFetchAllEmails as fetchUserEmails } from '../../services/userService
 import '../ViewAll.css'
 import path from 'path';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -29,6 +30,13 @@ export default function Departments() {
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
   const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const userEmails = fetchUserEmails(refreshCurrentState);
+  const { t } = useTranslation();
+  const name = t('Name');
+  const id = t('Id');
+  const admin = t('Admin');
+  const employees = t('Employees');
+  const actions = t('Actions');
+
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
@@ -47,28 +55,28 @@ export default function Departments() {
 
   const columns: GridColDef[] = [
     { field: 'id',
-      headerName: 'ID',
+      headerName: id,
       headerClassName: 'grid-header',
       width: 70,
       
     },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: name,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
       field: 'adminEmail',
-      headerName: 'Admin',
+      headerName: admin,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
       field: 'employeeEmailss',
-      headerName: 'Employees',
+      headerName: employees,
       headerClassName: 'grid-header',
       // renderCell: (params) => renderEmployeeEmails(),
       width: 200,
@@ -76,7 +84,7 @@ export default function Departments() {
     },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: actions,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
@@ -102,7 +110,7 @@ export default function Departments() {
   return (
     <React.Fragment>
       <Container >
-        <Title>Departments</Title>
+        <Title>{t('Departments')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           setRoles={setFilteredDepartments} setFilter={setFilter}

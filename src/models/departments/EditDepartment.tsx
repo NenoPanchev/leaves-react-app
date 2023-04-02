@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useEdit } from '../../services/departmentService';
 import { EditDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import AuthContext from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const path = useLocation().pathname;
@@ -15,7 +16,9 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const [adminEmail, setAdminEmail] = React.useState(props.department.adminEmail);
     const {user} = React.useContext(AuthContext);
     const navigate = useNavigate();
-    const editDepartment = useEdit();    
+    const editDepartment = useEdit();  
+    const { t } = useTranslation();  
+    const adminPlaceholder = t('Admin');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -43,7 +46,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
         <React.Fragment>
             <GridActionsCellItem
                 icon={<EditIcon />}
-                label="Edit"
+                label={t('Edit')}
                 onClick={handleClickOpen}
             />
             <Dialog
@@ -53,7 +56,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    {"Edit Role"}
+                    {t('Edit') + t('Role')}
                 </DialogTitle>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -63,7 +66,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                             required
                             fullWidth
                             id="name"
-                            label="Name"
+                            label={t('Name')}
                             name="name"
                             autoComplete="name"
                             autoFocus
@@ -84,22 +87,22 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         {...params}
                                         name='adminEmail'
                                         margin='normal'
-                                        label="Admin"
-                                        placeholder="Admin"
+                                        label={t('Admin')}
+                                        placeholder={adminPlaceholder}
                                     />
                                 )}
                             />
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>
-                            Close
+                            {t('Close')}
                         </Button>
                         <Button
                             type='submit'
                             onClick={() => {
                                 handleClose();
                             }} autoFocus>
-                            Submit
+                            {t('Submit')}
                         </Button>
                     </DialogActions>
                 </Box>

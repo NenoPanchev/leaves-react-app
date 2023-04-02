@@ -11,17 +11,17 @@ import * as departmentService from '../../services/departmentService';
 
 import '../SingleItemView.css'
 import { ViewProps } from '../interfaces/common/commonInterfaces';
+import { useTranslation } from 'react-i18next';
 
 
 export default function DepartmentView(props: ViewProps) {
-
   const department = departmentService.useFetchOne(props.id);
-
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
       <DialogTitle id="responsive-dialog-title">
-        {"Department Details"}
+        {t('Department Details')}
       </DialogTitle>
       <DialogContent className='dialog'>
         <Grid container direction={'row'}>
@@ -30,22 +30,22 @@ export default function DepartmentView(props: ViewProps) {
               <TableBody>
                 <TableRow>
 
-                  <TableCell className='tableHeader' variant='head'>Id:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Id') +':'}</TableCell>
 
 
                   <TableCell>{department?.id}</TableCell>
 
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Name:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Name') +':'}</TableCell>
                   <TableCell>{department?.name}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Admin:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Admin') +':'}</TableCell>
                   <TableCell>{department?.adminEmail}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Employees:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Employees') +':'}</TableCell>
                   <TableCell>{department?.employeeEmails}</TableCell>
                 </TableRow>
               </TableBody>
@@ -55,19 +55,19 @@ export default function DepartmentView(props: ViewProps) {
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Created At:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Created At') +':'}</TableCell>
                   <TableCell>{department?.createdAt}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Created By:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Created By') +':'}</TableCell>
                   <TableCell>{department?.createdBy}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Last Modified At:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Last Modified At') +':'}</TableCell>
                   <TableCell>{department?.lastModifiedAt}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Last Modified By:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Last Modified By') +':'}</TableCell>
                   <TableCell>{department?.lastModifiedBy}</TableCell>
                 </TableRow>
               </TableBody>

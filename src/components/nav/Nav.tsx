@@ -13,6 +13,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AdminBar from './AdminBar';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from "react-i18next";
+import Flag from 'react-world-flags';
 
 const drawerWidth: number = 240;
 
@@ -114,8 +115,12 @@ const onClickSetLanguageBG = (e: any) => {
           {t('Dashboard')}
         </Typography>
         <Typography component={'h6'} variant='h6'>{user?.getEmail()}</Typography>
-        <IconButton onClick={onClickSetLanguageEN}>EN</IconButton>
-        <IconButton onClick={onClickSetLanguageBG}>BG</IconButton>
+        <IconButton onClick={onClickSetLanguageEN}>
+        <Flag code='GB' height='16' />
+          </IconButton>
+        <IconButton onClick={onClickSetLanguageBG}>
+        <Flag code='BG' height='16' />
+          </IconButton>
       </Toolbar>
     </AppBar>
     <Drawer variant="permanent" open={open}>

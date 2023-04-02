@@ -11,16 +11,17 @@ import * as roleService from '../../services/roleService';
 import { ViewProps } from '../interfaces/common/commonInterfaces';
 
 import '../SingleItemView.css'
+import { useTranslation } from 'react-i18next';
 
 export default function RoleView(props: ViewProps) {
   const {id} = props;
-
+  const { t } = useTranslation();
   const role = roleService.useFetchOne(id);
 
   return (
     <React.Fragment>
       <DialogTitle id="responsive-dialog-title">
-        {"Role Details"}
+        {t('Role Details')}
       </DialogTitle>
       <DialogContent className='dialog'>
         <Grid container direction={'row'}>
@@ -29,18 +30,18 @@ export default function RoleView(props: ViewProps) {
               <TableBody>
                 <TableRow>
 
-                  <TableCell className='tableHeader' variant='head'>Id:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Id') + ':'}</TableCell>
 
 
                   <TableCell>{role?.id}</TableCell>
 
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Name:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Name') + ':'}</TableCell>
                   <TableCell>{role?.name}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Permissions:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Permissions') + ':'}</TableCell>
                   <TableCell>{role?.permissions.map(p => p.name).join(', ')}</TableCell>
                 </TableRow>
               </TableBody>
@@ -50,19 +51,19 @@ export default function RoleView(props: ViewProps) {
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Created At:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Created At') + ':'}</TableCell>
                   <TableCell>{role?.createdAt}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Created By:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Created By') + ':'}</TableCell>
                   <TableCell>{role?.createdBy}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Last Modified At:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Last Modified At') + ':'}</TableCell>
                   <TableCell>{role?.lastModifiedAt}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>Last Modified By:</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Last Modified By') + ':'}</TableCell>
                   <TableCell>{role?.lastModifiedBy}</TableCell>
                 </TableRow>
               </TableBody>

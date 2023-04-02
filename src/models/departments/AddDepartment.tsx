@@ -4,12 +4,16 @@ import { Button, Dialog, DialogActions, DialogContent,
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreate } from '../../services/departmentService';
 import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
+import { useTranslation } from 'react-i18next';
 
 export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const addDepartment = useCreate();
+    const { t } = useTranslation();
+    const adminPlaceholder = t('Admin')
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -35,7 +39,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                 color='success'
                 onClick={handleClickOpen}
             >
-                Add Department
+                {t('Add Department')}
             </Button>
             <Dialog
 
@@ -47,7 +51,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                 <React.Fragment>
 
                     <DialogTitle id="form-dialog-title">
-                        {"Add Department"}
+                    {t('Add Department')}
                     </DialogTitle>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -57,7 +61,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                 required
                                 fullWidth
                                 id="name"
-                                label="Name"
+                                label={t('Name')}
                                 name="name"
                                 autoComplete="name"
                                 autoFocus
@@ -72,8 +76,8 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         {...params}
                                         name='adminEmail'
                                         margin='normal'
-                                        label="Admin"
-                                        placeholder="Admin"
+                                        label={t('Admin')}
+                                        placeholder={adminPlaceholder}
                                         onChange={(e) => e.target.value}
                                     />
                                 )}
@@ -81,14 +85,14 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>
-                                Close
+                                {t('Close')}
                             </Button>
                             <Button
                                 type='submit'
                                 onClick={() => {
                                     handleClose();
                                 }} autoFocus>
-                                Submit
+                                {t('Submit')}
                             </Button>
                         </DialogActions>
                     </Box>

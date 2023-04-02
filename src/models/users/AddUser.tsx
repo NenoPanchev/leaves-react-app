@@ -53,7 +53,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    {t('ADD USER')}
+                    {t('Add User')}
                 </DialogTitle>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 

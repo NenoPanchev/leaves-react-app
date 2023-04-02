@@ -11,9 +11,9 @@ import { GridRowParams } from '@mui/x-data-grid';
 import AddRoleButton from './AddRole';
 import EditRoleButton from './EditRole';
 import RoleSearchFilter from './RoleSearchFilter';
+import { useTranslation } from 'react-i18next';
+
 import '../ViewAll.css'
-import AuthContext from '../../contexts/AuthContext';
-import { useLocation } from 'react-router-dom';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -25,24 +25,23 @@ export default function Roles() {
   const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
   const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+  const { t } = useTranslation();
+  const name = t('Name');
+  const id = t('Id');
+  const permissions = t('Permissions');
+  const actions = t('Actions');
 
-  const roles = roleService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter)
+  const roles = roleService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
   const renderEditButton = (role: IRole) => {  
-    // if (role.id == 1) {
-    //   return null;
-    // }
     return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
   }
 
   const renderDeleteButton = (id: number) => {
-    // if (id == 1) {
-    //   return null;
-    // }
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
     refresh={setRefreshCurrentState}></DeleteButton>
   }
@@ -52,28 +51,28 @@ export default function Roles() {
   const columns: GridColDef[] = [
     {
       field: 'id',
-      headerName: 'ID',
+      headerName: id,
       headerClassName: 'grid-header',
       width: 70,
 
     },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: name,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1,
     },
     {
       field: 'permissions',
-      headerName: 'Permissions',
+      headerName: permissions,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1,
     },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: actions,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
@@ -97,7 +96,7 @@ export default function Roles() {
   return (
     <React.Fragment>
       <Container >
-        <Title>Roles</Title>
+        <Title>{t('Roles')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           setRoles={setFilteredRoles} setFilter={setFilter}

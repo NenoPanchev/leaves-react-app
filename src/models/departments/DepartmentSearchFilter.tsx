@@ -6,6 +6,7 @@ import * as departmentService from '../../services/departmentService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
+import { useTranslation } from 'react-i18next';
 
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
@@ -14,6 +15,8 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [employees, setEmployees] = React.useState<string[] | null>(null);
     const fetchAllFiltered = departmentService.useFetchAllFiltered();
     const userEmails = useFetchAllEmails(props.refreshCurrentState);    
+    const { t } = useTranslation();
+    const employeesPlaceholder = t('Employees');
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -44,7 +47,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     size='small'
                     required
                     id="name"
-                    label="Name"
+                    label={t('Name')}
                     name="name"
                     autoComplete="name"
                     autoFocus
@@ -57,7 +60,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     margin="normal"
                     size='small'
                     id="admin"
-                    label="Admin"
+                    label={t('Admin')}
                     name="admin"
                     autoComplete="admin"
                     value={admin}
@@ -78,8 +81,8 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                         <TextField
                             {...params}
                             margin='normal'
-                            label="Employees"
-                            placeholder="Employees"
+                            label={t('Employees')}
+                            placeholder={employeesPlaceholder}
                         />
                     )}
                 />
@@ -90,7 +93,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     size='small'
                     sx={{marginTop: '16px', marginBottom: '8px'}}
                 >
-                    Search
+                    {t('Search')}
                 </Button>
 
             </Box>

@@ -9,6 +9,7 @@ import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
 import { appendPermissionsToFormData } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 
 export default function AddRoleButton(props: AddButtonProps) {
@@ -16,8 +17,11 @@ export default function AddRoleButton(props: AddButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
     const {user} = React.useContext(AuthContext);
+    const { t } = useTranslation();
+
     const navigate = useNavigate();
     const addRole = useCreate();
+    const rolesPlaceholder = t('Roles');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,7 +54,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                 color='success'
                 onClick={handleClickOpen}
             >
-                Add Role
+                {t('Add Role')}
             </Button>
             <Dialog
 
@@ -60,7 +64,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    {"Add Role"}
+                {t('Add Role')}
                 </DialogTitle>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -70,7 +74,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                             required
                             fullWidth
                             id="name"
-                            label="Name"
+                            label={t('Name')}
                             name="name"
                             autoComplete="name"
                             autoFocus
@@ -90,22 +94,22 @@ export default function AddRoleButton(props: AddButtonProps) {
                                     {...params}
                                     name='permissions'
                                     margin='normal'
-                                    label="Roles"
-                                    placeholder="Roles"
+                                    label={t('Roles')}
+                                    placeholder={rolesPlaceholder}
                                 />
                             )}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>
-                            Close
+                            {t('Close')}
                         </Button>
                         <Button
                             type='submit'
                             onClick={() => {
                                 handleClose();
                             }} autoFocus>
-                            Submit
+                            {t('Submit')}
                         </Button>
                     </DialogActions>
                 </Box>

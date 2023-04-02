@@ -10,6 +10,7 @@ import { PERMISSIONS } from '../../constants/GlobalConstants';
 import mapPermissionName from '../../services/permissionService'
 import { Permission } from '../objects/Permission';
 import AuthContext from '../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 
 export default function EditRoleButton(props: EditRoleButtonProps) {
@@ -18,11 +19,13 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const [name, setName] = React.useState(props.role.name);
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
     const {user} = React.useContext(AuthContext);
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const editRole = useEdit();
     const str = props.role.permissions.toString();
     const arr = str.split(', ');
     const [permissionNames, setPermissionNames] = React.useState<string[] | null>(arr);
+    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,7 +53,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
         <React.Fragment>
             <GridActionsCellItem
                 icon={<EditIcon />}
-                label="Edit"
+                label={t('Edit')}
                 onClick={handleClickOpen}
             />
             <Dialog
@@ -63,7 +66,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                 <React.Fragment>
 
                     <DialogTitle id="form-dialog-title">
-                        {"Edit Role"}
+                        {t('Edit') + t('Role')}
                     </DialogTitle>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -73,7 +76,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                 required
                                 fullWidth
                                 id="name"
-                                label="Name"
+                                label={t('Name')}
                                 name="name"
                                 autoComplete="name"
                                 autoFocus
@@ -96,22 +99,22 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                     <TextField
                                         {...params}
                                         margin='normal'
-                                        label="Roles"
-                                        placeholder="Roles"
+                                        label={t('Permissions')}
+                                        placeholder={permissionsPlaceholder}
                                     />
                                 )}
                             />
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>
-                                Close
+                                {t('Close')}
                             </Button>
                             <Button
                                 type='submit'
                                 onClick={() => {
                                     handleClose();
                                 }} autoFocus>
-                                Submit
+                                {t('Submit')}
                             </Button>
                         </DialogActions>
                     </Box>
