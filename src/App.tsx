@@ -16,9 +16,9 @@ function App() {
     //get from localstor
     // set in user
 
-    console.log('Initial User', user);
+    // console.log('Initial User', user);
     if (localStorage.getItem('Authenticated') == 'true') {
-      console.log('Initial Authentication Check: ', localStorage.getItem('Authenticated'));
+      // console.log('Initial Authentication Check: ', localStorage.getItem('Authenticated'));
 
       const setRefreshedUser = async () => {
         const a = await refreshUser();

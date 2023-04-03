@@ -12,11 +12,9 @@ import EditDepartmentButton from './EditDepartment';
 import { IDepartment } from '../interfaces//department/departmentInterfaces';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
 import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
+import { useTranslation } from 'react-i18next';
 
 import '../ViewAll.css'
-import path from 'path';
-import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();

@@ -1,34 +1,48 @@
 import * as React from 'react';
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
+import { Avatar, Button, CssBaseline, TextField, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as authService from '../services/authService';
-import { LOGIN_URL } from '../constants/GlobalConstants';
-// import { AuthContext } from '../contexts/AuthContext';
-import { UserDetails } from '../models/objects/UserDetails';
 import { useTranslation } from 'react-i18next';
 
 const theme = createTheme();
 
 export default function SignIn() {
   const authenticate = authService.useLogin();
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+  var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
+  let eError = false;
+  let pError = false;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    authenticate(data);
+    const errors = validate(data);
+    
+    if (!errors) {
+      authenticate(data);
+    }
   };
 
+  function validate(formData: FormData): boolean {
+    const email:string = JSON.parse(JSON.stringify(formData.get('email')));
+    const password:string = JSON.parse(JSON.stringify(formData.get('password')));
+    if(!regex.test(email)) {
+      setEmailError(true);
+      eError = (true);
+
+    }
+    if(password.length < 4 || password.length > 20) {
+      console.log(password);
+      
+      setPasswordError(true);
+      pError = (true);
+    }
+
+    return eError || pError;
+  }
   
   return (
     <ThemeProvider theme={theme}>
@@ -48,7 +62,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             {t('Sign in')}
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -58,6 +72,8 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              error={emailError}
+              helperText={emailError ? t('Enter valid email!') : null}
             />
             <TextField
               margin="normal"
@@ -68,6 +84,8 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={passwordError}
+              helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
             />
 
             <Button

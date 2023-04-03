@@ -39,5 +39,7 @@
     "Delete": "Изтрий",
     "Close": "Затвори",
     "Submit": "Потвърди",
-    "Do you really want to delete this item?": "Наистина ли желаете да изтриете този обект?"
+    "Do you really want to delete this item?": "Наистина ли желаете да изтриете този обект?",
+    "Enter valid email!": "Въведи валиден имейл!",
+    "Password must be between 4 and 20 characters": "Паролата трябва да е между 4 и 20 символа"
 }

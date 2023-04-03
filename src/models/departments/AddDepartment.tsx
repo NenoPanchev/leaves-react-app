@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
+    const [name, setName] = React.useState('');
+    const [nameError, setNameError] = React.useState(false);
     const navigate = useNavigate();
     const addDepartment = useCreate();
     const { t } = useTranslation();
@@ -26,6 +28,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        if (data.get('name'))
         addDepartment(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
@@ -65,6 +68,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                 name="name"
                                 autoComplete="name"
                                 autoFocus
+                                onChange={(e) => setName(e.target.value)}
                             />
                             <Autocomplete
                                 id="adminEmail"

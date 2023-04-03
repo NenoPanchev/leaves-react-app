@@ -39,7 +39,9 @@
     "Delete": "Delete",
     "Close": "Close",
     "Submit": "Submit",
-    "Do you really want to delete this item?": "Do you really want to delete this item?"
+    "Do you really want to delete this item?": "Do you really want to delete this item?",
+    "Enter valid email!": "Enter valid email!",
+    "Password must be between 4 and 20 characters": "Password must be between 4 and 20 characters"
 
 
 
