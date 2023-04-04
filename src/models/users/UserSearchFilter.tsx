@@ -6,14 +6,20 @@ import * as userService from '../../services/userService';
 import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 
 function UserSearchFilter(props: UserSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');
+    const [offset, setOffset] = React.useState(0);
+    const [limit, setLimit] = React.useState<Number>();
     const [roles, setRoles] = React.useState<string[] | null>(null);
+    const navigate = useNavigate();
     const fetchAllFiltered = userService.useFetchAllFiltered();
     const roleNames = useFetchAllNames(props.refreshCurrentState);
     const { t } = useTranslation();
@@ -31,11 +37,24 @@ function UserSearchFilter(props: UserSearchFilterProps) {
             })   
         }
         
-        console.log(filter);
         const users = fetchAllFiltered(props.refreshCurrentState, filter);
         props.setFilter(filter);
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
+    }
+
+    function clearFilter() {
+        setName('');
+        setEmail('');
+        setDepartment('');
+        setRoles(undefined);
+        setOffset(0);
+        setLimit(undefined);
+        
+        props.setShouldFilter(false);
+        props.refresh(props.refreshCurrentState + 1);
+        
+        navigate('/users');
     }
 
 
@@ -100,6 +119,34 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                         />
                     )}
                 />
+                <TextField
+                    margin="normal"
+                    size='small'
+                    sx={{width: '120px'}}
+                    id="offset"
+                    label={t('Offset')}
+                    name="offset"
+                    type='number'
+                    autoComplete="offset"
+                    value={offset}
+                    onChange={(e) => {
+                        setOffset(Number(e.target.value));
+                    }}
+                />
+                <TextField
+                    margin="normal"
+                    size='small'
+                    sx={{width: '120px'}}
+                    id="limit"
+                    label={t('Limit')}
+                    name="limit"
+                    type='number'
+                    autoComplete="limit"
+                    value={limit}
+                    onChange={(e) => {
+                        setLimit(Number(e.target.value));
+                    }}
+                />
                 <Button
                     type='submit'
                     variant='outlined'
@@ -110,6 +157,15 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                 >
                     {t('Search')}
                 </Button>
+                <IconButton 
+                color='error'
+                type='reset'
+                sx={{marginTop: '16px',
+                        marginBottom: '8px'}}
+                onClick={clearFilter}
+                >
+                    <CloseIcon />
+                </IconButton>
 
             </Box>
         </React.Fragment>
