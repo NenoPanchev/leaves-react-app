@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CustomErrorBoundary from '../components/CustomErrorBoundary/CustomErrorBoundary';
 
 import Nav from '../components/nav/Nav';
 import SignIn from './SignIn';
@@ -19,12 +20,12 @@ import DashBoard from './DashBoard';
 const mdTheme = createTheme();
 
 function HomeContent() {
-  
+
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex'}}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-          <Nav />
+        <Nav />
         <Box
           component="main"
           sx={{
@@ -38,18 +39,20 @@ function HomeContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
+          <CustomErrorBoundary>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Grid container spacing={3}>
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
                   <Route path='/login' Component={SignIn}></Route>
-                  <Route path='/logout'  Component={LogOut}></Route>
+                  <Route path='/logout' Component={LogOut}></Route>
                 </Routes>
-            </Grid>
-          </Container>
+              </Grid>
+            </Container>
+          </CustomErrorBoundary>
           <StickyFooter />
         </Box>
       </Box>

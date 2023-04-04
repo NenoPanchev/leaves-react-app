@@ -34,7 +34,6 @@ export default function Departments() {
   const admin = t('Admin');
   const employees = t('Employees');
   const actions = t('Actions');
-
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }

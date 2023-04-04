@@ -45,7 +45,9 @@
     "Name must be between 4 and 20 characters": "Name must be between 4 and 20 characters",
     "Department name must be between 2 and 20 characters": "Department name must be between 2 and 20 characters",
     "Username must be between 2 and 20 characters": "Username must be between 2 and 20 characters",
-    "Passwords must match!": "Passwords must match!"
+    "Passwords must match!": "Passwords must match!",
+    "Offset": "Offset",
+    "Limit": "Limit"
 
 
 

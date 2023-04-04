@@ -45,5 +45,7 @@
     "Name must be between 4 and 20 characters": "Името трябва да бъде между 4 и 20 символа",
     "Department name must be between 2 and 20 characters": "Името на отдела трябва да бъде между 2 и 20 символа",
     "Username must be between 2 and 20 characters": "Потребителското име трябва да бъде между 2 и 20 символа",
-    "Passwords must match!": "Паролите трябва да съвпадат!"
+    "Passwords must match!": "Паролите трябва да съвпадат!",
+    "Offset": "Отклонение",
+    "Limit": "Лимит"
 }
