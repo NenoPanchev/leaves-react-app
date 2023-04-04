@@ -150,7 +150,13 @@ export const useFetchAllNames = (refresh: number) => {
   return roleNames;
 }
 
-export function appendPermissionsToFormData(formData: FormData, permissions: Permission[]) {
+export function appendPermissionsToFormData(formData: FormData, permissions: Permission[] | null) {
+  if (permissions === null) {
+    const perm = new Permission();
+    perm.setName('READ');
+    permissions = new Array();
+    permissions.push(perm);    
+  }
   permissions!.forEach((obj, index) => {
     Object.entries(obj).forEach(([key, value]) => {
       formData.append(`permissions[${index}][${key}]`, value.toString());

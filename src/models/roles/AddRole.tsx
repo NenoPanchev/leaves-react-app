@@ -15,13 +15,15 @@ import { useTranslation } from 'react-i18next';
 export default function AddRoleButton(props: AddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
+    const [nameError, setNameError] = React.useState(false);
+    let nError = false;
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
     const {user} = React.useContext(AuthContext);
     const { t } = useTranslation();
 
     const navigate = useNavigate();
     const addRole = useCreate();
-    const rolesPlaceholder = t('Roles');
+    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,13 +36,23 @@ export default function AddRoleButton(props: AddButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-
-        appendPermissionsToFormData(data, permissions!);
+        const errors = validate(data);
+        appendPermissionsToFormData(data, permissions);
           
+        if (errors) {
+            return;
+        }
         addRole(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+        setOpen(false);
+    }
 
+    function validate(formData: FormData): boolean {
+        const name:string = JSON.parse(JSON.stringify(formData.get('name')));
+        nError = (name.length < 4 || name.length > 20);
+        setNameError(name.length < 4 || name.length > 20);
+        return nError;
     }
 
     if (!user?.hasRole('SUPER_ADMIN')) {        
@@ -78,6 +90,8 @@ export default function AddRoleButton(props: AddButtonProps) {
                             name="name"
                             autoComplete="name"
                             autoFocus
+                            error={nameError}
+                            helperText={nameError ? t('Name must be between 4 and 20 characters') : null}
                         />
                         <Autocomplete
                             multiple
@@ -94,8 +108,8 @@ export default function AddRoleButton(props: AddButtonProps) {
                                     {...params}
                                     name='permissions'
                                     margin='normal'
-                                    label={t('Roles')}
-                                    placeholder={rolesPlaceholder}
+                                    label={t('Permissions')}
+                                    placeholder={permissionsPlaceholder}
                                 />
                             )}
                         />
@@ -107,7 +121,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                         <Button
                             type='submit'
                             onClick={() => {
-                                handleClose();
+                                
                             }} autoFocus>
                             {t('Submit')}
                         </Button>

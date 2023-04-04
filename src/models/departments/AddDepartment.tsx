@@ -11,6 +11,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
     const [nameError, setNameError] = React.useState(false);
+    let nError = false;
     const navigate = useNavigate();
     const addDepartment = useCreate();
     const { t } = useTranslation();
@@ -28,11 +29,20 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        if (data.get('name'))
+        const errors = validate();
+        if (errors) {
+            return;
+        }
         addDepartment(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+        handleClose();
+    }
 
+    function validate(): boolean {
+        nError = (name.length < 2 || name.length > 20);
+        setNameError(name.length < 2 || name.length > 20);
+        return nError;
     }
 
     return (
@@ -69,6 +79,8 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                 autoComplete="name"
                                 autoFocus
                                 onChange={(e) => setName(e.target.value)}
+                                error={nameError}
+                                helperText={nameError ? t('Department name must be between 2 and 20 characters') : null}
                             />
                             <Autocomplete
                                 id="adminEmail"
@@ -93,9 +105,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                             </Button>
                             <Button
                                 type='submit'
-                                onClick={() => {
-                                    handleClose();
-                                }} autoFocus>
+                                autoFocus>
                                 {t('Submit')}
                             </Button>
                         </DialogActions>

@@ -14,6 +14,8 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.department.name);
     const [adminEmail, setAdminEmail] = React.useState(props.department.adminEmail);
+    const [nameError, setNameError] = React.useState(false);
+    let nError = false;
     const {user} = React.useContext(AuthContext);
     const navigate = useNavigate();
     const editDepartment = useEdit();  
@@ -31,10 +33,20 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const errors = validate();
+        if (errors) {
+            return;
+        }
         editDepartment(props.department.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+        handleClose();
+    }
 
+    function validate(): boolean {
+        nError = (name.length < 2 || name.length > 20);
+        setNameError(name.length < 2 || name.length > 20);
+        return nError;
     }
 
     if (!user?.hasAuthority('WRITE')) {
@@ -56,7 +68,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
-                    {t('Edit') + t('Role')}
+                    {t('Edit') + t('Department')}
                 </DialogTitle>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -72,6 +84,8 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                             autoFocus
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            error={nameError}
+                            helperText={nameError ? t('Department name must be between 2 and 20 characters') : null}
                         />
                         <Autocomplete
                                 id="adminEmail"
@@ -99,9 +113,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                         </Button>
                         <Button
                             type='submit'
-                            onClick={() => {
-                                handleClose();
-                            }} autoFocus>
+                            autoFocus>
                             {t('Submit')}
                         </Button>
                     </DialogActions>

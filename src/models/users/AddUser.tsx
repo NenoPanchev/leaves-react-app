@@ -11,6 +11,14 @@ import { useTranslation } from 'react-i18next';
 export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
+    const [nameError, setNameError] = React.useState(false);
+    const [emailError, setEmailError] = React.useState(false);
+    const [passwordError, setPasswordError] = React.useState(false);
+    const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
+    let nError = false;
+    let eError = false;
+    let pError = false;
+    let pcError = false;
     const [roles, setRoles] = React.useState<Role[] | null>(null);
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -29,11 +37,37 @@ export default function AddUserButton(props: AddUserButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        appendRolesToFormData(data, roles!);
+        appendRolesToFormData(data, roles);
+
+        const errors = validate(data);
+        if (errors) {
+            return;
+        }
         addUser(data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+        handleClose();
+    }
 
+    function validate(formData: FormData):boolean {
+        const name:string = JSON.parse(JSON.stringify(formData.get('name')));
+        nError = (name.length < 2 || name.length > 20);
+        setNameError(name.length < 2 || name.length > 20);
+
+        const email:string = JSON.parse(JSON.stringify(formData.get('email')));
+        var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
+        setEmailError(!regex.test(email));
+        eError = (!regex.test(email));
+
+        const password:string = JSON.parse(JSON.stringify(formData.get('password')));
+        setPasswordError(password.length < 4 || password.length > 20);
+        pError = (password.length < 4 || password.length > 20);
+
+        const confirmPassword:string = JSON.parse(JSON.stringify(formData.get('confirmPassword')));
+        setPasswordConfirmError(password !== confirmPassword);
+        pcError = (password !== confirmPassword);
+        
+        return nError || eError || pError || pcError;
     }
 
     return (
@@ -65,7 +99,9 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             id="name"
                             label={t('Name')}
                             name="name"
-                            autoComplete="name"                        
+                            autoComplete="name" 
+                            error={nameError}
+                            helperText={nameError ? t('Username must be between 2 and 20 characters') : null}                       
                         />
 
                         <TextField
@@ -77,6 +113,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            error={emailError}
+                            helperText={emailError ? t('Enter valid email!') : null} 
                         />
                         <Autocomplete
                             id="department"
@@ -123,6 +161,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             type="password"
                             id="password"
                             autoComplete="password"
+                            error={passwordError}
+                            helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
                         />
                         <TextField
                             margin="normal"
@@ -132,6 +172,8 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             label={t('Password Confirm')}
                             type="password"
                             id="confirm-password"
+                            error={passwordConfirmError}
+                            helperText={passwordConfirmError ? t('Passwords must match!') : null}
                         />
                     </DialogContent>
                     <DialogActions>
@@ -140,9 +182,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                         </Button>
                         <Button
                             type='submit'
-                            onClick={() => {
-                                handleClose();
-                            }} autoFocus>
+                            autoFocus>
                             {t('Submit')}
                         </Button>
                     </DialogActions>

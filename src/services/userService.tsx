@@ -136,8 +136,14 @@ export const useFetchAllEmails = (refresh: number) => {
   return userEmails;
 }
 
-export function appendRolesToFormData(formData: FormData, roles: Role[]) {
-  roles!.forEach((obj, index) => {
+export function appendRolesToFormData(formData: FormData, roles: Role[] | null) {
+  if (roles === null) {
+    const role = new Role();
+    role.setName('USER');
+    roles = new Array();
+    roles.push(role); 
+  }
+  roles.forEach((obj, index) => {
     Object.entries(obj).forEach(([key, value]) => {
       formData.append(`roles[${index}][${key}]`, value.toString());
     });

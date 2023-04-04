@@ -29,18 +29,11 @@ export default function SignIn() {
   function validate(formData: FormData): boolean {
     const email:string = JSON.parse(JSON.stringify(formData.get('email')));
     const password:string = JSON.parse(JSON.stringify(formData.get('password')));
-    if(!regex.test(email)) {
-      setEmailError(true);
-      eError = (true);
-
-    }
-    if(password.length < 4 || password.length > 20) {
-      console.log(password);
+      setEmailError(!regex.test(email));
+      eError = (!regex.test(email));
+      setPasswordError(password.length < 4 || password.length > 20);
+      pError = (password.length < 4 || password.length > 20);
       
-      setPasswordError(true);
-      pError = (true);
-    }
-
     return eError || pError;
   }
   

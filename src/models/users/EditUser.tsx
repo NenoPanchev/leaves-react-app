@@ -19,7 +19,14 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [department, setDepartment] = React.useState<string>(props.user.department);
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
-
+    const [nameError, setNameError] = React.useState(false);
+    const [emailError, setEmailError] = React.useState(false);
+    const [passwordError, setPasswordError] = React.useState(false);
+    const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
+    let nError = false;
+    let eError = false;
+    let pError = false;
+    let pcError = false;
     const [password, setPassword] = React.useState(props.user.password);
     const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
     const {user} = React.useContext(AuthContext);
@@ -43,11 +50,34 @@ export default function EditUserButton(props: EditUserButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
+        const errors = validate();
+        if (errors) {
+            return;
+        }
         editUser(props.user.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+            handleClose();
 
     }
+
+    function validate():boolean {
+        nError = (name.length < 2 || name.length > 20);
+        setNameError(name.length < 2 || name.length > 20);
+
+        var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
+        setEmailError(!regex.test(email));
+        eError = (!regex.test(email));
+
+        setPasswordError(password.length < 4 || password.length > 20);
+        pError = (password.length < 4 || password.length > 20);
+
+        setPasswordConfirmError(password !== passwordConfirm);
+        pcError = (password !== passwordConfirm);
+        
+        return nError || eError || pError || pcError;
+    }
+
     if (!user?.hasAuthority('WRITE') || (props.user.id === 1)) {      
         return null;
     }
@@ -85,6 +115,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 autoFocus
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                error={nameError}
+                                helperText={nameError ? t('Username must be between 2 and 20 characters') : null}                       
                             />
                             <TextField
                                 margin="normal"
@@ -97,6 +129,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 autoFocus
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                error={emailError}
+                                helperText={emailError ? t('Enter valid email!') : null} 
                             />
                             <Autocomplete
                                 id="department"
@@ -149,6 +183,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 id="password"
                                 autoComplete="password"
                                 onChange={(e) => setPassword(e.target.value)}
+                                error={passwordError}
+                                helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
                             />
                             <TextField
                                 margin="normal"
@@ -159,6 +195,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 type="password"
                                 id="confirm-password"
                                 onChange={(e) => setPasswordConfirm(e.target.value)}
+                                error={passwordConfirmError}
+                                helperText={passwordConfirmError ? t('Passwords must match!') : null}
                             />
                         </DialogContent>
                         <DialogActions>
@@ -167,9 +205,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                             </Button>
                             <Button
                                 type='submit'
-                                onClick={() => {
-                                    handleClose();
-                                }} autoFocus>
+                                autoFocus>
                                 {t('Submit')}
                             </Button>
                         </DialogActions>

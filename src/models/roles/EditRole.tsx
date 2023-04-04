@@ -17,6 +17,8 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.role.name);
+    const [nameError, setNameError] = React.useState(false);
+    let nError = false;
     const [permissions, setPermissions] = React.useState<Permission[] | null>(null);
     const {user} = React.useContext(AuthContext);
     const { t } = useTranslation();
@@ -38,11 +40,23 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const errors = validate();
+
+        if (errors) {
+            return;
+        }
+
         appendPermissionsToFormData(data, permissions!);
         editRole(props.role.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
+        handleClose();
+    }
 
+    function validate():boolean {
+        nError = (name.length < 4 || name.length > 20);
+        setNameError(name.length < 4 || name.length > 20);
+        return nError;
     }
 
     if (!user?.hasAuthority('WRITE') || (props.role.id == 1)) {        
@@ -82,6 +96,8 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                 autoFocus
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                error={nameError}
+                                helperText={nameError ? t('Name must be between 4 and 20 characters') : null}
                             />
                             <Autocomplete
                                 multiple
@@ -111,9 +127,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                             </Button>
                             <Button
                                 type='submit'
-                                onClick={() => {
-                                    handleClose();
-                                }} autoFocus>
+                                autoFocus>
                                 {t('Submit')}
                             </Button>
                         </DialogActions>
