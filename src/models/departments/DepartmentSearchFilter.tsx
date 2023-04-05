@@ -7,12 +7,17 @@ import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [admin, setAdmin] = React.useState('');
-    const [employees, setEmployees] = React.useState<string[] | null>(null);
+    const [employees, setEmployees] = React.useState<string[]>([]);
+    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
+    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
     const fetchAllFiltered = departmentService.useFetchAllFiltered();
     const userEmails = useFetchAllEmails(props.refreshCurrentState);    
     const { t } = useTranslation();
@@ -36,7 +41,17 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
         props.setShouldFilter(true);
         props.refresh(props.refreshCurrentState + 1);
     }
+    function clearFilter() {
+        setName('');  
+        setAdmin('');
+        setEmployees([]);
+        setOffset(DEFAULT_OFFSET);
+        setLimit(DEFAULT_LIMIT);
+        
+        props.setShouldFilter(false);
+        props.refresh(props.refreshCurrentState + 1);
 
+    }
 
     return (
         <React.Fragment>
@@ -74,6 +89,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     options={userEmails}
                     size='small'
                     sx={{minWidth: '30%'}}
+                    value={employees}
                     onChange={( event, newValue) => {
                         setEmployees(newValue)
                     }}
@@ -86,6 +102,34 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                         />
                     )}
                 />
+                <TextField
+                    margin="normal"
+                    size='small'
+                    sx={{width: '120px'}}
+                    id="offset"
+                    label={t('Offset')}
+                    name="offset"
+                    type='number'
+                    autoComplete="offset"
+                    value={offset}
+                    onChange={(e) => {
+                        setOffset(Number(e.target.value));
+                    }}
+                />
+                <TextField
+                    margin="normal"
+                    size='small'
+                    sx={{width: '120px'}}
+                    id="limit"
+                    label={t('Limit')}
+                    name="limit"
+                    type='number'
+                    autoComplete="limit"
+                    value={limit}
+                    onChange={(e) => {
+                        setLimit(Number(e.target.value));
+                    }}
+                />
                 <Button
                     type='submit'
                     variant='outlined'
@@ -95,7 +139,15 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                 >
                     {t('Search')}
                 </Button>
-
+                <IconButton 
+                color='error'
+                type='reset'
+                sx={{marginTop: '16px',
+                        marginBottom: '8px'}}
+                onClick={clearFilter}
+                >
+                    <CloseIcon />
+                </IconButton>
             </Box>
         </React.Fragment>
     )

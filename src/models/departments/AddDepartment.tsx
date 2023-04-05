@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+import {
+    Button, Dialog, DialogActions, DialogContent,
+    DialogTitle, Box, TextField, Autocomplete
+} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreate } from '../../services/departmentService';
 import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
@@ -10,13 +12,14 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
+    const [availableEmployees, setAvailableEmployees] = React.useState<string[]>([]);
     const [nameError, setNameError] = React.useState(false);
     let nError = false;
     const navigate = useNavigate();
     const addDepartment = useCreate();
     const { t } = useTranslation();
     const adminPlaceholder = t('Admin')
-
+    const employeesPlaceholder = t('Employees');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -64,7 +67,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                 <React.Fragment>
 
                     <DialogTitle id="form-dialog-title">
-                    {t('Add Department')}
+                        {t('Add Department')}
                     </DialogTitle>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
@@ -95,6 +98,25 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         label={t('Admin')}
                                         placeholder={adminPlaceholder}
                                         onChange={(e) => e.target.value}
+                                    />
+                                )}
+                            />
+                            <Autocomplete
+                                multiple
+                                id="employeeEmails"
+                                options={props.availableEmployeesEmails}
+                                filterSelectedOptions
+                                size='medium'
+                                sx={{ minWidth: '20%' }}
+                                onChange={(event, newValue) => {
+                                    setAvailableEmployees(newValue)
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        margin='normal'
+                                        label={t('Employees')}
+                                        placeholder={employeesPlaceholder}
                                     />
                                 )}
                             />

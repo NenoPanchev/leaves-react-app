@@ -16,7 +16,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
-    const [department, setDepartment] = React.useState<string>(props.user.department);
+    const [department, setDepartment] = React.useState<string>(props.user.department ? props.user.department : '');
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
@@ -27,8 +27,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
     let eError = false;
     let pError = false;
     let pcError = false;
-    const [password, setPassword] = React.useState(props.user.password);
-    const [passwordConfirm, setPasswordConfirm] = React.useState(props.user.passwordConfirm);
+    const [password, setPassword] = React.useState<string>('');
+    const [passwordConfirm, setPasswordConfirm] = React.useState<string>('');
     const {user} = React.useContext(AuthContext);
     const str = props.user.roles.toString();
     const arr = str.split(', ');
@@ -69,8 +69,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 
-        setPasswordError(password.length < 4 || password.length > 20);
-        pError = (password.length < 4 || password.length > 20);
+        setPasswordError((password.length < 4 || password.length > 20));
+        pError = ((password.length < 4 || password.length > 20));
 
         setPasswordConfirmError(password !== passwordConfirm);
         pcError = (password !== passwordConfirm);

@@ -46,7 +46,7 @@ export default function DepartmentView(props: ViewProps) {
                 </TableRow>
                 <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Employees') +':'}</TableCell>
-                  <TableCell>{department?.employeeEmails}</TableCell>
+                  <TableCell>{department?.employeeEmails ? department?.employeeEmails.join(", \n") : ''}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

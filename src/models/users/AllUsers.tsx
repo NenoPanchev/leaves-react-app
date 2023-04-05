@@ -28,7 +28,7 @@ export default function Users() {
   const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const name = t('Name');
   const id = t('Id');
   const email = t('Email');

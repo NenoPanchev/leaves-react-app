@@ -1,13 +1,8 @@
 import * as React from 'react';
-import { styled} from '@mui/material/styles';
+import { styled, Toolbar, List, Typography, Divider, IconButton } from '@mui/material';
 
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AdminBar from './AdminBar';
@@ -67,22 +62,25 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 function NavContent() {
   const [open, setOpen] = React.useState(true);
-  const {user} = React.useContext(AuthContext);
+  const { user } = React.useContext(AuthContext);
+  const [lang, setLang] = React.useState('en');
   const { t, i18n } = useTranslation();
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   const onClickSetLanguageEN = (e: any) => {
-    i18n.changeLanguage('en'); //change the language   
-}
-const onClickSetLanguageBG = (e: any) => {
-  i18n.changeLanguage('bg'); //change the language  
-}
+    i18n.changeLanguage('en'); //change the language  
+    setLang('en');
+  }
+  const onClickSetLanguageBG = (e: any) => {
+    i18n.changeLanguage('bg'); //change the language  
+    setLang('bg');
+  }
 
   const onClickLanguageChange = (e: any) => {
-      const language = e.target.value;
-      i18n.changeLanguage(language); //change the language
+    const language = e.target.value;
+    i18n.changeLanguage(language); //change the language
   }
 
 
@@ -115,12 +113,15 @@ const onClickSetLanguageBG = (e: any) => {
           {t('Dashboard')}
         </Typography>
         <Typography component={'h6'} variant='h6'>{user?.getEmail()}</Typography>
-        <IconButton onClick={onClickSetLanguageEN}>
-        <Flag code='GB' height='16' />
-          </IconButton>
-        <IconButton onClick={onClickSetLanguageBG}>
-        <Flag code='BG' height='16' />
-          </IconButton>
+        {lang === 'en'
+          ? <IconButton onClick={onClickSetLanguageBG}>
+              <Flag code='BG' height='16' />
+            </IconButton>
+          : <IconButton onClick={onClickSetLanguageEN}>
+              <Flag code='GB' height='16' />
+            </IconButton>
+        }
+
       </Toolbar>
     </AppBar>
     <Drawer variant="permanent" open={open}>
@@ -138,7 +139,7 @@ const onClickSetLanguageBG = (e: any) => {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <AdminBar/>
+        <AdminBar />
       </List>
     </Drawer>
   </>

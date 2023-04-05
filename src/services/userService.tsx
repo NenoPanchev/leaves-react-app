@@ -136,6 +136,22 @@ export const useFetchAllEmails = (refresh: number) => {
   return userEmails;
 }
 
+export const useFetchEmailsOfAvailableEmployees = (refresh: number) => {
+  const [userEmails, setUserEmails] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadRoles();
+  }, [refresh]);
+
+  const loadRoles = async () => {
+    const result = await axios.get(BASE_USER_URL + 'available', WITH_AUTH_HEADER())
+      .then(response => setUserEmails(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return userEmails;
+}
+
 export function appendRolesToFormData(formData: FormData, roles: Role[] | null) {
   if (roles === null) {
     const role = new Role();

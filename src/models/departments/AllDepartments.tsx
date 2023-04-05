@@ -12,6 +12,7 @@ import EditDepartmentButton from './EditDepartment';
 import { IDepartment } from '../interfaces//department/departmentInterfaces';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
 import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
+import { useFetchEmailsOfAvailableEmployees as fetchAvailableEmployeesEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 
 import '../ViewAll.css'
@@ -28,6 +29,7 @@ export default function Departments() {
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
   const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const userEmails = fetchUserEmails(refreshCurrentState);
+  const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const { t } = useTranslation();
   const name = t('Name');
   const id = t('Id');
@@ -72,7 +74,7 @@ export default function Departments() {
       flex: 1, 
     },
     {
-      field: 'employeeEmailss',
+      field: 'employeeEmails',
       headerName: employees,
       headerClassName: 'grid-header',
       // renderCell: (params) => renderEmployeeEmails(),
@@ -99,7 +101,7 @@ export default function Departments() {
   const rows = departments.map(dpt => {
     return {
       id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail, 
-      employeeEmails: dpt.employeeEmails ? dpt.employeeEmails.join("\n") : ''
+      employeeEmails: dpt.employeeEmails ? dpt.employeeEmails.join(", \n") : ''
     }
   });
 
@@ -115,7 +117,7 @@ export default function Departments() {
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-          userEmails={userEmails}/>
+          userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
         </Box>
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid

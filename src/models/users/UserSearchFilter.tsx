@@ -10,21 +10,21 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 
 function UserSearchFilter(props: UserSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');
-    const [offset, setOffset] = React.useState(0);
-    const [limit, setLimit] = React.useState<Number>();
-    const [roles, setRoles] = React.useState<string[] | null>(null);
+    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
+    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
+    const [roles, setRoles] = React.useState<string[]>([]);
     const navigate = useNavigate();
     const fetchAllFiltered = userService.useFetchAllFiltered();
     const roleNames = useFetchAllNames(props.refreshCurrentState);
     const { t } = useTranslation();
     const rolesPlaceholder = t('Roles');
-
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
@@ -44,17 +44,16 @@ function UserSearchFilter(props: UserSearchFilterProps) {
     }
 
     function clearFilter() {
-        setName('');
+        setName('');  
         setEmail('');
         setDepartment('');
-        setRoles(undefined);
-        setOffset(0);
-        setLimit(undefined);
+        setRoles([]);
+        setOffset(DEFAULT_OFFSET);
+        setLimit(DEFAULT_LIMIT);
         
         props.setShouldFilter(false);
         props.refresh(props.refreshCurrentState + 1);
-        
-        navigate('/users');
+
     }
 
 
@@ -107,6 +106,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     options={roleNames}
                     size='small'
                     sx={{minWidth: '20%'}}
+                    value={roles}
                     onChange={( event, newValue) => {
                         setRoles(newValue)
                     }}
