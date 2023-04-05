@@ -4,7 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent,
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
-import { useEdit } from '../../services/departmentService';
+import { useEdit, appendEmployeesToFormData } from '../../services/departmentService';
 import { EditDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,9 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.department.name);
     const [adminEmail, setAdminEmail] = React.useState(props.department.adminEmail);
+    const str = props.department.employeeEmails.toString();
+    const arr = str.split(', \n');
+    const [employees, setEmployees] = React.useState<string[]>(props.department.employeeEmails ? arr : []);
     const [nameError, setNameError] = React.useState(false);
     let nError = false;
     const {user} = React.useContext(AuthContext);
@@ -21,6 +24,8 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const editDepartment = useEdit();  
     const { t } = useTranslation();  
     const adminPlaceholder = t('Admin');
+    const employeesPlaceholder = t('Employees');
+    const availableEmployees = props.availableEmployeesEmails.concat(arr);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,6 +38,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        appendEmployeesToFormData(data, employees);
         const errors = validate();
         if (errors) {
             return;
@@ -103,6 +109,26 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         margin='normal'
                                         label={t('Admin')}
                                         placeholder={adminPlaceholder}
+                                    />
+                                )}
+                            />
+                             <Autocomplete
+                                multiple
+                                id="employeeEmails"
+                                options={availableEmployees}
+                                filterSelectedOptions
+                                size='medium'
+                                sx={{ minWidth: '20%' }}
+                                value={employees}
+                                onChange={(event, newValue) => {
+                                    setEmployees(newValue)
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        margin='normal'
+                                        label={t('Employees')}
+                                        placeholder={employeesPlaceholder}
                                     />
                                 )}
                             />

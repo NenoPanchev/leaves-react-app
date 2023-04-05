@@ -134,3 +134,13 @@ export const useFetchAllNames = (refresh: number) => {
 
   return departmentNames;
 }
+
+export function appendEmployeesToFormData(formData: FormData, employees: string[] | null) {
+  if (employees === null) {
+    return; 
+  }
+  employees.forEach((emp) => {
+      formData.append(`employeeEmails[]`, emp.toString());
+    });
+  
+}

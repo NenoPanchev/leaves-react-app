@@ -21,6 +21,7 @@ export interface EditDepartmentButtonProps {
     refreshCurrentState: number
     refresh: (value: number) => void;
     userEmails: string[]
+    availableEmployeesEmails: string[]
 }
 
 export interface DepartmentSearchFilterProps {

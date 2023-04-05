@@ -4,7 +4,7 @@ import {
     DialogTitle, Box, TextField, Autocomplete
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCreate } from '../../services/departmentService';
+import { appendEmployeesToFormData, useCreate } from '../../services/departmentService';
 import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +32,8 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        appendEmployeesToFormData(data, availableEmployees);
+        
         const errors = validate();
         if (errors) {
             return;

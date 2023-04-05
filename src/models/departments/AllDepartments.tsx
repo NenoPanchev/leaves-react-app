@@ -42,7 +42,7 @@ export default function Departments() {
 
   const renderEditButton = (department: IDepartment) => {  
     return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState} userEmails={userEmails}/>
+    refresh={setRefreshCurrentState} userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {

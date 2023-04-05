@@ -16,7 +16,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
-    const [department, setDepartment] = React.useState<string>(props.user.department ? props.user.department : '');
+    const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
