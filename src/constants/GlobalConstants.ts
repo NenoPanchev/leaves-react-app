@@ -18,3 +18,8 @@ export const WITH_AUTH_HEADER = () => ({
     'Authorization': localStorage.getItem('SavedToken')
   }
 });
+
+export function FC_WITH_STRING_AUTH_HEADER()
+{
+  return {'Authorization': localStorage.getItem('SavedToken')}
+}
