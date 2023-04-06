@@ -47,7 +47,99 @@
     "Username must be between 2 and 20 characters": "Username must be between 2 and 20 characters",
     "Passwords must match!": "Passwords must match!",
     "Offset": "Offset",
-    "Limit": "Limit"
+    "Limit": "Limit",
+    "AppTitle":"Employees Leave Manager",
+
+    "AddRequests":{
+        "AddRequest":"Add request",
+        "Add":"Add",
+        "Success":"You submitted successfully!",
+        "Submit":"Submit"
+    },
+
+    "Add":"Add",
+    "Request":"Requests",
+    "LeaveType":"Leave Types",
+    "CreatedBy":"Created by",
+    "AddFilter":"Add Filter",
+    "EmployeesWithType":"Employees with Type",
+    "limit":"Limit",
+    "offset":"Offset",
+    "limitAlert":"Limit can't be less or equal to zero!",
+    "offSetAlert":"OffSet can't be less than zero!",
+    "of":"of",
+    "page":"Page",
+    "delete":"Delete",
+    "All":"All",
+    "justDeleted":"Just deleted",
+    "withoutDeleted":"Without deleted",
+    "deleted":"Deleted",
+    "equal":"Equal",
+    "lessThan":"Less than",
+    "greaterThan":"Greater than",
+    "sort":"Sort",
+    "operation":"Operation",
+    "cancel":"Cancel",
+    "removeTypeMsg":"Remove Employee Type with name: {{typeName}}?",
+    "to":"To: ",
+    "from":"From: ",
+    "typeAlert":"Already exists type with name: {{typeName}}!",
+    "wentWrongAlert":"Something went wrong!",
+    "showEmployees":"Show employees",
+    "publish":"Publish",
+    "reject":"Reject",
+    "approve": "Approve",
+    "name":"Name: ",
+
+
+
+
+
+
+
+
+
+    "Requests":{
+    "StartDate":"Start date",
+    "EndDate":"End Date",
+    "Aprooved":"Approved",
+    "approved":"Approved",
+    "Approve":"Approve",
+    "rejected":"Rejected",
+    "notProcessed":"Not processed",
+    "rejectedS":"Rejected",
+    "notProcessedS":"Not processed",
+    "approvedS":"Approved",
+    "daysRequested":"Days requested"
+    },
+    
+        "alertMassageDuplicateEntity":"You have already requested leave from {{startDate}} to {{endDate}}!",
+        "alertMassagePaidLeave":"Days paid leave not enough!\n Days requested:{{daysRequested}}.\n Days left:{{leftDays}}.",
+        "alertMassagePaidLeaveZero":"Requesting 0 days or less is not perrmited!",
+        "alertRequestProcessed":"Request with id:{{id}} already processed!",
+        "alertAddSuccess":"Successfuly made leave request!",
+        "alertMassageDeleteType":"This is the type of {{employeeWithType}} employees!",
+        
+
+    "LeaveTypes":{
+        "TypeName":"Type Name",
+        "DaysLeave":"Days Leave",
+        "Actions":"Actions"
+    },
+
+    "DataGridToolBar":{
+        "Columns":"COLUMNS",
+        "Density":"DENSITY",
+        "Export":"EXPORT",
+        "AddType":"ADD TYPE",
+        "ManageFilters":"MANAGE FILTERS"
+    },
+
+    "ListAllFilters":{
+        "Filter":"Filters",
+        "FilterButton":"Filter"
+    }
+
 
 
 
