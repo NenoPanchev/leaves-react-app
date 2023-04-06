@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
+import { formToJSON } from 'axios';
 import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
 import { BASE_ROLE_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
@@ -46,7 +47,7 @@ export const useCreate = () => {
 
   const addRole = async (role: FormData) => {
 
-    const result = await axios.post(BASE_ROLE_URL, axios.formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.post(BASE_ROLE_URL, formToJSON(role), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -61,7 +62,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_ROLE_URL + id;
 
-    const result = await axios.put(updateUrl, axios.formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.put(updateUrl, formToJSON(role), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -80,7 +81,7 @@ export const useFetchAllFiltered = () => {
     // }, [refresh]);
 
     const loadRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setRoles(response.data)
@@ -107,7 +108,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }, [refresh]);
 
     const loadFilteredRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setRoles(response.data)

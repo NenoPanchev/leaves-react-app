@@ -55,7 +55,7 @@ export default function AddRoleButton(props: AddButtonProps) {
         return nError;
     }
 
-    if (!user?.hasRole('SUPER_ADMIN')) {        
+    if (!user?.getAuthorities() === undefined && !user?.hasRole('SUPER_ADMIN')) {        
         return null;
     }
 

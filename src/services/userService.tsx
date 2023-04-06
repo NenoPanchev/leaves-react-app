@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
+import { formToJSON } from 'axios';
 import { IUser, IUserDetails, IUserEdit } from '../models/interfaces/user/userInterfaces'
 import { BASE_USER_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
@@ -42,10 +43,8 @@ export const useFetchOne = (props:number) => {
 
 export const useCreate = () => {
 
-  const addUser = async (user: FormData) => {
-    console.log(axios.formToJSON(user));
-    
-    const result = await axios.post(BASE_USER_URL, axios.formToJSON(user), WITH_AUTH_HEADER())
+  const addUser = async (user: FormData) => {    
+    const result = await axios.post(BASE_USER_URL, formToJSON(user), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -60,7 +59,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_USER_URL + id;
 
-    const result = await axios.put(updateUrl, axios.formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.put(updateUrl, formToJSON(role), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -75,7 +74,7 @@ export const useFetchAllFiltered = () => {
   const fetchAllFiltered = (refresh: number, filter: FormData) => {
     
     const loadUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setUsers(response.data)
@@ -102,7 +101,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }, [refresh]);
 
     const loadFilteredUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setUsers(response.data)
