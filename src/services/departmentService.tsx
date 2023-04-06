@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
+import { formToJSON } from 'axios';
 import { IDepartment, IDepartmentDetails } from '../models/interfaces/department/departmentInterfaces'
 import { BASE_DEPARTMENT_URL } from '../constants/GlobalConstants';
 import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
@@ -43,7 +44,7 @@ export const useCreate = () => {
 
   const addDepartment = async (department: FormData) => {
 
-    const result = await axios.post(BASE_DEPARTMENT_URL, axios.formToJSON(department), WITH_AUTH_HEADER())
+    const result = await axios.post(BASE_DEPARTMENT_URL, formToJSON(department), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -58,7 +59,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_DEPARTMENT_URL + id;
 
-    const result = await axios.put(updateUrl, axios.formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.put(updateUrl, formToJSON(role), WITH_AUTH_HEADER())
       .then(response => {
         console.log(response.data)
       })
@@ -73,7 +74,7 @@ export const useFetchAllFiltered = () => {
   const fetchAllFiltered = (refresh: number, filter: FormData) => {
 
     const loadDepartments = async () => {
-      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setDepartments(response.data)
@@ -99,7 +100,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }, [refresh]);
 
     const loadFilteredDepartments = async () => {
-      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', axios.formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
         .then(response =>  {
           
           setDepartments(response.data)

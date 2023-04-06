@@ -1,9 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
+import { formToJSON } from 'axios';
 import { LOGIN_URL, WITH_AUTH_HEADER, WITH_TEXT_HEADER } from '../constants/GlobalConstants';
 import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
+// import axios from 'axios';
 
 
 export const useLogin = () => {
@@ -13,7 +15,7 @@ export const useLogin = () => {
 
   const authenticate = async (userForm: FormData) => {
 
-     await axios.post(LOGIN_URL, axios.formToJSON(userForm))
+     await axios.post(LOGIN_URL, formToJSON(userForm))
       .then((response) => {
         const token = response.data.jwt;
         userDetails.setEmail(response.data.email);
