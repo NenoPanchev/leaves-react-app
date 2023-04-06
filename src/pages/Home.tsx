@@ -29,10 +29,10 @@ function HomeContent() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Grid sx={{ display: 'flex' }}>
         <CssBaseline />
         <Nav />
-        <Grid
+        <Box
           component="main"
           sx={{
             backgroundColor: (theme) =>
@@ -47,8 +47,8 @@ function HomeContent() {
           <Toolbar />
 
           <CustomErrorBoundary>
-
-              <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%',maxWidth:'calc(100% - 239.2px)' }}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%' }}>
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
@@ -62,11 +62,11 @@ function HomeContent() {
                   <Route path='/logout' Component={LogOut}></Route>
                 </Routes>
               </Grid>
-
+            </Container>
           </CustomErrorBoundary>
           <StickyFooter />
-        </Grid>
-      </Box>
+        </Box>
+      </Grid>
     </ThemeProvider>
   );
 }
