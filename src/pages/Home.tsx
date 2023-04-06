@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import CustomErrorBoundary from '../components/CustomErrorBoundary/CustomErrorBoundary';
 
 import Nav from '../components/nav/Nav';
@@ -16,6 +16,12 @@ import Departments from '../models/departments/AllDepartments';
 import Users from '../models/users/AllUsers';
 import isAuth from '../hoc/isAuth';
 import DashBoard from './DashBoard';
+import RequestsGrid from '../models/RequestsGrid/RequestsGrid';
+import TypeEmployeeGrid from '../models/TypeEmployeeGrid/TypeEmployeeGrid';
+import { Typography } from '@mui/material';
+import { t } from 'i18next';
+import Calendar from '../components/calendar/Calendar';
+import AddRequest3 from '../models/AddRequest/AddRequest';
 
 const mdTheme = createTheme();
 
@@ -26,35 +32,40 @@ function HomeContent() {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Nav />
-        <Box
+        <Grid
           component="main"
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
-            flexGrow: 1,
+            flexGrow: 1.5,
             height: '100vh',
             overflow: 'auto',
           }}
         >
           <Toolbar />
+
           <CustomErrorBoundary>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
+
+              <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%',maxWidth:'calc(100% - 239.2px)' }}>
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
+                  <Route path="/requests" element={<RequestsGrid />} />
+                  <Route path="/types" element={<TypeEmployeeGrid />} />
+                  <Route path='/addRequest' element={<AddRequest3 />}></Route>
+                  <Route path='/calendar' element={<Calendar />}></Route>
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
                   <Route path='/login' Component={SignIn}></Route>
                   <Route path='/logout' Component={LogOut}></Route>
                 </Routes>
               </Grid>
-            </Container>
+
           </CustomErrorBoundary>
           <StickyFooter />
-        </Box>
+        </Grid>
       </Box>
     </ThemeProvider>
   );
