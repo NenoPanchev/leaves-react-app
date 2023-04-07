@@ -1,5 +1,4 @@
 export default interface ITypesFilter {
-    [x: string]: any;
     id: string[],
     dateCreated: string[],
     createdBy: string[],

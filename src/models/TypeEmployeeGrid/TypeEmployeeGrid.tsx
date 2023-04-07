@@ -52,7 +52,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     deleted: "false"
   });
 
-  const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort } = userFilter;
+  const { id, dateCreated, createdBy, lastUpdated, offset, limit, sort } = userFilter;
   let numberOfElements = page.numberOfElements * (page.number + 1);
   useEffect(() => {
     retrivePage();
