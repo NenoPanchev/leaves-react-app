@@ -3,7 +3,6 @@ import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { IUser, IUserDetails, IUserEdit } from '../models/interfaces/user/userInterfaces'
 import { BASE_USER_URL } from '../constants/GlobalConstants';
-import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 
 
@@ -16,7 +15,7 @@ export const useFetchAll = (refresh: number) => {
     }, [refresh]);
   
     const loadUsers = async () => {
-      const result = await axios.get(BASE_USER_URL, WITH_AUTH_HEADER())
+      const result = await axios.get(BASE_USER_URL)
         .then(response => setUser(response.data))
         .catch(error => console.log(error))
         
@@ -34,7 +33,7 @@ export const useFetchOne = (props:number) => {
   
 
   const loadDepartment = async () => {
-    const result = await axios.get(BASE_USER_URL + props, WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_USER_URL + props)
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
   }
@@ -44,7 +43,7 @@ export const useFetchOne = (props:number) => {
 export const useCreate = () => {
 
   const addUser = async (user: FormData) => {    
-    const result = await axios.post(BASE_USER_URL, formToJSON(user), WITH_AUTH_HEADER())
+    const result = await axios.post(BASE_USER_URL, formToJSON(user))
       .then(response => {
         console.log(response.data)
       })
@@ -59,7 +58,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_USER_URL + id;
 
-    const result = await axios.put(updateUrl, formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.put(updateUrl, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -74,7 +73,7 @@ export const useFetchAllFiltered = () => {
   const fetchAllFiltered = (refresh: number, filter: FormData) => {
     
     const loadUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter))
         .then(response =>  {
           
           setUsers(response.data)
@@ -101,7 +100,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }, [refresh]);
 
     const loadFilteredUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter))
         .then(response =>  {
           
           setUsers(response.data)
@@ -111,7 +110,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }
 
     const loadUsers = async () => {
-      const result = await axios.get(BASE_USER_URL, WITH_AUTH_HEADER())
+      const result = await axios.get(BASE_USER_URL)
         .then(response => setUsers(response.data))
         .catch(error => console.log(error))
     }
@@ -127,7 +126,7 @@ export const useFetchAllEmails = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_USER_URL + 'emails', WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_USER_URL + 'emails')
       .then(response => setUserEmails(response.data))
       .catch(error => console.log(error))
   }
@@ -143,7 +142,7 @@ export const useFetchEmailsOfAvailableEmployees = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_USER_URL + 'available', WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_USER_URL + 'available')
       .then(response => setUserEmails(response.data))
       .catch(error => console.log(error))
   }

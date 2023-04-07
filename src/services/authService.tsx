@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { LOGIN_URL, WITH_AUTH_HEADER, WITH_TEXT_HEADER } from '../constants/GlobalConstants';
+import { LOGIN_URL } from '../constants/GlobalConstants';
 import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
 // import axios from 'axios';
