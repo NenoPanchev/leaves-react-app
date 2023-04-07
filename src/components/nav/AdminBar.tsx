@@ -4,6 +4,11 @@ import { ListItemButton, ListItemIcon, ListItemText, ListSubheader, Divider, Typ
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import PeopleIcon from '@mui/icons-material/People';
+import BadgeIcon from '@mui/icons-material/Badge';
+import ListIcon from '@mui/icons-material/List';
+import LayersIcon from '@mui/icons-material/Layers';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -17,44 +22,6 @@ const AdminBar = () => {
   const { t, i18n } = useTranslation();
   return (
     <>
-
-      <Link to={"/types"}  style={{
-        textDecoration: 'none',
-        color: 'black'
-      }}>
-
-        <ListItemButton
-          selected={currentLocation.pathname === '/types' ? true : false}>
-
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('LeaveType')} />
-        </ListItemButton>
-      </Link>
-
-      <Link to={"/requests"}  style={{
-        textDecoration: 'none',
-        color: 'black'
-      }}>
-        <ListItemButton
-          selected={currentLocation.pathname === '/types' ? true : false}>
-
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary=  {t('Request')} />
-        </ListItemButton>
-      </Link>
-
-      <ListItemButton>
-      <AddRequest3 />
-      </ListItemButton>
-      
-      <ListItemButton>
-      <Calendar />
-      </ListItemButton>
-
       <Link to='/' style={{
         textDecoration: 'none',
         color: 'black'
@@ -68,6 +35,45 @@ const AdminBar = () => {
 
         </ListItemButton>
       </Link>
+
+      <Link to={"/types"} style={{
+        textDecoration: 'none',
+        color: 'black'
+      }}>
+
+        <ListItemButton
+          selected={currentLocation.pathname === '/types' ? true : false}>
+
+          <ListItemIcon>
+            <BadgeIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('LeaveType')} />
+        </ListItemButton>
+      </Link>
+
+      <Link to={"/requests"} style={{
+        textDecoration: 'none',
+        color: 'black'
+      }}>
+        <ListItemButton
+          selected={currentLocation.pathname === '/requests' ? true : false}>
+
+          <ListItemIcon>
+            <ListIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('Request')} />
+        </ListItemButton>
+      </Link>
+      <Link to={"#"} style={{
+        textDecoration: 'none',
+        color: 'black'
+      }}>
+
+        <AddRequest3 />
+      </Link>
+
+      <Calendar />
+
 
       <Link to='/users' style={{
         textDecoration: 'none',

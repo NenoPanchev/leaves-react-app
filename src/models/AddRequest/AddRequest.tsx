@@ -1,5 +1,6 @@
-import { Button, Dialog, DialogActions, DialogContent, Grid, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, Grid, ListItemButton, ListItemIcon, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AxiosError } from 'axios';
@@ -95,11 +96,15 @@ const AddRequest3: React.FC = (): JSX.Element => {
 
     return (
         <React.Fragment>
-            <Button onClick={handleClickOpen}>
-                <Typography color="#00838f" variant="overline"  >
-                    {t('AddRequests.AddRequest')}
-                </Typography>
-            </Button>
+            <ListItemButton onClick={handleClickOpen}
+            sx={{paddingTop: '12px', paddingBottom: '12px'}}>
+          <ListItemIcon>
+          <PlaylistAddIcon />
+          </ListItemIcon>
+          <Typography color="black"   >
+          {t('AddRequests.AddRequest')}
+          </Typography>
+        </ListItemButton>
             <Dialog
                 open={open}
                 onClose={handleClose}
