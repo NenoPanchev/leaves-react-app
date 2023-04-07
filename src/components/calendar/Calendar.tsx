@@ -8,9 +8,10 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import RequestService from '../../services/RequestService';
 import { blue, green, lightBlue, pink, red } from '@mui/material/colors';
-import { Avatar, Button, Dialog, DialogActions, DialogContent, Grid, Typography } from '@mui/material';
+import { Avatar, Button, Dialog, DialogActions, DialogContent, Grid, ListItemButton, ListItemIcon, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import { width } from '@mui/system';
 import { useTranslation } from 'react-i18next';
@@ -213,11 +214,14 @@ const CustomDay: React.FC = (): JSX.Element => {
 
   return (
     <React.Fragment>
-       <Button onClick={handleClickOpen}>
-          <Typography color="#00838f" variant="overline"  >
+        <ListItemButton onClick={handleClickOpen} sx={{paddingTop: '12px', paddingBottom: '12px'}}>
+          <ListItemIcon>
+            <CalendarMonthIcon />
+          </ListItemIcon>
+          <Typography color="black"   >
             Calendar
           </Typography>
-        </Button>
+        </ListItemButton>
       <Dialog
         open={open}
         onClose={handleClose}
