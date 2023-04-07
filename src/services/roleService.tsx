@@ -3,10 +3,8 @@ import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
 import { BASE_ROLE_URL } from '../constants/GlobalConstants';
-import { WITH_AUTH_HEADER } from '../constants/GlobalConstants';
 import { Permission } from '../models/objects/Permission';
 import { Role } from '../models/objects/Role';
-import { UserDetails } from '../models/objects/UserDetails';
 import AuthContext from '../contexts/AuthContext';
 
 
@@ -19,7 +17,7 @@ export const useFetchAll = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_ROLE_URL, WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_ROLE_URL)
       .then(response => setRoles(response.data))
       .catch(error => console.log(error))
   }
@@ -36,7 +34,7 @@ export const useFetchOne = (props: number) => {
 
 
   const loadRole = async () => {
-    const result = await axios.get(BASE_ROLE_URL + props, WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_ROLE_URL + props)
       .then(response => setRole(response.data))
       .catch(error => console.log(error))
   }
@@ -47,7 +45,7 @@ export const useCreate = () => {
 
   const addRole = async (role: FormData) => {
 
-    const result = await axios.post(BASE_ROLE_URL, formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.post(BASE_ROLE_URL, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -62,7 +60,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_ROLE_URL + id;
 
-    const result = await axios.put(updateUrl, formToJSON(role), WITH_AUTH_HEADER())
+    const result = await axios.put(updateUrl, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -81,7 +79,7 @@ export const useFetchAllFiltered = () => {
     // }, [refresh]);
 
     const loadRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
         .then(response =>  {
           
           setRoles(response.data)
@@ -108,7 +106,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
     }, [refresh]);
 
     const loadFilteredRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter), WITH_AUTH_HEADER())
+      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
         .then(response =>  {
           
           setRoles(response.data)
@@ -119,7 +117,7 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
 
   
     const loadRoles = async () => {
-      const result = await axios.get(BASE_ROLE_URL, WITH_AUTH_HEADER())
+      const result = await axios.get(BASE_ROLE_URL)
         .then(response => setRoles(response.data))
         .catch(error => console.log(error))
     }
@@ -137,7 +135,7 @@ export const useFetchAllNames = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_ROLE_URL + 'names', WITH_AUTH_HEADER())
+    const result = await axios.get(BASE_ROLE_URL + 'names')
       .then(response => {
         let initArr = (response.data).filter((names: string) => names !== 'SUPER_ADMIN');
         if (!user?.hasRole('SUPER_ADMIN')) {

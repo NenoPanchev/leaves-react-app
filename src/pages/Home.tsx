@@ -49,7 +49,7 @@ function HomeContent() {
               <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%' }}>
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
-                  <Route path='/users' Component={isAuth(Users)}></Route>
+                  <Route path='/users' Component={isAuth(Users)}></Route>\
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path="/requests" Component={isAuth(RequestsGrid)} />
                   <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
