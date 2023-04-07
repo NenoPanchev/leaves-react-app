@@ -48,7 +48,7 @@ function HomeContent() {
 
           <CustomErrorBoundary>
 
-              <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%',maxWidth:'calc(100% - 239.2px)' }}>
+              <Grid flexShrink={'revert'} flexGrow={'revert'} container sx={{ height: 'calc(100% - 71.2px)', width: '100%',flexGrow: '100% '}}>
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>

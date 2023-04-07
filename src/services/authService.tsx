@@ -7,11 +7,13 @@ import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
 // import axios from 'axios';
 
+//TODO USER NOT REFRESHED ON LOGIN!!!!
 
 export const useLogin = () => {
   var {user, setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const userDetails = new UserDetails();
+  
 
   const authenticate = async (userForm: FormData) => {
 

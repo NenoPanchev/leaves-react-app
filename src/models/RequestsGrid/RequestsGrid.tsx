@@ -19,6 +19,7 @@ import Filter from '../interfaces/request/Filter';
 import ILeaveRequestPage from '../interfaces/request/ILeaveRequestPage';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 import ApproveDialogAlerts from '../../components/Alert/ApproveDialogAlert';
+import {  Container } from '@mui/system';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -379,7 +380,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-
+<Grid container sx={{ height: '100%', width: '100%',maxWidth:'100%' }}>
     <DataGrid
       disableColumnMenu
       localeText={{
@@ -395,6 +396,8 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     // loading={isLoading}
 
     />
+
+</Grid>
   )
 };
 
