@@ -30,7 +30,7 @@ class CustomErrorBoundary extends React.Component<Props, State> {
 
     render() {
         if (this.state.hasError) {
-            return <Box sx={{backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
+            return <Box sx={{backgroundColor: 'white', display: 'flex', justifyContent: 'center',height:'100%' ,width:'100%'}}>
                 <img src="/error.png" alt="error-page" />
             </Box>
         }

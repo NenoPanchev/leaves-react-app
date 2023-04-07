@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { ListItemButton, ListItemIcon, ListItemText, ListSubheader, Divider, Typography } from '@mui/material';
+import { ListItemButton, ListItemIcon, ListItemText, ListSubheader, Divider, Typography, Grid } from '@mui/material';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
@@ -16,7 +16,7 @@ const AdminBar = () => {
   const currentLocation = useLocation();
   const { t, i18n } = useTranslation();
   return (
-    <>
+    <Grid item>
 
       <Link to={"/types"}  style={{
         textDecoration: 'none',
@@ -149,7 +149,7 @@ const AdminBar = () => {
           <ListItemText primary={t('Logout')} />
         </ListItemButton>
       </Link>
-    </>
+      </Grid>
   );
 }
 

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import AuthContext from './contexts/AuthContext';
 import { UserDetails } from './models/objects/UserDetails';
 import { useRefresh } from './services/authService';
+import { Grid } from '@mui/material';
 
 
 function App() {
@@ -48,13 +49,13 @@ function App() {
 
   const value = { user, setUser };
   return (
-    <div>
+<Grid container height="100%" width="100%">
       <Router>
         <AuthContext.Provider value={value}>
           <Home />
         </AuthContext.Provider>
       </Router>
-    </div>
+      </Grid>
   );
 }
 

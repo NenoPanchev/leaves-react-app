@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, Toolbar, List, Typography, Divider, IconButton } from '@mui/material';
+import { styled, Toolbar, List, Typography, Divider, IconButton, Grid } from '@mui/material';
 
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -84,7 +84,8 @@ function NavContent() {
   }
 
 
-  return (<>
+  return (
+    <Grid item>
     <AppBar position="absolute" open={open}>
       <Toolbar
         sx={{
@@ -142,7 +143,7 @@ function NavContent() {
         <AdminBar />
       </List>
     </Drawer>
-  </>
+ </Grid>
   );
 }
 

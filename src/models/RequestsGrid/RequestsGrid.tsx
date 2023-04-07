@@ -380,7 +380,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-<Grid container sx={{ height: '100%', width: '100%',maxWidth:'100%' }}>
+
     <DataGrid
       disableColumnMenu
       localeText={{
@@ -392,12 +392,9 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       rows={rows}
       columns={columns}
       slots={{ toolbar: CustomToolbar, pagination: CustomPagination }}
-
     // loading={isLoading}
 
     />
-
-</Grid>
   )
 };
 

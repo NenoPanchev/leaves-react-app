@@ -27,26 +27,28 @@ function HomeContent() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Grid sx={{ display: 'flex' }}>
+      <Grid container  direction="row" height="100vh" maxWidth="300vh">
         <CssBaseline />
-        <Nav />
-        <Box
+        <Grid item > <Nav /></Grid>
+      
+        <Grid
+        container
           component="main"
+          flex={1}
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
-            flexGrow: 1.5,
-            height: '100vh',
+           
             overflow: 'auto',
+
           }}
         >
           <Toolbar />
 
-          <CustomErrorBoundary>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid container sx={{ height: 'calc(100% - 71.2px)', width: '100%' }}>
+          <CustomErrorBoundary/>
+              <Grid container height="93%" >
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>\
@@ -60,10 +62,8 @@ function HomeContent() {
                   <Route path='/logout' Component={LogOut}></Route>
                 </Routes>
               </Grid>
-            </Container>
-          </CustomErrorBoundary>
-          <StickyFooter />
-        </Box>
+          {/* <StickyFooter /> */}
+        </Grid>
       </Grid>
     </ThemeProvider>
   );
