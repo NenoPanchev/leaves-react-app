@@ -18,8 +18,6 @@ import isAuth from '../hoc/isAuth';
 import DashBoard from './DashBoard';
 import RequestsGrid from '../models/RequestsGrid/RequestsGrid';
 import TypeEmployeeGrid from '../models/TypeEmployeeGrid/TypeEmployeeGrid';
-import { Typography } from '@mui/material';
-import { t } from 'i18next';
 import Calendar from '../components/calendar/Calendar';
 import AddRequest3 from '../models/AddRequest/AddRequest';
 
@@ -53,10 +51,10 @@ function HomeContent() {
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
-                  <Route path="/requests" element={<RequestsGrid />} />
-                  <Route path="/types" element={<TypeEmployeeGrid />} />
-                  <Route path='/addRequest' element={<AddRequest3 />}></Route>
-                  <Route path='/calendar' element={<Calendar />}></Route>
+                  <Route path="/requests" Component={isAuth(RequestsGrid)} />
+                  <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
+                  <Route path='/addRequest' Component={isAuth(AddRequest3)} />
+                  <Route path='/calendar' Component={isAuth(Calendar)}></Route>
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
                   <Route path='/login' Component={SignIn}></Route>
                   <Route path='/logout' Component={LogOut}></Route>
