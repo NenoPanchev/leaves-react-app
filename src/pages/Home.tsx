@@ -27,7 +27,7 @@ function HomeContent() {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Grid container  direction="row" height="100vh" maxWidth="300vh">
+      <Grid container  direction="row" height="100vh" maxWidth="auto">
         <CssBaseline />
         <Grid item > <Nav /></Grid>
       
@@ -40,7 +40,6 @@ function HomeContent() {
               theme.palette.mode === 'light'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
-           
             overflow: 'auto',
 
           }}
@@ -51,7 +50,7 @@ function HomeContent() {
               <Grid container height="93%" >
                 <Routes>
                   <Route path='/' Component={isAuth(DashBoard)}></Route>
-                  <Route path='/users' Component={isAuth(Users)}></Route>\
+                  <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path="/requests" Component={isAuth(RequestsGrid)} />
                   <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
