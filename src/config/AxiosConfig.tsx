@@ -5,8 +5,6 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   function (config) {
-    console.log(config);
-
     // Do something before request is sent
     if (config.url !== 'http://localhost:8080/authenticate') {     
       const token = localStorage.getItem('SavedToken');

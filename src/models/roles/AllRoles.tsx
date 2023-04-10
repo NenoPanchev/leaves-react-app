@@ -4,14 +4,15 @@ import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { IRole } from '../interfaces/role/roleInterfaces'
+import { DataGrid, GridColDef, GridRowModel } from '@mui/x-data-grid';
+import { IRole, IRoleFilter, IRolePage } from '../interfaces/role/roleInterfaces'
 import { GridRowParams } from '@mui/x-data-grid';
 
 import AddRoleButton from './AddRole';
 import EditRoleButton from './EditRole';
 import RoleSearchFilter from './RoleSearchFilter';
 import { useTranslation } from 'react-i18next';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 import '../ViewAll.css'
 
@@ -19,23 +20,27 @@ function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-
 export default function Roles() {
+    const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
+    const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
-  const [filter, setFilter] = React.useState<FormData>(new FormData);
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
-  const [paginationModel, setPaginationModel] = React.useState({
-    pageSize: 5,
-    page: 0,
+  
+  const [roleFilter, setRoleFilter] = React.useState<IRoleFilter>({
+    name: '',
+    permissions: [],
+    offset: DEFAULT_OFFSET,
+    limit: DEFAULT_LIMIT
   });
+  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+
   const { t } = useTranslation();
   const name = t('Name');
   const id = t('Id');
   const permissions = t('Permissions');
   const actions = t('Actions');
 
-  const roles = roleService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
+  const page = roleService.useFetchPage(refreshCurrentState, roleFilter);
+  
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -50,6 +55,11 @@ export default function Roles() {
     refresh={setRefreshCurrentState}></DeleteButton>
   }
 
+  const handlePaginationModelChange = (paginationModel:any) => {
+    setRoleFilter({...roleFilter, offset: paginationModel.pageSize * (paginationModel.page), 
+        limit: paginationModel.pageSize})
+    setRefreshCurrentState(refreshCurrentState + 1);  
+  };
 
 
   const columns: GridColDef[] = [
@@ -91,7 +101,7 @@ export default function Roles() {
     },
   ];
 
-  const rows = roles.map(role => {
+  const rows = page.content.map(role => {
     return {
       id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', ')
     }
@@ -103,29 +113,26 @@ export default function Roles() {
         <Title>{t('Roles')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          setRoles={setFilteredRoles} setFilter={setFilter}
+          filter={roleFilter} setFilter={setRoleFilter}
           setShouldFilter={setShouldFilter}></RoleSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
         </Box>
 
-        <Box sx={{ height: 650, width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
           <DataGrid
+            autoHeight
             rows={rows}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 6,
-                },
-              },
-            }}
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            rowCount={page.totalElements}
             pageSizeOptions={[5, 10, 25, 50, 100]}
+            paginationModel={{ page: page.number, pageSize: page.size }}
+            pagination
+            paginationMode='server'
+            onPaginationModelChange={handlePaginationModelChange}
+      
             disableRowSelectionOnClick
-            // slots={{ toolbar: CustomToolbar, pagination: CustomPagination }}
 
           />
         </Box>
