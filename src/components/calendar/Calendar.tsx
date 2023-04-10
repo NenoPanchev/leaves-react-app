@@ -219,7 +219,7 @@ const CustomDay: React.FC = (): JSX.Element => {
             <CalendarMonthIcon />
           </ListItemIcon>
           <Typography color="black"   >
-            Calendar
+            {t('Calendar')}
           </Typography>
         </ListItemButton>
       <Dialog

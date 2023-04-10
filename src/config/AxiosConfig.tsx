@@ -5,9 +5,13 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   function (config) {
+    console.log(config);
+
     // Do something before request is sent
-    const token = localStorage.getItem('SavedToken');
-    config.headers.Authorization =  token ? `${token}` : '';
+    if (config.url !== 'http://localhost:8080/authenticate') {     
+      const token = localStorage.getItem('SavedToken');
+      config.headers.Authorization = token ? `${token}` : '';
+    }
     return config;
   },
   function (error) {
@@ -17,14 +21,14 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    function (response) {
-        return response;
-    },
-    function (error) {
-    if (error.response.status === 401 || 
-        (error.response.data.path == '/authenticate/refresh' && error.response.status === 500)) {
-        localStorage.setItem('Authenticated', 'false');       
-    }   
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 401 ||
+      (error.response.data.path == '/authenticate/refresh' && error.response.status === 500)) {
+      localStorage.setItem('Authenticated', 'false');
+    }
     return Promise.reject(error);
   }
 );

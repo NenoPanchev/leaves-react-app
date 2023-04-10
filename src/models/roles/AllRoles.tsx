@@ -25,6 +25,10 @@ export default function Roles() {
   const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
   const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
+  const [paginationModel, setPaginationModel] = React.useState({
+    pageSize: 5,
+    page: 0,
+  });
   const { t } = useTranslation();
   const name = t('Name');
   const id = t('Id');
@@ -106,19 +110,23 @@ export default function Roles() {
           <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
         </Box>
 
-        <Box sx={{ height: 400, width: '100%' }}>
+        <Box sx={{ height: 650, width: '100%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
             initialState={{
               pagination: {
                 paginationModel: {
-                  pageSize: 5,
+                  pageSize: 6,
                 },
               },
             }}
-            pageSizeOptions={[5]}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
             disableRowSelectionOnClick
+            // slots={{ toolbar: CustomToolbar, pagination: CustomPagination }}
+
           />
         </Box>
       </Container>

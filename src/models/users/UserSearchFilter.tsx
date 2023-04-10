@@ -23,6 +23,9 @@ function UserSearchFilter(props: UserSearchFilterProps) {
     const navigate = useNavigate();
     const fetchAllFiltered = userService.useFetchAllFiltered();
     const roleNames = useFetchAllNames(props.refreshCurrentState);
+    if (!roleNames.includes('SUPER_ADMIN')) {
+        roleNames.unshift('SUPER_ADMIN');
+    }
     const { t } = useTranslation();
     const rolesPlaceholder = t('Roles');
 

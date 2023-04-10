@@ -1,15 +1,12 @@
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import CustomErrorBoundary from '../components/CustomErrorBoundary/CustomErrorBoundary';
 
 import Nav from '../components/nav/Nav';
 import SignIn from './SignIn';
-import StickyFooter from '../components/footer/StickyFooter';
 import Roles from '../models/roles/AllRoles'
 import { LogOut } from '../services/authService';
 import Departments from '../models/departments/AllDepartments';
