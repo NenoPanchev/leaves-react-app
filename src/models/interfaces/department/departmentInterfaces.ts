@@ -16,6 +16,25 @@ export interface IDepartmentDetails {
     lastModifiedBy?: string
   }
 
+  export interface IDepartmentPage {
+    content: IDepartment[],
+    totalElements: number,
+    totalPages: number,
+    numberOfElements: number,
+    number:number,
+    size: number,
+    first: boolean,
+    last: boolean
+}
+
+export interface IDepartmentFilter {
+  name: string
+  adminEmail: string
+  employeeEmails: string[]
+  offset: number
+  limit: number
+}
+
 export interface EditDepartmentButtonProps {
     department: IDepartment
     refreshCurrentState: number
@@ -27,9 +46,9 @@ export interface EditDepartmentButtonProps {
 export interface DepartmentSearchFilterProps {
   refreshCurrentState: number
   refresh: (value: number) => void;
-  setRoles: (value: IDepartment[]) => void;
-  setFilter: (value: FormData) => void;
-  setShouldFilter: (value: boolean) => void;
+  setDepartments: (value: IDepartment[]) => void;
+  filter: IDepartmentFilter;
+  setFilter: (value: IDepartmentFilter) => void;
 }
 
 export interface AddDepartmentButtonProps {

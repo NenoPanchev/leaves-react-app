@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IDepartment, IDepartmentDetails } from '../models/interfaces/department/departmentInterfaces'
-import { BASE_DEPARTMENT_URL } from '../constants/GlobalConstants';
+import { IDepartment, IDepartmentDetails, IDepartmentFilter, IDepartmentPage } from '../models/interfaces/department/departmentInterfaces'
+import { BASE_DEPARTMENT_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 
 export const useFetchAll = (refresh: number) => {
     const [department, setDepartment] = useState<IDepartment[]>([]);
@@ -116,6 +116,38 @@ export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldF
 
     return departments;
 
+}
+
+export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
+  const [page, setPage] = useState<IDepartmentPage>({
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    numberOfElements: 5,
+    number: 0,
+    size: 5,
+    first: true,
+    last: true
+  });
+  useEffect(() => {
+    fetchPage();
+  }, [refresh]);
+
+  const fetchPage = () => {
+    
+    const loadPage = async () => {
+      const result = await axios.post(BASE_DEPARTMENT_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
+        .then(response =>  {
+          
+          setPage(response.data)
+          
+        })
+        .catch(error => console.log(error))
+    }
+    loadPage();      
+    return page;
+  }
+  return page;
 }
 
 export const useFetchAllNames = (refresh: number) => {

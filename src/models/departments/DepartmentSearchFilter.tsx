@@ -2,23 +2,18 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { DepartmentSearchFilterProps } from '../interfaces/department/departmentInterfaces';
-import * as departmentService from '../../services/departmentService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
-
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
-    const [admin, setAdmin] = React.useState('');
-    const [employees, setEmployees] = React.useState<string[]>([]);
-    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
-    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
-    const fetchAllFiltered = departmentService.useFetchAllFiltered();
+    const [adminEmail, setAdminEmail] = React.useState('');
+    const [employeeEmails, setEmployeeEmails] = React.useState<string[]>([]);
+
     const userEmails = useFetchAllEmails(props.refreshCurrentState);    
     const { t } = useTranslation();
     const employeesPlaceholder = t('Employees');
@@ -27,28 +22,15 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();
-        const filter = new FormData(event.currentTarget);
-        
-        if(employees) {
-            employees.forEach(empl => {
-                filter.append('employees[]', empl);
-            })
-        }
-        
-        const departments = fetchAllFiltered(props.refreshCurrentState, filter);
-        props.setRoles(departments);
-        props.setFilter(filter);
-        props.setShouldFilter(true);
+
+        props.setFilter({...props.filter, name: name, adminEmail: adminEmail, employeeEmails: employeeEmails, offset: 0})
         props.refresh(props.refreshCurrentState + 1);
     }
     function clearFilter() {
         setName('');  
-        setAdmin('');
-        setEmployees([]);
-        setOffset(DEFAULT_OFFSET);
-        setLimit(DEFAULT_LIMIT);
+        setAdminEmail('');
+        setEmployeeEmails([]);
         
-        props.setShouldFilter(false);
         props.refresh(props.refreshCurrentState + 1);
 
     }
@@ -76,22 +58,22 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     size='small'
                     id="admin"
                     label={t('Admin')}
-                    name="admin"
+                    name="adminEmail"
                     autoComplete="admin"
-                    value={admin}
+                    value={adminEmail}
                     onChange={(e) => {
-                        setAdmin(e.target.value);
+                        setAdminEmail(e.target.value);
                     }}
                 />
                 <Autocomplete
                     multiple
-                    id="employees"
+                    id="employeeEmails"
                     options={userEmails}
                     size='small'
                     sx={{minWidth: '30%'}}
-                    value={employees}
+                    value={employeeEmails}
                     onChange={( event, newValue) => {
-                        setEmployees(newValue)
+                        setEmployeeEmails(newValue)
                     }}
                     renderInput={(params) => (
                         <TextField
@@ -101,34 +83,6 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                             placeholder={employeesPlaceholder}
                         />
                     )}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="offset"
-                    label={t('Offset')}
-                    name="offset"
-                    type='number'
-                    autoComplete="offset"
-                    value={offset}
-                    onChange={(e) => {
-                        setOffset(Number(e.target.value));
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="limit"
-                    label={t('Limit')}
-                    name="limit"
-                    type='number'
-                    autoComplete="limit"
-                    value={limit}
-                    onChange={(e) => {
-                        setLimit(Number(e.target.value));
-                    }}
                 />
                 <Button
                     type='submit'
@@ -141,7 +95,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                 </Button>
                 <IconButton 
                 color='error'
-                type='reset'
+                type='submit'
                 sx={{marginTop: '16px',
                         marginBottom: '8px'}}
                 onClick={clearFilter}

@@ -21,16 +21,14 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();     
-        
         props.setFilter({...props.filter, name: name, permissions: permissions, offset: 0})
-
         props.refresh(props.refreshCurrentState + 1);
     }
 
     function clearFilter() {
         setName('');
         setPermissions([]);
-        
+    
         props.refresh(props.refreshCurrentState + 1);
     }
 

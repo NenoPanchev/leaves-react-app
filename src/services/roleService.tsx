@@ -69,69 +69,11 @@ export const useEdit = () => {
   return editRole;
 }
 
-export const useFetchAllFiltered = () => {
-  const [roles, setRoles] = useState<IRole[]>([]);
-
-  const fetchAllFiltered = (refresh: number, filter: FormData) => {
-    
-    // useEffect(() => {
-    //   loadRoles();
-    // }, [refresh]);
-
-    const loadRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setRoles(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-    loadRoles();      
-    return roles;
-  }
-  return fetchAllFiltered;
-}
-
-
-export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldFilter: boolean) => {
-  const [roles, setRoles] = useState<IRole[]>([]);
-    
-    useEffect(() => {
-      if (shouldFilter) {
-        loadFilteredRoles();
-      } else {
-        loadRoles();
-      }
-    }, [refresh]);
-
-    const loadFilteredRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setRoles(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-
-  
-    const loadRoles = async () => {
-      const result = await axios.get(BASE_ROLE_URL)
-        .then(response => setRoles(response.data))
-        .catch(error => console.log(error))
-    }
-
-    return roles;
-
-}
 export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
   const [page, setPage] = useState<IRolePage>({
     content: [],
-
     totalElements: 0,
     totalPages: 0,
-
     numberOfElements: 5,
     number: 0,
     size: 5,

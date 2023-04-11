@@ -10,7 +10,6 @@ export interface IRolePage {
     content: IRole[],
     totalElements: number,
     totalPages: number,
-    
     numberOfElements: number,
     number:number,
     size: number,
@@ -48,5 +47,4 @@ export interface RoleSearchFilterProps {
     refresh: (value: number) => void;
     filter: IRoleFilter;
     setFilter: (value: IRoleFilter) => void;
-    setShouldFilter: (value: boolean) => void;
 }

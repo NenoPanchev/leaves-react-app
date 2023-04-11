@@ -4,8 +4,8 @@ import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
-import { DataGrid, GridColDef, GridRowModel } from '@mui/x-data-grid';
-import { IRole, IRoleFilter, IRolePage } from '../interfaces/role/roleInterfaces'
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { IRole, IRoleFilter } from '../interfaces/role/roleInterfaces'
 import { GridRowParams } from '@mui/x-data-grid';
 
 import AddRoleButton from './AddRole';
@@ -16,22 +16,15 @@ import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 import '../ViewAll.css'
 
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
 
 export default function Roles() {
-    const [filteredRoles, setFilteredRoles] = React.useState<IRole[]>([]);
-    const [filter, setFilter] = React.useState<FormData>(new FormData);
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  
   const [roleFilter, setRoleFilter] = React.useState<IRoleFilter>({
     name: '',
     permissions: [],
     offset: DEFAULT_OFFSET,
     limit: DEFAULT_LIMIT
   });
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
 
   const { t } = useTranslation();
   const name = t('Name');
@@ -113,16 +106,14 @@ export default function Roles() {
         <Title>{t('Roles')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          filter={roleFilter} setFilter={setRoleFilter}
-          setShouldFilter={setShouldFilter}></RoleSearchFilter>
+          filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
         </Box>
 
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
-            autoHeight
             rows={rows}
             columns={columns}
             rowCount={page.totalElements}
@@ -131,9 +122,7 @@ export default function Roles() {
             pagination
             paginationMode='server'
             onPaginationModelChange={handlePaginationModelChange}
-      
             disableRowSelectionOnClick
-
           />
         </Box>
       </Container>
