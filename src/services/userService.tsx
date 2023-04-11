@@ -29,11 +29,11 @@ export const useFetchOne = (props:number) => {
     const [user, setUser] = useState<IUserDetails>();
     
   useEffect(() => {
-    loadDepartment();
+    loadUser();
   }, []);
   
 
-  const loadDepartment = async () => {
+  const loadUser = async () => {
     const result = await axios.get(BASE_USER_URL + props)
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
@@ -46,11 +46,11 @@ export const useFetchOneEmail = (props:string) => {
   const [user, setUser] = useState<IUserDetails>();
   
 useEffect(() => {
-  loadDepartment();
+  loadUser();
 }, []);
 
 
-const loadDepartment = async () => {
+const loadUser = async () => {
   const result = await axios.post(BASE_USER_URL+"email" , props)
     .then(response => setUser(response.data))
     .catch(error => console.log(error))
