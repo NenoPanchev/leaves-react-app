@@ -53,6 +53,13 @@ const unMarkAsDeleted = (id: any) => {
 
 };
 
+const getPdf = (id: any, data: any) => {
+  return axios.post<any>(`http://localhost:8080/users/${id}/pdf`,data,{
+    responseType: 'arraybuffer',
+  })
+
+};
+
 
 // const findByTitle = (title: string) => {
 //   return http.get<Array<ITutorialData>>(`/tutorials?title=${title}`);
@@ -69,7 +76,8 @@ const TutorialService = {
   disapprove,
   getAllFilter,
   getAllFilterPage,
-  getAllByUser
+  getAllByUser,
+  getPdf
 };
 
 export default TutorialService;

@@ -3,215 +3,186 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
+import IRequestFormPdf from '../../models/interfaces/request/IRequestFormPdf';
+import { useCallback, useState } from 'react';
+import RequestService from '../../services/RequestService';
+import fileDownload from 'js-file-download'
 type AddRequestAlertProps = {
-    open: boolean,
-    onClose: (newValue: boolean) => void;
-    leaveRequest : IRequestDataGet
+  open: boolean,
+  onClose: (newValue: boolean) => void;
+  leaveRequest: IRequestDataGet
 }
 const states = [
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    },
-    {
-      value: 'los-angeles',
-      label: 'Los Angeles'
-    }
-  ];
+  {
+    value: 'Александър Василев',
+    label: 'Александър Василев'
+  },
+  {
+    value: 'Димитар Колев',
+    label: 'Димитар Колев'
+  }
+];
 const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
-    const [open, setOpen] = React.useState(props.open);
-    const[t,i18n]=useTranslation();
-    const handleClose = () => {
-      props.onClose(false);
-        setOpen(false);
-    };
-    const{leaveRequest}=props;
-
-
-    const [values, setValues] = React.useState({
-        firstName: 'Anika',
-        lastName: 'Visser',
-        email: 'demo@devias.io',
-        phone: '',
-        state: 'los-angeles',
-        country: 'USA'
-      });
+  const [open, setOpen] = React.useState(props.open);
+  const [t, i18n] = useTranslation();
+  const handleClose = () => {
+    props.onClose(false);
+    setOpen(false);
+  };
+  const { leaveRequest } = props;
+  const [requestForm, setRequestForm] = useState<IRequestFormPdf>({
+    requestToName: "",
+    year: "",
+    position: "",
+    location: "",
+    egn: ""
+  });
+  const handleChange = useCallback(
+    (event: { target: { name: string; value: string; }; }) => {
+      setRequestForm((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value
+      }));
+    },
+    []
+  );
+  const handleSubmit =async () => {
+    await RequestService.getPdf(leaveRequest.id,requestForm)
     
-    //   const handleChange = React.useCallback(
-    //     (event) => {
-    //       setValues((prevState) => ({
-    //         ...prevState,
-    //         [event.target.name]: event.target.value
-    //       }));
-    //     },
-    //     []
-    //   );
-      const handleChange = () => {
-        setOpen(false);
-    };
-      const handleSubmit = () => {
-        setOpen(false);
-    };
+    .then((response: any) => {
+      fileDownload(response.data, "Gosho.pdf")
+    })
+    .catch((e: Error) => {
+      console.log(e);
+    });
+    setOpen(false);
+  };
 
 
-    return (
-        <React.Fragment>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  m: 'auto',
-                  width: 'fit-content',
-              }}
-            >
-                <DialogContent
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  m: 'auto',
-                  width: 'fit-content',
-              }}>
+  return (
 
-                    <Box
-                        noValidate
-                        component="form"
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            m: 'auto',
-                            width: 'fit-content',
-                        }}>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
-        <CardContent sx={{ pt: 0 }}>
-          <Box sx={{ m: -1.5 }}>
-            <Grid
-              container
-              spacing={3}
-            >
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="lg"
+    >
+      <DialogContent>
+
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 'auto',
+            width: 'fit-content',
+          }}>
+          <CardHeader
+            title="Profile"
+          />
+          <CardContent sx={{ pt: 0 }}>
+            <Box sx={{ m: -1.5 }}>
               <Grid
-                xs={12}
-                md={6}
+                container
+                spacing={3}
               >
-                <TextField
-                  fullWidth
-                  helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={values.lastName}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  onChange={handleChange}
-                  required
-                  value={values.email}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.phone}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Country"
-                  name="country"
-                  onChange={handleChange}
-                  required
-                  value={values.country}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
+                <Grid
+                  xs={12}
+                  md={6}
                 >
-                  {states.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    name="address"
+                    onChange={handleChange}
+                    required
+                    // value={values.firstName}
+                  />
+                </Grid>
+                <Grid
+                  xs={12}
+                  md={6}
+                >
+                  <TextField
+                    fullWidth
+                    label="Position"
+                    name="position"
+                    onChange={handleChange}
+                    required
+                    // value={values.lastName}
+                  />
+                </Grid>
+                <Grid
+                  xs={12}
+                  md={6}
+                >
+                  <TextField
+                    fullWidth
+                    label="Year"
+                    name="year"
+                    onChange={handleChange}
+                    required
+                    // value={values.email}
+                  />
+                </Grid>
+                <Grid
+                  xs={12}
+                  md={6}
+                >
+                  <TextField
+                    fullWidth
+                    label="Egn"
+                    name="egn"
+                    onChange={handleChange}
+                    type="number"
+                    // value={values.phone}
+                  />
+                </Grid>
+                <Grid
+                  xs={12}
+                  md={6}
+                >
+                  <TextField
+                    fullWidth
+                    label="Request To"
+                    name="requestToName"
+                    onChange={handleChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    // value={values.state}
+                  >
+                    {states.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
-        </CardContent>
-        <Divider />
-                    </Box>
-                </DialogContent>
-                <Grid container
-                    spacing={0}
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center">
-                    <Grid>
-                    <DialogActions>
-                            <Button onClick={handleSubmit} >{t('Close')}</Button>
-                            <Button onClick={handleClose} >{t('Close')}</Button>
-                        </DialogActions>
-                    </Grid >
-                </Grid >
+            </Box>
+          </CardContent>
+        </Box>
+      </DialogContent>
 
-            </Dialog>
-        </React.Fragment>
-    );
+      <Grid container
+        spacing={0}
+        direction="row"
+        alignItems="center"
+        justifyContent="center">
+
+        <DialogActions>
+          <Button onClick={handleSubmit} >{t('Submit')}</Button>
+          <Button onClick={handleClose} >{t('Close')}</Button>
+        </DialogActions>
+
+      </Grid >
+
+    </Dialog>
+  );
 }
 export default PdfFormRequest;
