@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { RoleSearchFilterProps } from '../interfaces/role/roleInterfaces';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
-import { PERMISSIONS } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET, PERMISSIONS } from '../../constants/GlobalConstants';
 import { useTranslation } from 'react-i18next';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,7 +21,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();     
-        props.setFilter({...props.filter, name: name, permissions: permissions, offset: 0})
+        props.setFilter({...props.filter, name: name, permissions: permissions, offset: DEFAULT_OFFSET})
         props.refresh(props.refreshCurrentState + 1);
     }
 

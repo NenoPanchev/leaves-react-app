@@ -66,58 +66,6 @@ export const useEdit = () => {
   return editDepartment;
 }
 
-export const useFetchAllFiltered = () => {
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
-
-  const fetchAllFiltered = (refresh: number, filter: FormData) => {
-
-    const loadDepartments = async () => {
-      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setDepartments(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-    loadDepartments();      
-    return departments;
-  }
-  return fetchAllFiltered;
-}
-
-export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldFilter: boolean) => {
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
-    
-    useEffect(() => {
-      if (shouldFilter) {
-        loadFilteredDepartments();
-      } else {
-        loadRoles();
-      }
-    }, [refresh]);
-
-    const loadFilteredDepartments = async () => {
-      const result = await axios.post(BASE_DEPARTMENT_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setDepartments(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-
-  
-    const loadRoles = async () => {
-      const result = await axios.get(BASE_DEPARTMENT_URL)
-        .then(response => setDepartments(response.data))
-        .catch(error => console.log(error))
-    }
-
-    return departments;
-
-}
-
 export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
   const [page, setPage] = useState<IDepartmentPage>({
     content: [],

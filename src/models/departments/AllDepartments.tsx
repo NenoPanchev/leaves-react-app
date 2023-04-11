@@ -28,10 +28,6 @@ export default function Departments() {
     offset: DEFAULT_OFFSET,
     limit: DEFAULT_LIMIT
   });
-  const [filteredDepartments, setFilteredDepartments] = React.useState<IDepartment[]>([]);
-  const [filter, setFilter] = React.useState<FormData>(new FormData);
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
-  const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const userEmails = fetchUserEmails(refreshCurrentState);
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
@@ -121,7 +117,7 @@ export default function Departments() {
         <Title>{t('Departments')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          setDepartments={setFilteredDepartments} filter={departmentFilter} setFilter={setDepartmentFilter}
+          filter={departmentFilter} setFilter={setDepartmentFilter}
           ></DepartmentSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>

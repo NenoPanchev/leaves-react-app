@@ -46,7 +46,6 @@ export interface EditDepartmentButtonProps {
 export interface DepartmentSearchFilterProps {
   refreshCurrentState: number
   refresh: (value: number) => void;
-  setDepartments: (value: IDepartment[]) => void;
   filter: IDepartmentFilter;
   setFilter: (value: IDepartmentFilter) => void;
 }

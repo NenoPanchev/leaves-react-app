@@ -8,6 +8,7 @@ import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
@@ -23,7 +24,8 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
         event.stopPropagation();
         event.preventDefault();
 
-        props.setFilter({...props.filter, name: name, adminEmail: adminEmail, employeeEmails: employeeEmails, offset: 0})
+        props.setFilter({...props.filter, name: name, adminEmail: adminEmail, 
+            employeeEmails: employeeEmails, offset: DEFAULT_OFFSET})
         props.refresh(props.refreshCurrentState + 1);
     }
     function clearFilter() {

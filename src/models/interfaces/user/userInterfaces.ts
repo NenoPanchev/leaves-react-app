@@ -36,12 +36,31 @@ export interface IUserDetails {
     lastModifiedBy?: string
 }
 
+export interface IUserPage {
+  content: IUser[],
+  totalElements: number,
+  totalPages: number,
+  numberOfElements: number,
+  number:number,
+  size: number,
+  first: boolean,
+  last: boolean
+}
+
+export interface IUserFilter {
+name: string
+email: string
+department: string
+roles: string[]
+offset: number
+limit: number
+}
+
 export interface UserSearchFilterProps {
   refreshCurrentState: number
   refresh: (value: number) => void;
-  setUsers: (value: IUser[]) => void;
-  setFilter: (value: FormData) => void;
-  setShouldFilter: (value: boolean) => void;
+  filter: IUserFilter;
+  setFilter: (value: IUserFilter) => void;
 }
 
 export interface AddUserButtonProps {

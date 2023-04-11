@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IUser, IUserDetails, IUserEdit } from '../models/interfaces/user/userInterfaces'
-import { BASE_USER_URL } from '../constants/GlobalConstants';
+import { IUser, IUserDetails, IUserEdit, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
+import { BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 
 
@@ -50,6 +50,38 @@ export const useCreate = () => {
       .catch(error => console.log(error))
   }
   return addUser;
+}
+
+export const useFetchPage = (refresh: number, filter: IUserFilter) => {
+  const [page, setPage] = useState<IUserPage>({
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    numberOfElements: 5,
+    number: 0,
+    size: 5,
+    first: true,
+    last: true
+  });
+  useEffect(() => {
+    fetchPage();
+  }, [refresh]);
+
+  const fetchPage = () => {
+    
+    const loadPage = async () => {
+      const result = await axios.post(BASE_USER_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
+        .then(response =>  {
+          
+          setPage(response.data)
+          
+        })
+        .catch(error => console.log(error))
+    }
+    loadPage();      
+    return page;
+  }
+  return page;
 }
 
 export const useEdit = () => {
