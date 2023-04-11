@@ -92,10 +92,10 @@
     "Requests": {
         "StartDate": "Стартова Дата",
         "EndDate": "Крайна Дата",
-        "Aprooved": "Одобрен",
+        "Approved": "Одобрен",
         "approved": "Одобрен",
         "Approve": "Одобри",
-        "rejected":"Отхвърлен",
+        "Rejected":"Отхвърлен",
         "rejectedS":"Отхвърлени",
         "notProcessedS":"Не обработени",
         "approvedS":"Одобрени",
@@ -123,5 +123,6 @@
     "ListAllFilters": {
         "Filter": "Филтри",
         "FilterButton": "Филтрирай"
-    }
+    },
+    "Calendar Locale": "bg"
 }

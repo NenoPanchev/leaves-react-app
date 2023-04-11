@@ -23,8 +23,6 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const navigate = useNavigate();
     const editDepartment = useEdit();  
     const { t } = useTranslation();  
-    const adminPlaceholder = t('Admin');
-    const employeesPlaceholder = t('Employees');
     const availableEmployees = props.availableEmployeesEmails.concat(arr);
 
     const handleClickOpen = () => {
@@ -108,7 +106,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         name='adminEmail'
                                         margin='normal'
                                         label={t('Admin')}
-                                        placeholder={adminPlaceholder}
+                                        placeholder={t('Admin')!}
                                     />
                                 )}
                             />
@@ -128,7 +126,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Employees')}
-                                        placeholder={employeesPlaceholder}
+                                        placeholder={t('Employees')!}
                                     />
                                 )}
                             />

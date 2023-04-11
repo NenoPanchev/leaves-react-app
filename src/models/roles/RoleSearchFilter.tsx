@@ -14,8 +14,6 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [permissions, setPermissions] = React.useState<string[]>([]);
     const { t } = useTranslation();
-    const permissionsPlaceholder = t('Permissions');
-
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -65,7 +63,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                             {...params}
                             margin='normal'
                             label={t('Permissions')}
-                            placeholder={permissionsPlaceholder}
+                            placeholder={t('Permissions')!}
                         />
                     )}
                 />

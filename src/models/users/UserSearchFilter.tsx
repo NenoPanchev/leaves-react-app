@@ -23,7 +23,6 @@ function UserSearchFilter(props: UserSearchFilterProps) {
         roleNames.unshift('SUPER_ADMIN');
     }
     const { t } = useTranslation();
-    const rolesPlaceholder = t('Roles');
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
@@ -104,7 +103,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                             {...params}
                             margin='normal'
                             label={t('Roles')}
-                            placeholder={rolesPlaceholder}
+                            placeholder={t('Roles')!}
                         />
                     )}
                 />

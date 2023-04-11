@@ -17,8 +17,6 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
 
     const userEmails = useFetchAllEmails(props.refreshCurrentState);    
     const { t } = useTranslation();
-    const employeesPlaceholder = t('Employees');
-
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
@@ -82,7 +80,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                             {...params}
                             margin='normal'
                             label={t('Employees')}
-                            placeholder={employeesPlaceholder}
+                            placeholder={t('Employees')!}
                         />
                     )}
                 />

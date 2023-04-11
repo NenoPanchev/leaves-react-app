@@ -12,9 +12,9 @@ import { useFetchAllNames as fetchDepartmentNames } from '../../services/departm
 import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
 import { IUser, IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/userInterfaces';
 
-import '../ViewAll.css'
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import '../ViewAll.css'
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -26,20 +26,9 @@ export default function Users() {
     offset: DEFAULT_OFFSET,
     limit: DEFAULT_LIMIT
   });
-  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
-  const [filter, setFilter] = React.useState<FormData>(new FormData);
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
-  const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
   const { t } = useTranslation();
-  const name = t('Name');
-  const id = t('Id');
-  const email = t('Email');
-  const department = t('Department');
-  const roles = t('Roles');
-  const actions = t('Actions');
-
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
 
   
@@ -65,42 +54,42 @@ export default function Users() {
 
   const columns: GridColDef[] = [
     { field: 'id',
-      headerName: id,
+      headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
       
     },
     {
       field: 'name',
-      headerName: name,
+      headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
         field: 'email',
-        headerName: email,
+        headerName: t('Email')!,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
       {
         field: 'department',
-        headerName: department,
+        headerName: t('Department')!,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
     {
       field: 'roles',
-      headerName: roles,
+      headerName: t('Roles')!,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1, 
     },
     {
       field: 'actions',
-      headerName: actions,
+      headerName: t('Actions')!,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,

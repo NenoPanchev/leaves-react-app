@@ -27,11 +27,6 @@ export default function Roles() {
   });
 
   const { t } = useTranslation();
-  const name = t('Name');
-  const id = t('Id');
-  const permissions = t('Permissions');
-  const actions = t('Actions');
-
   const page = roleService.useFetchPage(refreshCurrentState, roleFilter);
   
 
@@ -58,28 +53,28 @@ export default function Roles() {
   const columns: GridColDef[] = [
     {
       field: 'id',
-      headerName: id,
+      headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
 
     },
     {
       field: 'name',
-      headerName: name,
+      headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1,
     },
     {
       field: 'permissions',
-      headerName: permissions,
+      headerName: t('Permissions')!,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1,
     },
     {
       field: 'actions',
-      headerName: actions,
+      headerName: t('Actions')!,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,

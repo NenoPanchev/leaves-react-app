@@ -99,57 +99,6 @@ export const useEdit = () => {
   return editUser;
 }
 
-export const useFetchAllFiltered = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
-
-  const fetchAllFiltered = (refresh: number, filter: FormData) => {
-    
-    const loadUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setUsers(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-    loadUsers();      
-    return users;
-  }
-  return fetchAllFiltered;
-}
-
-
-export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldFilter: boolean) => {
-  const [users, setUsers] = useState<IUser[]>([]);
-    
-    useEffect(() => {
-      if (shouldFilter) {
-        loadFilteredUsers();
-      } else {
-        loadUsers();
-      }
-    }, [refresh]);
-
-    const loadFilteredUsers = async () => {
-      const result = await axios.post(BASE_USER_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setUsers(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-
-    const loadUsers = async () => {
-      const result = await axios.get(BASE_USER_URL)
-        .then(response => setUsers(response.data))
-        .catch(error => console.log(error))
-    }
-
-    return users;
-}
-
 export const useFetchAllEmails = (refresh: number) => {
   const [userEmails, setUserEmails] = useState<string[]>([]);
 

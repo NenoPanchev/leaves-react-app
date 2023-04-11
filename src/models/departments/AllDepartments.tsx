@@ -32,11 +32,6 @@ export default function Departments() {
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
   const { t } = useTranslation();
-  const name = t('Name');
-  const id = t('Id');
-  const admin = t('Admin');
-  const employees = t('Employees');
-  const actions = t('Actions');
   
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -60,35 +55,35 @@ export default function Departments() {
 
   const columns: GridColDef[] = [
     { field: 'id',
-      headerName: id,
+      headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
       
     },
     {
       field: 'name',
-      headerName: name,
+      headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
       field: 'adminEmail',
-      headerName: admin,
+      headerName: t('Admin')!,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
       field: 'employeeEmails',
-      headerName: employees,
+      headerName: t('Employees')!,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1, 
     },
     {
       field: 'actions',
-      headerName: actions,
+      headerName: t('Actions')!,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,

@@ -14,6 +14,8 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import RequestService from '../../services/RequestService';
+import 'dayjs/locale/en-gb';
+import 'dayjs/locale/bg';
 
 dayjs.extend(isBetweenPlugin);
 
@@ -32,7 +34,6 @@ const CustomPickersDay = styled(PickersDay, {
         prop !== 'isRejected',
 })<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected }) => {
     //  console.log(dayIsBetween);
-    console.log(isStart)
     let counter = 0;
     for (const dayIsBetweenItem of dayIsBetween) {
         //
@@ -188,8 +189,6 @@ const CustomDay: React.FC = (): JSX.Element => {
     const retrivePage = async () => {
         await RequestService.getAllByUser()
             .then((response: any) => {
-                console.log(response.data);
-                console.log(response.data.content);
                 setLeaveRequests(response.data);
             })
             .catch((e: Error) => {
@@ -202,7 +201,7 @@ const CustomDay: React.FC = (): JSX.Element => {
         <Grid container direction="row" sx={{ width: 'flex' }} >
             <Grid item >
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                     <DateCalendar
                         sx={{}}
                         slots={{ day: Day }}
@@ -214,7 +213,7 @@ const CustomDay: React.FC = (): JSX.Element => {
                     />
                 </LocalizationProvider>
             </Grid>
-            <Grid item direction="column" marginTop="auto" marginBottom="auto">
+            <Grid item marginTop="auto" marginBottom="auto">
 
                 <Grid container direction="row" marginBottom={2}  >
                     <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
@@ -228,7 +227,7 @@ const CustomDay: React.FC = (): JSX.Element => {
 
                 <Grid container direction="row" marginBottom={2}  >
                     <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')}</Typography>
+                    <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')!}</Typography>
                 </Grid>
 
             </Grid>
