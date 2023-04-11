@@ -217,17 +217,17 @@ const CustomDay: React.FC = (): JSX.Element => {
 
                 <Grid container direction="row" marginBottom={2}  >
                     <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Approved')}</Typography>
+                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
                 </Grid>
 
                 <Grid container direction="row" marginBottom={2} >
                     <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Rejected')}</Typography>
+                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
                 </Grid>
 
                 <Grid container direction="row" marginBottom={2}  >
                     <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')!}</Typography>
+                    <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
                 </Grid>
 
             </Grid>
