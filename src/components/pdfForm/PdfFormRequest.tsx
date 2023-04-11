@@ -7,6 +7,7 @@ import IRequestFormPdf from '../../models/interfaces/request/IRequestFormPdf';
 import { useCallback, useState } from 'react';
 import RequestService from '../../services/RequestService';
 import fileDownload from 'js-file-download'
+import dayjs from 'dayjs';
 type AddRequestAlertProps = {
   open: boolean,
   onClose: (newValue: boolean) => void;
@@ -31,8 +32,8 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   };
   const { leaveRequest } = props;
   const [requestForm, setRequestForm] = useState<IRequestFormPdf>({
-    requestToName: "",
-    year: "",
+    requestToName: "Александър Василев",
+    year: dayjs().year().toString(),
     position: "",
     location: "",
     egn: ""
@@ -50,7 +51,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     await RequestService.getPdf(leaveRequest.id,requestForm)
     
     .then((response: any) => {
-      fileDownload(response.data, "Gosho.pdf")
+      fileDownload(response.data, "отпуск.pdf")
     })
     .catch((e: Error) => {
       console.log(e);
@@ -94,7 +95,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   <TextField
                     fullWidth
                     label="Address"
-                    name="address"
+                    name="location"
                     onChange={handleChange}
                     required
                     // value={values.firstName}
@@ -123,7 +124,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     name="year"
                     onChange={handleChange}
                     required
-                    // value={values.email}
+                    value={requestForm.year}
                   />
                 </Grid>
                 <Grid
