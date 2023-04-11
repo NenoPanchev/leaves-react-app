@@ -254,6 +254,11 @@ const CustomDay: React.FC = (): JSX.Element => {
                 setOpen(true);
                 return;
             }
+            if (newValue?.isSame(element.endDate, 'day')) {
+                setLeaveRequest(element);
+                setOpen(true);
+                return;
+            }
         })
         console.log(leaveRequest);
     };
