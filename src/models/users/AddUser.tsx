@@ -23,8 +23,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const addUser = useCreate();
-    const departmentPlaceholder = t('Department');
-    const rolesPlaceholder = t('Roles');
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -127,7 +126,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                     name='department'
                                     margin='normal'
                                     label={t('Department')}
-                                    placeholder={departmentPlaceholder}
+                                    placeholder={t('Department')!}
                                     onChange={(e) => e.target.value}
                                 />
                             )}
@@ -147,7 +146,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                     {...params}
                                     margin='normal'
                                     label={t('Roles')}
-                                    placeholder={rolesPlaceholder}
+                                    placeholder={t('Roles')!}
                                 />
                             )}
                         />

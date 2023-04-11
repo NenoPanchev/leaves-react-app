@@ -6,6 +6,17 @@ export interface IRole {
     }]
 }
 
+export interface IRolePage {
+    content: IRole[],
+    totalElements: number,
+    totalPages: number,
+    numberOfElements: number,
+    number:number,
+    size: number,
+    first: boolean,
+    last: boolean
+}
+
 export interface IRoleDetails {
     id: number
     name: string
@@ -18,6 +29,13 @@ export interface IRoleDetails {
     lastModifiedBy?: string
 }
 
+export interface IRoleFilter {
+    name: string
+    permissions: string[]
+    offset: number
+    limit: number
+}
+
 export interface EditRoleButtonProps {
     role: IRole
     refreshCurrentState: number
@@ -27,7 +45,6 @@ export interface EditRoleButtonProps {
 export interface RoleSearchFilterProps {
     refreshCurrentState: number
     refresh: (value: number) => void;
-    setRoles: (value: IRole[]) => void;
-    setFilter: (value: FormData) => void;
-    setShouldFilter: (value: boolean) => void;
+    filter: IRoleFilter;
+    setFilter: (value: IRoleFilter) => void;
 }

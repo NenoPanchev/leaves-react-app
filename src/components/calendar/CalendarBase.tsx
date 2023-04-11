@@ -17,6 +17,8 @@ import RequestService from '../../services/RequestService';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import Filter from '../../models/interfaces/request/Filter';
 import { useState } from 'react';
+import 'dayjs/locale/en-gb';
+import 'dayjs/locale/bg';
 
 dayjs.extend(isBetweenPlugin);
 
@@ -223,8 +225,6 @@ const CustomDay: React.FC = (): JSX.Element => {
     const retrivePage = async () => {
         await RequestService.getAllByUser()
             .then((response: any) => {
-                console.log(response.data);
-                console.log(response.data.content);
                 setLeaveRequests(response.data);
             })
             .catch((e: Error) => {
@@ -239,7 +239,7 @@ const CustomDay: React.FC = (): JSX.Element => {
             <Grid container direction="row" sx={{ width: 'flex' }} >
                 <Grid item >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
                             sx={{}}
                             slots={{ day: Day }}
@@ -255,20 +255,20 @@ const CustomDay: React.FC = (): JSX.Element => {
                 </Grid>
                 <Grid item direction="column" marginTop="auto" marginBottom="auto">
 
-                    <Grid container direction="row" marginBottom={2}  >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5}>{t('Approved')}</Typography>
-                    </Grid>
+                <Grid container direction="row" marginBottom={2}  >
+                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
+                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
+                </Grid>
 
-                    <Grid container direction="row" marginBottom={2} >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5}>{t('Rejected')}</Typography>
-                    </Grid>
+                <Grid container direction="row" marginBottom={2} >
+                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
+                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
+                </Grid>
 
-                    <Grid container direction="row" marginBottom={2}  >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')}</Typography>
-                    </Grid>
+                <Grid container direction="row" marginBottom={2}  >
+                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
+                    <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
+                </Grid>
 
                 </Grid>
             </Grid>

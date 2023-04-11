@@ -102,10 +102,10 @@
     "Requests":{
     "StartDate":"Start date",
     "EndDate":"End Date",
-    "Aprooved":"Approved",
+    "Approved":"Approved",
     "approved":"Approved",
     "Approve":"Approve",
-    "rejected":"Rejected",
+    "Rejected":"Rejected",
     "notProcessed":"Not processed",
     "rejectedS":"Rejected",
     "notProcessedS":"Not processed",
@@ -138,7 +138,8 @@
     "ListAllFilters":{
         "Filter":"Filters",
         "FilterButton":"Filter"
-    }
+    },
+    "Calendar Locale": "en-gb"
 
 
 

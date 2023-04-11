@@ -35,8 +35,6 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [roleNames, setRoleNames] = React.useState<string[] | null>(arr);
     const navigate = useNavigate();
     const editUser = useEdit();   
-    const departmentPlaceholder = t('Department')
-    const rolesPlaceholder = t('Roles')
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -147,7 +145,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                         name='department'
                                         margin='normal'
                                         label={t('Department')}
-                                        placeholder={departmentPlaceholder}
+                                        placeholder={t('Department')!}
                                     />
                                 )}
                             />
@@ -168,7 +166,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Roles')}
-                                        placeholder={rolesPlaceholder}
+                                        placeholder={t('Roles')!}
                                     />
                                 )}
                             />

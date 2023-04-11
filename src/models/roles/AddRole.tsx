@@ -23,7 +23,6 @@ export default function AddRoleButton(props: AddButtonProps) {
 
     const navigate = useNavigate();
     const addRole = useCreate();
-    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -109,7 +108,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                                     name='permissions'
                                     margin='normal'
                                     label={t('Permissions')}
-                                    placeholder={permissionsPlaceholder}
+                                    placeholder={t('Permissions')!}
                                 />
                             )}
                         />

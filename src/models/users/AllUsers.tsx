@@ -10,31 +10,26 @@ import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
 import { useFetchAllNames as fetchDepartmentNames } from '../../services/departmentService';
 import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
-import { IUser, IUserEdit as IUserEdit } from '../interfaces/user/userInterfaces';
+import { IUser, IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/userInterfaces';
 
-import '../ViewAll.css'
 import { useTranslation } from 'react-i18next';
-
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import '../ViewAll.css'
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
-  const [filter, setFilter] = React.useState<FormData>(new FormData);
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
-  const users = userService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
+  const [userFilter, setUserFilter] = React.useState<IUserFilter>({
+    name: '',
+    email: '',
+    department: '',
+    roles: [],
+    offset: DEFAULT_OFFSET,
+    limit: DEFAULT_LIMIT
+  });
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
   const { t } = useTranslation();
-  const name = t('Name');
-  const id = t('Id');
-  const email = t('Email');
-  const department = t('Department');
-  const roles = t('Roles');
-  const actions = t('Actions');
+  const page = userService.useFetchPage(refreshCurrentState, userFilter);
 
   
   const renderViewButton = (id: number) => {
@@ -51,46 +46,50 @@ export default function Users() {
     refresh={setRefreshCurrentState}></DeleteButton>
   }
 
-  
+  const handlePaginationModelChange = (paginationModel:any) => {
+    setUserFilter({...userFilter, offset: paginationModel.pageSize * (paginationModel.page), 
+        limit: paginationModel.pageSize})
+    setRefreshCurrentState(refreshCurrentState + 1);  
+  };  
 
   const columns: GridColDef[] = [
     { field: 'id',
-      headerName: id,
+      headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
       
     },
     {
       field: 'name',
-      headerName: name,
+      headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
       flex: 1, 
     },
     {
         field: 'email',
-        headerName: email,
+        headerName: t('Email')!,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
       {
         field: 'department',
-        headerName: department,
+        headerName: t('Department')!,
         headerClassName: 'grid-header',
         width: 150,
         flex: 1, 
       },
     {
       field: 'roles',
-      headerName: roles,
+      headerName: t('Roles')!,
       headerClassName: 'grid-header',
       width: 200,
       flex: 1, 
     },
     {
       field: 'actions',
-      headerName: actions,
+      headerName: t('Actions')!,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
@@ -103,7 +102,7 @@ export default function Users() {
     },
   ];
 
-  const rows = users.map(user => {
+  const rows = page.content.map(user => {
     return {
       id: user.id, name: user?.name, email: user.email, department: user.department, 
       roles: user.roles.map(role => role.name).join(', ')
@@ -116,8 +115,8 @@ export default function Users() {
         <Title>{t('Users')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          setUsers={setFilteredUsers} setFilter={setFilter}
-          setShouldFilter={setShouldFilter}></UserSearchFilter>
+          filter={userFilter} setFilter={setUserFilter}
+          ></UserSearchFilter>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
           <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
@@ -127,14 +126,12 @@ export default function Users() {
           <DataGrid
             rows={rows}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
+            rowCount={page.totalElements}
+            pagination
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+            paginationModel={{ page: page.number, pageSize: page.size }}
+            paginationMode='server'
+            onPaginationModelChange={handlePaginationModelChange}
             disableRowSelectionOnClick
           />
         </Box>

@@ -18,8 +18,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const navigate = useNavigate();
     const addDepartment = useCreate();
     const { t } = useTranslation();
-    const adminPlaceholder = t('Admin')
-    const employeesPlaceholder = t('Employees');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -98,7 +96,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         name='adminEmail'
                                         margin='normal'
                                         label={t('Admin')}
-                                        placeholder={adminPlaceholder}
+                                        placeholder={t('Admin')!}
                                         onChange={(e) => e.target.value}
                                     />
                                 )}
@@ -118,7 +116,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Employees')}
-                                        placeholder={employeesPlaceholder}
+                                        placeholder={t('Employees')!}
                                     />
                                 )}
                             />

@@ -2,7 +2,6 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { UserSearchFilterProps } from '../interfaces/user/userInterfaces';
-import * as userService from '../../services/userService';
 import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -10,39 +9,28 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 
 function UserSearchFilter(props: UserSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');
-    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
-    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
     const [roles, setRoles] = React.useState<string[]>([]);
     const navigate = useNavigate();
-    const fetchAllFiltered = userService.useFetchAllFiltered();
     const roleNames = useFetchAllNames(props.refreshCurrentState);
     if (!roleNames.includes('SUPER_ADMIN')) {
         roleNames.unshift('SUPER_ADMIN');
     }
     const { t } = useTranslation();
-    const rolesPlaceholder = t('Roles');
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();
-        const filter = new FormData(event.currentTarget);
-        
-        if(roles) {
-            roles.forEach(r => {
-                filter.append('roles[]', r);
-            })   
-        }
-        
-        const users = fetchAllFiltered(props.refreshCurrentState, filter);
-        props.setFilter(filter);
-        props.setShouldFilter(true);
+
+        props.setFilter({...props.filter, name: name, email: email, department: department,
+            roles: roles, offset: DEFAULT_OFFSET})
+
         props.refresh(props.refreshCurrentState + 1);
     }
 
@@ -51,10 +39,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
         setEmail('');
         setDepartment('');
         setRoles([]);
-        setOffset(DEFAULT_OFFSET);
-        setLimit(DEFAULT_LIMIT);
-        
-        props.setShouldFilter(false);
+
         props.refresh(props.refreshCurrentState + 1);
 
     }
@@ -118,37 +103,9 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                             {...params}
                             margin='normal'
                             label={t('Roles')}
-                            placeholder={rolesPlaceholder}
+                            placeholder={t('Roles')!}
                         />
                     )}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="offset"
-                    label={t('Offset')}
-                    name="offset"
-                    type='number'
-                    autoComplete="offset"
-                    value={offset}
-                    onChange={(e) => {
-                        setOffset(Number(e.target.value));
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="limit"
-                    label={t('Limit')}
-                    name="limit"
-                    type='number'
-                    autoComplete="limit"
-                    value={limit}
-                    onChange={(e) => {
-                        setLimit(Number(e.target.value));
-                    }}
                 />
                 <Button
                     type='submit'
@@ -162,7 +119,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                 </Button>
                 <IconButton 
                 color='error'
-                type='reset'
+                type='submit'
                 sx={{marginTop: '16px',
                         marginBottom: '8px'}}
                 onClick={clearFilter}

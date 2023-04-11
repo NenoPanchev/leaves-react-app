@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IRole, IRoleDetails } from '../models/interfaces/role/roleInterfaces'
-import { BASE_ROLE_URL } from '../constants/GlobalConstants';
+import { IRole, IRoleDetails, IRoleFilter, IRolePage } from '../models/interfaces/role/roleInterfaces'
+import { BASE_ROLE_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Permission } from '../models/objects/Permission';
 import { Role } from '../models/objects/Role';
 import AuthContext from '../contexts/AuthContext';
@@ -69,61 +69,38 @@ export const useEdit = () => {
   return editRole;
 }
 
-export const useFetchAllFiltered = () => {
-  const [roles, setRoles] = useState<IRole[]>([]);
+export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
+  const [page, setPage] = useState<IRolePage>({
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    numberOfElements: 5,
+    number: 0,
+    size: 5,
+    first: true,
+    last: true
+  });
+  useEffect(() => {
+    fetchPage();
+  }, [refresh]);
 
-  const fetchAllFiltered = (refresh: number, filter: FormData) => {
+  const fetchPage = () => {
     
-    // useEffect(() => {
-    //   loadRoles();
-    // }, [refresh]);
+    
 
-    const loadRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
+    const loadPage = async () => {
+      const result = await axios.post(BASE_ROLE_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
         .then(response =>  {
           
-          setRoles(response.data)
+          setPage(response.data)
           
         })
         .catch(error => console.log(error))
     }
-    loadRoles();      
-    return roles;
+    loadPage();      
+    return page;
   }
-  return fetchAllFiltered;
-}
-
-
-export const useFetchAllOrFiltered = (refresh: number, filter: FormData, shouldFilter: boolean) => {
-  const [roles, setRoles] = useState<IRole[]>([]);
-    
-    useEffect(() => {
-      if (shouldFilter) {
-        loadFilteredRoles();
-      } else {
-        loadRoles();
-      }
-    }, [refresh]);
-
-    const loadFilteredRoles = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'filter', formToJSON(filter))
-        .then(response =>  {
-          
-          setRoles(response.data)
-          
-        })
-        .catch(error => console.log(error))
-    }
-
-  
-    const loadRoles = async () => {
-      const result = await axios.get(BASE_ROLE_URL)
-        .then(response => setRoles(response.data))
-        .catch(error => console.log(error))
-    }
-
-    return roles;
-
+  return page;
 }
 
 export const useFetchAllNames = (refresh: number) => {

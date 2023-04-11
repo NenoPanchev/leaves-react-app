@@ -27,7 +27,6 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const str = props.role.permissions.toString();
     const arr = str.split(', ');
     const [permissionNames, setPermissionNames] = React.useState<string[] | null>(arr);
-    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -116,7 +115,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Permissions')}
-                                        placeholder={permissionsPlaceholder}
+                                        placeholder={t('Permissions')!}
                                     />
                                 )}
                             />
