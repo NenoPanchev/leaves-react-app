@@ -25,6 +25,7 @@ export const useFetchAll = (refresh: number) => {
 }
 
 export const useFetchOne = (props:number) => {
+
     const [user, setUser] = useState<IUserDetails>();
     
   useEffect(() => {
@@ -38,6 +39,32 @@ export const useFetchOne = (props:number) => {
       .catch(error => console.log(error))
   }
   return user;
+}
+
+export const useFetchOneEmail = (props:string) => {
+
+  const [user, setUser] = useState<IUserDetails>();
+  
+useEffect(() => {
+  loadDepartment();
+}, []);
+
+
+const loadDepartment = async () => {
+  const result = await axios.post(BASE_USER_URL+"email" , props)
+    .then(response => setUser(response.data))
+    .catch(error => console.log(error))
+}
+return user;
+}
+
+export const getUserByEmail = (data: string) => {
+  return axios.post<IUserDetails>(BASE_USER_URL+"email",data)
+};
+
+export const getUser = async () => {
+  console.log("retriveUser")
+return await axios.get<IUserDetails>(BASE_USER_URL+"current");
 }
 
 export const useCreate = () => {

@@ -5,7 +5,6 @@ export class UserDetails {
     public UserDetails() {
 
     }
-
     public getEmail(): string {
         return this.email;
     }

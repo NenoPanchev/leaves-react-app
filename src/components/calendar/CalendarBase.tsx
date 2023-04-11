@@ -14,6 +14,9 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import RequestService from '../../services/RequestService';
+import PdfFormRequest from '../pdfForm/PdfFormRequest';
+import Filter from '../../models/interfaces/request/Filter';
+import { useState } from 'react';
 
 dayjs.extend(isBetweenPlugin);
 
@@ -32,7 +35,6 @@ const CustomPickersDay = styled(PickersDay, {
         prop !== 'isRejected',
 })<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected }) => {
     //  console.log(dayIsBetween);
-    console.log(isStart)
     let counter = 0;
     for (const dayIsBetweenItem of dayIsBetween) {
         //
@@ -180,10 +182,43 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
 const CustomDay: React.FC = (): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [t, i18n] = useTranslation();
+    const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+    const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
+        
+    id: -1,
+    startDate: "",
+    endDate: "",
+    approved: false,
+    createdBy: "",
+    daysRequested:0,
+    isDeleted:false
+    });
+    const [openForm, setOpen] = useState<boolean>(false);
+    const ChildMemo = React.memo(PdfFormRequest);
 
     React.useEffect(() => {
         retrivePage();
-    }, []);
+    }, [setLeaveRequest]);
+
+
+    const updateFormOpen = React.useCallback(
+
+        (newValue: boolean): void => setOpen(newValue),
+
+        [setOpen]
+    );
+
+    
+    const handleChange = (newValue: dayjs.Dayjs | null) => {
+        leaveRequests.forEach(element => {
+            if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                setLeaveRequest(element);
+                setOpen(true);
+                return;
+            }
+        })
+        console.log(leaveRequest);
+    };
 
     const retrivePage = async () => {
         await RequestService.getAllByUser()
@@ -197,42 +232,46 @@ const CustomDay: React.FC = (): JSX.Element => {
             });
     }
 
+
     return (
         <Grid item>
-        <Grid container direction="row" sx={{ width: 'flex' }} >
-            <Grid item >
+            <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
+            <Grid container direction="row" sx={{ width: 'flex' }} >
+                <Grid item >
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                        sx={{}}
-                        slots={{ day: Day }}
-                        slotProps={{
-                            day: {
-                                requests: leaveRequests
-                            } as any,
-                        }}
-                    />
-                </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateCalendar
+                            sx={{}}
+                            slots={{ day: Day }}
+                            slotProps={{
+                                day: {
+                                    requests: leaveRequests
+                                } as any,
+                            }}
+                            value={value}
+                            onChange={(newValue) => handleChange(newValue)}
+                        />
+                    </LocalizationProvider>
+                </Grid>
+                <Grid item direction="column" marginTop="auto" marginBottom="auto">
+
+                    <Grid container direction="row" marginBottom={2}  >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5}>{t('Approved')}</Typography>
+                    </Grid>
+
+                    <Grid container direction="row" marginBottom={2} >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5}>{t('Rejected')}</Typography>
+                    </Grid>
+
+                    <Grid container direction="row" marginBottom={2}  >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')}</Typography>
+                    </Grid>
+
+                </Grid>
             </Grid>
-            <Grid item direction="column" marginTop="auto" marginBottom="auto">
-
-                <Grid container direction="row" marginBottom={2}  >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Approved')}</Typography>
-                </Grid>
-
-                <Grid container direction="row" marginBottom={2} >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Rejected')}</Typography>
-                </Grid>
-
-                <Grid container direction="row" marginBottom={2}  >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5} >{t('notProcessed')}</Typography>
-                </Grid>
-
-            </Grid>
-        </Grid>
         </Grid>
     );
 }

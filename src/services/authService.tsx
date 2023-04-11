@@ -22,6 +22,7 @@ export const useLogin = () => {
         const token = response.data.jwt;
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
+
         localStorage.setItem("SavedToken", 'Bearer ' + token);
         localStorage.setItem("Authenticated", 'true');
         setUser(userDetails);  

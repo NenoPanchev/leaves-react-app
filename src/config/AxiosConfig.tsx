@@ -1,6 +1,7 @@
 import axios from "axios";
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
+  
 });
 
 axiosInstance.interceptors.request.use(
@@ -11,6 +12,7 @@ axiosInstance.interceptors.request.use(
     if (config.url !== 'http://localhost:8080/authenticate') {     
       const token = localStorage.getItem('SavedToken');
       config.headers.Authorization = token ? `${token}` : '';
+      config.headers["Content-Type"]='application/json';
     }
     return config;
   },
