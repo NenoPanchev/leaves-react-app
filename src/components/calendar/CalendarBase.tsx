@@ -43,99 +43,135 @@ const CustomPickersDay = styled(PickersDay, {
         //REJECTED
         //
         if (isRejected[counter] == false) {
-            if (isStart[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: red[200],
-                    color: theme.palette.common.white,
-                }
-            } else if (isEnd[counter]) {
+            if (isStart[counter] && isEnd[counter]) {
                 return {
                     borderRadius: 0,
                     borderTopRightRadius: '50%',
                     borderBottomRightRadius: '50%',
+                    borderTopLeftRadius: '50%',
+                    borderBottomLeftRadius: '50%',
                     backgroundColor: red[200],
                     color: theme.palette.common.white,
 
                 }
-            } else if (dayIsBetweenItem) {
-                return {
-                    borderRadius: 0,
-                    backgroundColor: red[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: red[400],
-                    },
+            } else
+                if (isStart[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopLeftRadius: '50%',
+                        borderBottomLeftRadius: '50%',
+                        backgroundColor: red[200],
+                        color: theme.palette.common.white,
+                    }
+                } else if (isEnd[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopRightRadius: '50%',
+                        borderBottomRightRadius: '50%',
+                        backgroundColor: red[200],
+                        color: theme.palette.common.white,
 
+                    }
+                } else if (dayIsBetweenItem) {
+                    return {
+                        borderRadius: 0,
+                        backgroundColor: red[200],
+                        color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: red[400],
+                        },
+
+                    }
                 }
-            }
             //
             //APPROVED
             //
         } else if (isRejected[counter] == true) {
-            if (isStart[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: green[200],
-                    color: theme.palette.common.white,
-                }
-            } else if (isEnd[counter]) {
+            if (isStart[counter] && isEnd[counter]) {
                 return {
                     borderRadius: 0,
                     borderTopRightRadius: '50%',
                     borderBottomRightRadius: '50%',
+                    borderTopLeftRadius: '50%',
+                    borderBottomLeftRadius: '50%',
                     backgroundColor: green[200],
                     color: theme.palette.common.white,
 
                 }
-            } else if (dayIsBetweenItem) {
-                return {
-                    borderRadius: 0,
-                    backgroundColor: green[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: green[400],
-                    },
+            } else
+                if (isStart[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopLeftRadius: '50%',
+                        borderBottomLeftRadius: '50%',
+                        backgroundColor: green[200],
+                        color: theme.palette.common.white,
+                    }
+                } else if (isEnd[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopRightRadius: '50%',
+                        borderBottomRightRadius: '50%',
+                        backgroundColor: green[200],
+                        color: theme.palette.common.white,
 
+                    }
+                } else if (dayIsBetweenItem) {
+                    return {
+                        borderRadius: 0,
+                        backgroundColor: green[200],
+                        color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: green[400],
+                        },
+
+                    }
                 }
-            }
         }
         //
         //NOT PROCESSED 
         //
         else {
-            if (isStart[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: blue[200],
-                    color: theme.palette.common.white,
-                }
-            } else if (isEnd[counter]) {
+            if (isStart[counter] && isEnd[counter]) {
                 return {
                     borderRadius: 0,
                     borderTopRightRadius: '50%',
                     borderBottomRightRadius: '50%',
+                    borderTopLeftRadius: '50%',
+                    borderBottomLeftRadius: '50%',
                     backgroundColor: blue[200],
                     color: theme.palette.common.white,
 
                 }
-            } else if (dayIsBetweenItem) {
-                return {
-                    borderRadius: 0,
-                    backgroundColor: blue[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: blue[400],
-                    },
+            } else
+                if (isStart[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopLeftRadius: '50%',
+                        borderBottomLeftRadius: '50%',
+                        backgroundColor: blue[200],
+                        color: theme.palette.common.white,
+                    }
+                } else if (isEnd[counter]) {
+                    return {
+                        borderRadius: 0,
+                        borderTopRightRadius: '50%',
+                        borderBottomRightRadius: '50%',
+                        backgroundColor: blue[200],
+                        color: theme.palette.common.white,
 
+                    }
+                } else if (dayIsBetweenItem) {
+                    return {
+                        borderRadius: 0,
+                        backgroundColor: blue[200],
+                        color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: blue[400],
+                        },
+
+                    }
                 }
-            }
 
 
 
@@ -186,14 +222,14 @@ const CustomDay: React.FC = (): JSX.Element => {
     const [t, i18n] = useTranslation();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
-        
-    id: -1,
-    startDate: "",
-    endDate: "",
-    approved: false,
-    createdBy: "",
-    daysRequested:0,
-    isDeleted:false
+
+        id: -1,
+        startDate: "",
+        endDate: "",
+        approved: false,
+        createdBy: "",
+        daysRequested: 0,
+        isDeleted: false
     });
     const [openForm, setOpen] = useState<boolean>(false);
     const ChildMemo = React.memo(PdfFormRequest);
@@ -210,7 +246,7 @@ const CustomDay: React.FC = (): JSX.Element => {
         [setOpen]
     );
 
-    
+
     const handleChange = (newValue: dayjs.Dayjs | null) => {
         leaveRequests.forEach(element => {
             if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
@@ -255,20 +291,20 @@ const CustomDay: React.FC = (): JSX.Element => {
                 </Grid>
                 <Grid item direction="column" marginTop="auto" marginBottom="auto">
 
-                <Grid container direction="row" marginBottom={2}  >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
-                </Grid>
+                    <Grid container direction="row" marginBottom={2}  >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
+                    </Grid>
 
-                <Grid container direction="row" marginBottom={2} >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
-                </Grid>
+                    <Grid container direction="row" marginBottom={2} >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
+                    </Grid>
 
-                <Grid container direction="row" marginBottom={2}  >
-                    <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                    <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
-                </Grid>
+                    <Grid container direction="row" marginBottom={2}  >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
+                    </Grid>
 
                 </Grid>
             </Grid>
