@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { Grid, Card, Table } from '@mui/material';
 
 import TableRow from '@mui/material/TableRow';
@@ -11,11 +9,10 @@ import * as userService from '../../services/userService';
 
 import '../SingleItemView.css'
 import { useTranslation } from 'react-i18next';
-import { IUserDetails } from '../interfaces/user/userInterfaces';
-import { useEffect } from 'react';
+
 
 interface UserViewProp {
-  id: number
+  email: string
 }
 
 interface UserDetails {
@@ -31,7 +28,7 @@ interface Permissions {
 
 const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
-  const user = userService.useFetchOne(1);
+  const user = userService.useFetchOneEmail(props.email);
   const names = new Set<string>();
   const { t } = useTranslation();
   console.log(user);
@@ -45,7 +42,7 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
   return (
     <React.Fragment>
        <Grid container direction={'row'}>
-          <Card style={{ width: '50%' }}>
+          <Card >
             <Table>
               <TableBody>
                 <TableRow>
