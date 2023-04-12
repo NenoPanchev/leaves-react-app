@@ -71,8 +71,8 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
         await RequestService.approve(props.request.id, leaveRequestDto)
             .then((_response: any) => {
                 props.apiRef.updateRows([{ id: props.rowId, approved: true
-                    , approvedStartDate:leaveRequestDto.approvedStartDate
-                    ,approvedEndDate:leaveRequestDto.approvedEndDate }]);
+                    , approvedStartDate:leaveRequestDto.approvedStartDate?.toString()
+                    ,approvedEndDate:leaveRequestDto.approvedEndDate?.toString() }]);
             })
             .catch((e: AxiosError<any, any>) => {
                 if (e.response) {
