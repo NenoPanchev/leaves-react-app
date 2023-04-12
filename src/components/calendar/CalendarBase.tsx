@@ -2,7 +2,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import { Avatar, Grid, Typography } from '@mui/material';
-import { blue, green, red } from '@mui/material/colors';
+import { blue, green, grey, red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -28,6 +28,7 @@ interface CustomPickerDayProps extends PickersDayProps<Dayjs> {
     isEnd: Array<boolean>;
     isRejected: Array<boolean | undefined>;
     isRed: Array<boolean>;
+    isBeforeToday: Array<boolean>;
 }
 
 const CustomPickersDay = styled(PickersDay, {
@@ -36,220 +37,81 @@ const CustomPickersDay = styled(PickersDay, {
         prop !== 'isStart' &&
         prop !== 'isEnd' &&
         prop !== 'isRejected' &&
-        prop !== 'isRed'
-})<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected, isRed }) => {
+        prop !== 'isRed' &&
+        prop !== 'isBeforeToday',
+})<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected, isRed, isBeforeToday }) => {
     //  console.log(dayIsBetween);
     let counter = 0;
     for (const dayIsBetweenItem of dayIsBetween) {
-        //
-        //REJECTED
-        //
+        let styl = {
+            borderRadius: 0,
+            borderTopRightRadius: '50%',
+            borderBottomRightRadius: '50%',
+            borderTopLeftRadius: '50%',
+            borderBottomLeftRadius: '50%',
+            backgroundColor: "#90caf9",
+            color: theme.palette.common.white,
+            '&:hover, &:focus': {
+                backgroundColor: '#42a5f5',
+            },
+
+        }
+        ////COLOR CHANGE
         if (isRejected[counter] == false) {
-            if (isStart[counter] && isEnd[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopRightRadius: '50%',
-                    borderBottomRightRadius: '50%',
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: red[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: red[400],
-                    },
+            //
+            //REJECTED
+            //
+            styl.backgroundColor = red[200];
+            styl['&:hover, &:focus'].backgroundColor = red[400];
 
-                }
-            } else
-                if (isStart[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopLeftRadius: '50%',
-                        borderBottomLeftRadius: '50%',
-                        backgroundColor: red[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: red[400],
-                        },
-                    }
-                } else if (isEnd[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopRightRadius: '50%',
-                        borderBottomRightRadius: '50%',
-                        backgroundColor: red[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: red[400],
-                        },
-
-                    }
-                } else if (dayIsBetweenItem) {
-                    return {
-                        borderRadius: 0,
-                        backgroundColor: red[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: red[400],
-                        },
-
-                    }
-                }
+        } else if (isRejected[counter] == true) {
             //
             //APPROVED
             //
-        } else if (isRejected[counter] == true) {
-            if (isStart[counter] && isEnd[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopRightRadius: '50%',
-                    borderBottomRightRadius: '50%',
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: green[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: green[400],
-                    },
+            if (!isRed[counter]) {
+                styl.backgroundColor = red[200];
+                styl['&:hover, &:focus'].backgroundColor = red[400];
+            }
+            else {
+                styl.backgroundColor = green[200];
+                styl['&:hover, &:focus'].backgroundColor = green[400];
+            }
 
-                }
-            } else
-                if (isStart[counter]) {
-                    if (!isRed[counter]) {
-                        return {
-                            borderRadius: 0,
-                            borderTopLeftRadius: '50%',
-                            borderBottomLeftRadius: '50%',
-                            backgroundColor: red[200],
-                            color: theme.palette.common.white, '&:hover, &:focus': {
-                                backgroundColor: red[400],
-                            },
-                        }
-                    }
-                    else {
-                        return {
-                            borderRadius: 0,
-                            borderTopLeftRadius: '50%',
-                            borderBottomLeftRadius: '50%',
-                            backgroundColor: green[200],
-                            color: theme.palette.common.white,
-                            '&:hover, &:focus': {
-                                backgroundColor: green[400],
-                            },
-                        }
-                    }
-
-                } else if (isEnd[counter]) {
-                    if (!isRed[counter]) {
-                        return {
-                            borderRadius: 0,
-                            borderTopRightRadius: '50%',
-                            borderBottomRightRadius: '50%',
-                            backgroundColor: red[200],
-                            color: theme.palette.common.white,
-                             '&:hover, &:focus': {
-                                backgroundColor: red[400],
-                            },
-
-                        }
-                    }
-                    else {
-                        return {
-                            borderRadius: 0,
-                            borderTopRightRadius: '50%',
-                            borderBottomRightRadius: '50%',
-                            backgroundColor: green[200],
-                            color: theme.palette.common.white,
-                            '&:hover, &:focus': {
-                                backgroundColor: green[400],
-                            },
-
-                        }
-                    }
-
-                } else if (dayIsBetweenItem) {
-                    if (!isRed[counter]) {
-                        return {
-                            borderRadius: 0,
-                            backgroundColor: red[200],
-                            color: theme.palette.common.white,
-                            '&:hover, &:focus': {
-                                backgroundColor: red[400],
-                            },
-
-                        }
-                    } else {
-
-                        return {
-                            borderRadius: 0,
-                            backgroundColor: green[200],
-                            color: theme.palette.common.white,
-                            '&:hover, &:focus': {
-                                backgroundColor: green[400],
-                            },
-
-                        }
-                    }
-                }
         }
-        //
-        //NOT PROCESSED 
-        //
         else {
-            if (isStart[counter] && isEnd[counter]) {
-                return {
-                    borderRadius: 0,
-                    borderTopRightRadius: '50%',
-                    borderBottomRightRadius: '50%',
-                    borderTopLeftRadius: '50%',
-                    borderBottomLeftRadius: '50%',
-                    backgroundColor: blue[200],
-                    color: theme.palette.common.white,
-                    '&:hover, &:focus': {
-                        backgroundColor: blue[400],
-                    },
-
-                }
-            } else
-                if (isStart[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopLeftRadius: '50%',
-                        borderBottomLeftRadius: '50%',
-                        backgroundColor: blue[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: blue[400],
-                        },
-                    }
-                } else if (isEnd[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopRightRadius: '50%',
-                        borderBottomRightRadius: '50%',
-                        backgroundColor: blue[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: blue[400],
-                        },
-
-                    }
-                } else if (dayIsBetweenItem) {
-                    return {
-                        borderRadius: 0,
-                        backgroundColor: blue[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: blue[400],
-                        },
-
-                    }
-                }
-
-
-
+            //
+            //NOT PROCESSED 
+            //
+            styl.backgroundColor = blue[200];
+            styl['&:hover, &:focus'].backgroundColor = blue[400];
         }
 
+        if (isBeforeToday[counter]) {
+            styl.backgroundColor = grey[800];
+            styl['&:hover, &:focus'].backgroundColor = grey[900];
+        }
 
+        if (isStart[counter] && isEnd[counter]) {
+
+            return styl
+        } else
+            if (isStart[counter]) {
+                styl.borderBottomRightRadius = '0%';
+                styl.borderTopRightRadius = '0%';
+                return styl
+
+            } else if (isEnd[counter]) {
+                styl.borderTopLeftRadius = '0%';
+                styl.borderBottomLeftRadius = '0%';
+                return styl;
+
+            } else if (dayIsBetweenItem) {
+                styl.borderTopLeftRadius = '0%';
+                styl.borderBottomLeftRadius = '0%';
+                styl.borderBottomRightRadius = '0%';
+                styl.borderTopRightRadius = '0%';
+                return styl;
+            }
 
 
         counter++;
@@ -270,28 +132,26 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     const isEnd: Array<boolean> = [];
     const isRejected: Array<boolean | undefined> = [];
     const isRed: Array<boolean> = [];
+    const isBeforeToday: Array<boolean> = [];
     requests.forEach(element => {
-
-
         if (element.approved === true) {
-          
-                dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
-              
-                isStart.push(day.isSame(element.startDate, 'day'));
-                isEnd.push(day.isSame(element.endDate, 'day'));
-                isRejected.push(element.approved)
-                // ||(day.isAfter(element.approvedEndDate)&&day.isSame(element.endDate)
-                isRed.push(day.isBetween(element.approvedStartDate, element.approvedEndDate, null, '[]'))
-            
+
+            dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
+
+            isStart.push(day.isSame(element.startDate, 'day'));
+            isEnd.push(day.isSame(element.endDate, 'day'));
+            isRejected.push(element.approved)
+            // ||(day.isAfter(element.approvedEndDate)&&day.isSame(element.endDate)
+            isRed.push(day.isBetween(element.approvedStartDate, element.approvedEndDate, null, '[]'))
+            isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
+
         } else {
             dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
             isStart.push(day.isSame(element.startDate, 'day'));
             isEnd.push(day.isSame(element.endDate, 'day'));
             isRejected.push(element.approved)
+            isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day'), 'day'))
         }
-
-
-
     });
 
     return (
@@ -303,7 +163,8 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
             isStart={isStart}
             isEnd={isEnd}
             isRejected={isRejected}
-            isRed={isRed} />
+            isRed={isRed}
+            isBeforeToday={isBeforeToday} />
     );
 }
 
@@ -365,7 +226,6 @@ const CustomDay: React.FC = (): JSX.Element => {
             });
     }
 
-
     return (
         <Grid item>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
@@ -376,7 +236,6 @@ const CustomDay: React.FC = (): JSX.Element => {
                         <DateCalendar
                             sx={{}}
                             slots={{ day: Day }}
-                            
                             slotProps={{
                                 day: {
                                     requests: leaveRequests
