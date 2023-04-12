@@ -5,6 +5,7 @@ import IRequestDataGet from "../models/interfaces/request/IRequestDataGet";
 import IRequestDataPost from "../models/interfaces/request/IRequestDataPost";
 import http from "../services/http-common";
 import { axiosInstance as axios} from '../config/AxiosConfig';
+import IRequestDataApprove from "../models/interfaces/request/IRequestDataAprove";
 
 
 const getAll = () => {
@@ -42,8 +43,8 @@ const update = (id: any, data: any) => {
 const remove = (id: any) => {
   return axios.delete<IRequestDataPost>(`http://localhost:8080/api/requests/${id}`)
 };
-const approve = (id: any) => {
-  return axios.put<any>(`http://localhost:8080/api/requests/${id}/approve`)
+const approve = (id: any,data:IRequestDataApprove) => {
+  return axios.put<any>(`http://localhost:8080/api/requests/${id}/approve`,data)
 };
 const disapprove = (id: any) => {
   return axios.put<any>(`http://localhost:8080/api/requests/${id}/disapprove`)

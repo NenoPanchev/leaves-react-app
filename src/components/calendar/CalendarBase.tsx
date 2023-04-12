@@ -226,6 +226,8 @@ const CustomDay: React.FC = (): JSX.Element => {
         id: -1,
         startDate: "",
         endDate: "",
+        approvedStartDate: "",
+        approvedEndDate: "",
         approved: false,
         createdBy: "",
         daysRequested: 0,

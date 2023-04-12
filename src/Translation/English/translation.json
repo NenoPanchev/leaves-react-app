@@ -110,7 +110,9 @@
     "rejectedS":"Rejected",
     "notProcessedS":"Not processed",
     "approvedS":"Approved",
-    "daysRequested":"Days requested"
+    "daysRequested":"Days requested",
+    "approvedStartDate":"Approved Start Date",
+    "approvedEndDate":"Approved End Date"
     },
     
         "alertMassageDuplicateEntity":"You have already requested leave from {{startDate}} to {{endDate}}!",

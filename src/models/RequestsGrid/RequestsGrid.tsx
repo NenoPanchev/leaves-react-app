@@ -19,7 +19,7 @@ import Filter from '../interfaces/request/Filter';
 import ILeaveRequestPage from '../interfaces/request/ILeaveRequestPage';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 import ApproveDialogAlerts from '../../components/Alert/ApproveDialogAlert';
-import {  Container } from '@mui/system';
+import ApproveRequestDialog from './ApproveRequestDialog';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -40,6 +40,8 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   });
   const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort } = userFilter;
   const [isLoading, setIsLoading] = useState(true);
+  const [openForm, setOpen] = useState<boolean>(false);
+  // const ChildMemo = React.memo(ApproveRequestDialog);
 
 
 
@@ -57,10 +59,17 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   });
   useEffect(() => {
     retrivePage();
-  }, [userFilter]);
+    console.log(openForm)
+  }, [userFilter,setOpen]);
 
   let numberOfElements = page.numberOfElements * (page.number + 1);
 
+  const updateFormOpen = React.useCallback(
+
+    (newValue: boolean): void => setOpen(newValue),
+
+    [setOpen]
+);
 
   const retrivePage = async () => {
     await RequestService.getAllFilterPage(userFilter)
@@ -77,19 +86,21 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       });
   }
   const handleApproveClick = (request: IRequestDataGet, rowId: GridRowId) => async () => {
-    await RequestService.approve(request.id)
-      .then((_response: any) => {
-        apiRef.current.updateRows([{ id: rowId, approved: true }]);
-      })
-      .catch((e: AxiosError<any, any>) => {
-        if (e.response) {
-          console.log();
-          setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-          console.log(alertProps);
-        }
+    setOpen(true);
+    // await RequestService.approve(request.id)
+    //   .then((_response: any) => {
+    //     apiRef.current.updateRows([{ id: rowId, approved: true }]);
+    //   })
+    //   .catch((e: AxiosError<any, any>) => {
+    //     if (e.response) {
+    //       console.log();
+    //       setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
+    //       console.log(alertProps);
+    //     }
 
-      });
+    //   });
   };
+
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {
     await RequestService.remove(request.id)
       .then((_response: any) => {
@@ -205,7 +216,6 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     alertPropsChild: alertProps,
     onClose: updateAlertOpen
   }
-
   function CustomToolbar() {
     return (
 
@@ -219,7 +229,13 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
     );
   }
+  const updateAlertOpenFromChild = useCallback(
+    (newValue: IAlertProps): void => { setAlertProps({ ...newValue }) }
+    ,
 
+    [setAlertProps]
+
+  );
   function renderDeletedButtons(request: IRequestDataGet, rowId: any): JSX.Element {
     if (request.isDeleted) {
 
@@ -251,6 +267,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     [setUserFilter]
 
   );
+
   const columns: GridColDef[] = [
     {
       field: 'id',
@@ -260,12 +277,12 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     {
       field: 'startDate',
       headerName: t(`Requests.StartDate`)!,
-      flex: 0.7
+      flex: 0.45
     },
     {
       field: 'endDate',
       headerName: t(`Requests.EndDate`)!,
-      flex: 0.7
+      flex: 0.45
     },
     {
       field: 'daysRequested',
@@ -274,14 +291,24 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     },
     {
       field: 'approved',
-      headerName: t(`Requests.Aprooved`)!,
-      flex: 1,
+      headerName: t(`Requests.Approved`)!,
+      flex: 0.5,
       valueGetter: changeApproved
     },
     {
       field: 'createdBy',
       headerName: t(`CreatedBy`)!,
-      flex: 1
+      flex: 0.5
+    },
+    {
+      field: 'approvedStartDate',
+      headerName: t(`Requests.approvedStartDate`)!,
+      flex: 0.6
+    },
+    {
+      field: 'approvedEndDate',
+      headerName: t(`Requests.approvedEndDate`)!,
+      flex: 0.6
     },
     {
       field: 'approve',
@@ -291,13 +318,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       cellClassName: 'actions',
       getActions: ({ row, id }) => {
         return [
-          <GridActionsCellItem
-            icon={<Tooltip title={t('approve')}><DoneIcon /></Tooltip>}
-            label="Approve"
-            className="textPrimary"
-            onClick={handleApproveClick(row, id)}
-            color="inherit"
-          />,
+          <ApproveRequestDialog request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild}/>,
           <GridActionsCellItem
             icon={<Tooltip title={t('reject')}><CancelIcon /></Tooltip>}
             label="Reject"

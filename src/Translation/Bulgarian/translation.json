@@ -100,7 +100,9 @@
         "notProcessedS":"Не обработени",
         "approvedS":"Одобрени",
     "notProcessed":"Не е обработен",
-        "daysRequested": "Заявени дни"
+        "daysRequested": "Заявени дни",
+        "approvedStartDate":"Одобренa стартова дата",
+        "approvedEndDate":"Одобренa крайна дата"
     },
     "alertMassageDuplicateEntity": "Вече имате заявление за отпуск от {{startDate}} до {{endDate}}!",
     "alertMassagePaidLeave": "Дните ви отпуска не достигат!\n Поискани дни:{{daysRequested}}.\n Останали дни отпуска:{{leftDays}}.",

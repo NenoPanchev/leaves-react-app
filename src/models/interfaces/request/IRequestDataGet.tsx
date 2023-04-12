@@ -5,6 +5,8 @@ export default interface IRequestDataGet {
     approved?: boolean,
     createdBy: string,
     daysRequested:number,
+    approvedStartDate: string,
+    approvedEndDate: string,
     isDeleted:boolean
   }
   
