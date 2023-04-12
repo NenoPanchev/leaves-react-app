@@ -27,6 +27,7 @@ interface CustomPickerDayProps extends PickersDayProps<Dayjs> {
     isStart: Array<boolean>;
     isEnd: Array<boolean>;
     isRejected: Array<boolean | undefined>;
+    isRed: Array<boolean>;
 }
 
 const CustomPickersDay = styled(PickersDay, {
@@ -34,8 +35,9 @@ const CustomPickersDay = styled(PickersDay, {
         prop !== 'dayIsBetween' &&
         prop !== 'isStart' &&
         prop !== 'isEnd' &&
-        prop !== 'isRejected',
-})<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected }) => {
+        prop !== 'isRejected' &&
+        prop !== 'isRed'
+})<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected, isRed }) => {
     //  console.log(dayIsBetween);
     let counter = 0;
     for (const dayIsBetweenItem of dayIsBetween) {
@@ -52,6 +54,9 @@ const CustomPickersDay = styled(PickersDay, {
                     borderBottomLeftRadius: '50%',
                     backgroundColor: red[200],
                     color: theme.palette.common.white,
+                    '&:hover, &:focus': {
+                        backgroundColor: red[400],
+                    },
 
                 }
             } else
@@ -62,6 +67,9 @@ const CustomPickersDay = styled(PickersDay, {
                         borderBottomLeftRadius: '50%',
                         backgroundColor: red[200],
                         color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: red[400],
+                        },
                     }
                 } else if (isEnd[counter]) {
                     return {
@@ -70,6 +78,9 @@ const CustomPickersDay = styled(PickersDay, {
                         borderBottomRightRadius: '50%',
                         backgroundColor: red[200],
                         color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: red[400],
+                        },
 
                     }
                 } else if (dayIsBetweenItem) {
@@ -96,35 +107,87 @@ const CustomPickersDay = styled(PickersDay, {
                     borderBottomLeftRadius: '50%',
                     backgroundColor: green[200],
                     color: theme.palette.common.white,
+                    '&:hover, &:focus': {
+                        backgroundColor: green[400],
+                    },
 
                 }
             } else
                 if (isStart[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopLeftRadius: '50%',
-                        borderBottomLeftRadius: '50%',
-                        backgroundColor: green[200],
-                        color: theme.palette.common.white,
+                    if (!isRed[counter]) {
+                        return {
+                            borderRadius: 0,
+                            borderTopLeftRadius: '50%',
+                            borderBottomLeftRadius: '50%',
+                            backgroundColor: red[200],
+                            color: theme.palette.common.white, '&:hover, &:focus': {
+                                backgroundColor: red[400],
+                            },
+                        }
                     }
+                    else {
+                        return {
+                            borderRadius: 0,
+                            borderTopLeftRadius: '50%',
+                            borderBottomLeftRadius: '50%',
+                            backgroundColor: green[200],
+                            color: theme.palette.common.white,
+                            '&:hover, &:focus': {
+                                backgroundColor: green[400],
+                            },
+                        }
+                    }
+
                 } else if (isEnd[counter]) {
-                    return {
-                        borderRadius: 0,
-                        borderTopRightRadius: '50%',
-                        borderBottomRightRadius: '50%',
-                        backgroundColor: green[200],
-                        color: theme.palette.common.white,
+                    if (!isRed[counter]) {
+                        return {
+                            borderRadius: 0,
+                            borderTopRightRadius: '50%',
+                            borderBottomRightRadius: '50%',
+                            backgroundColor: red[200],
+                            color: theme.palette.common.white,
+                             '&:hover, &:focus': {
+                                backgroundColor: red[400],
+                            },
 
+                        }
                     }
-                } else if (dayIsBetweenItem) {
-                    return {
-                        borderRadius: 0,
-                        backgroundColor: green[200],
-                        color: theme.palette.common.white,
-                        '&:hover, &:focus': {
-                            backgroundColor: green[400],
-                        },
+                    else {
+                        return {
+                            borderRadius: 0,
+                            borderTopRightRadius: '50%',
+                            borderBottomRightRadius: '50%',
+                            backgroundColor: green[200],
+                            color: theme.palette.common.white,
+                            '&:hover, &:focus': {
+                                backgroundColor: green[400],
+                            },
 
+                        }
+                    }
+
+                } else if (dayIsBetweenItem) {
+                    if (!isRed[counter]) {
+                        return {
+                            borderRadius: 0,
+                            backgroundColor: red[200],
+                            color: theme.palette.common.white,
+                            '&:hover, &:focus': {
+                                backgroundColor: red[400],
+                            },
+
+                        }
+                    } else {
+
+                        return {
+                            borderRadius: 0,
+                            backgroundColor: green[200],
+                            color: theme.palette.common.white,
+                            '&:hover, &:focus': {
+                                backgroundColor: green[400],
+                            },
+
+                        }
                     }
                 }
         }
@@ -141,6 +204,9 @@ const CustomPickersDay = styled(PickersDay, {
                     borderBottomLeftRadius: '50%',
                     backgroundColor: blue[200],
                     color: theme.palette.common.white,
+                    '&:hover, &:focus': {
+                        backgroundColor: blue[400],
+                    },
 
                 }
             } else
@@ -151,6 +217,9 @@ const CustomPickersDay = styled(PickersDay, {
                         borderBottomLeftRadius: '50%',
                         backgroundColor: blue[200],
                         color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: blue[400],
+                        },
                     }
                 } else if (isEnd[counter]) {
                     return {
@@ -159,6 +228,9 @@ const CustomPickersDay = styled(PickersDay, {
                         borderBottomRightRadius: '50%',
                         backgroundColor: blue[200],
                         color: theme.palette.common.white,
+                        '&:hover, &:focus': {
+                            backgroundColor: blue[400],
+                        },
 
                     }
                 } else if (dayIsBetweenItem) {
@@ -197,11 +269,28 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     const isStart: Array<boolean> = [];
     const isEnd: Array<boolean> = [];
     const isRejected: Array<boolean | undefined> = [];
+    const isRed: Array<boolean> = [];
     requests.forEach(element => {
-        dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
-        isStart.push(day.isSame(element.startDate, 'day'));
-        isEnd.push(day.isSame(element.endDate, 'day'));
-        isRejected.push(element.approved)
+
+
+        if (element.approved === true) {
+          
+                dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
+              
+                isStart.push(day.isSame(element.startDate, 'day'));
+                isEnd.push(day.isSame(element.endDate, 'day'));
+                isRejected.push(element.approved)
+                // ||(day.isAfter(element.approvedEndDate)&&day.isSame(element.endDate)
+                isRed.push(day.isBetween(element.approvedStartDate, element.approvedEndDate, null, '[]'))
+            
+        } else {
+            dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
+            isStart.push(day.isSame(element.startDate, 'day'));
+            isEnd.push(day.isSame(element.endDate, 'day'));
+            isRejected.push(element.approved)
+        }
+
+
 
     });
 
@@ -213,7 +302,8 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
             dayIsBetween={dayIsBetween}
             isStart={isStart}
             isEnd={isEnd}
-            isRejected={isRejected} />
+            isRejected={isRejected}
+            isRed={isRed} />
     );
 }
 
@@ -286,12 +376,12 @@ const CustomDay: React.FC = (): JSX.Element => {
                         <DateCalendar
                             sx={{}}
                             slots={{ day: Day }}
+                            
                             slotProps={{
                                 day: {
                                     requests: leaveRequests
                                 } as any,
                             }}
-                            value={value}
                             onChange={(newValue) => handleChange(newValue)}
                         />
                     </LocalizationProvider>
