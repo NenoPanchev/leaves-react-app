@@ -21,6 +21,9 @@ import 'dayjs/locale/en-gb';
 import 'dayjs/locale/bg';
 
 dayjs.extend(isBetweenPlugin);
+export interface CalendarBaseRef { 
+    reload: () => void;
+}
 
 interface CustomPickerDayProps extends PickersDayProps<Dayjs> {
     dayIsBetween: Array<boolean>;
@@ -168,7 +171,7 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     );
 }
 
-const CustomDay: React.FC = (): JSX.Element => {
+const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [t, i18n] = useTranslation();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
@@ -187,10 +190,16 @@ const CustomDay: React.FC = (): JSX.Element => {
     const [openForm, setOpen] = useState<boolean>(false);
     const ChildMemo = React.memo(PdfFormRequest);
 
+    React.useImperativeHandle(ref, () => {
+        return {
+            reload: retrivePage
+        }
+    }, [])
+
     React.useEffect(() => {
+        console.log("CustomDay")
         retrivePage();
     }, [setLeaveRequest]);
-
 
     const updateFormOpen = React.useCallback(
 
@@ -267,4 +276,4 @@ const CustomDay: React.FC = (): JSX.Element => {
         </Grid>
     );
 }
-export default CustomDay;
+export default React.forwardRef(CustomDay);

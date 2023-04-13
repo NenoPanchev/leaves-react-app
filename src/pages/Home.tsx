@@ -12,7 +12,7 @@ import { LogOut } from '../services/authService';
 import Departments from '../models/departments/AllDepartments';
 import Users from '../models/users/AllUsers';
 import isAuth from '../hoc/isAuth';
-import DashBoard from './DashBoard';
+import DashBoard from './dashboard/DashBoard';
 import RequestsGrid from '../models/RequestsGrid/RequestsGrid';
 import TypeEmployeeGrid from '../models/TypeEmployeeGrid/TypeEmployeeGrid';
 import Calendar from '../components/calendar/Calendar';

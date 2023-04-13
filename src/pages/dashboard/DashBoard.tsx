@@ -1,9 +1,10 @@
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import CalendarBase from '../components/calendar/CalendarBase';
-import AuthContext from '../contexts/AuthContext';
-import UserBaseDetails from '../models/users/UserBaseDetails';
+import CalendarBase from '../../components/calendar/CalendarBase';
+import AuthContext from '../../contexts/AuthContext';
+import UserBaseDetails from '../../models/users/UserBaseDetails';
+import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
@@ -24,7 +25,6 @@ export default function DashBoard() {
             {user!==null&&
             
  <Grid container direction={'column'} sx={{ backgroundColor: 'white', textAlign: 'center' }}>
- <Typography component={'h1'} variant={'h5'}>{t('Hello') + ', ' + user?.getEmail()}</Typography>
  <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 
      <Grid container spacing={3}>
@@ -54,7 +54,7 @@ export default function DashBoard() {
                      height: 240,
                  }}
              >
-                 <CalendarBase />
+                 <DashBoardRequestsComponent />
 
              </Paper>
          </Grid>

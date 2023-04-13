@@ -64,15 +64,6 @@ const AdminBarLoggedIn = () => {
                     < ListItemText primary={t('Request')} />
                 </ListItemButton>
             </ Link>
-            < Link to={"#"} style={{
-                textDecoration: 'none',
-                color: 'black'
-            }}>
-                <AddRequest3 />
-            </ Link>
-
-            < Calendar />
-
             {user?.hasRole('ADMIN') &&
                 <Link to='/users' style={{
                     textDecoration: 'none',
