@@ -2,7 +2,7 @@ import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, Link, Navigate} from 'react-router-dom';
 import CustomErrorBoundary from '../components/CustomErrorBoundary/CustomErrorBoundary';
 
 import Nav from '../components/nav/Nav';
@@ -17,6 +17,7 @@ import RequestsGrid from '../models/RequestsGrid/RequestsGrid';
 import TypeEmployeeGrid from '../models/TypeEmployeeGrid/TypeEmployeeGrid';
 import Calendar from '../components/calendar/Calendar';
 import AddRequest3 from '../models/AddRequest/AddRequest';
+import NotFound from './NotFound';
 
 const mdTheme = createTheme();
 
@@ -44,9 +45,9 @@ function HomeContent() {
           <Toolbar />
 
           <CustomErrorBoundary/>
-              <Grid container height="93%" >
+              <Grid container height="92%" >
                 <Routes>
-                  <Route path='/' Component={isAuth(DashBoard)}></Route>
+                  <Route index Component={isAuth(DashBoard)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path="/requests" Component={isAuth(RequestsGrid)} />
@@ -56,6 +57,8 @@ function HomeContent() {
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
                   <Route path='/login' Component={SignIn}></Route>
                   <Route path='/logout' Component={LogOut}></Route>
+                  <Route path="/404" Component={NotFound}></Route>
+                  <Route path="*" element={<Navigate to="/404" replace />}></Route>
                 </Routes>
               </Grid>
           {/* <StickyFooter /> */}
