@@ -94,6 +94,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 >
                   <TextField
                     fullWidth
+                    margin={'normal'}
                     label="Address"
                     name="location"
                     onChange={handleChange}
@@ -107,6 +108,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 >
                   <TextField
                     fullWidth
+                    margin={'normal'}
                     label="Position"
                     name="position"
                     onChange={handleChange}
@@ -120,6 +122,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 >
                   <TextField
                     fullWidth
+                    margin={'normal'}
                     label="Year"
                     name="year"
                     onChange={handleChange}
@@ -133,6 +136,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 >
                   <TextField
                     fullWidth
+                    margin={'normal'}
                     label="Egn"
                     name="egn"
                     onChange={handleChange}
@@ -146,6 +150,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 >
                   <TextField
                     fullWidth
+                    margin={'normal'}
                     label="Request To"
                     name="requestToName"
                     onChange={handleChange}
