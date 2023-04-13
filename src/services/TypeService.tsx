@@ -22,7 +22,7 @@ const update = (id: any, data: ITypeEmploeePost) => {
 
 
 const remove = (id: any) => {
-  return axios.put<any>(`http://localhost:8080/api/types/${id}`)
+  return axios.delete<any>(`http://localhost:8080/api/types/${id}`)
 };
 
 const getAllFilter = (data: any) => {

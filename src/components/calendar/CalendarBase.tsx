@@ -150,7 +150,7 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
             isStart.push(day.isSame(element.startDate, 'day'));
             isEnd.push(day.isSame(element.endDate, 'day'));
             isRejected.push(element.approved)
-            isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day'), 'day'))
+            isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
         }
     });
 
