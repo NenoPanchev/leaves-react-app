@@ -117,7 +117,7 @@
     
         "alertMassageDuplicateEntity":"You have already requested leave from {{startDate}} to {{endDate}}!",
         "alertMassagePaidLeave":"Days paid leave not enough!\n Days requested:{{daysRequested}}.\n Days left:{{leftDays}}.",
-        "alertMassagePaidLeaveZero":"Requesting 0 days or less is not perrmited!",
+        "alertMassagePaidLeaveZero":"Requesting 0 days or less is not permited!",
         "alertRequestProcessed":"Request with id:{{id}} already processed!",
         "alertAddSuccess":"Successfuly made leave request!",
         "alertMassageDeleteType":"This is the type of {{employeeWithType}} employees!",

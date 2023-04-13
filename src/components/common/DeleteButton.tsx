@@ -18,7 +18,6 @@ import UserView from '../../models/users/UserView';
 import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
 import AuthContext from '../../contexts/AuthContext';
 
-
 export default function DeleteButton(props: DeleteButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);

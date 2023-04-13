@@ -19,8 +19,8 @@ const states = [
     label: 'Александър Василев'
   },
   {
-    value: 'Димитар Колев',
-    label: 'Димитар Колев'
+    value: 'Димитър Колев',
+    label: 'Димитър Колев'
   }
 ];
 const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {

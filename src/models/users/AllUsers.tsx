@@ -15,8 +15,10 @@ import { IUser, IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/u
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
+import AuthContext from '../../contexts/AuthContext';
 
 export default function Users() {
+  const { user } = React.useContext(AuthContext);
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>({
     name: '',
@@ -31,61 +33,64 @@ export default function Users() {
   const { t } = useTranslation();
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
 
-  
+
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (user: IUserEdit) => {  
+  const renderEditButton = (user: IUserEdit) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-    departmentNames={departmentNames} roleNames={roleNames}/>
+      departmentNames={departmentNames} roleNames={roleNames} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState}></DeleteButton>
   }
 
-  const handlePaginationModelChange = (paginationModel:any) => {
-    setUserFilter({...userFilter, offset: paginationModel.pageSize * (paginationModel.page), 
-        limit: paginationModel.pageSize})
-    setRefreshCurrentState(refreshCurrentState + 1);  
-  };  
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setUserFilter({
+      ...userFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+    setRefreshCurrentState(refreshCurrentState + 1);
+  };
 
   const columns: GridColDef[] = [
-    { field: 'id',
+    {
+      field: 'id',
       headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
-      
+
     },
     {
       field: 'name',
       headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1, 
+      flex: 1,
     },
     {
-        field: 'email',
-        headerName: t('Email')!,
-        headerClassName: 'grid-header',
-        width: 150,
-        flex: 1, 
-      },
-      {
-        field: 'department',
-        headerName: t('Department')!,
-        headerClassName: 'grid-header',
-        width: 150,
-        flex: 1, 
-      },
+      field: 'email',
+      headerName: t('Email')!,
+      headerClassName: 'grid-header',
+      width: 150,
+      flex: 1,
+    },
+    {
+      field: 'department',
+      headerName: t('Department')!,
+      headerClassName: 'grid-header',
+      width: 150,
+      flex: 1,
+    },
     {
       field: 'roles',
       headerName: t('Roles')!,
       headerClassName: 'grid-header',
       width: 200,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'actions',
@@ -93,7 +98,7 @@ export default function Users() {
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
-      flex: 1, 
+      flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
         renderEditButton(params.row),
@@ -104,7 +109,7 @@ export default function Users() {
 
   const rows = page.content.map(user => {
     return {
-      id: user.id, name: user?.name, email: user.email, department: user.department, 
+      id: user.id, name: user?.name, email: user.email, department: user.department,
       roles: user.roles.map(role => role.name).join(', ')
     }
   });
@@ -113,14 +118,14 @@ export default function Users() {
     <React.Fragment>
       <Container >
         <Title>{t('Users')}</Title>
-        <Box sx={{display: 'flex', flexDirection: 'row'}}>
-          <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          filter={userFilter} setFilter={setUserFilter}
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            filter={userFilter} setFilter={setUserFilter}
           ></UserSearchFilter>
         </Box>
-        <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          departmentNames={departmentNames} roleNames={roleNames}/>
+        <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
+          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            departmentNames={departmentNames} roleNames={roleNames} />
         </Box>
         <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
