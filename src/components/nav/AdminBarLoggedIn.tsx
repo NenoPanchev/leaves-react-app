@@ -1,11 +1,11 @@
-import { ListItemButton, ListItemIcon, ListItemText, Divider, ListSubheader, Grid } from "@mui/material"
-import { Link, useLocation } from "react-router-dom"
+import {ListItemButton, ListItemIcon, ListItemText, Divider, ListSubheader, Grid} from "@mui/material"
+import {Link, useLocation} from "react-router-dom"
 import AddRequest3 from "../../models/AddRequest/AddRequest"
 import Calendar from "../calendar/Calendar"
-import { t } from "i18next"
-import { useContext } from "react"
+import {t} from "i18next"
+import {useContext} from "react"
 import AuthContext from "../../contexts/AuthContext"
-import { useTranslation } from "react-i18next"
+import {useTranslation} from "react-i18next"
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -15,9 +15,9 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 const AdminBarLoggedIn = () => {
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
     const currentLocation = useLocation();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     return (
         <Grid>
@@ -29,87 +29,96 @@ const AdminBarLoggedIn = () => {
                 <ListItemButton
                     selected={currentLocation.pathname === '/' ? true : false}>
                     <ListItemIcon>
-                        <DashboardIcon />
+                        <DashboardIcon/>
                     </ ListItemIcon>
-                    < ListItemText primary={t('Dashboard')} />
+                    < ListItemText primary={t('Dashboard')}/>
 
-                </ListItemButton>
-            </ Link>
-
-            < Link to={"/types"} style={{
-                textDecoration: 'none',
-                color: 'black'
-            }}>
-
-                <ListItemButton
-                    selected={currentLocation.pathname === '/types' ? true : false}>
-
-                    <ListItemIcon>
-                        <BadgeIcon />
-                    </ ListItemIcon>
-                    < ListItemText primary={t('LeaveType')} />
-                </ListItemButton>
-            </ Link>
-
-            < Link to={"/requests"} style={{
-                textDecoration: 'none',
-                color: 'black'
-            }}>
-                <ListItemButton
-                    selected={currentLocation.pathname === '/requests' ? true : false}>
-
-                    <ListItemIcon>
-                        <ListIcon />
-                    </ ListItemIcon>
-                    < ListItemText primary={t('Request')} />
                 </ListItemButton>
             </ Link>
             {user?.hasRole('ADMIN') &&
-                <Link to='/users' style={{
-                    textDecoration: 'none',
-                    color: 'black'
-                }}>
-                    <ListItemButton
-                        selected={currentLocation.pathname === '/users' ? true : false}>
-                        <ListItemIcon>
-                            <PeopleIcon />
+                <>
+                    < Link to={"/types"} style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
 
-                        </ ListItemIcon>
-                        < ListItemText primary={t('Users')} />
-                    </ListItemButton>
-                </ Link>
-            }
-            <Link to='/departments' style={{
-                textDecoration: 'none',
-                color: 'black'
-            }}>
-                <ListItemButton
-                    selected={currentLocation.pathname === '/departments' ? true : false}>
+                        <ListItemButton
+                            selected={currentLocation.pathname === '/types' ? true : false}>
+
+                            <ListItemIcon>
+                                <BadgeIcon/>
+                            </ ListItemIcon>
+                            < ListItemText primary={t('LeaveType')}/>
+                        </ListItemButton>
+                    </ Link>
+
+                    < Link to={"/requests"} style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <ListItemButton
+                            selected={currentLocation.pathname === '/requests' ? true : false}>
+
+                            <ListItemIcon>
+                                <ListIcon/>
+                            </ ListItemIcon>
+                            < ListItemText primary={t('Request')}/>
+                        </ListItemButton>
+                    </ Link>
+                    < Link to={"#"} style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <AddRequest3/>
+                    </ Link>
+
+                    < Calendar/>
+
+                    <Link to='/users' style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <ListItemButton
+                            selected={currentLocation.pathname === '/users' ? true : false}>
+                            <ListItemIcon>
+                                <PeopleIcon/>
+
+                            </ ListItemIcon>
+                            < ListItemText primary={t('Users')}/>
+                        </ListItemButton>
+                    </ Link>
+                    <Link to='/departments' style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <ListItemButton
+                            selected={currentLocation.pathname === '/departments' ? true : false}>
 
 
-                    <ListItemIcon>
-                        <LocationCityIcon />
-                    </ ListItemIcon>
-                    < ListItemText primary={t('Departments')} />
-                </ListItemButton>
-            </ Link>
+                            <ListItemIcon>
+                                <LocationCityIcon/>
+                            </ ListItemIcon>
+                            < ListItemText primary={t('Departments')}/>
+                        </ListItemButton>
+                    </ Link>
 
-            < Link to='/roles' style={{
-                textDecoration: 'none',
-                color: 'black'
-            }}>
-                <ListItemButton
-                    selected={currentLocation.pathname === '/roles' ? true : false}>
-                    <ListItemIcon>
-                        <AccountTreeIcon />
-                    </ ListItemIcon>
-                    < ListItemText primary={t('Roles')} />
-                </ListItemButton>
-            </ Link>
+                    < Link to='/roles' style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <ListItemButton
+                            selected={currentLocation.pathname === '/roles' ? true : false}>
+                            <ListItemIcon>
+                                <AccountTreeIcon/>
+                            </ ListItemIcon>
+                            < ListItemText primary={t('Roles')}/>
+                        </ListItemButton>
+                    </ Link>
+                </>}
 
-            < Divider sx={{ my: 1 }} />
+            < Divider sx={{my: 1}}/>
 
-            < ListSubheader component="div" inset >
+            < ListSubheader component="div" inset>
                 {t('Authentication')}
             </ ListSubheader>
 
@@ -119,9 +128,9 @@ const AdminBarLoggedIn = () => {
             }}>
                 <ListItemButton>
                     <ListItemIcon>
-                        <LogoutIcon />
+                        <LogoutIcon/>
                     </ ListItemIcon>
-                    < ListItemText primary={t('Logout')} />
+                    < ListItemText primary={t('Logout')}/>
                 </ListItemButton>
             </ Link>
         </Grid>
