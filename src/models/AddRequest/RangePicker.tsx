@@ -1,39 +1,38 @@
 // import React, { useState } from 'react';
-// import DatePicker, { registerLocale } from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
+// import RangePickerProps from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
-// import bg from 'date-fns/locale/bg-BG'; // or any other locale you want to use
-
-// registerLocale('bg', bg); // register the locale with react-datepicker
 
 // interface DateRangePickerProps {
-//   startDate: Date | null;
-//   endDate: Date | null;
-//   onDatesChange: (startDate: Date | null, endDate: Date | null) => void;
+//   onChange: (startDate: Date | null, endDate: Date | null) => void;
+//   startDate?: Date | null;
+//   endDate?: Date | null;
+
 // }
 
 // const DateRangePicker: React.FC<DateRangePickerProps> = ({
+//   onChange,
 //   startDate,
 //   endDate,
-//   onDatesChange,
-// }) => {
-//   const [focusedInput, setFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
 
-//   const handleDatesChange = (dates: [Date | null, Date | null]) => {
-//     const [newStartDate, newEndDate] = dates;
-//     onDatesChange(newStartDate, newEndDate);
+// }) => {
+//   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([
+//     startDate || null,
+//     endDate || null,
+//   ]);
+
+//   const handleChange: RangePickerProps = (range) => {
+//     setSelectedRange(range);
+//     onChange(range[0], range[1]);
 //   };
 
 //   return (
-//     <DatePicker.RangePicker
-//       startDate={startDate}
-//       endDate={endDate}
-//       onDatesChange={handleDatesChange}
-//       focusedInput={focusedInput}
-//       onFocusChange={(focusedInput) => setFocusedInput(focusedInput)}
-//       locale="en"
-//       showClearDates
-//       numberOfMonths={2}
-//       withPortal
+//     <DatePicker
+//       // selected={selectedRange}
+//       onChange={handleChange}
+//       startDate={selectedRange[0]}
+//       endDate={selectedRange[1]}
+//       selectsRange
 //     />
 //   );
 // };
