@@ -31,7 +31,6 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
   const user = userService.useFetchOneEmail(props.email);
   const names = new Set<string>();
   const { t } = useTranslation();
-  console.log(user);
   user?.roles.forEach(role => {
     role.permissions.forEach(permission => {
         names.add(permission.name);
@@ -68,6 +67,14 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
                 <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Permissions') + ':'}</TableCell>
                   <TableCell>{Array.from(names).join(', ')}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('Position') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfo.typeName}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('Paid leave') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfo.daysLeave}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

@@ -1,5 +1,5 @@
 export default interface IEmploeeGet {
-    id?: any | null,
+    id: number | null,
     name: string,
   }
   

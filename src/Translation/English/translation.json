@@ -142,7 +142,11 @@
         "FilterButton":"Filter"
     },
     "Calendar Locale": "en-gb",
-    "My info:": "My information:"
+    "My info:": "My information:",
+    "Position": "Position",
+    "Trainee": "Trainee",
+    "Developer": "Developer",
+    "Paid leave": "Paid leave"
 
 
 

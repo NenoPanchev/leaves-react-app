@@ -127,5 +127,9 @@
         "FilterButton": "Филтрирай"
     },
     "Calendar Locale": "bg",
-    "My info:": "Моята информация:"
+    "My info:": "Моята информация:",
+    "Position": "Длъжност",
+    "Trainee": "Стажант",
+    "Developer": "Разработчик",
+    "Paid leave": "Дни отпуск"
 }

@@ -1,53 +1,34 @@
-// import React, { useState } from "react";
-// import { DateRangePicker as MuiDateRangePicker, DesktopDatePickerProps, DatePicker } from "@mui/x-date-pickers";
-// import { Dayjs } from "dayjs";
-//
-// const DateRangePicker = () => {
-//     const [dateRange, setDateRange] = useState<{ start: Dayjs | null; end: Dayjs | null }>({
-//         start: null,
-//         end: null,
+// import React, { useState } from 'react';
+// import { DateRangePicker } from 'react-bootstrap-daterangepicker';
+// import dayjs, { Dayjs } from 'dayjs';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap-daterangepicker/daterangepicker.css';
+
+// interface DateRangePickerProps {
+//     label: string;
+//     onChange: (startDate: Dayjs, endDate: Dayjs) => void;
+//     startDate: Dayjs;
+//     endDate: Dayjs;
+// }
+
+// const CustomDateRangePicker: React.FC<DateRangePickerProps> = ({ label, onChange, startDate, endDate }) => {
+    
+//     const [selectedDates, setSelectedDates] = useState({
+//         startDate: startDate.toDate(),
+//         endDate: endDate.toDate(),
 //     });
-//
-//     const handleDateRangeChange = (date: DateRange<Dayjs>) => {
-//         setDateRange({
-//             start: date[0],
-//             end: date[1],
-//         });
+
+//     const handleDateChange = (event: any, picker: DateRangePicker) => {
+//         setSelectedDates(picker);
+//         onChange(dayjs(picker.startDate), dayjs(picker.endDate));
 //     };
-//
-//     const DateRangePickerToolbar = () => (
-//         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-//             <DatePicker
-//                 label="Start Date"
-//                 value={dateRange.start}
-//                 onChange={(date) => setDateRange((prevState) => ({ ...prevState, start: date }))}
-//                 TextFieldComponent={(props) => <div {...props} />}
-//             />
-//             <DatePicker
-//                 label="End Date"
-//                 value={dateRange.end}
-//                 onChange={(date) => setDateRange((prevState) => ({ ...prevState, end: date }))}
-//                 TextFieldComponent={(props) => <div {...props} />}
-//             />
+
+//     return (
+//         <div>
+//             <label>{label}</label>
+//             <DateRangePicker startDate={selectedDates.startDate} endDate={selectedDates.endDate} onApply={handleDateChange} />
 //         </div>
 //     );
-//
-//     return (
-//         <MuiDateRangePicker
-//             startText="Start Date"
-//             endText="End Date"
-//             value={[dateRange.start, dateRange.end]}
-//             onChange={handleDateRangeChange}
-//             renderInput={(startProps, endProps) => (
-//                 <React.Fragment>
-//                     <DatePicker {...startProps} TextFieldComponent={(props) => <div {...props} />} />
-//                     <DatePicker {...endProps} TextFieldComponent={(props) => <div {...props} />} />
-//                 </React.Fragment>
-//             )}
-//             toolbarTitle="Select Date Range"
-//             ToolbarComponent={DateRangePickerToolbar}
-//         />
-//     );
 // };
-//
-// export default DateRangePicker;
+
+// export default CustomDateRangePicker;

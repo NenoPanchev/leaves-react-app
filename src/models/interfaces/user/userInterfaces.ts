@@ -34,6 +34,10 @@ export interface IUserDetails {
     createdBy?: string
     lastModifiedAt?: string
     lastModifiedBy?: string
+    employeeInfo: {
+      typeName: string
+      daysLeave: number
+    }
 }
 
 export interface IUserPage {

@@ -28,7 +28,7 @@ const RemoveType: React.FC<TypeRemoveProps> = (props): JSX.Element => {
   const handleDelete = () => {
     TypeService.remove(props.typeEmployee.id)
       .then((response: any) => {
-        props.onDelete(props.typeEmployee.id)
+        props.onDelete(props.typeEmployee.id!)
         console.log(props.typeEmployee.id);
       }
       )

@@ -58,13 +58,6 @@ export default function DashBoard() {
 
              </Paper>
          </Grid>
-
-         {/* Recent Orders */}
-         <Grid item xs={5}>
-             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-
-             </Paper>
-         </Grid>
      </Grid>
  </Container>
 </Grid>

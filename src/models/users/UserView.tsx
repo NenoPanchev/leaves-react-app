@@ -94,6 +94,14 @@ export default function UserView(props: UserViewProp) {
                   <TableCell className='tableHeader' variant='head'>{t('Last Modified By') + ':'}</TableCell>
                   <TableCell>{user?.lastModifiedBy}</TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('Position') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfo.typeName}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('Paid leave') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfo.daysLeave}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </Card>

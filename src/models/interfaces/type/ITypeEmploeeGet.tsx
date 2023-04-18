@@ -1,7 +1,7 @@
 import IEmploeeGet from "../employeeInfo/IEmployeeGet";
 
 export default interface ITypeEmploeeGet {
-    id?: any | null,
+    id: number | null,
     typeName: string,
     daysLeave: number,
     createdBy: string,

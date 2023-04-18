@@ -55,6 +55,8 @@ const loadUser = async () => {
     .then(response => setUser(response.data))
     .catch(error => console.log(error))
 }
+console.log(user);
+
 return user;
 }
 
