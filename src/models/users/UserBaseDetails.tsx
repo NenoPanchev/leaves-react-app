@@ -14,21 +14,10 @@ import { useTranslation } from 'react-i18next';
 interface UserViewProp {
   email: string
 }
-
-interface UserDetails {
-    roles: [{
-        name: string
-        permissions: Permissions[]
-      }]
-}
-
-interface Permissions {
-        name: string
-}
-
 const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
   const user = userService.useFetchOneEmail(props.email);
+  console.log(user)
   const names = new Set<string>();
   const { t } = useTranslation();
   console.log(user);
@@ -68,6 +57,14 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
                 <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Permissions') + ':'}</TableCell>
                   <TableCell>{Array.from(names).join(', ')}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('AnnualPaidLeaveFromType') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfoDto.typeDaysLeave}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('LeftAnnualPaidLeave') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfoDto.daysLeave}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

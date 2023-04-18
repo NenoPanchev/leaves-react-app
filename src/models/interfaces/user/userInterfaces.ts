@@ -1,3 +1,5 @@
+import IEmploeeGet from "../employeeInfo/IEmployeeGet"
+
 export interface IUser {
     id: number
     name: string
@@ -34,6 +36,7 @@ export interface IUserDetails {
     createdBy?: string
     lastModifiedAt?: string
     lastModifiedBy?: string
+    employeeInfoDto:IEmploeeGet
 }
 
 export interface IUserPage {
