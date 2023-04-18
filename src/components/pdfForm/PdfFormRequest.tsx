@@ -101,6 +101,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                 spacing={3}
               >
                 <Grid
+                  item
                   xs={12}
                   md={6}
                 >
@@ -114,6 +115,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   />
                 </Grid>
                 <Grid
+                  item
                   xs={12}
                   md={6}
                 >
@@ -127,6 +129,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   />
                 </Grid>
                 <Grid
+                  item
                   xs={12}
                   md={6}
                 >
@@ -141,6 +144,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   />
                 </Grid>
                 <Grid
+                  item
                   xs={12}
                   md={6}
                 >
@@ -154,6 +158,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   />
                 </Grid>
                 <Grid
+                  item
                   xs={12}
                   md={6}
                 >

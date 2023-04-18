@@ -55,7 +55,6 @@ const loadUser = async () => {
     .then(response => setUser(response.data))
     .catch(error => console.log(error))
 }
-console.log(user);
 
 return user;
 }
@@ -65,7 +64,6 @@ export const getUserByEmail = (data: string) => {
 };
 
 export const getUser = async () => {
-  console.log("retriveUser")
 return await axios.get<IUserDetails>(BASE_USER_URL+"current");
 }
 
@@ -74,7 +72,6 @@ export const useCreate = () => {
   const addUser = async (user: FormData) => {    
     const result = await axios.post(BASE_USER_URL, formToJSON(user))
       .then(response => {
-        console.log(response.data)
       })
       .catch(error => console.log(error))
   }
@@ -121,7 +118,6 @@ export const useEdit = () => {
 
     const result = await axios.put(updateUrl, formToJSON(role))
       .then(response => {
-        console.log(response.data)
       })
       .catch(error => console.log(error))
   }
