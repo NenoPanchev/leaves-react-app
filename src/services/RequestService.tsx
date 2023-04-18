@@ -9,17 +9,13 @@ import IRequestDataApprove from "../models/interfaces/request/IRequestDataAprove
 
 
 const getAll = () => {
-  console.log("get all without");
   return axios.get<Array<IRequestDataGet>>("http://localhost:8080/api/requests")
 
 };
 const getAllByUser = () => {
-  console.log("get all request by user");
   return axios.get<Array<IRequestDataGet>>("http://localhost:8080/api/requests/employee")
 };
 const getAllFilter = (data: any) => {
-  console.log("get all filter");
-  console.log(data);
   return axios.post<Array<IRequestDataGet>>("http://localhost:8080/api/requests/filter",data)
 };
 
@@ -55,7 +51,6 @@ const unMarkAsDeleted = (id: any) => {
 };
 
 const getPdf = (id: any, data: any) => {
-  console.log(data);
   return axios.post<any>(`http://localhost:8080/users/${id}/pdf`,data,{
     responseType: 'arraybuffer',
   })

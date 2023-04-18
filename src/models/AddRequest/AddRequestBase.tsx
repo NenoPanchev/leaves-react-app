@@ -53,13 +53,10 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
                 setSubmitted(true);
 
                 setAlertProps({ ...alertProps, open: true })
-                console.log(response.data);
             })
             .catch((e: AxiosError<any, any>) => {
                 if (e.response) {
-                    console.log(e.response);
                     setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-                    console.log(alertProps);
                     setSubmitted(true);
                 }
             });
@@ -70,7 +67,6 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
     }, [startDate]);
 
     React.useEffect(() => {
-        console.log("sumbit")
         props.onSubmit();
     }, [submitted]);
     function updateParent(newValue: boolean) {

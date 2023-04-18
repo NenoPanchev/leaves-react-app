@@ -43,7 +43,6 @@ const CustomPickersDay = styled(PickersDay, {
         prop !== 'isRed' &&
         prop !== 'isBeforeToday',
 })<CustomPickerDayProps>(({ theme, dayIsBetween, isStart, isEnd, isRejected, isRed, isBeforeToday }) => {
-    //  console.log(dayIsBetween);
     let counter = 0;
     for (const dayIsBetweenItem of dayIsBetween) {
         let styl = {
@@ -197,7 +196,6 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
     }, [])
 
     React.useEffect(() => {
-        console.log("CustomDay")
         retrivePage();
     }, [setLeaveRequest]);
 
@@ -222,7 +220,6 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
                 return;
             }
         })
-        console.log(leaveRequest);
     };
 
     const retrivePage = async () => {
@@ -254,7 +251,7 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
                         />
                     </LocalizationProvider>
                 </Grid>
-                <Grid item direction="column" marginTop="auto" marginBottom="auto">
+                <Grid item marginTop="auto" marginBottom="auto">
 
                     <Grid container direction="row" marginBottom={2}  >
                         <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
