@@ -55,6 +55,7 @@ const unMarkAsDeleted = (id: any) => {
 };
 
 const getPdf = (id: any, data: any) => {
+  console.log(data);
   return axios.post<any>(`http://localhost:8080/users/${id}/pdf`,data,{
     responseType: 'arraybuffer',
   })

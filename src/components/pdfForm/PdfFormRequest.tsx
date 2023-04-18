@@ -4,9 +4,10 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import IRequestFormPdf from '../../models/interfaces/request/IRequestFormPdf';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import RequestService from '../../services/RequestService';
 import fileDownload from 'js-file-download'
+import Checkbox from '@mui/material/Checkbox';
 import dayjs from 'dayjs';
 type AddRequestAlertProps = {
   open: boolean,
@@ -30,14 +31,27 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     props.onClose(false);
     setOpen(false);
   };
+ 
+
   const { leaveRequest } = props;
   const [requestForm, setRequestForm] = useState<IRequestFormPdf>({
     requestToName: "Александър Василев",
     year: dayjs().year().toString(),
     position: "",
-    location: "",
-    egn: ""
+    address: "",
+    ssn: "",
+    saved:false
   });
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
+  useEffect(() => {
+    setRequestForm({...requestForm,saved:checked}) 
+  }, [checked]);
+
   const handleChange = useCallback(
     (event: { target: { name: string; value: string; }; }) => {
       setRequestForm((prevState) => ({
@@ -45,11 +59,10 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
         [event.target.name]: event.target.value
       }));
     },
-    []
+    [setRequestForm]
   );
   const handleSubmit =async () => {
     await RequestService.getPdf(leaveRequest.id,requestForm)
-    
     .then((response: any) => {
       fileDownload(response.data, "отпуск.pdf")
     })
@@ -58,7 +71,6 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     });
     setOpen(false);
   };
-
 
   return (
 
@@ -96,10 +108,9 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     fullWidth
                     margin={'normal'}
                     label="Address"
-                    name="location"
+                    name="address"
                     onChange={handleChange}
                     required
-                    // value={values.firstName}
                   />
                 </Grid>
                 <Grid
@@ -113,7 +124,6 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     name="position"
                     onChange={handleChange}
                     required
-                    // value={values.lastName}
                   />
                 </Grid>
                 <Grid
@@ -137,11 +147,10 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                   <TextField
                     fullWidth
                     margin={'normal'}
-                    label="Egn"
-                    name="egn"
+                    label="Ssn"
+                    name="ssn"
                     onChange={handleChange}
                     type="number"
-                    // value={values.phone}
                   />
                 </Grid>
                 <Grid
@@ -157,7 +166,6 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     required
                     select
                     SelectProps={{ native: true }}
-                    // value={values.state}
                   >
                     {states.map((option) => (
                       <option
@@ -175,18 +183,26 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
         </Box>
       </DialogContent>
 
-      <Grid container
-        spacing={0}
-        direction="row"
-        alignItems="center"
-        justifyContent="center">
+
 
         <DialogActions>
+        <Grid container
+        spacing={0}
+        direction="row"
+     >
+          <Grid item justifySelf="flex-start" justifyContent="flex-start" sx={{position:"unset"}}>
+          <Checkbox  checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }}/>
+          </Grid>
+    
+
+<Grid  marginLeft="auto" >
           <Button onClick={handleSubmit} >{t('Submit')}</Button>
           <Button onClick={handleClose} >{t('Close')}</Button>
+          </Grid>
+          </Grid >
+
         </DialogActions>
 
-      </Grid >
 
     </Dialog>
   );

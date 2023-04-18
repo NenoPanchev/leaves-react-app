@@ -14,18 +14,6 @@ import { useTranslation } from 'react-i18next';
 interface UserViewProp {
   email: string
 }
-
-interface UserDetails {
-    roles: [{
-        name: string
-        permissions: Permissions[]
-      }]
-}
-
-interface Permissions {
-        name: string
-}
-
 const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
   const user = userService.useFetchOneEmail(props.email);
