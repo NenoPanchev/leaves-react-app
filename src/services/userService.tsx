@@ -169,3 +169,19 @@ export function appendRolesToFormData(formData: FormData, roles: Role[] | null) 
     });
   });
 }
+
+export const useFetchAlTypeNames = (refresh: number) => {
+  const [typeNames, setTypeNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadTypeNames();
+  }, [refresh]);
+
+  const loadTypeNames = async () => {
+    const result = await axios.get(BASE_USER_URL + 'emails')
+      .then(response => setTypeNames(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return typeNames;
+}
