@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IEmployeeInfo, IUser, IUserDetails, IUserEdit, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
+import { IUser, IUserDetails, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
 import { BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
