@@ -11,6 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import dayjs from 'dayjs';
 import AuthContext from '../../contexts/AuthContext';
 import * as userService from '../../services/userService';
+import { IUserDetails } from '../../models/interfaces/user/userInterfaces';
 type AddRequestAlertProps = {
   open: boolean,
   onClose: (newValue: boolean) => void;
@@ -31,9 +32,9 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [open, setOpen] = React.useState(props.open);
   const [t, i18n] = useTranslation();
   const { user } = useContext(AuthContext);
-  let userDetails = null;
+  let userDetails:IUserDetails | any = null;
   if (user != null) {
-    userDetails = userService.useFetchOneEmail(user.getEmail());
+     userDetails = userService.useFetchOneEmail(user.getEmail());
   }
 
   const handleClose = () => {
@@ -51,6 +52,18 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     ssn: ((userDetails == null) ? "" : userDetails.employeeInfo.ssn),
     saved: false
   });
+  
+
+  useEffect(() => {
+    if(userDetails!=null)
+  {
+    setRequestForm({...requestForm,
+      position:userDetails.employeeInfo.typeName,
+      address:userDetails.employeeInfo.address,
+      ssn:userDetails.employeeInfo.ssn})
+
+  }
+  }, [userDetails]);
   const [checked, setChecked] = React.useState(false);
 
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
