@@ -4,7 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent,
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
-import { appendRolesToFormData, useEdit } from '../../services/userService';
+import { appendEmployeeInfoToFormData, appendRolesToFormData, useEdit } from '../../services/userService';
 import { EditUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
@@ -17,6 +17,9 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
+    const [position, setPosition] = React.useState<string | null>(props.user.position);
+    
+    
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
@@ -48,6 +51,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
+        appendEmployeeInfoToFormData(data)
         const errors = validate();
         if (errors) {
             return;
@@ -134,6 +138,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 id="department"
                                 options={props.departmentNames}
                                 size='medium'
+                                filterSelectedOptions
                                 sx={{ minWidth: '20%' }}
                                 value={department}
                                 onChange={(event, newValue) => {
@@ -146,6 +151,26 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                         margin='normal'
                                         label={t('Department')}
                                         placeholder={t('Department')!}
+                                    />
+                                )}
+                            />
+                            <Autocomplete
+                                id="position"
+                                options={props.typeNames}
+                                size='medium'
+                                filterSelectedOptions
+                                sx={{ minWidth: '20%' }}
+                                value={position}
+                                onChange={(event, newValue) => {
+                                    setPosition(newValue!);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name='position'
+                                        margin='normal'
+                                        label={t('Position')}
+                                        placeholder={t('Position')!}
                                     />
                                 )}
                             />
