@@ -126,7 +126,7 @@ export default function Users() {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
           <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            departmentNames={departmentNames} roleNames={roleNames} />
+            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>
         </Box>
         <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
