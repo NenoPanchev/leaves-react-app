@@ -8,6 +8,10 @@ export interface IUser {
     roles: [{
       name: string
     }]
+    employeeInfo: {
+      typeName: string
+      daysLeave: number
+    }
 }
 
 export interface IUserEdit {

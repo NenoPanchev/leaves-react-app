@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Container } from '@mui/system';
+import { Box } from '@mui/system';
 import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
 import AuthContext from '../../contexts/AuthContext';
+import { use } from 'i18next';
+import { Grid } from '@mui/material';
 
 export default function Users() {
   const { user } = React.useContext(AuthContext);
@@ -70,7 +72,7 @@ export default function Users() {
       headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: 'email',
@@ -94,6 +96,20 @@ export default function Users() {
       flex: 1,
     },
     {
+      field: 'position',
+      headerName: t('Position')!,
+      headerClassName: 'grid-header',
+      width: 150,
+      flex: 0.5,
+    },
+    {
+      field: 'daysLeave',
+      headerName: t('Paid leave')!,
+      headerClassName: 'grid-header',
+      width: 70,
+      flex: 0.5,
+    },
+    {
       field: 'actions',
       headerName: t('Actions')!,
       headerClassName: 'grid-header',
@@ -111,13 +127,14 @@ export default function Users() {
   const rows = page.content.map(user => {
     return {
       id: user.id, name: user?.name, email: user.email, department: user.department,
-      roles: user.roles.map(role => role.name).join(', ')
+      roles: user.roles.map(role => role.name).join(', '),
+      position: user.employeeInfo.typeName, daysLeave: user.employeeInfo.daysLeave
     }
   });
 
   return (
     <React.Fragment>
-      <Container >
+      <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
         <Title>{t('Users')}</Title>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
@@ -141,7 +158,7 @@ export default function Users() {
             disableRowSelectionOnClick
           />
         </Box>
-      </Container>
+      </Grid>
     </React.Fragment>
   );
 }

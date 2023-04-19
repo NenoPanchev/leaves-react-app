@@ -1,4 +1,4 @@
-import { axiosInstance as axios} from '../config/AxiosConfig';
+import { axiosInstance as axios } from '../config/AxiosConfig';
 import ITypeEmploeeGet from '../models/interfaces/type/ITypeEmploeeGet';
 import ITypeEmploeePage from '../models/interfaces/type/ITypeEmploeePage';
 import ITypeEmploeePost from '../models/interfaces/type/ITypeEmploeePost';
@@ -26,12 +26,12 @@ const remove = (id: any) => {
 };
 
 const getAllFilter = (data: any) => {
-  return axios.post<Array<ITypeEmploeeGet>>(`http://localhost:8080/api/types/filter`,data)
+  return axios.post<Array<ITypeEmploeeGet>>(`http://localhost:8080/api/types/filter`, data)
 
 };
 
 const getAllFilterPage = (data: any) => {
-  return axios.post<ITypeEmploeePage>("http://localhost:8080/api/types/Page",data)
+  return axios.post<ITypeEmploeePage>("http://localhost:8080/api/types/Page", data)
 };
 const unMarkAsDeleted = (id: any) => {
   return axios.put<any>(`http://localhost:8080/api/types/${id}/unmark`)
@@ -45,7 +45,7 @@ const TypeService = {
   remove,
   getAllFilter,
   getAllFilterPage,
-  unMarkAsDeleted
+  unMarkAsDeleted,
 };
 
 export default TypeService;

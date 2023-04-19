@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
+import { Grid } from '@mui/material';
 
 
 export default function Departments() {
@@ -108,7 +109,7 @@ export default function Departments() {
 
   return (
     <React.Fragment>
-      <Container >
+      <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
         <Title>{t('Departments')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
@@ -132,7 +133,7 @@ export default function Departments() {
             disableRowSelectionOnClick
           />
         </Box>
-      </Container>
+      </Grid>
     </React.Fragment>
   );
 }

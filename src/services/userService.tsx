@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { IUser, IUserDetails, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
-import { BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
+import { BASE_URL, BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
 
@@ -174,12 +174,10 @@ export function appendRolesToFormData(formData: FormData, roles: Role[] | null) 
 export function appendEmployeeInfoToFormData(formData: FormData) {
 
     const employeeInfo = new EmployeeInfo();
-    let type = formData.get('position') ? formData.get('position') : '';
-    if (type) {
-      type = '';
-    }
+    let type = formData.get('position') ? formData.get('position')?.toString() : '';
     employeeInfo.setTypeName(type!);
-    formData.append('employeeInfo[string][typeName]', type!)
+    formData.append('employeeInfo[typeName]', type!)
+    console.log(formData);
 }
 
 export const useFetchAlTypeNames = (refresh: number) => {
@@ -190,7 +188,7 @@ export const useFetchAlTypeNames = (refresh: number) => {
   }, [refresh]);
 
   const loadTypeNames = async () => {
-    const result = await axios.get(BASE_USER_URL + 'emails')
+    const result = await axios.get(BASE_URL + '/api/types/names')
       .then(response => setTypeNames(response.data))
       .catch(error => console.log(error))
   }
