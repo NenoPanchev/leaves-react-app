@@ -20,21 +20,21 @@ const CustomDay: React.FC = (): JSX.Element => {
 
   return (
     <React.Fragment>
-        <ListItemButton onClick={handleClickOpen} sx={{paddingTop: '12px', paddingBottom: '12px'}}>
-          <ListItemIcon>
-            <CalendarMonthIcon />
-          </ListItemIcon>
-          <Typography color="black"   >
-            {t('Calendar')}
-          </Typography>
-        </ListItemButton>
+      <ListItemButton onClick={handleClickOpen} sx={{ paddingTop: '12px', paddingBottom: '12px' }}>
+        <ListItemIcon>
+          <CalendarMonthIcon />
+        </ListItemIcon>
+        <Typography color="black"   >
+          {t('Calendar')}
+        </Typography>
+      </ListItemButton>
       <Dialog
         open={open}
         onClose={handleClose}
       >
-       
+
         <DialogContent>
-          <CalendarBase/>
+          <CalendarBase />
         </DialogContent>
 
         <DialogActions>
