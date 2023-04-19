@@ -16,6 +16,7 @@ import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import RequestService from '../../services/RequestService';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import Filter from '../../models/interfaces/request/Filter';
+import BasicDialogAlert from'../Alert/BasicDialogAlert';
 import { useState } from 'react';
 import 'dayjs/locale/en-gb';
 import 'dayjs/locale/bg';
@@ -136,7 +137,6 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     const isRed: Array<boolean> = [];
     const isBeforeToday: Array<boolean> = [];
     requests.forEach(element => {
-        // if (element.approved === true) {
 
             dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
             isStart.push(day.isSame(element.startDate, 'day'));
@@ -145,13 +145,6 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
             isRed.push(day.isBetween(element.approvedStartDate, element.approvedEndDate, null, '[]'))
             isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
 
-        // } else {
-        //     dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
-        //     isStart.push(day.isSame(element.startDate, 'day'));
-        //     isEnd.push(day.isSame(element.endDate, 'day'));
-        //     isRejected.push(element.approved)
-        //     isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
-        // }
     });
 
     return (
@@ -168,10 +161,12 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     );
 }
 
+const alertMassage = "You can not download Pdf of Request that is not approved!";
 const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [t, i18n] = useTranslation();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+    const[openAlert,setOpenAlert]=React.useState<boolean>(false);
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
@@ -186,6 +181,7 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
     });
     const [openForm, setOpen] = useState<boolean>(false);
     const ChildMemo = React.memo(PdfFormRequest);
+    const AlertMemo = React.memo(BasicDialogAlert);
 
     React.useImperativeHandle(ref, () => {
         return {
@@ -203,19 +199,33 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
 
         [setOpen]
     );
+    const updateAlertOpen = React.useCallback(
 
+        (newValue: boolean): void => setOpenAlert(newValue),
+
+        [setOpenAlert]
+    );
 
     const handleChange = (newValue: dayjs.Dayjs | null) => {
         leaveRequests.forEach(element => {
-            if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
-                setLeaveRequest(element);
-                setOpen(true);
-                return;
+            if (element.approved) {
+                if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                    setLeaveRequest(element);
+                    setOpen(true);
+                    return;
+                }
+                if (newValue?.isSame(element.endDate, 'day')) {
+                    setLeaveRequest(element);
+                    setOpen(true);
+                    return;
+                }
             }
-            if (newValue?.isSame(element.endDate, 'day')) {
-                setLeaveRequest(element);
-                setOpen(true);
-                return;
+            else if (element.approved==null||element.approved==false) {
+                if (newValue?.isSame(element.endDate, 'day')||newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                    console.log("asda")
+                    setOpenAlert(true)
+                    return;
+                }
             }
         })
     };
@@ -232,6 +242,7 @@ const CustomDay = (props:{}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Elem
 
     return (
         <Grid item>
+            <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
             <Grid container direction="row" sx={{ width: 'flex' }} >
                 <Grid item >
