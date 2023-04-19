@@ -71,6 +71,7 @@ export interface AddUserButtonProps {
   refresh: (value: number) => void;
   departmentNames: string[]
   roleNames: string[]
+  typeNames: string[]
 }
 
 export interface EditUserButtonProps {
