@@ -111,10 +111,10 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
                             <Grid item direction="row">
                                 <DatePicker label="Approved start date"
                                     value={dayjs(leaveRequestDto.approvedStartDate)}
-                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedStartDate: newValue?.toISOString() })} />
+                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedStartDate: newValue?.format("YYYY-MM-DD")})} />
                                 <DatePicker label="Approved end date"
                                     value={dayjs(leaveRequestDto.approvedEndDate)}
-                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedEndDate: newValue?.toISOString() })} />
+                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedEndDate: newValue?.format("YYYY-MM-DD")})} />
                             </Grid>
                         </LocalizationProvider>
                     </Grid>

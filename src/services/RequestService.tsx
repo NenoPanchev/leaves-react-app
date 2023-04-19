@@ -6,6 +6,7 @@ import IRequestDataPost from "../models/interfaces/request/IRequestDataPost";
 import http from "../services/http-common";
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import IRequestDataApprove from "../models/interfaces/request/IRequestDataAprove";
+import IRequestDataPostString from "../models/interfaces/request/IRequestDataPostString";
 
 
 const getAll = () => {
@@ -32,6 +33,10 @@ const create = (data: IRequestDataPost) => {
 
 };
 
+const createRequestString = (data: IRequestDataPostString) => {
+  return axios.post<ILeaveRequestPage>("http://localhost:8080/api/requests",data)
+
+};
 const update = (id: any, data: any) => {
   return axios.put<IRequestDataPost>(`http://localhost:8080/api/requests/${id}`,data)
 };
@@ -74,7 +79,8 @@ const TutorialService = {
   getAllFilter,
   getAllFilterPage,
   getAllByUser,
-  getPdf
+  getPdf,
+  createRequestString
 };
 
 export default TutorialService;

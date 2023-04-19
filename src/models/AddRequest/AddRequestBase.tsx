@@ -14,6 +14,7 @@ import IAlertProps from '../interfaces/errors/IAlertProps';
 import 'dayjs/locale/en-gb';
 import 'dayjs/locale/bg';
 import { Console } from 'console';
+import IRequestPostString from '../interfaces/request/IRequestDataPostString';
 type AddRequestBaseProps = {
  
     onSubmit: () => void;
@@ -22,15 +23,15 @@ type AddRequestBaseProps = {
 }
 const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
     const initialRequestState = {
-        startDate: dayjs(),
-        endDate: dayjs(),
+        startDate: dayjs().format("YYYY-MM-DD"),
+        endDate: dayjs().format("YYYY-MM-DD"),
     };
     const [open, setOpen] = React.useState(false);
     const [t, i18n] = useTranslation();
 
     const [startDate, SetStartDate] = React.useState<Dayjs | null>(dayjs());
     const [endDate, SetEndDate] = React.useState<Dayjs | null>(dayjs());
-    const [request, setRequest] = React.useState<IRequestPost>(initialRequestState);
+    const [request, setRequest] = React.useState<IRequestPostString>(initialRequestState);
     const [submitted, setSubmitted] = React.useState<boolean>(false);
     const [alertProps, setAlertProps] = React.useState<IAlertProps>(
         {
@@ -42,9 +43,9 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
     );
     let value: any;
     const saveRequest = () => {
-        request.startDate = startDate;
-        request.endDate = endDate;
-        RequestService.create(request)
+        request.startDate = startDate?.format("YYYY-MM-DD")!;
+        request.endDate = endDate?.format("YYYY-MM-DD")!;
+        RequestService.createRequestString(request)
             .then((response: any) => {
                 setRequest({
                     startDate: response.data.startDate,
