@@ -1,18 +1,21 @@
-import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, Divider, Grid, TextField } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, Divider, Grid, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import IRequestFormPdf from '../../models/interfaces/request/IRequestFormPdf';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import RequestService from '../../services/RequestService';
 import fileDownload from 'js-file-download'
 import Checkbox from '@mui/material/Checkbox';
 import dayjs from 'dayjs';
+import AuthContext from '../../contexts/AuthContext';
+import * as userService from '../../services/userService';
 type AddRequestAlertProps = {
   open: boolean,
   onClose: (newValue: boolean) => void;
   leaveRequest: IRequestDataGet
+
 }
 const states = [
   {
@@ -27,20 +30,26 @@ const states = [
 const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [open, setOpen] = React.useState(props.open);
   const [t, i18n] = useTranslation();
+  const { user } = useContext(AuthContext);
+  let userDetails = null;
+  if (user != null) {
+    userDetails = userService.useFetchOneEmail(user.getEmail());
+  }
+
   const handleClose = () => {
     props.onClose(false);
     setOpen(false);
   };
- 
+
 
   const { leaveRequest } = props;
   const [requestForm, setRequestForm] = useState<IRequestFormPdf>({
     requestToName: "Александър Василев",
     year: dayjs().year().toString(),
-    position: "",
-    address: "",
-    ssn: "",
-    saved:false
+    position: ((userDetails == null) ? "" : userDetails.employeeInfo.typeName),
+    address: ((userDetails == null) ? "" : userDetails.employeeInfo.address),
+    ssn: ((userDetails == null) ? "" : userDetails.employeeInfo.ssn),
+    saved: false
   });
   const [checked, setChecked] = React.useState(false);
 
@@ -49,7 +58,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   };
 
   useEffect(() => {
-    setRequestForm({...requestForm,saved:checked}) 
+    setRequestForm({ ...requestForm, saved: checked })
   }, [checked]);
 
   const handleChange = useCallback(
@@ -61,14 +70,14 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     },
     [setRequestForm]
   );
-  const handleSubmit =async () => {
-    await RequestService.getPdf(leaveRequest.id,requestForm)
-    .then((response: any) => {
-      fileDownload(response.data, "отпуск.pdf")
-    })
-    .catch((e: Error) => {
-      console.log(e);
-    });
+  const handleSubmit = async () => {
+    await RequestService.getPdf(leaveRequest.id, requestForm)
+      .then((response: any) => {
+        fileDownload(response.data, "отпуск.pdf")
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
     setOpen(false);
   };
 
@@ -111,6 +120,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     label="Address"
                     name="address"
                     onChange={handleChange}
+                    value={requestForm.address}
                     required
                   />
                 </Grid>
@@ -125,6 +135,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     label="Position"
                     name="position"
                     onChange={handleChange}
+                    value={requestForm.position}
                     required
                   />
                 </Grid>
@@ -154,6 +165,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     label="Ssn"
                     name="ssn"
                     onChange={handleChange}
+                    value={requestForm.ssn}
                     type="number"
                   />
                 </Grid>
@@ -190,23 +202,24 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
 
 
-        <DialogActions>
+      <DialogActions>
         <Grid container
-        spacing={0}
-        direction="row"
-     >
-          <Grid item justifySelf="flex-start" justifyContent="flex-start" sx={{position:"unset"}}>
-          <Checkbox  checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }}/>
+          spacing={0}
+          direction="row"
+        >
+          <Grid item direction="row" >
+            <Typography >Save Information :</Typography>
+            <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
           </Grid>
-    
 
-<Grid  marginLeft="auto" >
-          <Button onClick={handleSubmit} >{t('Submit')}</Button>
-          <Button onClick={handleClose} >{t('Close')}</Button>
+
+          <Grid marginLeft="auto" >
+            <Button onClick={handleSubmit} >{t('Submit')}</Button>
+            <Button onClick={handleClose} >{t('Close')}</Button>
           </Grid>
-          </Grid >
+        </Grid >
 
-        </DialogActions>
+      </DialogActions>
 
 
     </Dialog>

@@ -122,7 +122,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
           numberOfElements = numberOfElements - 1;
           page.totalElements = page.totalElements - 1;
         } else if (userFilter.deleted === "null") {
-          request.isDeleted = false;
+          request.deleted = false;
           apiRef.current.updateRows([{ id: rowId }]);
         }
       })
@@ -134,7 +134,8 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
       });
   };
   function renderDeletedButtons(row: ITypeEmploeeGet, id: GridRowId, TypeRemoveProps: { typeEmployee: any; onDelete: (rowId: number) => void; }): JSX.Element {
-    if (row.isDeleted) {
+    console.log(row)
+    if (row.deleted) {
       return (
         <GridActionsCellItem
           icon={<Tooltip title={t('publish')}><VisibilityIcon /></Tooltip>}

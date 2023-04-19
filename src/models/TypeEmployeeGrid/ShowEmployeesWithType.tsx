@@ -61,10 +61,6 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
 
                         <List>
                             {props.typeEmployee.employeeWithType.map((item) => {
-                                console.log(item);
-                                
-                                console.log(item.id);
-                                
                                 return (
                                     <Grid >
                                         <ListItem key={item.id}

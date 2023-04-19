@@ -6,6 +6,6 @@ export default interface ITypeEmploeeGet {
     daysLeave: number,
     createdBy: string,
     employeeWithType: Array<IEmploeeGet>,
-    isDeleted:boolean
+    deleted:boolean
   }
   

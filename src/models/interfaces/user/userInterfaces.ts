@@ -1,3 +1,5 @@
+import IEmploeeGet from "../employeeInfo/IEmployeeGet"
+
 export interface IUser {
     id: number
     name: string
@@ -34,10 +36,7 @@ export interface IUserDetails {
     createdBy?: string
     lastModifiedAt?: string
     lastModifiedBy?: string
-    employeeInfo: {
-      typeName: string
-      daysLeave: number
-    }
+    employeeInfo: IEmploeeGet
 }
 
 export interface IUserPage {

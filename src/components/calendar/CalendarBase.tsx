@@ -136,24 +136,22 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
     const isRed: Array<boolean> = [];
     const isBeforeToday: Array<boolean> = [];
     requests.forEach(element => {
-        if (element.approved === true) {
+        // if (element.approved === true) {
 
             dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
-
             isStart.push(day.isSame(element.startDate, 'day'));
             isEnd.push(day.isSame(element.endDate, 'day'));
             isRejected.push(element.approved)
-            // ||(day.isAfter(element.approvedEndDate)&&day.isSame(element.endDate)
             isRed.push(day.isBetween(element.approvedStartDate, element.approvedEndDate, null, '[]'))
             isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
 
-        } else {
-            dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
-            isStart.push(day.isSame(element.startDate, 'day'));
-            isEnd.push(day.isSame(element.endDate, 'day'));
-            isRejected.push(element.approved)
-            isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
-        }
+        // } else {
+        //     dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
+        //     isStart.push(day.isSame(element.startDate, 'day'));
+        //     isEnd.push(day.isSame(element.endDate, 'day'));
+        //     isRejected.push(element.approved)
+        //     isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
+        // }
     });
 
     return (
