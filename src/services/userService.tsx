@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IUser, IUserDetails, IUserEdit, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
+import { IEmployeeInfo, IUser, IUserDetails, IUserEdit, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
 import { BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
+import { EmployeeInfo } from '../models/objects/EmployeeInfo';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -168,6 +169,17 @@ export function appendRolesToFormData(formData: FormData, roles: Role[] | null) 
       formData.append(`roles[${index}][${key}]`, value.toString());
     });
   });
+}
+
+export function appendEmployeeInfoToFormData(formData: FormData) {
+
+    const employeeInfo = new EmployeeInfo();
+    let type = formData.get('position') ? formData.get('position') : '';
+    if (type) {
+      type = '';
+    }
+    employeeInfo.setTypeName(type!);
+    formData.append('employeeInfo[string][typeName]', type!)
 }
 
 export const useFetchAlTypeNames = (refresh: number) => {

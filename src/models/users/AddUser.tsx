@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
     DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { appendRolesToFormData, useCreate } from '../../services/userService';
+import { appendEmployeeInfoToFormData, appendRolesToFormData, useCreate } from '../../services/userService';
 import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
@@ -37,6 +37,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
+        appendEmployeeInfoToFormData(data);
 
         const errors = validate(data);
         if (errors) {
@@ -127,6 +128,22 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                     margin='normal'
                                     label={t('Department')}
                                     placeholder={t('Department')!}
+                                    onChange={(e) => e.target.value}
+                                />
+                            )}
+                        />
+                        <Autocomplete
+                            id="position"
+                            options={props.typeNames}
+                            size='medium'
+                            sx={{ minWidth: '20%' }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    name='position'
+                                    margin='normal'
+                                    label={t('Position')}
+                                    placeholder={t('Position')!}
                                     onChange={(e) => e.target.value}
                                 />
                             )}
