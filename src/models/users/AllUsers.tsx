@@ -15,12 +15,10 @@ import { IUser, IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/u
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
-import AuthContext from '../../contexts/AuthContext';
 import { use } from 'i18next';
 import { Grid } from '@mui/material';
 
 export default function Users() {
-  const { user } = React.useContext(AuthContext);
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>({
     name: '',
@@ -43,7 +41,7 @@ export default function Users() {
 
   const renderEditButton = (user: IUserEdit) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-      departmentNames={departmentNames} roleNames={roleNames} />
+      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {

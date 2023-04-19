@@ -19,6 +19,8 @@ export interface IUserEdit {
   name: string
   email: string
   department: string
+  employeeInfo: IEmploeeGet
+  position: string
   roles: [{
     name: string
   }]
@@ -84,4 +86,5 @@ export interface EditUserButtonProps {
   refresh: (value: number) => void;
   departmentNames: string[]
   roleNames: string[]
+  typeNames: string[]
 }
