@@ -22,6 +22,7 @@ export interface IUserEdit {
   department: string
   employeeInfo: IEmploeeGet
   position: string
+  contractStartDate: string
   roles: [{
     name: string
   }]
