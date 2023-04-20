@@ -72,6 +72,10 @@ export default function UserView(props: UserViewProp) {
                   <TableCell className='tableHeader' variant='head'>{t('Permissions') + ':'}</TableCell>
                   <TableCell>{Array.from(names).join(', ')}</TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className='tableHeader' variant='head'>{t('Start date') + ':'}</TableCell>
+                  <TableCell>{user?.employeeInfo.contractStartDate}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </Card>

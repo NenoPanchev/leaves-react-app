@@ -94,6 +94,13 @@ export default function Users() {
       flex: 1,
     },
     {
+      field: 'startDate',
+      headerName: t('Start date')!,
+      headerClassName: 'grid-header',
+      width: 150,
+      flex: 0.5,
+    },
+    {
       field: 'position',
       headerName: t('Position')!,
       headerClassName: 'grid-header',
@@ -125,7 +132,7 @@ export default function Users() {
   const rows = page.content.map(user => {
     return {
       id: user.id, name: user?.name, email: user.email, department: user.department,
-      roles: user.roles.map(role => role.name).join(', '),
+      roles: user.roles.map(role => role.name).join(', '), startDate: user.employeeInfo.contractStartDate,
       position: user.employeeInfo.typeName, daysLeave: user.employeeInfo.daysLeave
     }
   });

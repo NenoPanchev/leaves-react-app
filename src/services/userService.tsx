@@ -5,6 +5,7 @@ import { IUser, IUserDetails, IUserFilter, IUserPage } from '../models/interface
 import { BASE_URL, BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
+import { Dayjs } from 'dayjs';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -171,12 +172,14 @@ export function appendRolesToFormData(formData: FormData, roles: Role[] | null) 
   });
 }
 
-export function appendEmployeeInfoToFormData(formData: FormData) {
+export function appendEmployeeInfoToFormData(formData: FormData, startDate: Dayjs | null) {
 
     const employeeInfo = new EmployeeInfo();
     let type = formData.get('position') ? formData.get('position')?.toString() : '';
+    let dateString = startDate!.format('DD.MM.YYYY');
     employeeInfo.setTypeName(type!);
     formData.append('employeeInfo[typeName]', type!)
+    formData.append('employeeInfo[contractStartDate]', dateString!)
     console.log(formData);
 }
 

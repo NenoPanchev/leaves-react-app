@@ -11,6 +11,7 @@ export interface IUser {
     employeeInfo: {
       typeName: string
       daysLeave: number
+      contractStartDate: string
     }
 }
 

@@ -10,6 +10,9 @@ import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import dayjs, { Dayjs } from 'dayjs';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function EditUserButton(props: EditUserButtonProps) {
     const path = useLocation().pathname;
@@ -18,7 +21,8 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [position, setPosition] = React.useState<string | null>(props.user.position);
-    
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
+
     
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
@@ -51,7 +55,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
-        appendEmployeeInfoToFormData(data)
+        appendEmployeeInfoToFormData(data, startDate)
         const errors = validate();
         if (errors) {
             return;
@@ -154,6 +158,9 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                     />
                                 )}
                             />
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                                <DatePicker value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+                            </LocalizationProvider>
                             <Autocomplete
                                 id="position"
                                 options={props.typeNames}
