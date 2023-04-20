@@ -1,27 +1,26 @@
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import { Avatar, Grid, Tooltip, Typography, tooltipClasses } from '@mui/material';
-import { blue, green, grey, purple, red } from '@mui/material/colors';
+import WeekendIcon from '@mui/icons-material/Weekend';
+import { Avatar, Grid, Typography } from '@mui/material';
+import { blue, green, purple, red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/bg';
+import 'dayjs/locale/en-gb';
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import * as React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
-import RequestService from '../../services/RequestService';
-import PdfFormRequest from '../pdfForm/PdfFormRequest';
-import BasicDialogAlert from '../Alert/BasicDialogAlert';
-import { useState } from 'react';
-import 'dayjs/locale/en-gb';
-import 'dayjs/locale/bg';
-import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout/pickersLayoutClasses';
 import HolidayService from '../../services/HolidayService';
-import WeekendIcon from '@mui/icons-material/Weekend';
+import RequestService from '../../services/RequestService';
+import BasicDialogAlert from '../Alert/BasicDialogAlert';
+import PdfFormRequest from '../pdfForm/PdfFormRequest';
 
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
@@ -210,8 +209,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
     const [t, i18n] = useTranslation();
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs());
-    const [isLoading, setIsLoading] = React.useState(true);
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
 
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
@@ -239,7 +236,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     React.useEffect(() => {
         retrivePage();
         retriveHolidays();
-    }, [setLeaveRequest, setIsLoading]);
+    }, [setLeaveRequest]);
 
 
     const updateFormOpen = React.useCallback(
@@ -287,8 +284,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         await RequestService.getAllByUser()
             .then((response: any) => {
                 setLeaveRequests(response.data);
-                setIsLoading((oldValue) => !oldValue);
-                // console.log(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -298,7 +293,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         await HolidayService.getAll()
             .then((response: any) => {
                 setHolidays(response.data);
-                // console.log(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -316,7 +310,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
-                            loading={isLoading}
                             sx={{}}
                             slots={{ day: Day }}
                             slotProps={{
