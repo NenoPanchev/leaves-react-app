@@ -3,6 +3,7 @@ export default interface IEmploeeGet {
     name: string,
     typeName:string,
     daysLeave:number,
+    contractStartDate: string,
     typeDaysLeave:number,
      ssn:string,
      address:string

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
 import { BASE_URL } from '../constants/GlobalConstants';
 
 

@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+import {
+    Button, Dialog, DialogActions, DialogContent,
+    DialogTitle, Box, TextField, Autocomplete
+} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeeInfoToFormData, appendRolesToFormData, useCreate } from '../../services/userService';
 import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 import { useTranslation } from 'react-i18next';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const [nameError, setNameError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
     const [passwordError, setPasswordError] = React.useState(false);
@@ -37,7 +44,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
-        appendEmployeeInfoToFormData(data);
+        appendEmployeeInfoToFormData(data, startDate);
 
         const errors = validate(data);
         if (errors) {
@@ -49,24 +56,24 @@ export default function AddUserButton(props: AddUserButtonProps) {
         handleClose();
     }
 
-    function validate(formData: FormData):boolean {
-        const name:string = JSON.parse(JSON.stringify(formData.get('name')));
+    function validate(formData: FormData): boolean {
+        const name: string = JSON.parse(JSON.stringify(formData.get('name')));
         nError = (name.length < 2 || name.length > 20);
         setNameError(name.length < 2 || name.length > 20);
 
-        const email:string = JSON.parse(JSON.stringify(formData.get('email')));
+        const email: string = JSON.parse(JSON.stringify(formData.get('email')));
         var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 
-        const password:string = JSON.parse(JSON.stringify(formData.get('password')));
+        const password: string = JSON.parse(JSON.stringify(formData.get('password')));
         setPasswordError(password.length < 4 || password.length > 20);
         pError = (password.length < 4 || password.length > 20);
 
-        const confirmPassword:string = JSON.parse(JSON.stringify(formData.get('confirmPassword')));
+        const confirmPassword: string = JSON.parse(JSON.stringify(formData.get('confirmPassword')));
         setPasswordConfirmError(password !== confirmPassword);
         pcError = (password !== confirmPassword);
-        
+
         return nError || eError || pError || pcError;
     }
 
@@ -99,9 +106,9 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             id="name"
                             label={t('Name')}
                             name="name"
-                            autoComplete="name" 
+                            autoComplete="name"
                             error={nameError}
-                            helperText={nameError ? t('Username must be between 2 and 20 characters') : null}                       
+                            helperText={nameError ? t('Username must be between 2 and 20 characters') : null}
                         />
 
                         <TextField
@@ -114,7 +121,7 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             autoComplete="email"
                             autoFocus
                             error={emailError}
-                            helperText={emailError ? t('Enter valid email!') : null} 
+                            helperText={emailError ? t('Enter valid email!') : null}
                         />
                         <Autocomplete
                             id="department"
@@ -132,6 +139,9 @@ export default function AddUserButton(props: AddUserButtonProps) {
                                 />
                             )}
                         />
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                            <DatePicker value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+                        </LocalizationProvider>
                         <Autocomplete
                             id="position"
                             options={props.typeNames}
