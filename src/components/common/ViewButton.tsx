@@ -9,6 +9,8 @@ import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
 import { ViewProps } from '../../models/interfaces/common/commonInterfaces';
+import Tooltip from '@mui/material/Tooltip/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 
 export default function ViewButton(props: ViewProps) {
@@ -16,7 +18,7 @@ export default function ViewButton(props: ViewProps) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+    const [t, i18n] = useTranslation();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -29,7 +31,7 @@ export default function ViewButton(props: ViewProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-                icon={<PreviewIcon />}
+                icon={<Tooltip title={t('seeDetails')}><PreviewIcon /></Tooltip>}
                 label="View"
                 onClick={handleClickOpen}
             />

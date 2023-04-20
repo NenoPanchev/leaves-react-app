@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
 import { use } from 'i18next';
-import { Grid } from '@mui/material';
+import { Grid, Tooltip } from '@mui/material';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -46,7 +46,7 @@ export default function Users() {
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
-      refresh={setRefreshCurrentState}></DeleteButton>
+    refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   const handlePaginationModelChange = (paginationModel: any) => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+    DialogTitle, Box, TextField, Autocomplete, Tooltip } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -91,7 +91,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-                icon={<EditIcon />}
+                icon={<Tooltip title={t('edit')}><EditIcon /></Tooltip>}
                 label={t('Edit')}
                 onClick={handleClickOpen}
             />

@@ -17,11 +17,14 @@ import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
 import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
 import AuthContext from '../../contexts/AuthContext';
+import Tooltip from '@mui/material/Tooltip/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteButton(props: DeleteButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
+    const [t, i18n] = useTranslation();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
     const navigate = useNavigate();
@@ -48,7 +51,7 @@ export default function DeleteButton(props: DeleteButtonProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Tooltip title={t('delete')}><DeleteIcon /></Tooltip>}
           label="Delete"
           color='error'
           onClick={handleClickOpen}

@@ -15,14 +15,12 @@ import { useTranslation } from 'react-i18next';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import RequestService from '../../services/RequestService';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
-import Filter from '../../models/interfaces/request/Filter';
 import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import { useState } from 'react';
 import 'dayjs/locale/en-gb';
 import 'dayjs/locale/bg';
 import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout/pickersLayoutClasses';
 import HolidayService from '../../services/HolidayService';
-import { da } from 'date-fns/locale';
 import WeekendIcon from '@mui/icons-material/Weekend';
 
 dayjs.extend(isBetweenPlugin);
@@ -213,6 +211,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
     const [t, i18n] = useTranslation();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+    const [isLoading, setIsLoading] = React.useState(true);
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
 
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
@@ -240,7 +239,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     React.useEffect(() => {
         retrivePage();
         retriveHolidays();
-    }, [setLeaveRequest]);
+    }, [setLeaveRequest, setIsLoading]);
 
 
     const updateFormOpen = React.useCallback(
@@ -288,6 +287,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         await RequestService.getAllByUser()
             .then((response: any) => {
                 setLeaveRequests(response.data);
+                setIsLoading((oldValue) => !oldValue);
                 // console.log(response.data);
             })
             .catch((e: Error) => {
@@ -305,7 +305,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             });
     }
     function disableWeekends(date: dayjs.Dayjs) {
-        return date.day() === 0 || date.day() === 6 || date.isBefore(dayjs());
+        return date.day() === 0 || date.day() === 6 || date.isBefore(dayjs().subtract(1, 'day'));
     }
     return (
         <Grid item>
@@ -316,6 +316,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
+                            loading={isLoading}
                             sx={{}}
                             slots={{ day: Day }}
                             slotProps={{
@@ -324,7 +325,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                                     holidays: holidays
                                 } as any,
                             }}
-                          
+
                             onMonthChange={() => handleMonthChange()}
                             shouldDisableDate={disableWeekends}
                             onChange={(newValue) => handleChange(newValue)}
