@@ -15,7 +15,6 @@ import isAuth from '../hoc/isAuth';
 import DashBoard from './dashboard/DashBoard';
 import RequestsGrid from '../models/RequestsGrid/RequestsGrid';
 import TypeEmployeeGrid from '../models/TypeEmployeeGrid/TypeEmployeeGrid';
-import Calendar from '../components/calendar/Calendar';
 import AddRequest3 from '../models/AddRequest/AddRequest';
 import NotFound from './NotFound';
 
@@ -52,8 +51,6 @@ function HomeContent() {
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path="/requests" Component={isAuth(RequestsGrid)} />
                   <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
-                  <Route path='/addRequest' Component={isAuth(AddRequest3)} />
-                  <Route path='/calendar' Component={isAuth(Calendar)}></Route>
                   <Route path='/roles' Component={isAuth(Roles)}></Route>
                   <Route path='/login' Component={SignIn}></Route>
                   <Route path='/logout' Component={LogOut}></Route>

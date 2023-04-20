@@ -21,7 +21,12 @@ type AddRequestBaseProps = {
     onClose: () => void;
 
 }
-const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
+
+export interface AddRequestBaseRef {
+    onCalendarChange: (date: Dayjs|null) => void;
+}
+
+const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRequestBaseRef>): JSX.Element => {
     const initialRequestState = {
         startDate: dayjs().format("YYYY-MM-DD"),
         endDate: dayjs().format("YYYY-MM-DD"),
@@ -42,6 +47,7 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
         }
     );
     let value: any;
+
     const saveRequest = () => {
         request.startDate = startDate?.format("YYYY-MM-DD")!;
         request.endDate = endDate?.format("YYYY-MM-DD")!;
@@ -62,12 +68,18 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
                 }
             });
     };
+    React.useImperativeHandle(ref, () => {
+        return {
+            onCalendarChange:SetStartDate
+        }
+    }, [])
     React.useEffect(() => {
         SetEndDate(startDate);
        
     }, [startDate]);
 
     React.useEffect(() => {
+
         props.onSubmit();
     }, [submitted]);
     function updateParent(newValue: boolean) {
@@ -194,4 +206,4 @@ const AddRequestBase: React.FC<AddRequestBaseProps> = (props): JSX.Element => {
         </React.Fragment>
     );
 }
-export default AddRequestBase;
+export default React.forwardRef(AddRequestBase);

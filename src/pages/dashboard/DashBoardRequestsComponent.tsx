@@ -11,8 +11,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CalendarBase, { CalendarBaseRef } from '../../components/calendar/CalendarBase';
 import AuthContext from '../../contexts/AuthContext';
-import AddRequestBase from '../../models/AddRequest/AddRequestBase';
+import AddRequestBase, { AddRequestBaseRef } from '../../models/AddRequest/AddRequestBase';
 import DrawerComponent from './DrawerComponent';
+import { Dayjs } from 'dayjs';
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -61,6 +62,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function DashBoardRequestsComponent() {
     const calendarRef = React.useRef<CalendarBaseRef>(null);
+    const AddRequestBaseRef=React.useRef<AddRequestBaseRef>(null);
     const { user } = React.useContext(AuthContext);
     const authorities = user?.getAuthorities();
     const { t, i18n } = useTranslation();
@@ -77,6 +79,21 @@ export default function DashBoardRequestsComponent() {
             calendarRef.current.reload();
         }
     }
+    const changeDate = useCallback(
+
+        (newValue: Dayjs|null): void => calendarDayChange(newValue),
+
+
+        []
+
+      );
+
+      const calendarDayChange = (newValue: Dayjs|null)=> {
+        if(AddRequestBaseRef && AddRequestBaseRef.current) {
+            AddRequestBaseRef.current.onCalendarChange(newValue);
+        }
+    }
+   
     const updateDrawer = useCallback(
 
         (): void =>  setExpanded(false),
@@ -87,7 +104,7 @@ export default function DashBoardRequestsComponent() {
     return (
 
         <Grid container direction="column">
-            <CalendarBase ref={calendarRef}/>
+            <CalendarBase ref={calendarRef} onDateChange={changeDate}/>
             <Grid item>
             <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} >
                 <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
@@ -95,7 +112,7 @@ export default function DashBoardRequestsComponent() {
                 </AccordionSummary>
 
                 <AccordionDetails>
-                    <AddRequestBase onSubmit={reloadCalendar} onClose={updateDrawer}/>
+                    <AddRequestBase ref={AddRequestBaseRef} onSubmit={reloadCalendar} onClose={updateDrawer}/>
                 </AccordionDetails>
             </Accordion>
         </Grid>

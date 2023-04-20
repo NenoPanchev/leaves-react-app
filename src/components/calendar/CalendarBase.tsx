@@ -20,12 +20,15 @@ import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import { useState } from 'react';
 import 'dayjs/locale/en-gb';
 import 'dayjs/locale/bg';
+import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout/pickersLayoutClasses';
 
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
     reload: () => void;
 }
-
+type CustomDayProps = {
+    onDateChange: (day: Dayjs|null) => void;
+}
 interface CustomPickerDayProps extends PickersDayProps<Dayjs> {
     dayIsBetween: Array<boolean>;
     isStart: Array<boolean>;
@@ -157,12 +160,13 @@ function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet>
             isEnd={isEnd}
             isRejected={isRejected}
             isRed={isRed}
-            isBeforeToday={isBeforeToday} />
+            isBeforeToday={isBeforeToday} 
+            />
     );
 }
 
 const alertMassage = "You can not download Pdf of a request that is not approved!";
-const CustomDay = (props: {}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
+const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [t, i18n] = useTranslation();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
@@ -185,7 +189,8 @@ const CustomDay = (props: {}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Ele
 
     React.useImperativeHandle(ref, () => {
         return {
-            reload: retrivePage
+            reload: retrivePage,
+            getChangedDate:value
         }
     }, [])
 
@@ -228,6 +233,7 @@ const CustomDay = (props: {}, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Ele
                 }
             }
         })
+        props.onDateChange(newValue);
     };
 
     const retrivePage = async () => {
