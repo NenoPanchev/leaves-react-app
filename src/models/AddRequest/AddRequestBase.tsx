@@ -134,7 +134,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker   minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -146,7 +146,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker disablePast={true} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 
                                 </Grid>
@@ -166,7 +166,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker   minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -178,7 +178,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker minDate={endDate} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 
                                 </Grid>
