@@ -44,7 +44,7 @@ export default function UserView(props: UserViewProp) {
   let isCurrentUserThisUser = currentUser.user?.getEmail() === user?.email;
   return (
     <React.Fragment>
-      <Grid container direction="row">
+      <Grid container direction="row" >
         <DialogTitle id="responsive-dialog-title">
           {t('User Details')}
         </DialogTitle>
@@ -52,17 +52,19 @@ export default function UserView(props: UserViewProp) {
 
         {isCurrentUserThisUser ? (
 
-          <Link to="/" style={{
-            textDecoration: 'none',
-            color: 'black'
-          }}>
-            <Button variant='outlined'>
-              <Typography variant="overline" component="div">
-                {t(`UserRequests`)!}
-              </Typography>
-            </Button>
-          </ Link>
+          <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
+            <Link to="/">
+              <Button variant='outlined' >
+                <Typography variant="overline" component="div">
+                  {t(`UserRequests`)!}
+                </Typography>
+              </Button>
+            </ Link>
+          </Grid>
+
+
         ) : (
+          <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
           <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
             textDecoration: 'none',
             color: 'black'
@@ -74,7 +76,9 @@ export default function UserView(props: UserViewProp) {
               </Typography>
             </Button>
           </ Link>
+          </Grid>
         )
+    
         }
 
 

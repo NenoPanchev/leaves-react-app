@@ -107,6 +107,7 @@
         "approvedStartDate":"Одобренa стартова дата",
         "approvedEndDate":"Одобренa крайна дата"
     },
+    "UserRequests": "Заявления",
     "alertMassageDuplicateEntity": "Вече имате заявление за отпуск от {{startDate}} до {{endDate}}!",
     "alertMassagePaidLeave": "Дните ви отпуска не достигат!\n Поискани дни:{{daysRequested}}.\n Останали дни отпуска:{{leftDays}}.",
     "alertMassagePaidLeaveZero": "Заявление за 0 дни отпуск или по-малко не е позволено!",

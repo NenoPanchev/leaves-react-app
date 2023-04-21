@@ -126,9 +126,8 @@ const CustomPickerDayRange = styled(PickersDay, {
         counter++;
     }
        //RANGE PICKER FORM CHANGE    
-       if (isFirstDayOfRange && isLastDayOfRange){
-
-        return styl 
+     if (isFirstDayOfRange && isLastDayOfRange){
+     return styl 
     }else if (isFirstDayOfRange){
 
         styl.borderBottomRightRadius = '0%';
