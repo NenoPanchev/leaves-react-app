@@ -22,11 +22,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [position, setPosition] = React.useState<string | null>(props.user.position);
     const day = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
-    const [startDate, setStartDate] = React.useState<Dayjs | null>(day);
-    console.log(day);
-    console.log(props.user.contractStartDate);
-    console.log(props.user);
-    
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(day);  
     
     
     const [roles, setRoles] = React.useState<Role[]>([]);
