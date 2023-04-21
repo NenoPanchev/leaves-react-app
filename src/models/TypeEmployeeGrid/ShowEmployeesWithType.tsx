@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
 import AuthContext from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import IEmploeeGet from '../interfaces/employeeInfo/IEmployeeGet';
 
 type ShowEmployeesWithTypeProps = {
     typeEmployee: ITypeEmploeeGet,
@@ -29,10 +30,45 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
         width: '8rem',
         height: '3rem',
     };
+    React.useEffect(() => {
 
+    }, [currentUser.user]);
+    function renderEmployeeLink(employeeInfo: IEmploeeGet) {
+        console.log(currentUser.user?.getEmail())
+        console.log(currentUser.user?.getId())
+        console.log(employeeInfo.id)
+        console.log(currentUser.user?.getId() === employeeInfo.id)
+        let isUser = currentUser.user!.getId() === employeeInfo.id;
+        if (isUser) {
+            return (<Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
+                <Link to="/">
+                    <Typography variant="overline" component="div">
+                        {"Id:" + employeeInfo.id + " " + t('name') + employeeInfo.name}
+                    </Typography>
+
+                </ Link>
+            </Grid>
+            )
+        } else {
+
+            return (
+                <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
+                    <Link to={{ pathname: `/requests/employee/${employeeInfo.id}` }} style={{
+                        textDecoration: 'none',
+                        color: 'black'
+                    }}>
+                        <Typography variant="overline" component="div">
+                            {"Id:" + employeeInfo.id + " " + t('name') + employeeInfo.name}
+                        </Typography>
+                    </ Link>
+                </Grid>)
+
+        }
+    }
     const handleClose = () => {
         setOpen(false);
     };
+
     return (
         <div>
             <Button startIcon={<Tooltip title={t('showEmployees')}><RecentActorsIcon /></Tooltip>} onClick={handleClickOpen}></Button>
@@ -75,38 +111,9 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                                         >
 
                                             <ListItemText
-                                                // secondary={"Id." + item.id + " "}
-
-                                                
-                                                {...currentUser.user?.getId() === item.id ? (
-
-                                                    <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
-                                                      <Link to="/">
-                                                        <Typography variant="overline" component="div">
-                                                          {"Id:"+ item.id +" "+t('name')+ item.name} 
-                                                        </Typography>
-                                                
-                                                      </ Link>
-                                                    </Grid>
-                                          
-                                          
-                                                  ) : (
-                                                    <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
-                                                    <Link to={{ pathname: `/requests/employee/${item.id}` }} style={{
-                                                      textDecoration: 'none',
-                                                      color: 'black'
-                                                    }}>
-                                                        <Typography variant="overline" component="div">
-                                                          {"Id:"+ item.id +" "+t('name')+ item.name} 
-                                                        </Typography>
-                                                    </ Link>
-                                                    </Grid>
-                                                  )
-                                              
-                                                  }
-                                  
+                                            // secondary={"Id." + item.id + " "}
                                             />
-
+                                            {renderEmployeeLink(item)}
                                         </ListItem>
                                         <Divider />
                                     </Grid>

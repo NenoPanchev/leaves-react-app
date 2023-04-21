@@ -50,7 +50,8 @@ export default function UserView(props: UserViewProp) {
         </DialogTitle>
 
 
-        {isCurrentUserThisUser ? (
+        {
+        isCurrentUserThisUser ? (
 
           <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
             <Link to="/">
@@ -64,6 +65,8 @@ export default function UserView(props: UserViewProp) {
 
 
         ) : (
+
+
           <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
           <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
             textDecoration: 'none',

@@ -134,7 +134,6 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
       });
   };
   function renderDeletedButtons(row: ITypeEmploeeGet, id: GridRowId, TypeRemoveProps: { typeEmployee: any; onDelete: (rowId: number) => void; }): JSX.Element {
-    console.log(row)
     if (row.deleted) {
       return (
         <GridActionsCellItem
