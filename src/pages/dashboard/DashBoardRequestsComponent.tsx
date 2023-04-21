@@ -81,16 +81,16 @@ export default function DashBoardRequestsComponent() {
     }
     const changeDate = useCallback(
 
-        (newValue: Dayjs|null): void => calendarDayChange(newValue),
+        (startDate: Dayjs|null,endDate:Dayjs|null): void => calendarDayChange(startDate,endDate),
 
 
         []
 
       );
 
-      const calendarDayChange = (newValue: Dayjs|null)=> {
+      const calendarDayChange = (startDate: Dayjs|null,endDate: Dayjs|null)=> {
         if(AddRequestBaseRef && AddRequestBaseRef.current) {
-            AddRequestBaseRef.current.onCalendarChange(newValue);
+            AddRequestBaseRef.current.onCalendarChange(startDate,endDate);
         }
     }
    

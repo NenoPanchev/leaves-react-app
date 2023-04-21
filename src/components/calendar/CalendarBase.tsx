@@ -4,11 +4,9 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import WeekendIcon from '@mui/icons-material/Weekend';
 import { Avatar, Grid, Typography } from '@mui/material';
 import { blue, green, purple, red } from '@mui/material/colors';
-import { styled } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/bg';
 import 'dayjs/locale/en-gb';
@@ -22,13 +20,14 @@ import RequestService from '../../services/RequestService';
 import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import { Day, disableWeekends } from './CalendarStyleComponent';
+import { DayWithRange } from './CalendarStyleComponentWithRange';
 
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
     reload: () => void;
 }
 type CustomDayProps = {
-    onDateChange: (day: Dayjs | null) => void;
+    onDateChange: (startDate: Dayjs | null,endDate: Dayjs | null) => void;
 }
 
 const alertMassage = "You can not download Pdf of a request that is not approved!";
@@ -38,6 +37,10 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [t, i18n] = useTranslation();
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
 
+    const [startDate, setStartDate] = React.useState< Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = React.useState< Dayjs | null>(dayjs());
+
+    const[isRequest,setIsRequest]=React.useState<boolean>(false);
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
@@ -78,30 +81,91 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
         [setOpenAlert]
     );
+    function openRequest( newValue: dayjs.Dayjs | null) {
 
-    const handleChange = (newValue: dayjs.Dayjs | null) => {
-        leaveRequests.forEach(element => {
+        for (const element of leaveRequests) {
+        
             if (element.approved) {
                 if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                    console.log("asdasdasd")
                     setLeaveRequest(element);
                     setOpen(true);
-                    return;
+                    console.log("ghhghghghghgh")
+                    return false;
                 }
                 if (newValue?.isSame(element.endDate, 'day')) {
                     setLeaveRequest(element);
                     setOpen(true);
-                    return;
+                    return false;
                 }
             }
             else if (element.approved == null || element.approved == false) {
                 if (newValue?.isSame(element.endDate, 'day') || newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
-                    setOpenAlert(true)
-                    return;
+                    setOpenAlert(true);
+                    return false;
                 }
             }
-        })
-        props.onDateChange(newValue);
+            if (dayjs(element.startDate).isBetween(startDate,newValue, null,'[]') ||dayjs(element.endDate).isBetween(startDate,newValue, null,'[]'))
+            {
+                setStartDate(newValue);
+                setEndDate(newValue);
+                return false;
+            }
+        }
+        return true;
+    }
+    
+
+    const handleChange = (newValue: dayjs.Dayjs | null) => {
+    
+console.log(openRequest(newValue));
+        if  (openRequest(newValue))
+        {
+            if(newValue?.isSame(endDate))
+            {
+                console.log("end date")
+                setStartDate(newValue)
+            }
+            if(newValue?.isSame(startDate))
+            {
+                console.log("end date")
+                setEndDate(newValue)
+                setStartDate(newValue)
+            }
+            if(newValue?.isAfter(startDate))
+            {
+                console.log("set end date")
+                setEndDate(newValue)
+            }
+    
+            if(newValue?.isBefore(startDate))
+            {
+                console.log("set end date")
+                setStartDate(newValue)
+                setEndDate(newValue)
+            }
+        }
+
+             
+
+
+       
+        // if(startDate!=dayjs())
+        // {
+        //     console.log("startDate date")
+        //     setStartDate(newValue)
+        //     setEndDate(newValue)
+        // }else
+        // {
+        //     console.log("startDateaAAaAa date")
+        //     setEndDate(newValue)
+        // }
+
     };
+
+    React.useEffect(() => {
+        props.onDateChange(startDate,endDate);
+    }, [startDate,endDate]);
 
     const retrivePage = async () => {
         await RequestService.getAllByUser()
@@ -131,11 +195,13 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
                             sx={{}}
-                            slots={{ day: Day }}
+                            slots={{ day: DayWithRange }}
                             slotProps={{
                                 day: {
                                     requests: leaveRequests,
-                                    holidays: holidays
+                                    holidays: holidays,
+                                    startDate:startDate,
+                                    endDate:endDate
                                 } as any,
                             }}
                             shouldDisableDate={disableWeekends}
@@ -170,3 +236,4 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     );
 }
 export default React.forwardRef(CustomDay);
+

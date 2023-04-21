@@ -23,7 +23,7 @@ type AddRequestBaseProps = {
 }
 
 export interface AddRequestBaseRef {
-    onCalendarChange: (date: Dayjs|null) => void;
+    onCalendarChange: (startDate: Dayjs|null,endDate: Dayjs|null) => void;
 }
 
 const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRequestBaseRef>): JSX.Element => {
@@ -70,13 +70,19 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
     };
     React.useImperativeHandle(ref, () => {
         return {
-            onCalendarChange:SetStartDate
+            onCalendarChange:setRange
         }
+        
     }, [])
     React.useEffect(() => {
         SetEndDate(startDate);
        
     }, [startDate]);
+
+    function setRange(startDate: Dayjs|null,endDate: Dayjs|null) {
+     SetStartDate(startDate);
+     SetEndDate(endDate);
+    }
 
     React.useEffect(() => {
 

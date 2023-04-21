@@ -127,7 +127,8 @@ const CustomPickersDay = styled(PickersDay, {
 }) as React.ComponentType<CustomPickerDayProps>;
 
 
-export function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet> } & { holidays?: Array<string> }) {
+export function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestDataGet> } & { holidays?: Array<string> } ) {
+
     const { day, requests, holidays, ...other } = props;
 
     if (requests == null) {
@@ -162,6 +163,8 @@ export function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestD
         requestDayIsHoliday.push(holidays.includes(day.format("YYYY-MM-DD")))
     }
     );
+
+
     return (
         <CustomPickersDay
             {...other}
