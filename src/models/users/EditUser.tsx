@@ -21,9 +21,13 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [position, setPosition] = React.useState<string | null>(props.user.position);
-    const day = dayjs(props.user.contractStartDate);
+    const day = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(day);
-
+    console.log(day);
+    console.log(props.user.contractStartDate);
+    console.log(props.user);
+    
+    
     
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
@@ -160,8 +164,12 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 )}
                             />
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                                <DatePicker value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+                            <DatePicker label={t('Employed at')} 
+                            value={startDate} 
+                            sx={{marginTop: '15px', marginBottom: '5px'}}
+                            onChange={(newValue) => setStartDate(newValue)}/>                            
                             </LocalizationProvider>
+
                             <Autocomplete
                                 id="position"
                                 options={props.typeNames}

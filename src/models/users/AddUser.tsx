@@ -13,6 +13,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Label } from 'recharts';
 
 export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
@@ -140,7 +141,10 @@ export default function AddUserButton(props: AddUserButtonProps) {
                             )}
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                            <DatePicker value={startDate} onChange={(newValue) => setStartDate(newValue)} />
+                            <DatePicker label={t('Employed at')} 
+                            value={startDate} 
+                            sx={{marginTop: '15px', marginBottom: '5px'}}
+                            onChange={(newValue) => setStartDate(newValue)}/>
                         </LocalizationProvider>
                         <Autocomplete
                             id="position"
