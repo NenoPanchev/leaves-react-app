@@ -220,7 +220,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
           spacing={0}
           direction="row"
         >
-          <Grid item direction="row" >
+          <Grid item>
             <Typography >Save Information :</Typography>
             <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
           </Grid>

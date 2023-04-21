@@ -1,10 +1,19 @@
 export class UserDetails {
+    private id: number;
     private email: string;
     private authorities: string[];
 
     public UserDetails() {
 
     }
+    public getId(): number {
+        return this.id;
+    }
+
+    public setId(id: number): void {
+        this.id = id;
+    }
+
     public getEmail(): string {
         return this.email;
     }
