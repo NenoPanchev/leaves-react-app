@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Grid, Card, Table } from '@mui/material';
+import { Grid, Card, Table, Button, Typography } from '@mui/material';
 
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -11,38 +11,74 @@ import * as userService from '../../services/userService';
 
 import '../SingleItemView.css'
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import AuthContext from '../../contexts/AuthContext';
 
 interface UserViewProp {
   id: number
 }
 
 interface UserDetails {
-    roles: [{
-        name: string
-        permissions: Permissions[]
-      }]
+  roles: [{
+    name: string
+    permissions: Permissions[]
+  }]
 }
 
 interface Permissions {
-        name: string
+  name: string
 }
 
 export default function UserView(props: UserViewProp) {
 
   const user = userService.useFetchOne(props.id);
+  const currentUser = React.useContext(AuthContext);
   const names = new Set<string>();
   const { t } = useTranslation();
   user?.roles.forEach(role => {
     role.permissions.forEach(permission => {
-        names.add(permission.name);
+      names.add(permission.name);
     })
-})
+  })
 
+  let isCurrentUserThisUser = currentUser.user?.getEmail() === user?.email;
   return (
     <React.Fragment>
-      <DialogTitle id="responsive-dialog-title">
-        {t('User Details')}
-      </DialogTitle>
+      <Grid container direction="row">
+        <DialogTitle id="responsive-dialog-title">
+          {t('User Details')}
+        </DialogTitle>
+
+
+        {isCurrentUserThisUser ? (
+
+          <Link to="/" style={{
+            textDecoration: 'none',
+            color: 'black'
+          }}>
+            <Button variant='outlined'>
+              <Typography variant="overline" component="div">
+                {t(`UserRequests`)!}
+              </Typography>
+            </Button>
+          </ Link>
+        ) : (
+          <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
+            textDecoration: 'none',
+            color: 'black'
+          }}>
+
+            <Button variant='outlined'>
+              <Typography variant="overline" component="div">
+                {t(`UserRequests`)!}
+              </Typography>
+            </Button>
+          </ Link>
+        )
+        }
+
+
+      </Grid>
       <DialogContent className='dialog'>
         <Grid container direction={'row'}>
           <Card style={{ width: '50%' }}>
