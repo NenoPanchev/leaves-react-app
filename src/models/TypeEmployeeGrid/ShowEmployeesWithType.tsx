@@ -9,6 +9,8 @@ import { Box } from '@mui/system';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
+import AuthContext from '../../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 type ShowEmployeesWithTypeProps = {
     typeEmployee: ITypeEmploeeGet,
@@ -16,6 +18,7 @@ type ShowEmployeesWithTypeProps = {
 const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const [t, i18n] = useTranslation();
+    const currentUser = React.useContext(AuthContext);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -30,7 +33,6 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
     const handleClose = () => {
         setOpen(false);
     };
-
     return (
         <div>
             <Button startIcon={<Tooltip title={t('showEmployees')}><RecentActorsIcon /></Tooltip>} onClick={handleClickOpen}></Button>
@@ -74,7 +76,35 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
 
                                             <ListItemText
                                                 // secondary={"Id." + item.id + " "}
-                                                primary={"Id:"+ item.id +" "+t('name')+ item.name}
+
+                                                
+                                                {...currentUser.user?.getId() === item.id ? (
+
+                                                    <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
+                                                      <Link to="/">
+                                                        <Typography variant="overline" component="div">
+                                                          {"Id:"+ item.id +" "+t('name')+ item.name} 
+                                                        </Typography>
+                                                
+                                                      </ Link>
+                                                    </Grid>
+                                          
+                                          
+                                                  ) : (
+                                                    <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
+                                                    <Link to={{ pathname: `/requests/employee/${item.id}` }} style={{
+                                                      textDecoration: 'none',
+                                                      color: 'black'
+                                                    }}>
+                                                        <Typography variant="overline" component="div">
+                                                          {"Id:"+ item.id +" "+t('name')+ item.name} 
+                                                        </Typography>
+                                                    </ Link>
+                                                    </Grid>
+                                                  )
+                                              
+                                                  }
+                                  
                                             />
 
                                         </ListItem>
