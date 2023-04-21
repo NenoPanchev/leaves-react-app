@@ -32,7 +32,9 @@ const create = (data: IRequestDataPost) => {
   return axios.post<ILeaveRequestPage>("http://localhost:8080/api/requests",data)
 
 };
-
+const getAllByUserId = (id: any) => {
+  return axios.get<Array<IRequestDataGet>>(`http://localhost:8080/api/requests/employee/${id}`)
+};
 const createRequestString = (data: IRequestDataPostString) => {
   return axios.post<ILeaveRequestPage>("http://localhost:8080/api/requests",data)
 
@@ -79,6 +81,7 @@ const TutorialService = {
   getAllFilter,
   getAllFilterPage,
   getAllByUser,
+  getAllByUserId,
   getPdf,
   createRequestString
 };

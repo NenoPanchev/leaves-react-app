@@ -68,7 +68,9 @@ export const getUserByEmail = (data: string) => {
 export const getUser = async () => {
 return await axios.get<IUserDetails>(BASE_USER_URL+"current");
 }
-
+export const getUserById = async (id:number) => {
+  return await axios.get<IUserDetails>(BASE_USER_URL+id);
+  }
 export const useCreate = () => {
 
   const addUser = async (user: FormData) => {    
