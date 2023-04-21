@@ -94,7 +94,7 @@ export default function Users() {
       flex: 1,
     },
     {
-      field: 'startDate',
+      field: 'contractStartDate',
       headerName: t('Start date')!,
       headerClassName: 'grid-header',
       width: 150,
@@ -132,7 +132,7 @@ export default function Users() {
   const rows = page.content.map(user => {
     return {
       id: user.id, name: user?.name, email: user.email, department: user.department,
-      roles: user.roles.map(role => role.name).join(', '), startDate: user.employeeInfo.contractStartDate,
+      roles: user.roles.map(role => role.name).join(', '), contractStartDate: user.employeeInfo.contractStartDate,
       position: user.employeeInfo.typeName, daysLeave: user.employeeInfo.daysLeave
     }
   });
