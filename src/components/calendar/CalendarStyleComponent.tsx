@@ -177,5 +177,7 @@ export function Day(props: PickersDayProps<Dayjs> & { requests?: Array<IRequestD
         />
     );
 }
-
+export function disableWeekends(date: dayjs.Dayjs) {
+    return date.day() === 0 || date.day() === 6 || date.isBefore(dayjs().subtract(1, 'day'));
+}
 export default CustomPickersDay;
