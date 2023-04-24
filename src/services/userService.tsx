@@ -200,3 +200,16 @@ export const useFetchAlTypeNames = (refresh: number) => {
 
   return typeNames;
 }
+
+export const useChangePassword = () => {
+  const editPassword = async (id: number, role: FormData) => {
+
+    const updateUrl = BASE_USER_URL + 'change-password/' + id;
+
+    const result = await axios.put(updateUrl, formToJSON(role))
+      .then(response => {
+      })
+      .catch(error => console.log(error))
+  }
+  return editPassword;
+}
