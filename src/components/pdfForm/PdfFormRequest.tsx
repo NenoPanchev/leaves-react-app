@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, Divider, Grid, TextField, Typography } from '@mui/material';
+import { Backdrop, Button, Card, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Divider, Grid, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +32,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [open, setOpen] = React.useState(props.open);
   const [t, i18n] = useTranslation();
   const { user } = useContext(AuthContext);
+  const [openBackdrop, setOpenBackdrop] = React.useState(false);
   let userDetails:IUserDetails | any = null;
   if (user != null) {
      userDetails = userService.useFetchOneEmail(user.getEmail());
@@ -84,158 +85,162 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     [setRequestForm]
   );
   const handleSubmit = async () => {
+    setOpen(false);
+    setOpenBackdrop(true);
     await RequestService.getPdf(leaveRequest.id, requestForm)
       .then((response: any) => {
         fileDownload(response.data, "отпуск.pdf")
+        setOpenBackdrop(false);
       })
       .catch((e: Error) => {
         console.log(e);
       });
-    setOpen(false);
+
   };
 
   return (
-
+    <><Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={openBackdrop}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
     <Dialog
       open={open}
       onClose={handleClose}
       fullWidth
       maxWidth="lg"
     >
-      <DialogContent>
 
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            m: 'auto',
-            width: 'fit-content',
-          }}>
-          <CardHeader
-            title="Profile"
-          />
-          <CardContent sx={{ pt: 0 }}>
-            <Box sx={{ m: -1.5 }}>
-              <Grid
-                container
-                spacing={3}
-              >
+        <DialogContent>
+
+          <Box
+            noValidate
+            component="form"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              m: 'auto',
+              width: 'fit-content',
+            }}>
+            <CardHeader
+              title="Profile" />
+            <CardContent sx={{ pt: 0 }}>
+              <Box sx={{ m: -1.5 }}>
                 <Grid
-                  item
-                  xs={12}
-                  md={6}
+                  container
+                  spacing={3}
                 >
-                  <TextField
-                    fullWidth
-                    margin={'normal'}
-                    label="Address"
-                    name="address"
-                    onChange={handleChange}
-                    value={requestForm.address}
-                    required
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <TextField
-                    fullWidth
-                    margin={'normal'}
-                    label="Position"
-                    name="position"
-                    onChange={handleChange}
-                    value={requestForm.position}
-                    required
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <TextField
-                    fullWidth
-                    margin={'normal'}
-                    label="Year"
-                    name="year"
-                    onChange={handleChange}
-                    required
-                    value={requestForm.year}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <TextField
-                    fullWidth
-                    margin={'normal'}
-                    label="Ssn"
-                    name="ssn"
-                    onChange={handleChange}
-                    value={requestForm.ssn}
-                    type="number"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <TextField
-                    fullWidth
-                    margin={'normal'}
-                    label="Request To"
-                    name="requestToName"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
                   >
-                    {states.map((option) => (
-                      <option
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
+                    <TextField
+                      fullWidth
+                      margin={'normal'}
+                      label="Address"
+                      name="address"
+                      onChange={handleChange}
+                      value={requestForm.address}
+                      required />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                  >
+                    <TextField
+                      fullWidth
+                      margin={'normal'}
+                      label="Position"
+                      name="position"
+                      onChange={handleChange}
+                      value={requestForm.position}
+                      required />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                  >
+                    <TextField
+                      fullWidth
+                      margin={'normal'}
+                      label="Year"
+                      name="year"
+                      onChange={handleChange}
+                      required
+                      value={requestForm.year} />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                  >
+                    <TextField
+                      fullWidth
+                      margin={'normal'}
+                      label="Ssn"
+                      name="ssn"
+                      onChange={handleChange}
+                      value={requestForm.ssn}
+                      type="number" />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                  >
+                    <TextField
+                      fullWidth
+                      margin={'normal'}
+                      label="Request To"
+                      name="requestToName"
+                      onChange={handleChange}
+                      required
+                      select
+                      SelectProps={{ native: true }}
+                    >
+                      {states.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
-          </CardContent>
-        </Box>
-      </DialogContent>
+              </Box>
+            </CardContent>
+          </Box>
+        </DialogContent>
 
 
 
-      <DialogActions>
-        <Grid container
-          spacing={0}
-          direction="row"
-        >
-          <Grid item>
-            <Typography >Save Information :</Typography>
-            <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
+        <DialogActions>
+          <Grid container
+            spacing={0}
+            direction="row"
+          >
+            <Grid item>
+              <Typography>Save Information :</Typography>
+              <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
+            </Grid>
+
+
+            <Grid marginLeft="auto">
+              <Button onClick={handleSubmit}>{t('Submit')}</Button>
+              <Button onClick={handleClose}>{t('Close')}</Button>
+            </Grid>
           </Grid>
 
-
-          <Grid marginLeft="auto" >
-            <Button onClick={handleSubmit} >{t('Submit')}</Button>
-            <Button onClick={handleClose} >{t('Close')}</Button>
-          </Grid>
-        </Grid >
-
-      </DialogActions>
+        </DialogActions>
 
 
-    </Dialog>
+      </Dialog></>
   );
 }
 export default PdfFormRequest;
