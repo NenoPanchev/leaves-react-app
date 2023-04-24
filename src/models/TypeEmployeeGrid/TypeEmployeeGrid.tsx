@@ -72,8 +72,6 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     await TypeService.getAllFilterPage(userFilter)
       .then((response: any) => {
         // setRows(response.data);
-        console.log(response.data);
-        console.log(response.data.content);
         setPage(response.data);
         setRows(response.data.content)
         setIsLoading(false)
@@ -111,7 +109,17 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     [setRows]
   );
   const handleDeleteRow = (rowId: number) => {
-    apiRef.current.updateRows([{ id: rowId, _action: 'delete' }]);
+    console.log(userFilter.deleted);
+    if(userFilter.deleted!== "null")
+    {
+      apiRef.current.updateRows([{ id: rowId, _action: 'delete' }]);
+    }
+    else
+    {
+     
+          apiRef.current.updateRows([{ id: rowId, deleted:true  }]);
+    }
+
   };
   const handleVisionClickOnDeleted = (request: ITypeEmploeeGet, rowId: any) => async () => {
     await TypeService.unMarkAsDeleted(request.id)

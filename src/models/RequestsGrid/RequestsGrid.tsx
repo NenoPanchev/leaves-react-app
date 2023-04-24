@@ -60,21 +60,14 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   useEffect(() => {
     retrivePage();
     console.log(openForm)
-  }, [userFilter,setOpen]);
+  }, [userFilter, setOpen]);
 
   let numberOfElements = page.numberOfElements * (page.number + 1);
 
-  const updateFormOpen = React.useCallback(
-
-    (newValue: boolean): void => setOpen(newValue),
-
-    [setOpen]
-);
 
   const retrivePage = async () => {
     await RequestService.getAllFilterPage(userFilter)
       .then((response: any) => {
-        // setRows(response.data);
         console.log(response.data);
         console.log(response.data.content);
         setPage(response.data);
@@ -85,59 +78,24 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         console.log(e);
       });
   }
-  const handleApproveClick = (request: IRequestDataGet, rowId: GridRowId) => async () => {
-    setOpen(true);
-    // await RequestService.approve(request.id)
-    //   .then((_response: any) => {
-    //     apiRef.current.updateRows([{ id: rowId, approved: true }]);
-    //   })
-    //   .catch((e: AxiosError<any, any>) => {
-    //     if (e.response) {
-    //       console.log();
-    //       setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-    //       console.log(alertProps);
-    //     }
-
-    //   });
-  };
 
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {
-    await RequestService.remove(request.id)
-      .then((_response: any) => {
-        apiRef.current.updateRows([{ id: rowId, _action: "delete" }]);
-        numberOfElements = numberOfElements - 1;
-        page.totalElements = page.totalElements - 1;
-      })
-      .catch((e: AxiosError<any, any>) => {
-        if (e.response) {
-          console.log();
-          setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-          console.log(alertProps);
-        }
-
-      });
-  };
-  const handleVisionClickOnDeleted = (request: IRequestDataGet, rowId: any) => async () => {
-    await RequestService.unMarkAsDeleted(request.id)
-      .then((_response: any) => {
-
-        if (userFilter.deleted === "true") {
+    if (!request.deleted) {
+      await RequestService.remove(request.id)
+        .then((_response: any) => {
           apiRef.current.updateRows([{ id: rowId, _action: "delete" }]);
           numberOfElements = numberOfElements - 1;
           page.totalElements = page.totalElements - 1;
-        } else if (userFilter.deleted === "null") {
-          request.isDeleted = false;
-          apiRef.current.updateRows([{ id: rowId }]);
-        }
-      })
-      .catch((e: AxiosError<any, any>) => {
-        if (e.response) {
-          console.log();
-          setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-          console.log(alertProps);
-        }
+        })
+        .catch((e: AxiosError<any, any>) => {
+          if (e.response) {
+            console.log();
+            setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
+            console.log(alertProps);
+          }
 
-      });
+        });
+    }
   };
 
   const handleDisapproveClick = (request: IRequestDataGet, rowId: GridRowId) => async () => {
@@ -153,10 +111,6 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         console.log(e);
       });
   };
-
-
-  //search
-
 
   const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -237,28 +191,16 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
   );
   function renderDeletedButtons(request: IRequestDataGet, rowId: any): JSX.Element {
-    if (request.isDeleted) {
 
-      return (
-        <GridActionsCellItem
-          icon={<Tooltip title={t('publish')}><VisibilityIcon /></Tooltip>}
-          label="Publish"
-          className="textPrimary"
-          onClick={handleVisionClickOnDeleted(request, rowId)}
-          color="inherit"
-        />
-      );
-    } else {
-      return (
-        <GridActionsCellItem
-          icon={<Tooltip title={t('delete')}><DeleteIcon /></Tooltip>}
-          label="Delete"
-          className="textPrimary"
-          onClick={handleDeleteClick(request, rowId)}
-          color="inherit"
-        />
-      );
-    }
+    return (
+      <GridActionsCellItem
+        icon={<Tooltip title={t('delete')}><DeleteIcon /></Tooltip>}
+        label="Delete"
+        className="textPrimary"
+        onClick={handleDeleteClick(request, rowId)}
+        color="inherit"
+      />
+    );
   }
 
   const updateFilterLimit = useCallback(
@@ -318,7 +260,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       cellClassName: 'actions',
       getActions: ({ row, id }) => {
         return [
-          <ApproveRequestDialog request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild}/>,
+          <ApproveRequestDialog request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild} />,
           <GridActionsCellItem
             icon={<Tooltip title={t('reject')}><CancelIcon /></Tooltip>}
             label="Reject"

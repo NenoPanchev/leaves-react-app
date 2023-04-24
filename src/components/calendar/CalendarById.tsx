@@ -43,7 +43,7 @@ const CalendarById = (props: CalendarByIdProps): JSX.Element => {
         approved: false,
         createdBy: "",
         daysRequested: 0,
-        isDeleted: false
+        deleted: false
     });
 
     React.useEffect(() => {

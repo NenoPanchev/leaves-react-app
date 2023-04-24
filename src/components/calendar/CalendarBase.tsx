@@ -53,7 +53,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         approved: false,
         createdBy: "",
         daysRequested: 0,
-        isDeleted: false
+        deleted: false
     });
     const [openForm, setOpen] = useState<boolean>(false);
     const ChildMemo = React.memo(PdfFormRequest);

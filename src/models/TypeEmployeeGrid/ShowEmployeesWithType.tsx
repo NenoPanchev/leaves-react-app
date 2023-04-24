@@ -34,10 +34,6 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
 
     }, [currentUser.user]);
     function renderEmployeeLink(employeeInfo: IEmploeeGet) {
-        console.log(currentUser.user?.getEmail())
-        console.log(currentUser.user?.getId())
-        console.log(employeeInfo.id)
-        console.log(currentUser.user?.getId() === employeeInfo.id)
         let isUser = currentUser.user!.getId() === employeeInfo.id;
         if (isUser) {
             return (<Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
@@ -101,18 +97,7 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                             {props.typeEmployee.employeeWithType.map((item) => {
                                 return (
                                     <Grid >
-                                        <ListItem key={item.id}
-                                        // secondaryAction={
-                                        //     <IconButton edge="end" aria-label="delete" onClick={(_event) => setUserFilter({ ...filter, [item]: createdBy.splice(createdBy.indexOf(item), 1) })}>
-                                        //         <DeleteIcon />
-                                        //     </IconButton>
-
-                                        // } //TODO ROUTE TO EMPLOYEE
-                                        >
-
-                                            <ListItemText
-                                            // secondary={"Id." + item.id + " "}
-                                            />
+                                        <ListItem key={item.id}>
                                             {renderEmployeeLink(item)}
                                         </ListItem>
                                         <Divider />
