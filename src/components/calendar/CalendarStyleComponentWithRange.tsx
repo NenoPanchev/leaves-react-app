@@ -237,8 +237,6 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
         requestDayIsHoliday.push(holidays.includes(day.format("YYYY-MM-DD")))
     }
     );
-    console.log(isRejected)
-    console.log(isRed)
     const dayIsBetweenRange = day.isBetween(startDate, endDate, null, '[]');
     const isFirstDayOfRange = day.isSame(startDate, 'day');
     const isLastDayOfRange = day.isSame(endDate, 'day');
