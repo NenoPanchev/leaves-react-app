@@ -50,36 +50,11 @@ const CustomPickerDayRange = styled(PickersDay, {
         },
 
     }
-    styl.backgroundColor = blue[100];
-    styl['&:hover, &:focus'].backgroundColor = blue[200];
 
-    if (dayIsBetweenRange) {
-        //RANGE PICKER FORM CHANGE    
-        if (isFirstDayOfRange && isLastDayOfRange) {
-            return styl
-        } else if (isFirstDayOfRange) {
 
-            styl.borderBottomRightRadius = '0%';
-            styl.borderTopRightRadius = '0%';
-            return styl
-        } else if (isLastDayOfRange) {
-
-            styl.borderTopLeftRadius = '0%';
-            styl.borderBottomLeftRadius = '0%';
-            return styl;
-        } else if (dayIsBetweenRange) {
-
-            styl.borderTopLeftRadius = '0%';
-            styl.borderBottomLeftRadius = '0%';
-            styl.borderBottomRightRadius = '0%';
-            styl.borderTopRightRadius = '0%';
-            return styl;
-        }
-
-        //END RANGE PICKER FORM CHANGE
-    } else if (dayIsBetween) {
-        console.log("dayIsBetween")
+    if (dayIsBetween) {
         for (const dayIsBetweenItem of dayIsBetween) {
+
             ////COLOR CHANGE
             if (isApproved[counter] === false) {
                 //
@@ -98,14 +73,9 @@ const CustomPickerDayRange = styled(PickersDay, {
                     styl['&:hover, &:focus'].backgroundColor = green[300];
                 }
                 else if (notRed[counter] === false) {
-                    console.log("red")
+
                     styl.backgroundColor = red[200];
                     styl['&:hover, &:focus'].backgroundColor = red[300];
-                }
-                else if (notRed[counter] === null) {
-                    console.log("blue")
-                    styl.backgroundColor = blue[100];
-                    styl['&:hover, &:focus'].backgroundColor = blue[200];
                 }
 
             }
@@ -122,6 +92,9 @@ const CustomPickerDayRange = styled(PickersDay, {
                 //HOLIDAY COLOR CHANGE
                 styl.backgroundColor = purple[300];
                 styl['&:hover, &:focus'].backgroundColor = purple[400];
+            } else if (!requestDayIsHoliday[counter] && dayIsBetweenRange) {
+                styl.backgroundColor = blue[100];
+                styl['&:hover, &:focus'].backgroundColor = blue[200];
             }
             //END OF COLOR CHANGE
 
@@ -151,13 +124,40 @@ const CustomPickerDayRange = styled(PickersDay, {
                 return styl;
             }
 
-
-
-
             counter++;
+
         }
+
     }
-    
+
+
+
+
+
+    //RANGE PICKER FORM CHANGE    
+    if (isFirstDayOfRange && isLastDayOfRange) {
+
+        return styl
+    } else if (isFirstDayOfRange) {
+
+        styl.borderBottomRightRadius = '0%';
+        styl.borderTopRightRadius = '0%';
+        return styl
+    } else if (isLastDayOfRange) {
+
+        styl.borderTopLeftRadius = '0%';
+        styl.borderBottomLeftRadius = '0%';
+        return styl;
+    } else if (dayIsBetweenRange) {
+
+        styl.borderTopLeftRadius = '0%';
+        styl.borderBottomLeftRadius = '0%';
+        styl.borderBottomRightRadius = '0%';
+        styl.borderTopRightRadius = '0%';
+        return styl;
+    }
+    //END RANGE PICKER FORM CHANGE
+
     for (const holiday of isHoliday) {
         if (holiday) {
 
@@ -169,6 +169,8 @@ const CustomPickerDayRange = styled(PickersDay, {
 
         holidayCounter++;
     }
+
+
 
 
 
