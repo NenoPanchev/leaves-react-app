@@ -27,7 +27,7 @@ export interface CalendarBaseRef {
     reload: () => void;
 }
 type CustomDayProps = {
-    onDateChange: (startDate: Dayjs | null,endDate: Dayjs | null) => void;
+    onDateChange: (startDate: Dayjs | null, endDate: Dayjs | null) => void;
 }
 
 const alertMassage = "You can not download Pdf of a request that is not approved!";
@@ -37,10 +37,10 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [t, i18n] = useTranslation();
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
 
-    const [startDate, setStartDate] = React.useState< Dayjs | null>(dayjs());
-    const [endDate, setEndDate] = React.useState< Dayjs | null>(dayjs());
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs());
 
-    const[isRequest,setIsRequest]=React.useState<boolean>(false);
+    const [isRequest, setIsRequest] = React.useState<boolean>(false);
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
@@ -81,10 +81,11 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
         [setOpenAlert]
     );
-    function openRequest( newValue: dayjs.Dayjs | null) {
+
+    function openRequest(newValue: dayjs.Dayjs | null) {
 
         for (const element of leaveRequests) {
-        
+
             if (element.approved) {
                 if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
                     console.log("asdasdasd")
@@ -101,12 +102,14 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             }
             else if (element.approved == null || element.approved == false) {
                 if (newValue?.isSame(element.endDate, 'day') || newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                    setOpen(false);
                     setOpenAlert(true);
+
                     return false;
                 }
             }
-            if (dayjs(element.startDate).isBetween(startDate,newValue, null,'[]') ||dayjs(element.endDate).isBetween(startDate,newValue, null,'[]'))
-            {
+
+            if (dayjs(element.startDate).isBetween(startDate, newValue, null, '[]') || dayjs(element.endDate).isBetween(startDate, newValue, null, '[]')) {
                 setStartDate(newValue);
                 setEndDate(newValue);
                 return false;
@@ -114,42 +117,36 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         }
         return true;
     }
-    
+
 
     const handleChange = (newValue: dayjs.Dayjs | null) => {
-    
-console.log(openRequest(newValue));
-        if  (openRequest(newValue))
-        {
-            if(newValue?.isSame(endDate))
-            {
+
+        if (openRequest(newValue)) {
+            if (newValue?.isSame(endDate)) {
                 console.log("end date")
                 setStartDate(newValue)
             }
-            if(newValue?.isSame(startDate))
-            {
+            if (newValue?.isSame(startDate)) {
                 console.log("end date")
                 setEndDate(newValue)
                 setStartDate(newValue)
             }
-            if(newValue?.isAfter(startDate))
-            {
+            if (newValue?.isAfter(startDate)) {
                 console.log("set end date")
                 setEndDate(newValue)
             }
-    
-            if(newValue?.isBefore(startDate))
-            {
+
+            if (newValue?.isBefore(startDate)) {
                 console.log("set end date")
                 setStartDate(newValue)
                 setEndDate(newValue)
             }
         }
 
-             
 
 
-       
+
+
         // if(startDate!=dayjs())
         // {
         //     console.log("startDate date")
@@ -164,8 +161,8 @@ console.log(openRequest(newValue));
     };
 
     React.useEffect(() => {
-        props.onDateChange(startDate,endDate);
-    }, [startDate,endDate]);
+        props.onDateChange(startDate, endDate);
+    }, [startDate, endDate]);
 
     const retrivePage = async () => {
         await RequestService.getAllByUser()
@@ -200,8 +197,8 @@ console.log(openRequest(newValue));
                                 day: {
                                     requests: leaveRequests,
                                     holidays: holidays,
-                                    startDate:startDate,
-                                    endDate:endDate
+                                    startDate: startDate,
+                                    endDate: endDate
                                 } as any,
                             }}
                             shouldDisableDate={disableWeekends}
