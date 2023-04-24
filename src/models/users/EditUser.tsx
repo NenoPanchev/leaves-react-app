@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete, Tooltip } from '@mui/material';
+import {
+    Button, Dialog, DialogActions, DialogContent,
+    DialogTitle, Box, TextField, Autocomplete, Tooltip
+} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -22,9 +24,9 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [position, setPosition] = React.useState<string | null>(props.user.position);
     const day = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
-    const [startDate, setStartDate] = React.useState<Dayjs | null>(day);  
-    
-    
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(day);
+
+
     const [roles, setRoles] = React.useState<Role[]>([]);
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
@@ -33,16 +35,17 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
     let nError = false;
     let eError = false;
-    let pError = false;
-    let pcError = false;
+    // let pError = false;
+    // let pcError = false;
     const [password, setPassword] = React.useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = React.useState<string>('');
-    const {user} = React.useContext(AuthContext);
+    const { user } = React.useContext(AuthContext);
     const str = props.user.roles.toString();
     const arr = str.split(', ');
     const [roleNames, setRoleNames] = React.useState<string[] | null>(arr);
     const navigate = useNavigate();
-    const editUser = useEdit();   
+    const editUser = useEdit();
+    // const [showPasswordFields, setShowPasswordFields] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -51,6 +54,10 @@ export default function EditUserButton(props: EditUserButtonProps) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    // const handleShowPasswordFields = () => {
+    //     setShowPasswordFields(true);
+    // }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -64,11 +71,11 @@ export default function EditUserButton(props: EditUserButtonProps) {
         editUser(props.user.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))
-            handleClose();
+        handleClose();
 
     }
 
-    function validate():boolean {
+    function validate(): boolean {
         nError = (name.length < 2 || name.length > 20);
         setNameError(name.length < 2 || name.length > 20);
 
@@ -76,16 +83,16 @@ export default function EditUserButton(props: EditUserButtonProps) {
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 
-        setPasswordError((password.length < 4 || password.length > 20));
-        pError = ((password.length < 4 || password.length > 20));
+        // setPasswordError((password.length < 4 || password.length > 20));
+        // pError = ((password.length < 4 || password.length > 20));
 
-        setPasswordConfirmError(password !== passwordConfirm);
-        pcError = (password !== passwordConfirm);
-        
-        return nError || eError || pError || pcError;
+        // setPasswordConfirmError(password !== passwordConfirm);
+        // pcError = (password !== passwordConfirm);
+
+        return nError || eError;
     }
 
-    if (!user?.hasAuthority('WRITE') || (props.user.id === 1)) {      
+    if (!user?.hasAuthority('WRITE') || (props.user.id === 1)) {
         return null;
     }
 
@@ -123,7 +130,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 error={nameError}
-                                helperText={nameError ? t('Username must be between 2 and 20 characters') : null}                       
+                                helperText={nameError ? t('Username must be between 2 and 20 characters') : null}
                             />
                             <TextField
                                 margin="normal"
@@ -137,7 +144,7 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 error={emailError}
-                                helperText={emailError ? t('Enter valid email!') : null} 
+                                helperText={emailError ? t('Enter valid email!') : null}
                             />
                             <Autocomplete
                                 id="department"
@@ -160,10 +167,10 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                 )}
                             />
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                            <DatePicker label={t('Employed at')} 
-                            value={startDate} 
-                            sx={{marginTop: '15px', marginBottom: '5px'}}
-                            onChange={(newValue) => setStartDate(newValue)}/>                            
+                                <DatePicker label={t('Employed at')}
+                                    value={startDate}
+                                    sx={{ marginTop: '15px', marginBottom: '5px' }}
+                                    onChange={(newValue) => setStartDate(newValue)} />
                             </LocalizationProvider>
 
                             <Autocomplete
@@ -207,32 +214,40 @@ export default function EditUserButton(props: EditUserButtonProps) {
                                     />
                                 )}
                             />
-
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label={t('Password')}
-                                type="password"
-                                id="password"
-                                autoComplete="password"
-                                onChange={(e) => setPassword(e.target.value)}
-                                error={passwordError}
-                                helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="confirmPassword"
-                                label={t('Password Confirm')}
-                                type="password"
-                                id="confirm-password"
-                                onChange={(e) => setPasswordConfirm(e.target.value)}
-                                error={passwordConfirmError}
-                                helperText={passwordConfirmError ? t('Passwords must match!') : null}
-                            />
+                            {/* {!showPasswordFields &&
+                                <Button autoFocus onClick={handleShowPasswordFields}>
+                                    {t('Change password')}
+                                </Button>
+                            }
+                            {showPasswordFields &&
+                                <>
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label={t('Password')}
+                                        type="password"
+                                        id="password"
+                                        autoComplete="password"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        error={passwordError}
+                                        helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
+                                    />
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="confirmPassword"
+                                        label={t('Password Confirm')}
+                                        type="password"
+                                        id="confirm-password"
+                                        onChange={(e) => setPasswordConfirm(e.target.value)}
+                                        error={passwordConfirmError}
+                                        helperText={passwordConfirmError ? t('Passwords must match!') : null}
+                                    />
+                                </>
+                            } */}
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>

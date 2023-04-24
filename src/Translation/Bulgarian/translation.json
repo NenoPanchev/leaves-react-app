@@ -137,5 +137,9 @@
     "Developer": "Разработчик",
     "Paid leave": "Дни отпуск",
     "Start Date": "Начална дата",
-    "Employed at": "Назначен на"
+    "Employed at": "Назначен на",
+    "Change password": "Промяна на парола",
+    "Old Password": "Стара парола",
+    "New Password": "Нова парола",
+    "New Password Confirm": "Потвърждаване на нова парола"
 }

@@ -148,7 +148,11 @@
     "Developer": "Developer",
     "Paid leave": "Paid leave",
     "Start date": "Start date",
-    "Employed at": "Employed at"
+    "Employed at": "Employed at",
+    "Change password": "Change password",
+    "Old Password": "Old Password",
+    "New Password": "New Password",
+    "New Password Confirm": "New Password Confirm"
 
 
 

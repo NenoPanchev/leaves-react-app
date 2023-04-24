@@ -22,8 +22,7 @@ export const useLogin = () => {
         const token = response.data.jwt;
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
-        userDetails.setId(response.data.id);
-        console.log(response.data)
+
         localStorage.setItem("SavedToken", 'Bearer ' + token);
         localStorage.setItem("Authenticated", 'true');
         setUser(userDetails);  
@@ -48,7 +47,6 @@ export const useRefresh = () => {
       .then((response) => {
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
-        userDetails.setId(response.data.id)
         // setUser(userDetails);
         // navigate(path)
       })

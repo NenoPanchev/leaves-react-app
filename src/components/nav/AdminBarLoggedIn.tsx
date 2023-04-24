@@ -1,7 +1,5 @@
 import {ListItemButton, ListItemIcon, ListItemText, Divider, ListSubheader, Grid} from "@mui/material"
 import {Link, useLocation} from "react-router-dom"
-import AddRequest3 from "../../models/AddRequest/AddRequest"
-import {t} from "i18next"
 import {useContext} from "react"
 import AuthContext from "../../contexts/AuthContext"
 import {useTranslation} from "react-i18next"
@@ -12,6 +10,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import ListIcon from '@mui/icons-material/List';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import ChangePassword from "../../models/users/ChangePassword"
 
 const AdminBarLoggedIn = () => {
     const {user} = useContext(AuthContext);
@@ -112,6 +111,8 @@ const AdminBarLoggedIn = () => {
             < ListSubheader component="div" inset>
                 {t('Authentication')}
             </ ListSubheader>
+
+            <ChangePassword />
 
             < Link to={'/logout'} style={{
                 textDecoration: 'none',
