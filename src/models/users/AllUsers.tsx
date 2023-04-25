@@ -10,13 +10,13 @@ import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
 import { useFetchAllNames as fetchDepartmentNames } from '../../services/departmentService';
 import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
-import { IUser, IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/userInterfaces';
+import { IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/userInterfaces';
 
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
-import { use } from 'i18next';
 import { Grid, Tooltip } from '@mui/material';
+import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -48,6 +48,10 @@ export default function Users() {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
     refresh={setRefreshCurrentState}></DeleteButton>
   }
+
+  const myGridToolbarComponents = [
+    <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>  ]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setUserFilter({
@@ -146,10 +150,6 @@ export default function Users() {
             filter={userFilter} setFilter={setUserFilter}
           ></UserSearchFilter>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
-          <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>
-        </Box>
         <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
             rows={rows}
@@ -161,6 +161,14 @@ export default function Users() {
             paginationMode='server'
             onPaginationModelChange={handlePaginationModelChange}
             disableRowSelectionOnClick
+            disableColumnMenu
+            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
+            slotProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
           />
         </Box>
       </Grid>
