@@ -1,12 +1,14 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, Autocomplete
+    DialogTitle, Box, TextField, Autocomplete, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeesToFormData, useCreate } from '../../services/departmentService';
 import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
+
 
 export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const path = useLocation().pathname;
@@ -50,12 +52,10 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
 
     return (
         <React.Fragment>
-            <Button
-                variant='outlined'
-                color='success'
-                onClick={handleClickOpen}
-            >
-                {t('Add Department')}
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Typography variant="overline" component="div">
+                    {t(`Add Department`)}
+                </Typography>
             </Button>
             <Dialog
 
