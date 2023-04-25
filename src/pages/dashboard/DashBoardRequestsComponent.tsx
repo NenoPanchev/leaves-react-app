@@ -28,11 +28,12 @@ const Accordion = styled((props: AccordionProps) => (
     '&.MuiAccordion-rounded':{
 
     },
+  
 }));
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
     <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem'  }} />}
         {...props}
         
     />
@@ -48,13 +49,27 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     '& .MuiAccordionSummary-content': {
         marginLeft: theme.spacing(1),
     },
+    root: {
+        minHeight: 15,
+        maxHeight: 15,
+        backgroundColor: '#a5a5a5',
+        '&.Mui-expanded': {
+          minHeight: 15,
+          maxHeight: 15,
+          backgroundColor: '#a5a5a5',
+        }
+    },
+    expandIcon: {
+        order: -1
+    }
+    
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
+    
 }));
-
 
 
 

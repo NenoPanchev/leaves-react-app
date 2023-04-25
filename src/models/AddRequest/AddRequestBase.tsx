@@ -116,6 +116,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                 <Box
                     noValidate
                     component="form"
+                    marginBottom="auto"
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -140,7 +141,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker   minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }}  minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -152,7 +153,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker disablePast={true} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }} disablePast={true} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 
                                 </Grid>
@@ -172,7 +173,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker   minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker  slotProps={{ textField: { size: 'small' } }}  minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -184,7 +185,7 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker minDate={endDate} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }} minDate={endDate} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 
                                 </Grid>
@@ -200,7 +201,8 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                     spacing={0}
                     direction="row"
                     alignItems="center"
-                    justifyContent="center">
+                    justifyContent="center"
+                    marginTop="1em">
                     <Grid >
                         <Button onClick={saveRequest} >{t('Add')}</Button>
                     </Grid >
