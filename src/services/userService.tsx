@@ -202,7 +202,6 @@ export const useFetchAllTypeNames = (refresh: number) => {
 }
 
 export const useChangePassword = () => {
-  // const [serverResponse, setServerResponse] = useState<string>('');
   let serverResponse = '';
 
   async function editPassword (id: number, passwordDto: FormData) {
