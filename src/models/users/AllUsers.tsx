@@ -30,7 +30,7 @@ export default function Users() {
   });
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
-  const typeNames = userService.useFetchAlTypeNames(refreshCurrentState);
+  const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
   const { t } = useTranslation();
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
 

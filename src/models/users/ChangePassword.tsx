@@ -1,29 +1,35 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, ListItemButton, ListItemIcon, ListItemText
+    DialogTitle, Box, TextField, ListItemButton, ListItemIcon, ListItemText, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { appendEmployeeInfoToFormData, appendRolesToFormData, useEdit } from '../../services/userService';
+import { useChangePassword } from '../../services/userService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 
-export default function EditUserButton() {
+export default function ChangePasswordButton() {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
-    const userId = React.useContext(AuthContext).user?.getId()!;
+    const { user } = React.useContext(AuthContext);
+    const userId = user?.getId()!;
     const { t } = useTranslation();
     const [oldPasswordError, setOldPasswordError] = React.useState(false);
     const [newPasswordError, setNewPasswordError] = React.useState(false);
     const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
+    let responseMessage = '';
     let opError = false;
     let npError = false;
     let pcError = false;
-    const [password, setPassword] = React.useState<string>('');
-    const [passwordConfirm, setPasswordConfirm] = React.useState<string>('');
+    let sError = false;
+    const [oldPassword, setOldPassword] = React.useState<string>('');
+    const [newPassword, setNewPassword] = React.useState<string>('');
+    const [newPasswordConfirm, setNewPasswordConfirm] = React.useState<string>('');
+    const [serverError, setServerError] = React.useState<boolean>(false);
+    const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
     const navigate = useNavigate();
-    const editUser = useEdit();
+    const changePassword = useChangePassword();
 
 
     const handleClickOpen = () => {
@@ -34,40 +40,46 @@ export default function EditUserButton() {
         setOpen(false);
     };
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+
+        responseMessage = await changePassword(userId, data);
+        setServerErrorMessage(responseMessage);
+
         const errors = validate();
         if (errors) {
             return;
         }
-        editUser(userId, data)
-            .then(() => navigate(path))
-        handleClose();
 
+        handleClose();
+        navigate(path);
     }
 
     function validate(): boolean {
-        setOldPasswordError((password.length < 4 || password.length > 20));
-        opError = ((password.length < 4 || password.length > 20));
+        setOldPasswordError((oldPassword.length < 4 || oldPassword.length > 20));
+        opError = ((oldPassword.length < 4 || oldPassword.length > 20));
 
-        setNewPasswordError((password.length < 4 || password.length > 20));
-        npError = ((password.length < 4 || password.length > 20));
+        setNewPasswordError((newPassword.length < 4 || newPassword.length > 20));
+        npError = ((newPassword.length < 4 || newPassword.length > 20));
 
-        setPasswordConfirmError(password !== passwordConfirm);
-        pcError = (password !== passwordConfirm);
+        setPasswordConfirmError(newPassword !== newPasswordConfirm);
+        pcError = (newPassword !== newPasswordConfirm);
 
-        return opError || npError || pcError;
+        setServerError(responseMessage != '');
+        sError = responseMessage != '';
+
+        return opError || npError || pcError || sError;
     }
 
     return (
         <React.Fragment>
-            <ListItemButton 
-            onClick={handleClickOpen}>
-                    <ListItemIcon>
-                        <SettingsIcon/>
-                    </ ListItemIcon>
-                    < ListItemText primary={t('Change Password')}/>
+            <ListItemButton
+                onClick={handleClickOpen}>
+                <ListItemIcon>
+                    <SettingsIcon />
+                </ ListItemIcon>
+                < ListItemText primary={t('Change Password')} />
             </ListItemButton>
             <Dialog
                 open={open}
@@ -83,6 +95,9 @@ export default function EditUserButton() {
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
                         <DialogContent>
+                            {serverError &&
+                                <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
+                            }
                             <TextField
                                 margin="normal"
                                 required
@@ -90,23 +105,23 @@ export default function EditUserButton() {
                                 name="oldPassword"
                                 label={t('Old Password')}
                                 type="password"
-                                id="oldPassword"
+                                id="old-password"
                                 autoComplete="oldPassword"
-                                onChange={(e) => setPassword(e.target.value)}
-                                error={newPasswordError}
-                                helperText={newPasswordError ? t('Password must be between 4 and 20 characters') : null}
+                                onChange={(e) => setOldPassword(e.target.value)}
+                                error={oldPasswordError}
+                                helperText={oldPasswordError ? t('Password must be between 4 and 20 characters') : null}
                             />
 
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                name="password"
+                                name="newPassword"
                                 label={t('New Password')}
                                 type="password"
-                                id="password"
-                                autoComplete="password"
-                                onChange={(e) => setPassword(e.target.value)}
+                                id="new-password"
+                                autoComplete="newPassword"
+                                onChange={(e) => setNewPassword(e.target.value)}
                                 error={newPasswordError}
                                 helperText={newPasswordError ? t('Password must be between 4 and 20 characters') : null}
                             />
@@ -114,11 +129,11 @@ export default function EditUserButton() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                name="confirmPassword"
+                                name="newPasswordConfirm"
                                 label={t('New Password Confirm')}
                                 type="password"
                                 id="confirm-password"
-                                onChange={(e) => setPasswordConfirm(e.target.value)}
+                                onChange={(e) => setNewPasswordConfirm(e.target.value)}
                                 error={passwordConfirmError}
                                 helperText={passwordConfirmError ? t('Passwords must match!') : null}
                             />
