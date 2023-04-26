@@ -52,8 +52,11 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs());
+
     const [calendarWidth, setCalendarWidth] = React.useState("auto");
     const [calendarHeight, setCalendarHeight] = React.useState("auto");
+    const [calendarDaysAndWeekLabels, setCalendarDaysAndWeekLabels] = React.useState("36px");
+    const [calendarWeekLabelHeight, setCalendarWeekLabelHeight] = React.useState("40px");
 
 
 
@@ -207,57 +210,62 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     function handleZoomClick() {
         props.onShow()
         if (calendarHeight === "auto" && calendarWidth === "auto") {
-            setCalendarHeight("150vh");
-            setCalendarWidth("153vh");
+            setCalendarHeight("65vh");
+            setCalendarWidth("120vh");
+            setCalendarDaysAndWeekLabels("56");
+            setCalendarWeekLabelHeight("60");
         }
         else {
 
             setCalendarHeight("auto");
             setCalendarWidth("auto");
+            setCalendarDaysAndWeekLabels("36");
+            setCalendarWeekLabelHeight("40");
         }
     }
 
+    function calculateCalendarHeight() {
+       let initialheight=174;
+if (calendarHeight==="auto")
+{
+    return initialheight+parseInt(calendarDaysAndWeekLabels)+parseInt(calendarDaysAndWeekLabels);
+}
+else
+{
+    return initialheight+parseInt(calendarDaysAndWeekLabels)+parseInt(calendarDaysAndWeekLabels) +70;
+}
+  
+    }
+
     return (
-        <Grid container height="100%" >
+        <Grid container>
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
-            <Grid container height="100%" direction="row">
-                <Grid item height="100%">
+           
+                <Grid item direction="row" >
 
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
                             sx={{
-                                width: calendarWidth,
-                                height: calendarHeight,
+                                width: "100%",
+                                height: "100%",
                                
                                 '& .MuiPickersDay-root': {
-                                    width: 56,
-                                    height: 56
+                                    width: calendarDaysAndWeekLabels+"px",
+                                    height: calendarDaysAndWeekLabels+"px"
                                 },
                                 '& .MuiDayCalendar-weekDayLabel': {
-                                    width: 56,
-                                    height: 60
+                                    width: calendarDaysAndWeekLabels+"px",
+                                    height: calendarWeekLabelHeight+"px"
                                 },
-                                '& .MuiDayCalendar-monthContainer':
-                                {
-                                    position: "relative"
-                                }
-                                ,
+                                '& .MuiDayCalendar-slideTransition':{
+                                    minHeight: calculateCalendarHeight()+"px",
+                                    height:"auto"
+                                },                           
                                 '&':
                                 {
                                     maxHeight:"100% !important",
                                 },
-
-                                //    ['&.css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition']:
-                                //     {
-                                //       position:"uset"
-                                //     },
-                                // '&.MuiDayCalendar-monthContainer':
-                                // {
-                                //     position:""
-                                //   },
-
-
                             }}
                             slots={{ day: DayWithRange }}
                             slotProps={{
@@ -312,7 +320,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                     </Grid>
                 </Grid>
 
-            </Grid>
+         
         </Grid>
     );
 }

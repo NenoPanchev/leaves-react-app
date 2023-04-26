@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import CalendarBase, { CalendarBaseRef } from '../../components/calendar/CalendarBase';
 import AuthContext from '../../contexts/AuthContext';
 import AddRequestBase, { AddRequestBaseRef } from '../../models/AddRequest/AddRequestBase';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import styled from '@mui/material/styles/styled';
 import { Dayjs } from 'dayjs';
 const Accordion = styled((props: AccordionProps) => (
@@ -76,6 +76,11 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     const roles = new Array;
     const [expanded, setExpanded] = React.useState<string | false>('panel1');
     const [showAddRequest, setShowAddRequest] = React.useState<boolean>(false);
+    const [addRequestDirection,setAddRequestDirection]=React.useState<any>("column");
+    const [requestsComponentHeight,setRequestsComponentHeight]=React.useState("auto");
+    const [requestsComponentWidth,setRequestsComponentWidth]=React.useState("auto");
+
+
     const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false);
     };
@@ -96,7 +101,25 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
 
     function handleZoomClick() {
         props.onShow()
-        console.log("a");
+
+        if(addRequestDirection==="column")
+        {
+            setAddRequestDirection("row-reverse");
+        }
+        else
+        {
+            setAddRequestDirection("column")
+        }
+        if(requestsComponentHeight==="auto"&&requestsComponentWidth==="auto")
+        {
+            setRequestsComponentHeight("90.8vh")
+            setRequestsComponentWidth("179vh")
+        }
+        else
+        {
+            setRequestsComponentHeight("auto")
+            setRequestsComponentWidth("auto")
+        }
     }
     const calendarDayChange = (startDate: Dayjs | null, endDate: Dayjs | null) => {
         if (AddRequestBaseRef && AddRequestBaseRef.current) {
@@ -117,12 +140,14 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     );
 
     return (
-        <Grid container direction="column" >
+        <Grid container justifyContent="center" direction={addRequestDirection} height={requestsComponentHeight} width={requestsComponentWidth} >
+                <Paper  sx={{height:"fit-content"}} >
+            <Grid item>
             <CalendarBase ref={calendarRef} onDateChange={changeDate} onShow={handleZoomClick} onShowAddRequest={updateDetails} />
-
             {showAddRequest &&
+
                 <Grid item>
-                    <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} >
+                    {/* <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} >
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                             <Typography>{t('AddRequests.AddRequest')}</Typography>
                         </AccordionSummary>
@@ -130,9 +155,13 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
                         <AccordionDetails>
                             <AddRequestBase ref={AddRequestBaseRef} onSubmit={reloadCalendar} onClose={updateDrawer} />
                         </AccordionDetails>
-                    </Accordion>
+                    </Accordion> */}
+                       <AddRequestBase ref={AddRequestBaseRef} onSubmit={reloadCalendar} onClose={updateDrawer} />
                 </Grid>
+       
             }
+            </Grid>
+            </Paper>
 
         </Grid>
 

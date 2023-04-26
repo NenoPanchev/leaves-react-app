@@ -45,10 +45,10 @@ function HomeContent() {
           <Toolbar />
 
           <CustomErrorBoundary/>
-              <Grid container height="90.5%" >
+              <Grid container height="90.5%" maxHeight="90.5%" >
                 <Routes>
                   <Route index Component={isAuth(DashBoard)}></Route>
-                  <Route  path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>
+                  <Route path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>
                   <Route path='/users' Component={isAuth(Users)}></Route>
                   <Route path='/departments' Component={isAuth(Departments)}></Route>
                   <Route path="/requests" Component={isAuth(RequestsGrid)} />
@@ -57,7 +57,7 @@ function HomeContent() {
                   <Route path='/login' Component={SignIn}></Route>
                   <Route path='/logout' Component={LogOut}></Route>
                   <Route path="/404" Component={NotFound}></Route>
-
+                  
                   <Route path="*" element={<Navigate to="/404" replace />}></Route>
                 </Routes>
               </Grid>

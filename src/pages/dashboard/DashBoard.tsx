@@ -52,12 +52,12 @@ export default function DashBoard() {
                         </Grid>
                     }
                     {/* Calendar */}
-                    <Grid item  >
-                        <Paper >
+                    
+                    <Grid item  height="auto">
                             <DashBoardRequestsComponent onShow={updateDetails} />
-
-                        </Paper>
+                       
                     </Grid>
+                    
                 </Grid>
             }
 
