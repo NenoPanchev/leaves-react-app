@@ -29,23 +29,19 @@ export default function DashBoard() {
         [showDetails]
     );
 
-    React.useEffect(() => {
-        console.log(showDetails)
-    }, [showDetails]);
-
     return (
         <React.Fragment>
             {user !== null &&
-                <Grid container direction={'row'} sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%'}}>
+                <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%'}}>
 
                     {/* User Details */}
                     {showDetails &&
-                        <Grid>
+                        <Grid item mt="2%" >
                             <Paper>
                                 <Typography>{t('My info:')}</Typography>
 
 
-                                <UserBaseDetails email={email!} />
+                                <UserBaseDetails email={email!}/>
 
 
                             </Paper>
@@ -53,7 +49,7 @@ export default function DashBoard() {
                     }
                     {/* Calendar */}
                     
-                    <Grid item  height="auto">
+                    <Grid item mt="2%" ml="5%" >
                             <DashBoardRequestsComponent onShow={updateDetails} />
                        
                     </Grid>
