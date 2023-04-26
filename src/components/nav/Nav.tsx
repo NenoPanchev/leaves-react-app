@@ -108,8 +108,8 @@ function NavContent() {
 
 
   return (
-    <Grid item>
-      <AppBar position="absolute" open={open}>
+    <Grid item >
+      <AppBar position="absolute" open={open} >
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
@@ -165,7 +165,7 @@ function NavContent() {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
+        <List component="nav" sx={{overflow: "hidden"}}>
           <AdminBar />
         </List>
       </Drawer>
