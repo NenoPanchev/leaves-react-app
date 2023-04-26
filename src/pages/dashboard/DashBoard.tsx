@@ -1,11 +1,11 @@
+
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import CalendarBase from '../../components/calendar/CalendarBase';
 import AuthContext from '../../contexts/AuthContext';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
-import { useState } from 'react';
 
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
@@ -14,7 +14,7 @@ export default function DashBoard() {
     const { t, i18n } = useTranslation();
     const roles = new Array;
     const permissions = new Array;
-    const [showDetails, setShowDetails] = useState(false)
+    const [showDetails, setShowDetails] = useState(true)
     authorities?.forEach(auth => {
         if (auth.startsWith('ROLE_')) {
             roles.push(auth.replaceAll('ROLE_', ''))
@@ -22,50 +22,42 @@ export default function DashBoard() {
             permissions.push(auth);
         }
     })
+    const updateDetails = useCallback(
+
+        (): void => setShowDetails(!showDetails),
+
+        [showDetails]
+    );
+
+    React.useEffect(() => {
+        console.log(showDetails)
+    }, [showDetails]);
+
     return (
         <React.Fragment>
             {user !== null &&
+                <Grid container direction={'row'} sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%'}}>
 
-                <Grid container direction={'column'} sx={{ backgroundColor: 'white', textAlign: 'center' }}>
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-
-                        <Grid container spacing={3}>
-                            {/* User Details */}
-                            {showDetails &&
-                                <Grid item xs={5} md={5} lg={5}>
-                                    <Paper
-                                        sx={{
-                                            p: 2,
-                                            display: 'table',
-                                            flexDirection: 'column',
-                                            height: 240,
-                                        }}
-                                    >
-                                        <Typography>{t('My info:')}</Typography>
+                    {/* User Details */}
+                    {showDetails &&
+                        <Grid>
+                            <Paper>
+                                <Typography>{t('My info:')}</Typography>
 
 
-                                        <UserBaseDetails email={email!} />
+                                <UserBaseDetails email={email!} />
 
 
-                                    </Paper>
-                                </Grid>
-                            }
-                            {/* Calendar */}
-                            <Grid item justifySelf="end">
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'table',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <DashBoardRequestsComponent />
-
-                                </Paper>
-                            </Grid>
+                            </Paper>
                         </Grid>
-                    </Container>
+                    }
+                    {/* Calendar */}
+                    <Grid item  >
+                        <Paper >
+                            <DashBoardRequestsComponent onShow={updateDetails} />
+
+                        </Paper>
+                    </Grid>
                 </Grid>
             }
 
