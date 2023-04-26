@@ -45,7 +45,7 @@ function HomeContent() {
           <Toolbar />
 
           <CustomErrorBoundary/>
-              <Grid container height="91%" >
+              <Grid container height="90.5%" >
                 <Routes>
                   <Route index Component={isAuth(DashBoard)}></Route>
                   <Route  path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>

@@ -1,11 +1,12 @@
+
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import CalendarById from '../../components/calendar/CalendarById';
-import UserBaseDetails from '../../models/users/UserBaseDetails';
-import { getUserById, useFetchOne } from '../../services/userService';
-import { IUserDetails } from '../../models/interfaces/user/userInterfaces';
 import { useParams } from 'react-router-dom';
+import CalendarById from '../../components/calendar/CalendarById';
+import { IUserDetails } from '../../models/interfaces/user/userInterfaces';
+import UserBaseDetails from '../../models/users/UserBaseDetails';
+import { getUserById } from '../../services/userService';
 // {
 //     id: 0,
 //     name: "",
@@ -48,7 +49,6 @@ export default function DashBoardByEmployee()  {
             });
     }
     const UserBaseDetailsMemo = React.memo(UserBaseDetails);
-console.log(userByiId.email)
     return (
         <React.Fragment>
             <Grid container direction={'column'} sx={{ backgroundColor: 'white', textAlign: 'center' }}>

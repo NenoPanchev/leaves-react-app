@@ -1,9 +1,10 @@
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import WeekendIcon from '@mui/icons-material/Weekend';
-import { Avatar, Backdrop, CircularProgress, Grid, Typography } from '@mui/material';
-import { blue, green, purple, red } from '@mui/material/colors';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import { blue, green, grey, purple, red } from '@mui/material/colors';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,16 +20,29 @@ import HolidayService from '../../services/HolidayService';
 import RequestService from '../../services/RequestService';
 import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
-import { Day, disableWeekends } from './CalendarStyleComponent';
+import { disableWeekends } from './CalendarStyleComponent';
 import { DayWithRange } from './CalendarStyleComponentWithRange';
-
+import { Grid, IconButton, Avatar, Typography, Tooltip, Button } from '@mui/material';
+import { createStyles, Theme, styled, makeStyles, withStyles } from "@mui/material/styles";
+import { StyledComponent } from '@emotion/styled';
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
     reload: () => void;
+
 }
 type CustomDayProps = {
     onDateChange: (startDate: Dayjs | null, endDate: Dayjs | null) => void;
+    onShow: () => void;
+    onShowAddRequest: () => void;
 }
+const useStyles = styled((theme: Theme) => createStyles({
+    root: {
+        "& .MuiPickersDay-root": {
+            width: 10,
+            height: 50
+        }
+    }
+}));
 
 const alertMassage = "You can not download Pdf of a request that is not approved!";
 const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
@@ -36,9 +50,14 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
     const [t, i18n] = useTranslation();
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
-
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs());
+    const [calendarWidth, setCalendarWidth] = React.useState("auto");
+    const [calendarHeight, setCalendarHeight] = React.useState("auto");
+
+
+
+
 
 
 
@@ -184,16 +203,62 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                 console.log(e);
             });
     }
+
+    function handleZoomClick() {
+        props.onShow()
+        if (calendarHeight === "auto" && calendarWidth === "auto") {
+            setCalendarHeight("150vh");
+            setCalendarWidth("153vh");
+        }
+        else {
+
+            setCalendarHeight("auto");
+            setCalendarWidth("auto");
+        }
+    }
+
     return (
-        <Grid item>
+        <Grid container height="100%" >
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
-            <Grid container direction="row" sx={{ width: 'flex' }} >
-                <Grid item >
+            <Grid container height="100%" direction="row">
+                <Grid item height="100%">
 
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                         <DateCalendar
-                            sx={{}}
+                            sx={{
+                                width: calendarWidth,
+                                height: calendarHeight,
+                               
+                                '& .MuiPickersDay-root': {
+                                    width: 56,
+                                    height: 56
+                                },
+                                '& .MuiDayCalendar-weekDayLabel': {
+                                    width: 56,
+                                    height: 60
+                                },
+                                '& .MuiDayCalendar-monthContainer':
+                                {
+                                    position: "relative"
+                                }
+                                ,
+                                '&':
+                                {
+                                    maxHeight:"100% !important",
+                                },
+
+                                //    ['&.css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition']:
+                                //     {
+                                //       position:"uset"
+                                //     },
+                                // '&.MuiDayCalendar-monthContainer':
+                                // {
+                                //     position:""
+                                //   },
+
+
+                            }}
                             slots={{ day: DayWithRange }}
                             slotProps={{
                                 day: {
@@ -208,28 +273,45 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                         />
                     </LocalizationProvider>
                 </Grid>
-                <Grid item marginTop="auto" marginBottom="auto">
 
-                    <Grid container direction="row" marginBottom={2}  >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
+
+                <Grid item>
+
+
+                    <Grid item direction="row" marginLeft="60%" >
+                        <IconButton onClick={props.onShowAddRequest} >
+                            <Tooltip title={t('showAddRequest')}><ControlPointIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
+                        </IconButton>
+                        <IconButton onClick={handleZoomClick} >
+                            <Tooltip title={t('Zoom')}><ZoomOutMapIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
+                        </IconButton>
                     </Grid>
 
-                    <Grid container direction="row" marginBottom={2} >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
-                    </Grid>
+                    <Grid item marginTop="30%" marginBottom="auto" marginRight={1}>
 
-                    <Grid container direction="row" marginBottom={2}  >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
-                    </Grid>
 
-                    <Grid container direction="row" marginBottom={2}  >
-                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: purple[500] }} >< WeekendIcon /></Avatar>
-                        <Typography marginLeft={1} marginTop={0.5} >{t('holiday')!}</Typography>
+                        <Grid container direction="row" marginBottom={2}  >
+                            <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: green[300] }}><CheckIcon /></Avatar>
+                            <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Approved')}</Typography>
+                        </Grid>
+
+                        <Grid container direction="row" marginBottom={2} >
+                            <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: red[300] }}><CloseIcon /></Avatar>
+                            <Typography marginLeft={1} marginTop={0.5}>{t('Requests.Rejected')}</Typography>
+                        </Grid>
+
+                        <Grid container direction="row" marginBottom={2}  >
+                            <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: blue[800] }} >< HourglassTopIcon /></Avatar>
+                            <Typography marginLeft={1} marginTop={0.5} >{t('Requests.notProcessed')!}</Typography>
+                        </Grid>
+
+                        <Grid container direction="row" marginBottom={2}  >
+                            <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: purple[500] }} >< WeekendIcon /></Avatar>
+                            <Typography marginLeft={1} marginTop={0.5} >{t('holiday')!}</Typography>
+                        </Grid>
                     </Grid>
                 </Grid>
+
             </Grid>
         </Grid>
     );

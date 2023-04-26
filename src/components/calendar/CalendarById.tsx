@@ -2,9 +2,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import WeekendIcon from '@mui/icons-material/Weekend';
-import { Avatar, Grid, Typography } from '@mui/material';
+
 import { blue, green, purple, red } from '@mui/material/colors';
-import { styled } from '@mui/material/styles';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,6 +22,7 @@ import RequestService from '../../services/RequestService';
 import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import  { Day } from './CalendarStyleComponent';
+import { Grid, Avatar, Typography } from '@mui/material';
 
 dayjs.extend(isBetweenPlugin);
 type CalendarByIdProps = {
