@@ -127,6 +127,7 @@ function NavContent() {
     </AppBar>
     <Drawer variant="permanent" open={open}>
       <Toolbar
+      disableGutters={true}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -134,7 +135,9 @@ function NavContent() {
           px: [1],
         }}
       >
-        <IconButton onClick={toggleDrawer}>
+        <Typography component={'h6'} variant='h6' align='center' mx={'auto'}>{t('Leaves App')}</Typography>
+        <IconButton sx={{justifyContent: 'flex-end'}}
+        onClick={toggleDrawer}>
           <ChevronLeftIcon />
         </IconButton>
       </Toolbar>

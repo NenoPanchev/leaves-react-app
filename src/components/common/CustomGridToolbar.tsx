@@ -14,7 +14,6 @@ const CustomGridToolbar: React.FC<CustomGridToolbarProps> = ({components}) => {
 
       <GridToolbarContainer >
         <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <GridToolbarExport />
         {components.map((component, index) => (
