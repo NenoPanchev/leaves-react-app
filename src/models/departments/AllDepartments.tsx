@@ -115,7 +115,6 @@ export default function Departments() {
   return (
     <React.Fragment>
       <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Title>{t('Departments')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           filter={departmentFilter} setFilter={setDepartmentFilter}
