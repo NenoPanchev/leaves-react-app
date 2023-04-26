@@ -104,7 +104,6 @@ export default function Roles() {
   return (
     <React.Fragment>
       <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Title>{t('Roles')}</Title>
         <Box sx={{display: 'flex', flexDirection: 'row'}}>
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>

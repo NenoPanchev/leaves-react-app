@@ -144,7 +144,6 @@ export default function Users() {
   return (
     <React.Fragment>
       <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Title>{t('Users')}</Title>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
             filter={userFilter} setFilter={setUserFilter}
