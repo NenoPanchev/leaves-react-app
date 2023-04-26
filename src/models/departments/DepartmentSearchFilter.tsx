@@ -6,9 +6,10 @@ import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import '../SearchFilter.css'
 
 function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
@@ -37,7 +38,7 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
 
     return (
         <React.Fragment>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
 
                 <TextField
                     margin="normal"
@@ -89,19 +90,24 @@ function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
                     variant='outlined'
                     color='success'
                     size='small'
-                    sx={{marginTop: '16px', marginBottom: '8px'}}
+                    sx={{marginTop: '16px', marginBottom: '8px', minWidth: 'auto'}}
                 >
+                    <SearchIcon />
                     {t('Search')}
                 </Button>
-                <IconButton 
-                color='error'
-                type='submit'
-                sx={{marginTop: '16px',
-                        marginBottom: '8px'}}
-                onClick={clearFilter}
+                <Button
+                    type='submit'
+                    variant='outlined'
+                    color='error'
+                    size='small'
+                    sx={{marginTop: '16px',
+                        marginBottom: '8px',
+                        minWidth: 'auto'}}
+                        onClick={clearFilter}
                 >
                     <CloseIcon />
-                </IconButton>
+                    {t('Clear')}
+                </Button>
             </Box>
         </React.Fragment>
     )

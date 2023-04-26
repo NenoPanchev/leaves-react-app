@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, Autocomplete
+    DialogTitle, Box, TextField, Autocomplete, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeeInfoToFormData, appendRolesToFormData, useCreate } from '../../services/userService';
@@ -13,7 +13,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Label } from 'recharts';
+import AddIcon from '@mui/icons-material/Add';
+
 
 export default function AddUserButton(props: AddUserButtonProps) {
     const path = useLocation().pathname;
@@ -80,12 +81,10 @@ export default function AddUserButton(props: AddUserButtonProps) {
 
     return (
         <React.Fragment>
-            <Button
-                variant='outlined'
-                color='success'
-                onClick={handleClickOpen}
-            >
-                {t('Add User')}
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Typography variant="overline" component="div">
+                    {t(`Add User`)}
+                </Typography>
             </Button>
             <Dialog
 

@@ -5,11 +5,12 @@ import { UserSearchFilterProps } from '../interfaces/user/userInterfaces';
 import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import '../SearchFilter.css'
 
 
 function UserSearchFilter(props: UserSearchFilterProps) {
@@ -47,7 +48,7 @@ function UserSearchFilter(props: UserSearchFilterProps) {
 
     return (
         <React.Fragment>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
 
                 <TextField
                     margin="normal"
@@ -113,20 +114,25 @@ function UserSearchFilter(props: UserSearchFilterProps) {
                     color='success'
                     size='small'
                     sx={{marginTop: '16px',
-                        marginBottom: '8px'}}
+                        marginBottom: '8px',
+                        minWidth: 'auto'}}
                 >
+                    <SearchIcon />
                     {t('Search')}
                 </Button>
-                <IconButton 
-                color='error'
-                type='submit'
-                sx={{marginTop: '16px',
-                        marginBottom: '8px'}}
-                onClick={clearFilter}
+                <Button
+                    type='submit'
+                    variant='outlined'
+                    color='error'
+                    size='small'
+                    sx={{marginTop: '16px',
+                        marginBottom: '8px',
+                        minWidth: 'auto'}}
+                        onClick={clearFilter}
                 >
                     <CloseIcon />
-                </IconButton>
-
+                    {t('Clear')}
+                </Button>
             </Box>
         </React.Fragment>
     )

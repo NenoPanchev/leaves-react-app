@@ -185,7 +185,7 @@ export function appendEmployeeInfoToFormData(formData: FormData, startDate: Dayj
     console.log(formData);
 }
 
-export const useFetchAlTypeNames = (refresh: number) => {
+export const useFetchAllTypeNames = (refresh: number) => {
   const [typeNames, setTypeNames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -202,14 +202,18 @@ export const useFetchAlTypeNames = (refresh: number) => {
 }
 
 export const useChangePassword = () => {
-  const editPassword = async (id: number, role: FormData) => {
+  let serverResponse = '';
 
-    const updateUrl = BASE_USER_URL + 'change-password/' + id;
+  async function editPassword (id: number, passwordDto: FormData) {
 
-    const result = await axios.put(updateUrl, formToJSON(role))
-      .then(response => {
+    const passwordChangeUrl = BASE_USER_URL + 'change-password/' + id;
+
+    const result = await axios.put(passwordChangeUrl, formToJSON(passwordDto))
+      .then(response => {} )
+      .catch(error => {
+        serverResponse = error.response.data.message;
       })
-      .catch(error => console.log(error))
+      return serverResponse;
   }
   return editPassword;
 }

@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
 import { Grid } from '@mui/material';
+import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 
 
 export default function Departments() {
@@ -47,6 +48,10 @@ export default function Departments() {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
     refresh={setRefreshCurrentState}></DeleteButton>
   }
+
+  const myGridToolbarComponents = [
+    <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+          userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>  ]
 
   const handlePaginationModelChange = (paginationModel:any) => {
     setDepartmentFilter({...departmentFilter, offset: paginationModel.pageSize * (paginationModel.page), 
@@ -116,10 +121,6 @@ export default function Departments() {
           filter={departmentFilter} setFilter={setDepartmentFilter}
           ></DepartmentSearchFilter>
         </Box>
-        <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-          userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
-        </Box>
         <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
             rows={rows}
@@ -131,6 +132,8 @@ export default function Departments() {
             paginationMode='server'
             onPaginationModelChange={handlePaginationModelChange}
             disableRowSelectionOnClick
+            disableColumnMenu
+            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
           />
         </Box>
       </Grid>

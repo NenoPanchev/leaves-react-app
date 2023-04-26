@@ -141,5 +141,6 @@
     "Change password": "Промяна на парола",
     "Old Password": "Стара парола",
     "New Password": "Нова парола",
-    "New Password Confirm": "Потвърждаване на нова парола"
+    "New Password Confirm": "Потвърждаване на нова парола",
+    "Clear": "Изчисти"
 }

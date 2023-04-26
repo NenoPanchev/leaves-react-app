@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+    DialogTitle, Box, TextField, Autocomplete, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreate } from '../../services/roleService';
 import { AddButtonProps, IPermission } from '../interfaces/common/commonInterfaces';
@@ -10,6 +10,7 @@ import mapPermissionName from '../../services/permissionService'
 import { appendPermissionsToFormData } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
 
 
 export default function AddRoleButton(props: AddButtonProps) {
@@ -60,12 +61,10 @@ export default function AddRoleButton(props: AddButtonProps) {
 
     return (
         <React.Fragment>
-            <Button
-                variant='outlined'
-                color='success'
-                onClick={handleClickOpen}
-            >
-                {t('Add Role')}
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Typography variant="overline" component="div">
+                    {t(`Add Role`)}
+                </Typography>
             </Button>
             <Dialog
 

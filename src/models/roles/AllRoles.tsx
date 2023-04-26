@@ -16,6 +16,7 @@ import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 
 import '../ViewAll.css'
 import { Grid } from '@mui/material';
+import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 
 
 export default function Roles() {
@@ -43,6 +44,10 @@ export default function Roles() {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
     refresh={setRefreshCurrentState}></DeleteButton>
   }
+
+  const myGridToolbarComponents = [
+    <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
+  ]
 
   const handlePaginationModelChange = (paginationModel:any) => {
     setRoleFilter({...roleFilter, offset: paginationModel.pageSize * (paginationModel.page), 
@@ -104,10 +109,6 @@ export default function Roles() {
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
           filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
         </Box>
-        <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
-        </Box>
-
         <Box sx={{ height: 500, width: '100%' }}>
           <DataGrid
             rows={rows}
@@ -119,6 +120,8 @@ export default function Roles() {
             paginationMode='server'
             onPaginationModelChange={handlePaginationModelChange}
             disableRowSelectionOnClick
+            disableColumnMenu
+            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
           />
         </Box>
       </Grid>

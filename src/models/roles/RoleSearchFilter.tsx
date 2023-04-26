@@ -6,8 +6,9 @@ import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { DEFAULT_OFFSET, PERMISSIONS } from '../../constants/GlobalConstants';
 import { useTranslation } from 'react-i18next';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
+import '../SearchFilter.css'
 
 
 function RoleSearchFilter(props: RoleSearchFilterProps) {
@@ -32,7 +33,7 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
 
     return (
         <React.Fragment>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
 
                 <TextField
                     margin="normal"
@@ -72,21 +73,24 @@ function RoleSearchFilter(props: RoleSearchFilterProps) {
                     variant='outlined'
                     color='success'
                     size='small'
-                    sx={{ marginTop: '16px', marginBottom: '8px' }}
+                    sx={{ marginTop: '16px', marginBottom: '8px', minWidth: 'auto'}}
                 >
+                    <SearchIcon />
                     {t('Search')}
                 </Button>
-                <IconButton
-                    color='error'
+                <Button
                     type='submit'
-                    sx={{
-                        marginTop: '16px',
-                        marginBottom: '8px'
-                    }}
+                    variant='outlined'
+                    color='error'
+                    size='small'
+                    sx={{marginTop: '16px',
+                        marginBottom: '8px',
+                    minWidth: 'auto'}}
                     onClick={clearFilter}
                 >
                     <CloseIcon />
-                </IconButton>
+                    {t('Clear')}
+                </Button>
             </Box>
         </React.Fragment>
     )
