@@ -58,7 +58,7 @@ function DrawerMenu(props: NavMenuProps , ref: React.ForwardedRef<DrawerMenuRef>
     };
    
     return (
-        <Drawer className='menu-grid' variant="permanent" open={open}>
+        <Drawer className='menu-grid' variant="permanent" open={open} sx={{overflow: "hidden"}}>
             <Toolbar
                 disableGutters={true}
                 sx={{
@@ -75,9 +75,12 @@ function DrawerMenu(props: NavMenuProps , ref: React.ForwardedRef<DrawerMenuRef>
                 </IconButton>
             </Toolbar>
             <Divider />
+            <Grid container sx={{overflow: "hidden"}}>
             <List component="nav">
                 <AdminBar />
             </List>
+            </Grid>
+           
         </Drawer>
     )
 }
