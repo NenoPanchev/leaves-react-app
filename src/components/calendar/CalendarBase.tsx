@@ -325,4 +325,3 @@ else
     );
 }
 export default React.forwardRef(CustomDay);
-

@@ -1,0 +1,11 @@
+.header-grid { grid-area: header; }
+.menu-grid { grid-area: menu; }
+.main-grid { grid-area: main; }
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header header header header header'
+    'menu main main main main main'
+    'menu main main main main main';
+}

@@ -34,58 +34,63 @@ export default function Departments() {
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
   const { t } = useTranslation();
-  
+  const navBarHeight = localStorage.getItem('navBarHeight')!;
+
+
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (department: IDepartment) => {  
-    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState} userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
+  const renderEditButton = (department: IDepartment) => {
+    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState} userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   const myGridToolbarComponents = [
     <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-          userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>  ]
+      userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />]
 
-  const handlePaginationModelChange = (paginationModel:any) => {
-    setDepartmentFilter({...departmentFilter, offset: paginationModel.pageSize * (paginationModel.page), 
-        limit: paginationModel.pageSize})
-    setRefreshCurrentState(refreshCurrentState + 1);  
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setDepartmentFilter({
+      ...departmentFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+    setRefreshCurrentState(refreshCurrentState + 1);
   };
 
   const columns: GridColDef[] = [
-    { field: 'id',
+    {
+      field: 'id',
       headerName: t('Id')!,
       headerClassName: 'grid-header',
       width: 70,
-      
+
     },
     {
       field: 'name',
       headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'adminEmail',
       headerName: t('Admin')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'employeeEmails',
       headerName: t('Employees')!,
       headerClassName: 'grid-header',
       width: 200,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'actions',
@@ -93,7 +98,7 @@ export default function Departments() {
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
-      flex: 1, 
+      flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
         renderEditButton(params.row),
@@ -106,7 +111,8 @@ export default function Departments() {
 
   const rows = page.content.map(dpt => {
     return {
-      id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail, 
+      key: dpt.id,
+      id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail,
       employeeEmails: dpt.employeeEmails ? dpt.employeeEmails.join(", \n") : ''
     }
   });
@@ -114,27 +120,25 @@ export default function Departments() {
 
   return (
     <React.Fragment>
-      <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Box sx={{display: 'flex', flexDirection: 'row'}}>
-          <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          filter={departmentFilter} setFilter={setDepartmentFilter}
+      <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
+        <Grid container direction={'row'}>
+          <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            filter={departmentFilter} setFilter={setDepartmentFilter}
           ></DepartmentSearchFilter>
-        </Box>
-        <Box sx={{ height: 500, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            rowCount={page.totalElements}
-            pagination
-            pageSizeOptions={[5, 10, 25, 50, 100]}
-            paginationModel={{ page: page.number, pageSize: page.size }}
-            paginationMode='server'
-            onPaginationModelChange={handlePaginationModelChange}
-            disableRowSelectionOnClick
-            disableColumnMenu
-            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
-          />
-        </Box>
+        </Grid>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          rowCount={page.totalElements}
+          pagination
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          paginationModel={{ page: page.number, pageSize: page.size }}
+          paginationMode='server'
+          onPaginationModelChange={handlePaginationModelChange}
+          disableRowSelectionOnClick
+          disableColumnMenu
+          slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+        />
       </Grid>
     </React.Fragment>
   );

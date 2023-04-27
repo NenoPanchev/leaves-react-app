@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Box, Container } from '@mui/system';
-import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
@@ -30,29 +28,33 @@ export default function Roles() {
 
   const { t } = useTranslation();
   const page = roleService.useFetchPage(refreshCurrentState, roleFilter);
-  
+  const navBarHeight = localStorage.getItem('navBarHeight')!;
+
+
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (role: IRole) => {  
-    return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}/>
+  const renderEditButton = (role: IRole) => {
+    return <EditRoleButton role={role} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
   }
 
   const renderDeleteButton = (id: number) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   const myGridToolbarComponents = [
     <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
   ]
 
-  const handlePaginationModelChange = (paginationModel:any) => {
-    setRoleFilter({...roleFilter, offset: paginationModel.pageSize * (paginationModel.page), 
-        limit: paginationModel.pageSize})
-    setRefreshCurrentState(refreshCurrentState + 1);  
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setRoleFilter({
+      ...roleFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+    setRefreshCurrentState(refreshCurrentState + 1);
   };
 
 
@@ -86,7 +88,7 @@ export default function Roles() {
       width: 120,
       flex: 1,
       getActions: (params: GridRowParams<IRole>) => [
-        
+
         renderViewButton(params.row.id),
         renderEditButton(params.row),
         renderDeleteButton(params.row.id)
@@ -97,32 +99,30 @@ export default function Roles() {
 
   const rows = page.content.map(role => {
     return {
-      id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', ')
+      key: role.id, id: role.id, name: role.name, permissions: role.permissions.map(p => p.name).join(', ')
     }
   });
 
   return (
     <React.Fragment>
-      <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Box sx={{display: 'flex', flexDirection: 'row'}}>
-          <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
-        </Box>
-        <Box sx={{ height: 500, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            rowCount={page.totalElements}
-            pageSizeOptions={[5, 10, 25, 50, 100]}
-            paginationModel={{ page: page.number, pageSize: page.size }}
-            pagination
-            paginationMode='server'
-            onPaginationModelChange={handlePaginationModelChange}
-            disableRowSelectionOnClick
-            disableColumnMenu
-            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
-          />
-        </Box>
+      <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
+        <Grid container direction={'row'}>
+          <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
+        </Grid>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          rowCount={page.totalElements}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          paginationModel={{ page: page.number, pageSize: page.size }}
+          pagination
+          paginationMode='server'
+          onPaginationModelChange={handlePaginationModelChange}
+          disableRowSelectionOnClick
+          disableColumnMenu
+          slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+        />
       </Grid>
     </React.Fragment>
   );

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as userService from '../../services/userService';
@@ -34,6 +33,7 @@ export default function Users() {
   const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
   const { t } = useTranslation();
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
+  const navBarHeight = localStorage.getItem('navBarHeight')!;
 
 
   const renderViewButton = (id: number) => {
@@ -42,18 +42,17 @@ export default function Users() {
 
   const renderEditButton = (user: IUserEdit) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>
+      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
-    refresh={setRefreshCurrentState}></DeleteButton>
+      refresh={setRefreshCurrentState}></DeleteButton>
   }
 
   const myGridToolbarComponents = [
     <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/> 
-           ]
+      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setUserFilter({
@@ -136,6 +135,7 @@ export default function Users() {
   ];
   const rows = page.content.map(user => {
     return {
+      key: user.id,
       id: user.id, name: user?.name, email: user.email, department: user.department,
       roles: user.roles.map(role => role.name).join(', '), contractStartDate: user.employeeInfo.contractStartDate,
       position: user.employeeInfo.typeName, daysLeave: user.employeeInfo.daysLeave
@@ -143,35 +143,25 @@ export default function Users() {
   });
 
   return (
-    <React.Fragment>
-      <Grid sx={{width: '97%', marginLeft: 'auto', marginRight: 'auto'}}>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            filter={userFilter} setFilter={setUserFilter}
-          ></UserSearchFilter>
-        </Box>
-        <Box sx={{ height: 500, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            rowCount={page.totalElements}
-            pagination
-            pageSizeOptions={[5, 10, 25, 50, 100]}
-            paginationModel={{ page: page.number, pageSize: page.size }}
-            paginationMode='server'
-            onPaginationModelChange={handlePaginationModelChange}
-            disableRowSelectionOnClick
-            disableColumnMenu
-            slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
-              },
-            }}
-          />
-        </Box>
+    <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
+      <Grid container direction={'row'}>
+        <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+          filter={userFilter} setFilter={setUserFilter}
+        ></UserSearchFilter>
       </Grid>
-    </React.Fragment>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        rowCount={page.totalElements}
+        pagination
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        paginationModel={{ page: page.number, pageSize: page.size }}
+        paginationMode='server'
+        onPaginationModelChange={handlePaginationModelChange}
+        disableRowSelectionOnClick
+        disableColumnMenu
+        slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+      />
+    </Grid>
   );
 }
