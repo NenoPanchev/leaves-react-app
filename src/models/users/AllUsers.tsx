@@ -16,6 +16,7 @@ import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
 import { Grid, Tooltip } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { ReactNode } from 'react';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -132,7 +133,6 @@ export default function Users() {
       ]
     },
   ];
-
   const rows = page.content.map(user => {
     return {
       key: user.id,
@@ -161,6 +161,11 @@ export default function Users() {
         disableRowSelectionOnClick
         disableColumnMenu
         slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+        sx={{
+          '& .MuiDataGrid-virtualScroller': {
+            overflow: "hidden"
+          }
+        }}
       />
     </Grid>
   );

@@ -18,7 +18,7 @@ const AdminBarLoggedIn = () => {
     const {t} = useTranslation();
 
     return (
-        <Grid>
+        <Grid sx={{overflow:"hidden"}}>
             <Link to='/' style={{
                 textDecoration: 'none',
                 color: 'black'

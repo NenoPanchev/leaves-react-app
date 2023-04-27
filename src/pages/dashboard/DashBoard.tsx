@@ -49,8 +49,7 @@ export default function DashBoard() {
                     {/* Calendar */}
                     
                     <Grid item mt="2%" ml="5%" >
-                            <DashBoardRequestsComponent onShow={updateDetails} />
-                       
+                            <DashBoardRequestsComponent onShow={updateDetails} />                    
                     </Grid>
                     
                 </Grid>

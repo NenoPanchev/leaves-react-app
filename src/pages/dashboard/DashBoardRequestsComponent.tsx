@@ -29,6 +29,7 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
             calendarRef.current.reload();
         }
     }
+    
     const changeDate = useCallback(
 
         (startDate: Dayjs | null, endDate: Dayjs | null): void => calendarDayChange(startDate, endDate),

@@ -122,6 +122,11 @@ export default function Roles() {
           disableRowSelectionOnClick
           disableColumnMenu
           slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+          sx={{
+            '& .MuiDataGrid-virtualScroller': {
+              overflow: "hidden"
+            }
+          }}
         />
       </Grid>
     </React.Fragment>
