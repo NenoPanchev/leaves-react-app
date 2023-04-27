@@ -4,6 +4,8 @@ import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AdminBar from './AdminBar';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import React from 'react';
 
 const drawerWidth: number = 240;
 
@@ -34,14 +36,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 interface NavMenuProps {
-    open: boolean
-    toggleDrawer: () => void
+    onDrawerClick: () => void
+}
+export interface DrawerMenuRef {
+    open: () => void;
 }
 
-function DrawerMenu(props: NavMenuProps) {
+function DrawerMenu(props: NavMenuProps , ref: React.ForwardedRef<DrawerMenuRef>) {
     const { t } = useTranslation();
+    const [open, setOpen] = useState(true);
+
+    
+    React.useImperativeHandle(ref, () => {
+        return {
+            open: openDrawer
+        }
+    }, [open])
+    
+    const openDrawer = () => {
+      setOpen(!open);
+    };
+   
     return (
-        <Drawer className='menu-grid' variant="permanent" open={props.open}>
+        <Drawer className='menu-grid' variant="permanent" open={open}>
             <Toolbar
                 disableGutters={true}
                 sx={{
@@ -53,7 +70,7 @@ function DrawerMenu(props: NavMenuProps) {
             >
                 <Typography component={'h6'} variant='h6' align='center' mx={'auto'}>{t('Leaves App')}</Typography>
                 <IconButton sx={{ justifyContent: 'flex-end' }}
-                    onClick={props.toggleDrawer}>
+                    onClick={  props.onDrawerClick}>
                     <ChevronLeftIcon />
                 </IconButton>
             </Toolbar>
@@ -65,4 +82,4 @@ function DrawerMenu(props: NavMenuProps) {
     )
 }
 
-export default DrawerMenu;
+export default React.forwardRef(DrawerMenu);

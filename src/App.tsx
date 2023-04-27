@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import AuthContext from './contexts/AuthContext';
 import { UserDetails } from './models/objects/UserDetails';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import { useRefresh } from './services/authService';
 
 

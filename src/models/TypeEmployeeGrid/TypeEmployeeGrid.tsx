@@ -292,7 +292,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Grid sx={{ width: '99.9%' }}>
+    <Grid sx={{ width: '99.9%' ,overflow:"hidden" }}>
       <DataGrid
         disableColumnMenu
         localeText={{

@@ -1,7 +1,7 @@
 import { IconButton, Toolbar, Typography, styled } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import Flag from "react-world-flags";
@@ -32,16 +32,31 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 interface NavMenuProps {
-    open: boolean
-    toggleDrawer: () => void
+    onDrawerClick: () => void
 }
+export interface NavBarRef {
+    open: () => void;
+   
 
-function NavBar(props: NavMenuProps) {
+}
+function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
     const { user } = React.useContext(AuthContext);
     const [lang, setLang] = React.useState('en');
     let path = useLocation().pathname.replaceAll('/', '');
     const { t, i18n } = useTranslation();
     const navBarHeightRef = useRef<HTMLDivElement>(null);
+    const [open, setOpen] = useState(true);
+
+    React.useImperativeHandle(ref, () => {
+        return {
+            open: openNav
+        }
+    }, [open])
+    
+    const openNav = () => {
+      setOpen(!open);
+    };
+
     useEffect(() => {
         
         if (navBarHeightRef.current) {
@@ -79,7 +94,7 @@ function NavBar(props: NavMenuProps) {
     }
 
     return (
-        <AppBar ref={navBarHeightRef} className="header-grid" position="absolute" open={props.open}>
+        <AppBar ref={navBarHeightRef} className="header-grid" position="absolute" open={open}>
             <Toolbar
                 sx={{
                     pr: '24px', // keep right padding when drawer closed
@@ -89,10 +104,10 @@ function NavBar(props: NavMenuProps) {
                     edge="start"
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={props.toggleDrawer}
+                    onClick={props.onDrawerClick}
                     sx={{
                         marginRight: '36px',
-                        ...(props.open && { display: 'none' }),
+                        ...(open && { display: 'none' }),
                     }}
                 >
                     <MenuIcon />
@@ -121,4 +136,4 @@ function NavBar(props: NavMenuProps) {
     )
 }
 
-export default NavBar;
+export default React.forwardRef(NavBar);
