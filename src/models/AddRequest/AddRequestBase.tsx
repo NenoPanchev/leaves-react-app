@@ -14,26 +14,27 @@ import RequestService from '../../services/RequestService';
 import IAlertProps from '../interfaces/errors/IAlertProps';
 import IRequestPostString from '../interfaces/request/IRequestDataPostString';
 type AddRequestBaseProps = {
- 
+
     onSubmit: () => void;
     onClose: () => void;
+    initialStartDate:Dayjs | null;
+    initialendDate:Dayjs | null;
 
 }
 
 export interface AddRequestBaseRef {
-    onCalendarChange: (startDate: Dayjs|null,endDate: Dayjs|null) => void;
+    onCalendarChange: (startDate: Dayjs | null, endDate: Dayjs | null) => void;
 }
 
-const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRequestBaseRef>): JSX.Element => {
+const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRequestBaseRef>): JSX.Element => {
     const initialRequestState = {
         startDate: dayjs().format("YYYY-MM-DD"),
         endDate: dayjs().format("YYYY-MM-DD"),
     };
-    const [open, setOpen] = React.useState(false);
     const [t, i18n] = useTranslation();
 
-    const [startDate, SetStartDate] = React.useState<Dayjs | null>(dayjs());
-    const [endDate, SetEndDate] = React.useState<Dayjs | null>(dayjs());
+    const [startDate, SetStartDate] = React.useState<Dayjs | null>(props.initialStartDate);
+    const [endDate, SetEndDate] = React.useState<Dayjs | null>(props.initialendDate);
     const [request, setRequest] = React.useState<IRequestPostString>(initialRequestState);
     const [submitted, setSubmitted] = React.useState<boolean>(false);
     const [alertProps, setAlertProps] = React.useState<IAlertProps>(
@@ -45,7 +46,8 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
         }
     );
     let value: any;
-
+console.log(props.initialStartDate)
+console.log(props.initialendDate)
     const saveRequest = () => {
         request.startDate = startDate?.format("YYYY-MM-DD")!;
         request.endDate = endDate?.format("YYYY-MM-DD")!;
@@ -68,24 +70,43 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
     };
     React.useImperativeHandle(ref, () => {
         return {
-            onCalendarChange:setRange
+            onCalendarChange: setRange
         }
-        
-    }, [])
-    React.useEffect(() => {
-        SetEndDate(startDate);
-       
-    }, [startDate]);
 
-    function setRange(startDate: Dayjs|null,endDate: Dayjs|null) {
-     SetStartDate(startDate);
-     SetEndDate(endDate);
+    }, [])
+
+
+    // React.useEffect(() => {
+
+
+    //     if (!startDate?.isSame(dayjs())) {
+    //         SetEndDate(startDate);
+    //     }
+
+    // }, [startDate]);
+
+
+    function onStartDateChange(startDate: Dayjs | null) {
+        SetStartDate(startDate);
+        SetEndDate(startDate);
+    }
+
+
+    function setRange(startDates: Dayjs | null, endDates: Dayjs | null) {
+        console.log("setRange")
+        SetStartDate(startDates);
+        SetEndDate(endDates);
+
+        console.log(startDate)
+        console.log(endDate)
     }
 
     React.useEffect(() => {
 
         props.onSubmit();
     }, [submitted]);
+
+
     function updateParent(newValue: boolean) {
         setSubmitted(newValue);
         setAlertProps({ ...alertProps, hasError: false });
@@ -124,10 +145,10 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
 
                     {
                         submitted ? (
-                     
-                            
+
+
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                                       <DialogAlerts {...AddRequestAlertProps}></DialogAlerts>
+                                <DialogAlerts {...AddRequestAlertProps}></DialogAlerts>
                                 <Grid container direction="column"  >
 
                                     <Grid container direction="row" justifyContent="right" marginBottom={1}>
@@ -139,7 +160,11 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker slotProps={{ textField: { size: 'small' } }}  minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }}
+                                            minDate={dayjs()}
+                                            disableOpenPicker
+                                            value={startDate}
+                                            onChange={(newValue) => onStartDateChange(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -151,8 +176,13 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker slotProps={{ textField: { size: 'small' } }} disablePast={true} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }}
+                                        disablePast={true}
+                                        disableOpenPicker
+                                        value={endDate}
+                                        onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
+
 
                                 </Grid>
                             </LocalizationProvider>
@@ -171,7 +201,11 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('from')}
                                         </Typography>
-                                        <DatePicker  slotProps={{ textField: { size: 'small' } }}  minDate={dayjs()} value={startDate} onChange={(newValue) => SetStartDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }}
+                                         minDate={dayjs()}
+                                        value={startDate}
+                                        disableOpenPicker
+                                        onChange={(newValue) => onStartDateChange(newValue)} />
                                     </Grid>
 
                                     <Grid container direction="row" justifyContent="right" >
@@ -183,7 +217,11 @@ const AddRequestBase= (props: AddRequestBaseProps, ref: React.ForwardedRef<AddRe
                                         >
                                             {t('to')}
                                         </Typography>
-                                        <DatePicker slotProps={{ textField: { size: 'small' } }} minDate={endDate} value={endDate} onChange={(newValue) => SetEndDate(newValue)} />
+                                        <DatePicker slotProps={{ textField: { size: 'small' } }}
+                                         minDate={endDate} 
+                                         disableOpenPicker
+                                         value={endDate} 
+                                         onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 
                                 </Grid>

@@ -18,6 +18,7 @@ interface CustomPickerDayRangeProps extends PickersDayProps<Dayjs> {
     dayIsBetweenRange: boolean;
     isFirstDayOfRange: boolean;
     isLastDayOfRange: boolean;
+    isPurple:Array<boolean>;
 }
 const CustomPickerDayRange = styled(PickersDay, {
     shouldForwardProp: (prop) =>
@@ -28,13 +29,14 @@ const CustomPickerDayRange = styled(PickersDay, {
         prop !== 'isRed' &&
         prop !== 'isBeforeToday' &&
         prop !== 'isHoliday' &&
+        prop !== 'isPurple' &&
         prop !== 'dayIsBetweenRange' &&
         prop !== 'isFirstDayOfRange' &&
         prop !== 'isLastDayOfRange',
 })<CustomPickerDayRangeProps>(({ theme,
     dayIsBetween, isStart, isEnd, isRejected: isApproved, isRed: notRed,
     requestdayisholiday: requestDayIsHoliday, isHoliday,
-    dayIsBetweenRange, isFirstDayOfRange, isLastDayOfRange }) => {
+    dayIsBetweenRange, isFirstDayOfRange, isLastDayOfRange,isPurple }) => {
     let counter = 0;
     let holidayCounter = 0;
     let styl = {
@@ -129,13 +131,17 @@ const CustomPickerDayRange = styled(PickersDay, {
         }
 
     }
+    for (const purpleDay of isPurple) {
+        if(purpleDay)
+        {
+        styl.backgroundColor = purple[300];
+            styl['&:hover, &:focus'].backgroundColor = purple[400];
+        }
 
-
-
-
-
+    }
     //RANGE PICKER FORM CHANGE    
     if (isFirstDayOfRange && isLastDayOfRange) {
+        //PROVERKA ZA HOLIDAYYYYYY
 
         return styl
     } else if (isFirstDayOfRange) {
@@ -210,6 +216,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
     const isRed: Array<boolean | null> = [];
     const requestDayIsHoliday: Array<boolean> = [];
     const isHoliday: Array<boolean> = [];
+    const isPurple: Array<boolean> = [];
 
 
     holidays.forEach(holiday => {
@@ -218,6 +225,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
 
         //without WEEKENDS 
         isHoliday.push(day.isSame(holiday, 'day'));
+        isPurple.push(day.isBetween(startDate, endDate, null, '[]')&&day.isSame(holiday, 'day'))
     })
     requests.forEach(element => {
 
@@ -254,7 +262,9 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
             isRejected={isRejected}
             isRed={isRed}
             requestdayisholiday={requestDayIsHoliday}
-            isHoliday={isHoliday} />
+            isHoliday={isHoliday}
+            isPurple={isPurple}
+             />
     );
 }
 export function disableWeekends(date: dayjs.Dayjs) {
