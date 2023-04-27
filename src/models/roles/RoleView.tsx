@@ -8,12 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import * as roleService from '../../services/roleService';
-import { ViewProps } from '../interfaces/common/commonInterfaces';
-
-import '../SingleItemView.css'
 import { useTranslation } from 'react-i18next';
+import { IViewProps } from '../interfaces/common/IViewProps';
+import '../SingleItemView.css'
 
-export default function RoleView(props: ViewProps) {
+export default function RoleView(props: IViewProps) {
   const {id} = props;
   const { t } = useTranslation();
   const role = roleService.useFetchOne(id);

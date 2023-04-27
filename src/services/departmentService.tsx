@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IDepartment, IDepartmentDetails, IDepartmentFilter, IDepartmentPage } from '../models/interfaces/department/departmentInterfaces'
-import { BASE_DEPARTMENT_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
+import { BASE_DEPARTMENT_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
+import { IDepartment } from '../models/interfaces/department/IDepartment';
+import { IDepartmentDetails } from '../models/interfaces/department/IDepartmentDetails';
+import { IDepartmentPage } from '../models/interfaces/department/IDepartmentPage';
+import { IDepartmentFilter } from '../models/interfaces/department/IDepartmentFilter';
 
 export const useFetchAll = (refresh: number) => {
     const [department, setDepartment] = useState<IDepartment[]>([]);
@@ -67,16 +70,7 @@ export const useEdit = () => {
 }
 
 export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
-  const [page, setPage] = useState<IDepartmentPage>({
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-    numberOfElements: 5,
-    number: 0,
-    size: 5,
-    first: true,
-    last: true
-  });
+  const [page, setPage] = useState<IDepartmentPage>(DEFAULT_PAGE);
   useEffect(() => {
     fetchPage();
   }, [refresh]);

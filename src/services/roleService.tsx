@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IRole, IRoleDetails, IRoleFilter, IRolePage } from '../models/interfaces/role/roleInterfaces'
-import { BASE_ROLE_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
+import { BASE_ROLE_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Permission } from '../models/objects/Permission';
 import { Role } from '../models/objects/Role';
 import AuthContext from '../contexts/AuthContext';
+import { IRole } from '../models/interfaces/role/IRole';
+import { IRoleDetails } from '../models/interfaces/role/IRoleDetails';
+import { IRolePage } from '../models/interfaces/role/IRolePage';
+import { IRoleFilter } from '../models/interfaces/role/IRoleFilter';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -70,16 +73,7 @@ export const useEdit = () => {
 }
 
 export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
-  const [page, setPage] = useState<IRolePage>({
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-    numberOfElements: 5,
-    number: 0,
-    size: 5,
-    first: true,
-    last: true
-  });
+  const [page, setPage] = useState<IRolePage>(DEFAULT_PAGE);
   useEffect(() => {
     fetchPage();
   }, [refresh]);

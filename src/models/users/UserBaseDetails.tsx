@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import * as userService from '../../services/userService';
 
 import { useTranslation } from 'react-i18next';
+import { IUserDetails } from '../interfaces/user/IUserDetails';
 import '../SingleItemView.css';
-import { IUserDetails } from '../interfaces/user/userInterfaces';
 
 
 interface UserViewProp {

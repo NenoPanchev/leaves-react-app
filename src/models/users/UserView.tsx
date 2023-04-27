@@ -13,23 +13,10 @@ import '../SingleItemView.css'
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext';
+import { IViewProps } from '../interfaces/common/IViewProps';
 
-interface UserViewProp {
-  id: number
-}
 
-interface UserDetails {
-  roles: [{
-    name: string
-    permissions: Permissions[]
-  }]
-}
-
-interface Permissions {
-  name: string
-}
-
-export default function UserView(props: UserViewProp) {
+export default function UserView(props: IViewProps) {
 
   const user = userService.useFetchOne(props.id);
   const currentUser = React.useContext(AuthContext);

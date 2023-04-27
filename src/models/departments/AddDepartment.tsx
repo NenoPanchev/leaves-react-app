@@ -5,12 +5,12 @@ import {
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeesToFormData, useCreate } from '../../services/departmentService';
-import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
+import { IDepartmentAddButtonProps } from '../interfaces/department/IDepartmentAddButtonProps';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 
 
-export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
+export default function AddDepartmentButton(props: IDepartmentAddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
@@ -64,8 +64,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                 maxWidth='md'
                 aria-labelledby="form-dialog-title"
             >
-                <React.Fragment>
-
                     <DialogTitle id="form-dialog-title">
                         {t('Add Department')}
                     </DialogTitle>
@@ -132,8 +130,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                             </Button>
                         </DialogActions>
                     </Box>
-                </ React.Fragment>
-
             </Dialog>
         </ React.Fragment>
     );

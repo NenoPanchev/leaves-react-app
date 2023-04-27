@@ -1,35 +1,26 @@
 import * as React from 'react';
-
-import { Container } from '@mui/system';
-import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as departmentService from '../../services/departmentService';
-import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
-import { IDepartment, IDepartmentFilter } from '../interfaces//department/departmentInterfaces';
+import { IDepartment } from '../interfaces/department/IDepartment';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
 import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
 import { useFetchEmailsOfAvailableEmployees as fetchAvailableEmployeesEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
-import '../ViewAll.css'
+import { DEFAULT_DEPARTMENT_FILTER } from '../../constants/GlobalConstants';
 import { Grid } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { IDepartmentFilter } from '../interfaces/department/IDepartmentFilter';
+import '../ViewAll.css'
 
 
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [departmentFilter, setDepartmentFilter] = React.useState<IDepartmentFilter>({
-    name: '',
-    adminEmail: '',
-    employeeEmails: [],
-    offset: DEFAULT_OFFSET,
-    limit: DEFAULT_LIMIT
-  });
+  const [departmentFilter, setDepartmentFilter] = React.useState<IDepartmentFilter>(DEFAULT_DEPARTMENT_FILTER);
   const userEmails = fetchUserEmails(refreshCurrentState);
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);

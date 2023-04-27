@@ -9,12 +9,12 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import * as departmentService from '../../services/departmentService';
 
-import '../SingleItemView.css'
-import { ViewProps } from '../interfaces/common/commonInterfaces';
 import { useTranslation } from 'react-i18next';
+import { IViewProps } from '../interfaces/common/IViewProps';
+import '../SingleItemView.css'
 
 
-export default function DepartmentView(props: ViewProps) {
+export default function DepartmentView(props: IViewProps) {
   const department = departmentService.useFetchOne(props.id);
   const { t } = useTranslation();
 

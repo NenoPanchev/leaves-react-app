@@ -4,9 +4,9 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CalendarById from '../../components/calendar/CalendarById';
-import { IUserDetails } from '../../models/interfaces/user/userInterfaces';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import { getUserById } from '../../services/userService';
+import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 // {
 //     id: 0,
 //     name: "",

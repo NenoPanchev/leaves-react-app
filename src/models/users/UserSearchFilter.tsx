@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { UserSearchFilterProps } from '../interfaces/user/userInterfaces';
 import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -10,10 +9,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { IUserSearchFilterProps } from '../interfaces/user/IUserSearchFilterProps';
 import '../SearchFilter.css'
 
 
-function UserSearchFilter(props: UserSearchFilterProps) {
+function UserSearchFilter(props: IUserSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');

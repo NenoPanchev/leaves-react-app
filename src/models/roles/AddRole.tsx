@@ -3,7 +3,6 @@ import { Button, Dialog, DialogActions, DialogContent,
     DialogTitle, Box, TextField, Autocomplete, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreate } from '../../services/roleService';
-import { AddButtonProps, IPermission } from '../interfaces/common/commonInterfaces';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
@@ -11,9 +10,10 @@ import { appendPermissionsToFormData } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
+import { IAddButtonProps } from '../interfaces/common/IAddButtonProps';
 
 
-export default function AddRoleButton(props: AddButtonProps) {
+export default function AddRoleButton(props: IAddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [nameError, setNameError] = React.useState(false);

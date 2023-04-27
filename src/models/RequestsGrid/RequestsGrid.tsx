@@ -20,6 +20,7 @@ import ILeaveRequestPage from '../interfaces/request/ILeaveRequestPage';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 import ApproveDialogAlerts from '../../components/Alert/ApproveDialogAlert';
 import ApproveRequestDialog from './ApproveRequestDialog';
+import { DEFAULT_PAGE } from '../../constants/GlobalConstants';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -46,18 +47,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
 
 
-  const [page, setPage] = useState<ILeaveRequestPage>({
-    content: [],
-
-    totalElements: 0,
-    totalPages: 0,
-
-    numberOfElements: 0,
-    number: 0,
-    size: 0,
-    first: true,
-    last: true
-  });
+  const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);
   useEffect(() => {
     retrivePage();
     console.log(openForm)

@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { IUser, IUserDetails, IUserFilter, IUserPage } from '../models/interfaces/user/userInterfaces'
-import { BASE_URL, BASE_USER_URL, WITH_JSON_HEADER } from '../constants/GlobalConstants';
+import { BASE_URL, BASE_USER_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
 import { Dayjs } from 'dayjs';
+import { IUser } from '../models/interfaces/user/IUser';
+import { IUserDetails } from '../models/interfaces/user/IUserDetails';
+import { IUserPage } from '../models/interfaces/user/IUserPage';
+import { IUserFilter } from '../models/interfaces/user/IUserFilter';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -89,16 +92,7 @@ export const useCreate = () => {
 }
 
 export const useFetchPage = (refresh: number, filter: IUserFilter) => {
-  const [page, setPage] = useState<IUserPage>({
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-    numberOfElements: 5,
-    number: 0,
-    size: 5,
-    first: true,
-    last: true
-  });
+  const [page, setPage] = useState<IUserPage>(DEFAULT_PAGE);
   useEffect(() => {
     fetchPage();
   }, [refresh]);

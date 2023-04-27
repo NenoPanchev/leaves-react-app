@@ -3,28 +3,23 @@ import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { IRole, IRoleFilter } from '../interfaces/role/roleInterfaces'
 import { GridRowParams } from '@mui/x-data-grid';
-
 import AddRoleButton from './AddRole';
 import EditRoleButton from './EditRole';
 import RoleSearchFilter from './RoleSearchFilter';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { DEFAULT_ROLE_FILTER } from '../../constants/GlobalConstants';
 
-import '../ViewAll.css'
 import { Grid } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { IRole } from '../interfaces/role/IRole';
+import { IRoleFilter } from '../interfaces/role/IRoleFilter';
+import '../ViewAll.css'
 
 
 export default function Roles() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [roleFilter, setRoleFilter] = React.useState<IRoleFilter>({
-    name: '',
-    permissions: [],
-    offset: DEFAULT_OFFSET,
-    limit: DEFAULT_LIMIT
-  });
+  const [roleFilter, setRoleFilter] = React.useState<IRoleFilter>(DEFAULT_ROLE_FILTER);
 
   const { t } = useTranslation();
   const page = roleService.useFetchPage(refreshCurrentState, roleFilter);

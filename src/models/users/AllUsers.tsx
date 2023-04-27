@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Box } from '@mui/system';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as userService from '../../services/userService';
@@ -9,25 +8,19 @@ import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
 import { useFetchAllNames as fetchDepartmentNames } from '../../services/departmentService';
 import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
-import { IUserEdit as IUserEdit, IUserFilter } from '../interfaces/user/userInterfaces';
 
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
-import '../ViewAll.css'
-import { Grid, Tooltip } from '@mui/material';
+import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
+import { Grid } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { ReactNode } from 'react';
+import { IUserEdit } from '../interfaces/user/IUserEdit';
+import { IUserFilter } from '../interfaces/user/IUserFilter';
+import '../ViewAll.css'
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [userFilter, setUserFilter] = React.useState<IUserFilter>({
-    name: '',
-    email: '',
-    department: '',
-    roles: [],
-    offset: DEFAULT_OFFSET,
-    limit: DEFAULT_LIMIT
-  });
+  const [userFilter, setUserFilter] = React.useState<IUserFilter>(DEFAULT_USER_FILTER);
   const departmentNames = fetchDepartmentNames(refreshCurrentState);
   const roleNames = fetchRoleNames(refreshCurrentState);
   const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);

@@ -8,12 +8,12 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
-import { ViewProps } from '../../models/interfaces/common/commonInterfaces';
 import Tooltip from '@mui/material/Tooltip/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { IViewProps } from '../../models/interfaces/common/IViewProps';
 
 
-export default function ViewButton(props: ViewProps) {
+export default function ViewButton(props: IViewProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();

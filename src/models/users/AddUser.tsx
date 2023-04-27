@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeeInfoToFormData, appendRolesToFormData, useCreate } from '../../services/userService';
-import { AddUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 import { useTranslation } from 'react-i18next';
@@ -14,9 +13,10 @@ import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddIcon from '@mui/icons-material/Add';
+import { IUserAddButtonProps } from '../interfaces/user/IUserAddButtonProps';
 
 
-export default function AddUserButton(props: AddUserButtonProps) {
+export default function AddUserButton(props: IUserAddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
