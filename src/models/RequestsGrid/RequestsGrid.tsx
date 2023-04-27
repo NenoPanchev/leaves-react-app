@@ -370,6 +370,11 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         pagination
         paginationMode='server'
         onPaginationModelChange={handlePaginationModelChange}
+        sx={{
+          '& .MuiDataGrid-virtualScroller': {
+            overflow: "hidden"
+          }
+        }}
       />
     </Grid>
   )

@@ -292,7 +292,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Grid sx={{ width: '99.9%' ,overflow:"hidden" }}>
+    <Grid sx={{ width: '99.9%', overflow: "hidden" }}>
       <DataGrid
         disableColumnMenu
         localeText={{
@@ -311,6 +311,12 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
         pagination
         paginationMode='server'
         onPaginationModelChange={handlePaginationModelChange}
+
+        sx={{
+          '& .MuiDataGrid-virtualScroller': {
+            overflow: "hidden"
+          }
+        }}
       />
     </Grid>
   )

@@ -161,6 +161,11 @@ export default function Users() {
         disableRowSelectionOnClick
         disableColumnMenu
         slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+        sx={{
+          '& .MuiDataGrid-virtualScroller': {
+            overflow: "hidden"
+          }
+        }}
       />
     </Grid>
   );
