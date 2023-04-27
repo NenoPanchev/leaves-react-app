@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useChangePassword } from '../../services/userService';
+import { changePasswordClick, useChangePassword } from '../../services/userService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 
@@ -23,6 +23,7 @@ export default function ChangePasswordButton() {
     let npError = false;
     let pcError = false;
     let sError = false;
+    const [token, setToken] = React.useState<string>('');
     const [oldPassword, setOldPassword] = React.useState<string>('');
     const [newPassword, setNewPassword] = React.useState<string>('');
     const [newPasswordConfirm, setNewPasswordConfirm] = React.useState<string>('');
@@ -33,6 +34,15 @@ export default function ChangePasswordButton() {
 
 
     const handleClickOpen = () => {
+        changePasswordClick(userId) 
+        .then((response: any) => {
+            // setRows(response.data);
+            //TODO ALERT MSG
+          })
+          .catch((e: Error) => {
+            console.log(e);
+          });
+
         setOpen(true);
     };
 
@@ -136,6 +146,17 @@ export default function ChangePasswordButton() {
                                 onChange={(e) => setNewPasswordConfirm(e.target.value)}
                                 error={passwordConfirmError}
                                 helperText={passwordConfirmError ? t('Passwords must match!') : null}
+                            />
+                             <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="token"
+                                label={t('token')}
+                                type="text"
+                                id="token"
+                                onChange={(e) => setToken(e.target.value)}
+                                helperText={t('checkEmailForToken')}
                             />
 
                         </DialogContent>

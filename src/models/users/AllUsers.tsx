@@ -17,6 +17,7 @@ import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import '../ViewAll.css'
 import { Grid, Tooltip } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { ReactNode } from 'react';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -51,7 +52,8 @@ export default function Users() {
 
   const myGridToolbarComponents = [
     <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/>  ]
+            departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames}/> 
+           ]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setUserFilter({
@@ -132,7 +134,6 @@ export default function Users() {
       ]
     },
   ];
-
   const rows = page.content.map(user => {
     return {
       id: user.id, name: user?.name, email: user.email, department: user.department,
