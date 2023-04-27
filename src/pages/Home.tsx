@@ -24,53 +24,53 @@ import React from 'react';
 const mdTheme = createTheme();
 
 function HomeContent() {
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    return (
-        <ThemeProvider theme={mdTheme}>
-            <Grid className='grid-container' container height="100vh" maxWidth="auto">
-                <CssBaseline />
-                <NavBar open={open} toggleDrawer={toggleDrawer} />
-                <DrawerMenu open={open} toggleDrawer={toggleDrawer} />
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <Grid className='grid-container' container height="100vh" maxWidth="auto">
+        <CssBaseline />
+        <NavBar open={open} toggleDrawer={toggleDrawer} />
+        <DrawerMenu open={open} toggleDrawer={toggleDrawer} />
 
-                <Grid
-                    container
-                    component="main"
-                    className='main-grid'
-                    flex={1}
-                    marginTop={localStorage.getItem('navBarHeight')!}
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        overflow: 'auto',
-                    }}
-                >
+        <Grid
+          container
+          component="main"
+          className='main-grid'
+          flex={1}
+          marginTop={localStorage.getItem('navBarHeight')!}
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            overflow: 'auto',
+          }}
+        >
 
-                    <CustomErrorBoundary />
-                    <Grid container >
-                        <Routes>
-                            <Route index Component={isAuth(DashBoard)}></Route>
-                            <Route path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>
-                            <Route path='/users' Component={isAuth(Users)}></Route>
-                            <Route path='/departments' Component={isAuth(Departments)}></Route>
-                            <Route path="/requests" Component={isAuth(RequestsGrid)} />
-                            <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
-                            <Route path='/roles' Component={isAuth(Roles)}></Route>
-                            <Route path='/login' Component={SignIn}></Route>
-                            <Route path='/logout' Component={LogOut}></Route>
-                            <Route path="/404" Component={NotFound}></Route>
-                            <Route path="*" element={<Navigate to="/404" replace />}></Route>
-                        </Routes>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </ThemeProvider>
-    );
+          <CustomErrorBoundary />
+          <Grid container >
+            <Routes>
+              <Route index Component={isAuth(DashBoard)}></Route>
+              <Route path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>
+              <Route path='/users' Component={isAuth(Users)}></Route>
+              <Route path='/departments' Component={isAuth(Departments)}></Route>
+              <Route path="/requests" Component={isAuth(RequestsGrid)} />
+              <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
+              <Route path='/roles' Component={isAuth(Roles)}></Route>
+              <Route path='/login' Component={SignIn}></Route>
+              <Route path='/logout' Component={LogOut}></Route>
+              <Route path="/404" Component={NotFound}></Route>
+              <Route path="*" element={<Navigate to="/404" replace />}></Route>
+            </Routes>
+          </Grid>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
 }
 
 export default HomeContent;
