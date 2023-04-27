@@ -68,6 +68,12 @@ export const getUserByEmail = (data: string) => {
 export const getUser = async () => {
 return await axios.get<IUserDetails>(BASE_USER_URL+"current");
 }
+
+export const changePasswordClick = async (id:number) => {
+  return await axios.put(BASE_USER_URL+`change-password-token/${id}`);
+
+}
+
 export const getUserById = async (id:number) => {
   return await axios.get<IUserDetails>(BASE_USER_URL+id);
   }

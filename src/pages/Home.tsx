@@ -28,7 +28,6 @@ function HomeContent() {
       <Grid container  direction="row" height="100vh" maxWidth="auto">
         <CssBaseline />
         <Grid item > <Nav /></Grid>
-      
         <Grid
         container
           component="main"
