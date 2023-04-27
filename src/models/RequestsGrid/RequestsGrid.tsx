@@ -24,7 +24,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
   const [t, i18n] = useTranslation();
-  const [userFilter, setUserFilter] = useState<Filter>({
+  const [leaveRequestFilter, setLeaveRequestFilter] = useState<Filter>({
     id: [],
     dateCreated: [],
     createdBy: [],
@@ -38,9 +38,10 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     sort: "id",
     deleted: "false"
   });
-  const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort } = userFilter;
+  const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort } = leaveRequestFilter;
   const [isLoading, setIsLoading] = useState(true);
   const [openForm, setOpen] = useState<boolean>(false);
+  const navBarHeight = localStorage.getItem('navBarHeight')!;
   // const ChildMemo = React.memo(ApproveRequestDialog);
 
 
@@ -53,20 +54,20 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
     numberOfElements: 0,
     number: 0,
-
+    size: 0,
     first: true,
     last: true
   });
   useEffect(() => {
     retrivePage();
     console.log(openForm)
-  }, [userFilter, setOpen]);
+  }, [leaveRequestFilter, setOpen]);
 
   let numberOfElements = page.numberOfElements * (page.number + 1);
 
 
   const retrivePage = async () => {
-    await RequestService.getAllFilterPage(userFilter)
+    await RequestService.getAllFilterPage(leaveRequestFilter)
       .then((response: any) => {
         console.log(response.data);
         console.log(response.data.content);
@@ -115,7 +116,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setAlertProps({ ...alertProps, message: "", hasError: false, open: false, type: "" })
-    setUserFilter({ ...userFilter, offset: 0 })
+    setLeaveRequestFilter({ ...leaveRequestFilter, offset: 0 })
   };
   function changeApproved(params: any) {
 
@@ -133,14 +134,14 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
   function ModelChange(params: any) {
 
-    userFilter.offset += userFilter.limit;
+    leaveRequestFilter.offset += leaveRequestFilter.limit;
   }
 
   const updateFilter = useCallback(
 
-    (newValue: Filter): void => setUserFilter(newValue),
+    (newValue: Filter): void => setLeaveRequestFilter(newValue),
 
-    [setUserFilter]
+    [setLeaveRequestFilter]
 
 
   );
@@ -164,7 +165,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const ListAllFilterProps = {
     onAdd: updateFilter,
     onSubmitChild: onSubmit,
-    value: userFilter
+    value: leaveRequestFilter
   }
   const AlertProps = {
     alertPropsChild: alertProps,
@@ -204,11 +205,18 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
 
   const updateFilterLimit = useCallback(
-    (newValue: number): void => setUserFilter({ ...userFilter, limit: newValue }),
+    (newValue: number): void => setLeaveRequestFilter({ ...leaveRequestFilter, limit: newValue }),
 
-    [setUserFilter]
+    [setLeaveRequestFilter]
 
   );
+
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setLeaveRequestFilter({
+      ...leaveRequestFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+  };
 
   const columns: GridColDef[] = [
     {
@@ -287,24 +295,24 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   ];
   const onPreviousPage = async () => {
     if (!page.first) {
-      setUserFilter({ ...userFilter, offset: (userFilter.offset - userFilter.limit) })
+      setLeaveRequestFilter({ ...leaveRequestFilter, offset: (leaveRequestFilter.offset - leaveRequestFilter.limit) })
     }
   };
   const onNextPage = async () => {
     if (!page.last) {
-      setUserFilter({ ...userFilter, offset: (userFilter.offset + userFilter.limit) })
+      setLeaveRequestFilter({ ...leaveRequestFilter, offset: (leaveRequestFilter.offset + leaveRequestFilter.limit) })
     }
 
 
   };
   const onFirstPage = async () => {
     if (!page.first) {
-      setUserFilter({ ...userFilter, offset: 0 })
+      setLeaveRequestFilter({ ...leaveRequestFilter, offset: 0 })
     }
   };
   const onLastPage = async () => {
     if (!page.last) {
-      setUserFilter({ ...userFilter, offset: (limit * (page.totalPages - 1)) })
+      setLeaveRequestFilter({ ...leaveRequestFilter, offset: (limit * (page.totalPages - 1)) })
     }
 
 
@@ -312,9 +320,9 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
   const calculateElements = () => {
     if (!page.last) {
-      return <Grid >{userFilter.offset + 1}-{numberOfElements} {t('of')} {page.totalElements}</Grid>
+      return <Grid >{leaveRequestFilter.offset + 1}-{numberOfElements} {t('of')} {page.totalElements}</Grid>
     } else {
-      return <Grid >{userFilter.offset + 1}-{page.totalElements} {t('of')} {page.totalElements}</Grid>
+      return <Grid >{leaveRequestFilter.offset + 1}-{page.totalElements} {t('of')} {page.totalElements}</Grid>
     }
 
 
@@ -323,7 +331,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   function CustomPagination() {
     return <Grid container direction={'row'} alignItems="center" >
       <Grid container justifyContent="left" marginTop={1} marginBottom={-7} marginLeft={1}>
-        <Grid item > <LimitDropDown onChange={updateFilterLimit} value={userFilter.limit} /></Grid>
+        <Grid item > <LimitDropDown onChange={updateFilterLimit} value={leaveRequestFilter.limit} /></Grid>
       </Grid>
 
       <Grid container justifyContent="right" marginBottom={2} marginTop={1}>
@@ -343,21 +351,27 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-
-    <DataGrid
-      disableColumnMenu
-      localeText={{
-        toolbarColumns: t(`DataGridToolBar.Columns`)!,
-        toolbarDensity: t(`DataGridToolBar.Density`)!,
-        toolbarExport: t(`DataGridToolBar.Export`)!
-      }}
-      apiRef={apiRef}
-      rows={rows}
-      columns={columns}
-      slots={{ toolbar: CustomToolbar, pagination: CustomPagination }}
-    // loading={isLoading}
-
-    />
+    <Grid sx={{ width: '99.9%' }}>
+      <DataGrid
+        disableColumnMenu
+        localeText={{
+          toolbarColumns: t(`DataGridToolBar.Columns`)!,
+          toolbarDensity: t(`DataGridToolBar.Density`)!,
+          toolbarExport: t(`DataGridToolBar.Export`)!
+        }}
+        apiRef={apiRef}
+        rows={rows}
+        columns={columns}
+        slots={{ toolbar: CustomToolbar }}
+        // loading={isLoading}
+        rowCount={page.totalElements}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        paginationModel={{ page: page.number, pageSize: page.size }}
+        pagination
+        paginationMode='server'
+        onPaginationModelChange={handlePaginationModelChange}
+      />
+    </Grid>
   )
 };
 

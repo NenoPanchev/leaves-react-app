@@ -26,19 +26,20 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const apiRef = useGridApiRef();
   const [t, i18n] = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
+  const navBarHeight = localStorage.getItem('navBarHeight')!;
   const [page, setPage] = useState<ITypeEmploeePage>({
     content: [],
 
     totalElements: 0,
     totalPages: 0,
-
+    size: 0,
     numberOfElements: 0,
     number: 0,
 
     first: true,
     last: true
   });
-  const [userFilter, setUserFilter] = useState<ITypesFilter>({
+  const [typesFilter, setTypesFilter] = useState<ITypesFilter>({
     id: [],
     dateCreated: [],
     createdBy: [],
@@ -52,11 +53,11 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     deleted: "false"
   });
 
-  const { id, dateCreated, createdBy, lastUpdated, offset, limit, sort } = userFilter;
+  const { id, dateCreated, createdBy, lastUpdated, offset, limit, sort } = typesFilter;
   let numberOfElements = page.numberOfElements * (page.number + 1);
   useEffect(() => {
     retrivePage();
-  }, [userFilter]);
+  }, [typesFilter]);
 
   // const retrieveRequests = async () => {
   //     await TypeService.getAll()
@@ -69,7 +70,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   //         });
   // };
   const retrivePage = async () => {
-    await TypeService.getAllFilterPage(userFilter)
+    await TypeService.getAllFilterPage(typesFilter)
       .then((response: any) => {
         // setRows(response.data);
         setPage(response.data);
@@ -85,13 +86,13 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
 
   const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    setUserFilter({ ...userFilter, offset: 0 })
+    setTypesFilter({ ...typesFilter, offset: 0 })
   };
   const updateFilter = useCallback(
 
-    (newValue: ITypesFilter): void => setUserFilter(newValue),
+    (newValue: ITypesFilter): void => setTypesFilter(newValue),
 
-    [setUserFilter]
+    [setTypesFilter]
 
 
   );
@@ -109,15 +110,13 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     [setRows]
   );
   const handleDeleteRow = (rowId: number) => {
-    console.log(userFilter.deleted);
-    if(userFilter.deleted!== "null")
-    {
+    console.log(typesFilter.deleted);
+    if (typesFilter.deleted !== "null") {
       apiRef.current.updateRows([{ id: rowId, _action: 'delete' }]);
     }
-    else
-    {
-     
-          apiRef.current.updateRows([{ id: rowId, deleted:true  }]);
+    else {
+
+      apiRef.current.updateRows([{ id: rowId, deleted: true }]);
     }
 
   };
@@ -125,11 +124,11 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     await TypeService.unMarkAsDeleted(request.id)
       .then((_response: any) => {
 
-        if (userFilter.deleted === "true") {
+        if (typesFilter.deleted === "true") {
           apiRef.current.updateRows([{ id: rowId, _action: "delete" }]);
           numberOfElements = numberOfElements - 1;
           page.totalElements = page.totalElements - 1;
-        } else if (userFilter.deleted === "null") {
+        } else if (typesFilter.deleted === "null") {
           request.deleted = false;
           apiRef.current.updateRows([{ id: rowId }]);
         }
@@ -203,13 +202,13 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
 
   const onPreviousPage = async () => {
     if (!page.first) {
-      setUserFilter({ ...userFilter, offset: (userFilter.offset - userFilter.limit) })
+      setTypesFilter({ ...typesFilter, offset: (typesFilter.offset - typesFilter.limit) })
     }
   };
 
   const onNextPage = async () => {
     if (!page.last) {
-      setUserFilter({ ...userFilter, offset: (userFilter.offset + userFilter.limit) })
+      setTypesFilter({ ...typesFilter, offset: (typesFilter.offset + typesFilter.limit) })
     }
 
 
@@ -217,26 +216,33 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
 
   const calculateElements = () => {
     if (!page.last) {
-      return <Grid >{userFilter.offset + 1}-{page.numberOfElements * (page.number + 1)} {t('of')}  {page.totalElements}</Grid>
+      return <Grid >{typesFilter.offset + 1}-{page.numberOfElements * (page.number + 1)} {t('of')}  {page.totalElements}</Grid>
     } else {
-      return <Grid >{userFilter.offset + 1}-{page.totalElements} {t('of')}  {page.totalElements}</Grid>
+      return <Grid >{typesFilter.offset + 1}-{page.totalElements} {t('of')}  {page.totalElements}</Grid>
     }
   };
 
   const updateFilterLimit = useCallback(
-    (newValue: number): void => setUserFilter({ ...userFilter, limit: newValue }),
+    (newValue: number): void => setTypesFilter({ ...typesFilter, limit: newValue }),
 
-    [setUserFilter]
+    [setTypesFilter]
 
   );
+
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setTypesFilter({
+      ...typesFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+  };
   const onFirstPage = async () => {
     if (!page.first) {
-      setUserFilter({ ...userFilter, offset: 0 })
+      setTypesFilter({ ...typesFilter, offset: 0 })
     }
   };
   const onLastPage = async () => {
     if (!page.last) {
-      setUserFilter({ ...userFilter, offset: (limit * (page.totalPages - 1)) })
+      setTypesFilter({ ...typesFilter, offset: (limit * (page.totalPages - 1)) })
     }
 
 
@@ -245,7 +251,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   function CustomPagination() {
     return <Grid container direction={'row'} alignItems="center" >
       <Grid container justifyContent="left" marginTop={1} marginBottom={-7} marginLeft={1}>
-        <Grid item > <LimitDropDown onChange={updateFilterLimit} value={userFilter.limit} /></Grid>
+        <Grid item > <LimitDropDown onChange={updateFilterLimit} value={typesFilter.limit} /></Grid>
       </Grid>
 
       <Grid container justifyContent="right" marginBottom={2} marginTop={1}>
@@ -266,7 +272,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const ListAllFilterProps = {
     onAdd: updateFilter,
     onSubmitChild: onSubmit,
-    value: userFilter,
+    value: typesFilter,
   }
 
   const ListAllAddTypeProps = {
@@ -286,19 +292,27 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-    <DataGrid
-      disableColumnMenu
-      localeText={{
-        toolbarColumns: t(`DataGridToolBar.Columns`)!,
-        toolbarDensity: t(`DataGridToolBar.Density`)!,
-        toolbarExport: t(`DataGridToolBar.Export`)!
-      }}
+    <Grid sx={{ width: '99.9%' }}>
+      <DataGrid
+        disableColumnMenu
+        localeText={{
+          toolbarColumns: t(`DataGridToolBar.Columns`)!,
+          toolbarDensity: t(`DataGridToolBar.Density`)!,
+          toolbarExport: t(`DataGridToolBar.Export`)!
+        }}
 
-      apiRef={apiRef}
-      rows={rows}
-      columns={columns}
-      slots={{ toolbar: CustomToolbar, pagination: CustomPagination }}
-    />
+        apiRef={apiRef}
+        rows={rows}
+        columns={columns}
+        slots={{ toolbar: CustomToolbar }}
+        rowCount={page.totalElements}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        paginationModel={{ page: page.number, pageSize: page.size }}
+        pagination
+        paginationMode='server'
+        onPaginationModelChange={handlePaginationModelChange}
+      />
+    </Grid>
   )
 };
 export default TypeEmployeeGrid;

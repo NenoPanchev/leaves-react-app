@@ -5,7 +5,7 @@ export default interface ILeaveRequestPage {
 
     totalElements: number,
     totalPages: number,
-    
+    size: number,
     numberOfElements: number,
     number:number,
 

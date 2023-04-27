@@ -143,7 +143,7 @@ export default function Users() {
   });
 
   return (
-    <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
+    <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
       <Grid container direction={'row'}>
         <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
           filter={userFilter} setFilter={setUserFilter}

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Box, Container } from '@mui/system';
-import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
@@ -107,7 +105,7 @@ export default function Roles() {
 
   return (
     <React.Fragment>
-      <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
+      <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
         <Grid container direction={'row'}>
           <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
             filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
