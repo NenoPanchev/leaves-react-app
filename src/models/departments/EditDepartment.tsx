@@ -5,11 +5,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit, appendEmployeesToFormData } from '../../services/departmentService';
-import { EditDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { IDepartmentEditButtonProps } from '../interfaces/department/IDepartmentEditButtonProps';
 
-export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
+export default function EditDepartmentButton(props: IDepartmentEditButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.department.name);

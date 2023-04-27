@@ -20,6 +20,7 @@ import LimitDropDown from '../../components/CustomPaginationComponents/LimitDrop
 import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
 import ITypeEmploeePage from '../interfaces/type/ITypeEmploeePage';
 import ITypesFilter from '../interfaces/type/ITypesFilter';
+import { DEFAULT_PAGE } from '../../constants/GlobalConstants';
 
 const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
@@ -27,18 +28,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const [t, i18n] = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const navBarHeight = localStorage.getItem('navBarHeight')!;
-  const [page, setPage] = useState<ITypeEmploeePage>({
-    content: [],
-
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    numberOfElements: 0,
-    number: 0,
-
-    first: true,
-    last: true
-  });
+  const [page, setPage] = useState<ITypeEmploeePage>(DEFAULT_PAGE);
   const [typesFilter, setTypesFilter] = useState<ITypesFilter>({
     id: [],
     dateCreated: [],

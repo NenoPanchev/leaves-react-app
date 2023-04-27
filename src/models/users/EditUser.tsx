@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import { appendEmployeeInfoToFormData, appendRolesToFormData, useEdit } from '../../services/userService';
-import { EditUserButtonProps } from '../interfaces/user/userInterfaces';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
@@ -15,8 +14,9 @@ import { useTranslation } from 'react-i18next';
 import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { IUserEditButtonProps } from '../interfaces/user/IUserEditButtonProps';
 
-export default function EditUserButton(props: EditUserButtonProps) {
+export default function EditUserButton(props: IUserEditButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.user.name);

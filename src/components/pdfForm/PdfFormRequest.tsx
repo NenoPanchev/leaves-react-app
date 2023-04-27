@@ -11,7 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import dayjs from 'dayjs';
 import AuthContext from '../../contexts/AuthContext';
 import * as userService from '../../services/userService';
-import { IUserDetails } from '../../models/interfaces/user/userInterfaces';
+import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 type AddRequestAlertProps = {
   open: boolean,
   onClose: (newValue: boolean) => void;

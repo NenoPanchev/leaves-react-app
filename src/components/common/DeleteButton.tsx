@@ -15,12 +15,12 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
-import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
 import AuthContext from '../../contexts/AuthContext';
 import Tooltip from '@mui/material/Tooltip/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { IDeleteButtonProps } from '../../models/interfaces/common/IDeleteButtonProps';
 
-export default function DeleteButton(props: DeleteButtonProps) {
+export default function DeleteButton(props: IDeleteButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();

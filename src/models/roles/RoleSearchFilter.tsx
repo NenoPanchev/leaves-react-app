@@ -1,17 +1,17 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { RoleSearchFilterProps } from '../interfaces/role/roleInterfaces';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { DEFAULT_OFFSET, PERMISSIONS } from '../../constants/GlobalConstants';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { IRoleSearchFilterProps } from '../interfaces/role/IRoleSearchFilterProps';
 import '../SearchFilter.css'
 
 
-function RoleSearchFilter(props: RoleSearchFilterProps) {
+function RoleSearchFilter(props: IRoleSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [permissions, setPermissions] = React.useState<string[]>([]);
     const { t } = useTranslation();

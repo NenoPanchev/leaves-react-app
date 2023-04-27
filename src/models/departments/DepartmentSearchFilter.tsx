@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { DepartmentSearchFilterProps } from '../interfaces/department/departmentInterfaces';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
@@ -9,9 +8,10 @@ import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { IDepartmentSearchFilterProps } from '../interfaces/department/IDepartmentSearchFilterProps';
 import '../SearchFilter.css'
 
-function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
+function DepartmentSearchFilter(props: IDepartmentSearchFilterProps) {
     const [name, setName] = React.useState('');
     const [adminEmail, setAdminEmail] = React.useState('');
     const [employeeEmails, setEmployeeEmails] = React.useState<string[]>([]);
