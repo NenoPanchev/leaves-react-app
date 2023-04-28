@@ -29,14 +29,6 @@ export default function DepartmentView(props: IViewProps) {
             <Table>
               <TableBody>
                 <TableRow>
-
-                  <TableCell className='tableHeader' variant='head'>{t('Id') +':'}</TableCell>
-
-
-                  <TableCell>{department?.id}</TableCell>
-
-                </TableRow>
-                <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Name') +':'}</TableCell>
                   <TableCell>{department?.name}</TableCell>
                 </TableRow>

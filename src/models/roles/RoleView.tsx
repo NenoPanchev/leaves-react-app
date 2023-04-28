@@ -28,14 +28,6 @@ export default function RoleView(props: IViewProps) {
             <Table>
               <TableBody>
                 <TableRow>
-
-                  <TableCell className='tableHeader' variant='head'>{t('Id') + ':'}</TableCell>
-
-
-                  <TableCell>{role?.id}</TableCell>
-
-                </TableRow>
-                <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Name') + ':'}</TableCell>
                   <TableCell>{role?.name}</TableCell>
                 </TableRow>

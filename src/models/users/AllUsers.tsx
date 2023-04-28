@@ -57,13 +57,6 @@ export default function Users() {
 
   const columns: GridColDef[] = [
     {
-      field: 'id',
-      headerName: t('Id')!,
-      headerClassName: 'grid-header',
-      width: 70,
-
-    },
-    {
       field: 'name',
       headerName: t('Name')!,
       headerClassName: 'grid-header',
@@ -128,8 +121,7 @@ export default function Users() {
   ];
   const rows = page.content.map(user => {
     return {
-      key: user.id,
-      id: user.id, name: user?.name, email: user.email, department: user.department,
+      key: user.id, id: user.id, name: user?.name, email: user.email, department: user.department,
       roles: user.roles.map(role => role.name).join(', '), contractStartDate: user.employeeInfo.contractStartDate,
       position: user.employeeInfo.typeName, daysLeave: user.employeeInfo.daysLeave
     }

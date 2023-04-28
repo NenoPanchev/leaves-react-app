@@ -56,13 +56,6 @@ export default function Departments() {
 
   const columns: GridColDef[] = [
     {
-      field: 'id',
-      headerName: t('Id')!,
-      headerClassName: 'grid-header',
-      width: 70,
-
-    },
-    {
       field: 'name',
       headerName: t('Name')!,
       headerClassName: 'grid-header',
