@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance as axios} from '../config/AxiosConfig';
-import { formToJSON } from 'axios';
+import { AxiosError, formToJSON } from 'axios';
 import { BASE_URL, BASE_USER_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
@@ -79,6 +79,11 @@ export const changePasswordClick = async (id:number) => {
 
 export const getUserById = async (id:number) => {
   return await axios.get<IUserDetails>(BASE_USER_URL+id);
+  }
+
+  
+export const validateUserPassowrById = async (id:number,password:string ) => {
+  return await axios.put<IUserDetails>(BASE_USER_URL+`validate-password/${id}`,password);
   }
 export const useCreate = () => {
 
@@ -210,9 +215,13 @@ export const useChangePassword = () => {
 
     const result = await axios.put(passwordChangeUrl, formToJSON(passwordDto))
       .then(response => {} )
-      .catch(error => {
-        serverResponse = error.response.data.message;
+      .catch((e: AxiosError<any, any>) => {
+        if (e.response) {
+        console.log(e)
+        serverResponse = e.response.data.message;
+        }
       })
+      console.log(serverResponse)
       return serverResponse;
   }
   return editPassword;

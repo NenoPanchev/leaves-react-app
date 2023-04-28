@@ -239,6 +239,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   };
 
   function CustomPagination() {
+    
     return <Grid container direction={'row'} alignItems="center" >
       <Grid container justifyContent="left" marginTop={1} marginBottom={-7} marginLeft={1}>
         <Grid item > <LimitDropDown onChange={updateFilterLimit} value={typesFilter.limit} /></Grid>
