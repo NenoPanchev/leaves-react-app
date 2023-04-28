@@ -147,11 +147,6 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
   const columns: GridColDef[] = [
     {
-      field: 'id',
-      headerName: 'Id',
-      flex: 0.25
-    },
-    {
       field: 'typeName',
       headerName: t(`LeaveTypes.TypeName`)!,
       flex: 1
@@ -283,7 +278,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Grid sx={{ width: '99.9%', overflow: "hidden" }}>
+    <Grid sx={{ width: '100%', overflow: "hidden" }}>
       <DataGrid
         disableColumnMenu
         localeText={{

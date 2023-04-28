@@ -119,7 +119,7 @@ export default function Users() {
       ]
     },
   ];
-  const rows = page.content.map(user => {
+  const rows = page.content.map((user, index) => {
     return {
       key: user.id, id: user.id, name: user?.name, email: user.email, department: user.department,
       roles: user.roles.map(role => role.name).join(', '), contractStartDate: user.employeeInfo.contractStartDate,
@@ -128,7 +128,7 @@ export default function Users() {
   });
 
   return (
-    <Grid sx={{ width: '99.9%', height: `calc(100% - ${navBarHeight})` }}>
+    <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
       <Grid container direction={'row'}>
         <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
           filter={userFilter} setFilter={setUserFilter}

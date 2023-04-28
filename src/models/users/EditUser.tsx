@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, Autocomplete, Tooltip
+    DialogTitle, Box, TextField, Autocomplete, Tooltip, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
@@ -23,8 +23,8 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const [email, setEmail] = React.useState(props.user.email);
     const [department, setDepartment] = React.useState<string | null>(props.user.department ? props.user.department : null);
     const [position, setPosition] = React.useState<string | null>(props.user.position);
-    const day = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
-    const [startDate, setStartDate] = React.useState<Dayjs | null>(day);
+    const initialDay = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(initialDay);
 
 
     const [roles, setRoles] = React.useState<Role[]>([]);
@@ -46,6 +46,18 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const navigate = useNavigate();
     const editUser = useEdit();
     // const [showPasswordFields, setShowPasswordFields] = React.useState(false);
+    const [showContractFields, setShowContractFields] = React.useState(false);
+    const [contractChange, setContractChange] = React.useState('Initial');
+
+    const handleContractChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let value = (event.target as HTMLInputElement).value;
+        if (value === 'Initial') {
+            setStartDate(initialDay)
+        } else if (value === 'New') {
+            setStartDate(dayjs());
+        }
+        setContractChange(value);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -58,6 +70,9 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     // const handleShowPasswordFields = () => {
     //     setShowPasswordFields(true);
     // }
+    const handleShowContractFields = () => {
+        setShowContractFields(true);
+    }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -166,33 +181,52 @@ export default function EditUserButton(props: IUserEditButtonProps) {
                                     />
                                 )}
                             />
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                                <DatePicker label={t('Employed at')}
-                                    value={startDate}
-                                    sx={{ marginTop: '15px', marginBottom: '5px' }}
-                                    onChange={(newValue) => setStartDate(newValue)} />
-                            </LocalizationProvider>
-
-                            <Autocomplete
-                                id="position"
-                                options={props.typeNames}
-                                size='medium'
-                                filterSelectedOptions
-                                sx={{ minWidth: '20%' }}
-                                value={position}
-                                onChange={(event, newValue) => {
-                                    setPosition(newValue!);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        name='position'
-                                        margin='normal'
-                                        label={t('Position')}
-                                        placeholder={t('Position')!}
+                            {!showContractFields &&
+                                <Button autoFocus onClick={handleShowContractFields}>
+                                    {t('Change contract')}
+                                </Button>
+                            }
+                            {showContractFields &&
+                                <>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                                        <DatePicker label={t('Employed at')}
+                                            value={startDate}
+                                            sx={{ marginTop: '15px', marginBottom: '5px' }}
+                                            onChange={(newValue) => setStartDate(newValue)} />
+                                    </LocalizationProvider>
+                                    <FormControl sx={{marginLeft: '15px'}}>
+                                        <FormLabel id="demo-controlled-radio-buttons-group">{t('Contract')}</FormLabel>
+                                        <RadioGroup
+                                            aria-labelledby="demo-controlled-radio-buttons-group"
+                                            name="contractChange"
+                                            value={contractChange}
+                                            onChange={handleContractChange}
+                                        >
+                                            <FormControlLabel value="Initial" control={<Radio />} label={t('Edit Initial')} />
+                                            <FormControlLabel value="New" control={<Radio />} label={t('Add new')} />
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <Autocomplete
+                                        id="position"
+                                        options={props.typeNames}
+                                        size='medium'
+                                        filterSelectedOptions
+                                        sx={{ minWidth: '20%' }}
+                                        value={position}
+                                        onChange={(event, newValue) => {
+                                            setPosition(newValue!);
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                name='position'
+                                                margin='normal'
+                                                label={t('Position')}
+                                                placeholder={t('Position')!}
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
+                                </>}
                             <Autocomplete
                                 multiple
                                 id="roles"

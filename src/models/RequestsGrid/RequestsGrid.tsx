@@ -209,11 +209,11 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   };
 
   const columns: GridColDef[] = [
-    {
-      field: 'id',
-      headerName: 'Id',
-      flex: 0.20
-    },
+    // {
+    //   field: 'id',
+    //   headerName: 'Id',
+    //   flex: 0.20
+    // },
     {
       field: 'startDate',
       headerName: t(`Requests.StartDate`)!,
@@ -341,7 +341,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Grid sx={{ width: '99.9%' }}>
+    <Grid sx={{ width: '100%' }}>
       <DataGrid
         disableColumnMenu
         localeText={{
