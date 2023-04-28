@@ -7,6 +7,7 @@ import CalendarById from '../../components/calendar/CalendarById';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import { getUserById } from '../../services/userService';
 import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
+import { useCallback, useState } from 'react';
 // {
 //     id: 0,
 //     name: "",
@@ -30,16 +31,17 @@ import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 //          ssn:"",
 //          address:""}
 // } 
-export default function DashBoardByEmployee()  {
-    const [userByiId, setUser]=React.useState<IUserDetails>({} as IUserDetails)
+export default function DashBoardByEmployee() {
+    const [userByiId, setUser] = React.useState<IUserDetails>({} as IUserDetails)
     const { t, i18n } = useTranslation();
     let { id } = useParams();
+    const [showDetails, setShowDetails] = useState(true)
     React.useEffect(() => {
         retriveEmpl();
     }, [setUser]);
 
     const retriveEmpl = async () => {
-         getUserById(parseInt(id!))
+        getUserById(parseInt(id!))
             .then((response: any) => {
                 console.log(response.data);
                 setUser(response.data);
@@ -48,49 +50,41 @@ export default function DashBoardByEmployee()  {
                 console.log(e);
             });
     }
+    const updateDetails = useCallback(
+
+        (): void => setShowDetails(!showDetails),
+
+        [showDetails]
+    );
     const UserBaseDetailsMemo = React.memo(UserBaseDetails);
     return (
         <React.Fragment>
-            <Grid container direction={'column'} sx={{ backgroundColor: 'white', textAlign: 'center' }}>
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 
-                    <Grid container spacing={3}>
-                        {/* User Details */}
-                        <Grid item xs={5} md={5} lg={5}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'table',
-                                    flexDirection: 'column',
-                                    height: 240,
-                                }}
-                            >
-                                <Typography>{t('User info:')}</Typography>
+            <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
-                                <UserBaseDetailsMemo email={userByiId.email} />
-                            </Paper>
-                        </Grid>
+                {/* User Details */}
+                {showDetails &&
+                    <Grid item mt="2%" >
+                        <Paper >
+                            <Typography>{t('My info:')}</Typography>
 
-                        {/* Calendar */}
-                        <Grid item justifySelf="end">
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'table',
-                                    flexDirection: 'column',
-                                    height: 240,
-                                }}
-                            >
 
-                                <Grid >
-                                    <CalendarById employeeId={parseInt(id!)} />
-                                </Grid>
+                            <UserBaseDetailsMemo email={userByiId.email} />
 
-                            </Paper>
-                        </Grid>
+
+                        </Paper>
                     </Grid>
-                </Container>
+                }
+                {/* Calendar */}
+                <Grid item mt="2%" ml="5%" >
+                    <Paper >
+                        <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
+                    </Paper>
+                </Grid>
+
+
             </Grid>
         </React.Fragment>
+
     )
 }
