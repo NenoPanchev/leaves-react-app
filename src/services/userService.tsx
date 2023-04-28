@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { axiosInstance as axios } from '../config/AxiosConfig';
-import { formToJSON } from 'axios';
+import { axiosInstance as axios} from '../config/AxiosConfig';
+import { AxiosError, formToJSON } from 'axios';
 import { BASE_URL, BASE_USER_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
 import { EmployeeInfo } from '../models/objects/EmployeeInfo';
@@ -78,9 +78,14 @@ export const changePasswordClick = async (id: number) => {
 
 }
 
-export const getUserById = async (id: number) => {
-  return await axios.get<IUserDetails>(BASE_USER_URL + id);
-}
+export const getUserById = async (id:number) => {
+  return await axios.get<IUserDetails>(BASE_USER_URL+id);
+  }
+
+
+export const validateUserPassowrById = async (id:number,password:string ) => {
+  return await axios.put<IUserDetails>(BASE_USER_URL+`validate-password/${id}`,password);
+  }
 export const useCreate = () => {
 
   const addUser = async (user: FormData) => {
@@ -210,11 +215,15 @@ export const useChangePassword = () => {
     const passwordChangeUrl = BASE_USER_URL + 'change-password/' + id;
 
     const result = await axios.put(passwordChangeUrl, formToJSON(passwordDto))
-      .then(response => { })
-      .catch(error => {
-        serverResponse = error.response.data.message;
+      .then(response => {} )
+      .catch((e: AxiosError<any, any>) => {
+        if (e.response) {
+        console.log(e)
+        serverResponse = e.response.data.message;
+        }
       })
-    return serverResponse;
+      console.log(serverResponse)
+      return serverResponse;
   }
   return editPassword;
 }

@@ -51,7 +51,7 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
       <CircularProgress color="inherit" />
     </Backdrop>
-       <Grid container direction={'row'} minWidth="44vh">
+       <Grid container direction={'row'} minWidth="100%" width="100%">
           <Card >
             <Table>
               <TableBody>
