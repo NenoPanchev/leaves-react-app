@@ -137,11 +137,19 @@
     "Developer": "Разработчик",
     "Paid leave": "Дни отпуск",
     "Start date": "Начална дата",
+    "End date": "Крайна дата",
     "Employed at": "Назначен на",
     "Change password": "Промяна на парола",
     "Old Password": "Стара парола",
     "New Password": "Нова парола",
     "New Password Confirm": "Потвърждаване на нова парола",
     "Clear": "Изчисти",
-    "Leaves App": "Oтпуски"
+    "Leaves App": "Oтпуски",
+    "Contract": "Договор",
+    "Days": "Дни",
+    "Contract days": "Дни по договор",
+    "Days used": "Използвани дни",
+    "Leaves report": "Отчет на отпуски",
+    "From previous year": "Oт предходната година",
+    "Carryover days": "Дни за прехвърляне"
 }

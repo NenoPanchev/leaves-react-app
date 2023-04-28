@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext';
 import { IViewProps } from '../interfaces/common/IViewProps';
+import LeavesReport from './leavesReport/LeavesReport';
 
 
 export default function UserView(props: IViewProps) {
@@ -38,37 +39,37 @@ export default function UserView(props: IViewProps) {
 
 
         {
-        isCurrentUserThisUser ? (
+          isCurrentUserThisUser ? (
 
-          <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
-            <Link to="/">
-              <Button variant='outlined' >
-                <Typography variant="overline" component="div">
-                  {t(`UserRequests`)!}
-                </Typography>
-              </Button>
-            </ Link>
-          </Grid>
-
-
-        ) : (
+            <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
+              <Link to="/">
+                <Button variant='outlined' >
+                  <Typography variant="overline" component="div">
+                    {t(`UserRequests`)!}
+                  </Typography>
+                </Button>
+              </ Link>
+            </Grid>
 
 
-          <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
-          <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
-            textDecoration: 'none',
-            color: 'black'
-          }}>
+          ) : (
 
-            <Button variant='outlined'>
-              <Typography variant="overline" component="div">
-                {t(`UserRequests`)!}
-              </Typography>
-            </Button>
-          </ Link>
-          </Grid>
-        )
-    
+
+            <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
+              <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
+                textDecoration: 'none',
+                color: 'black'
+              }}>
+
+                <Button variant='outlined'>
+                  <Typography variant="overline" component="div">
+                    {t(`UserRequests`)!}
+                  </Typography>
+                </Button>
+              </ Link>
+            </Grid>
+          )
+
         }
 
 
@@ -135,8 +136,8 @@ export default function UserView(props: IViewProps) {
               </TableBody>
             </Table>
           </Card>
-
         </Grid>
+        <LeavesReport id={props.id}></LeavesReport>
       </DialogContent>
 
     </ React.Fragment>

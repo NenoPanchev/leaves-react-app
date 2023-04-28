@@ -60,7 +60,6 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
     useEffect(() => {
         
         if (navBarHeightRef.current) {
-            console.log('Height of NavBar: ', navBarHeightRef.current.offsetHeight);
             localStorage.setItem('navBarHeight', navBarHeightRef.current.offsetHeight.toString() + 'px');
         }
     }, []);
