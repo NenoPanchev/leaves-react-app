@@ -27,8 +27,8 @@ export default function ContractTable(props: ILeavesAnnualReport) {
 
     return (
         <React.Fragment>
-            <TableContainer component={Paper}>
-                <Table className='report-table' sx={{ minWidth: 700}} size="small" aria-label="a dense table">
+            <TableContainer component={Paper} sx={{overflow: 'hidden'}}>
+                <Table className='report-table' sx={{ minWidth: 700, overflow: 'clip'}} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
                             <TableCell align='center'>{t('From previous year')}</TableCell>

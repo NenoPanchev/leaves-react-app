@@ -48,13 +48,19 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     // const [showPasswordFields, setShowPasswordFields] = React.useState(false);
     const [showContractFields, setShowContractFields] = React.useState(false);
     const [contractChange, setContractChange] = React.useState('Initial');
+    let typeNames = props.typeNames;
 
     const handleContractChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = (event.target as HTMLInputElement).value;
         if (value === 'Initial') {
             setStartDate(initialDay)
+            typeNames.push(position!)
         } else if (value === 'New') {
             setStartDate(dayjs());
+            const index = typeNames.indexOf(position!);
+            if (index > -1) {
+                typeNames.splice(index, 1);
+            }
         }
         setContractChange(value);
     };
@@ -208,7 +214,7 @@ export default function EditUserButton(props: IUserEditButtonProps) {
                                     </FormControl>
                                     <Autocomplete
                                         id="position"
-                                        options={props.typeNames}
+                                        options={typeNames}
                                         size='medium'
                                         filterSelectedOptions
                                         sx={{ minWidth: '20%' }}

@@ -24,7 +24,7 @@ export default function LeavesReport(props: IViewProps) {
     }
 
     return (
-        <Box marginTop={'15px'} >
+        <Box marginTop={'15px'} marginBottom={'5px'} >
             <Typography>{t('Leaves report')}</Typography>
             {reports?.map((report, index) => {
                 
