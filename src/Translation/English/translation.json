@@ -147,6 +147,7 @@
     "Trainee": "Trainee",
     "Developer": "Developer",
     "Paid leave": "Paid leave",
+    "Paid leave left": "Current paid leave",
     "Start date": "Start date",
     "End date": "End date",
     "Employed at": "Employed at",
@@ -162,7 +163,8 @@
     "Days used": "Days used",
     "Leaves report": "Leaves report",
     "From previous year": "From previous year",
-    "Carryover days": "Carryover days"
+    "Carryover days": "Carryover days",
+    "Filter": "Filter"
 
 
 }

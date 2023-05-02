@@ -15,13 +15,13 @@ const CustomGridToolbar: React.FC<CustomGridToolbarProps> = ({ components }) => 
 
     <GridToolbarContainer >
       <GridToolbarColumnsButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
       {components.map((component, index) => (
         <React.Fragment key={index}>
           {component}
         </React.Fragment>
       ))}
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
     </GridToolbarContainer>
   );
 }

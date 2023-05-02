@@ -26,7 +26,6 @@ export default function Users() {
   const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
   const { t } = useTranslation();
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
-  const navBarHeight = localStorage.getItem('navBarHeight')!;
 
 
   const renderViewButton = (id: number) => {
@@ -130,7 +129,7 @@ export default function Users() {
   });
 
   return (
-    <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
+    <Grid sx={{ width: '100%'}}>
       <DataGrid
         rows={rows}
         columns={columns}

@@ -48,6 +48,11 @@ export const DEFAULT_DEPARTMENT_FILTER = {
   limit: DEFAULT_LIMIT
 }
 
+export const DEFAULT_LEAVES_REPORT_FILTER = {
+  offset: DEFAULT_OFFSET,
+  limit: 3
+}
+
 export const DEFAULT_PAGE = {
   content: [],
   totalElements: 0,

@@ -56,13 +56,7 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
     const openNav = () => {
       setOpen(!open);
     };
-
-    useEffect(() => {
-        
-        if (navBarHeightRef.current) {
-            localStorage.setItem('navBarHeight', navBarHeightRef.current.offsetHeight.toString() + 'px');
-        }
-    }, []);
+    
     const adjustPathToLocaleKey = (path: string): string => {
         path = path.charAt(0).toUpperCase() + path.slice(1);
         switch (path) {

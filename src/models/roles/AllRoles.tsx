@@ -23,8 +23,6 @@ export default function Roles() {
 
   const { t } = useTranslation();
   const page = roleService.useFetchPage(refreshCurrentState, roleFilter);
-  const navBarHeight = localStorage.getItem('navBarHeight')!;
-
 
 
   const renderViewButton = (id: number) => {
@@ -41,7 +39,9 @@ export default function Roles() {
   }
 
   const myGridToolbarComponents = [
-    <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />
+    <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />,
+    <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+            filter={roleFilter} setFilter={setRoleFilter}/>
   ]
 
   const handlePaginationModelChange = (paginationModel: any) => {
@@ -93,11 +93,7 @@ export default function Roles() {
 
   return (
     <React.Fragment>
-      <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
-        <Grid container direction={'row'}>
-          <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            filter={roleFilter} setFilter={setRoleFilter}></RoleSearchFilter>
-        </Grid>
+      <Grid sx={{ width: '100%'}}>
         <DataGrid
           rows={rows}
           columns={columns}
