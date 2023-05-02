@@ -3,19 +3,19 @@ import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
+import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Paper, Select, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import MyAddFilter from '../../components/AddFilter/AddFilter';
 import MyAddFilterApproved from '../../components/AddFilter/AddFilterApproved';
 import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
 import Filter from '../interfaces/request/Filter';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import CalendarRangePicker from '../../components/calendar/CalendarRangePicker';
 
 
@@ -24,12 +24,17 @@ type ListAllFilterProps = {
     onSubmitChild: (e: { preventDefault: () => void; }) => void;
     onAdd: (filter: Filter) => void;
 }
+const calendarOperations ={
+    sDateEdate :  'Start date - End date',
+    sDateSdate : 'Start date - Start date',
+    eDateEdate : 'End date - End date'
+}
 const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
 
     const [filter, setUserFilter] = React.useState<Filter>(props.value);
     const [t, i18n] = useTranslation();
-
+    const [calendarOperation, setCalendarOperation] = React.useState<string>(calendarOperations.sDateEdate);
 
     const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort, operation, deleted } = filter;
     let value: number = limit;
@@ -44,7 +49,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         props.onSubmitChild(e);
         setOpen(false);
     };
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -99,6 +103,13 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         }
     }
 
+    function ifMoreThanOneDateReturnNow(dates: Array<string>) {
+
+        return dates.length > 1 ? dayjs().format('YYYY-MM-DD') : dates.length === 1 ? dates[0] : dayjs().format('YYYY-MM-DD');
+
+    }
+
+
     function changeOperation(txt: string) {
         setUserFilter({ ...filter, operation: txt })
         props.value.operation = txt;
@@ -112,104 +123,158 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         props.value.deleted = txt;
     }
     const updateFilterWithCalendar = useCallback(
-        (sDate: string, eDate: string): void =>handleUpdateFilterWithCalendar(sDate,eDate),
+        (sDate: string, eDate: string): void => handleUpdateFilterWithCalendar(sDate, eDate),
 
-        [setUserFilter]
+        [calendarOperation]
 
     );
 
-    function handleUpdateFilterWithCalendar(sDate: string, eDate: string) {
-        console.log(sDate)
-        console.log(eDate)
-        startDate.length=0;
-        endDate.length=0;
-        setUserFilter({ ...filter, [sDate]:startDate.push(sDate),[eDate]:endDate.push(eDate) })
-        console.log(filter)
-    }
 
     function renderDatesElement() {
         console.log(operation)
         if (operation === "EQUAL") {
 
             return (<Grid item > {/* StartDate By Filters */}
-            <Grid container direction="row"   spacing={5} >
-                <Grid item >
-                    <Grid container justifyContent="center" >
-                        <Typography variant="overline" component="div">
-                            {t(`Requests.StartDate`)!}
-                        </Typography>
+                <Grid container direction="row" spacing={5} >
+                    <Grid item >
+                        <Grid container justifyContent="center" >
+                            <Typography variant="overline" component="div">
+                                {t(`Requests.StartDate`)!}
+                            </Typography>
+                        </Grid>
+                        <Grid container direction="column">
+                            <MyAddFilterDate buttonName={t(`AddFilter`)!}
+                                onChange={updateFilterStartDate}
+                                nameOfField={t(`Requests.StartDate`)!}
+                            />
+                            <List>
+                                {startDate.map((item) => {
+                                    return (<ListItem
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete"
+                                                onClick={(_event) => setUserFilter({ ...filter, [item]: startDate.splice(startDate.indexOf(item), 1) })}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        }>
+                                        <ListItemText
+                                            primary={item}
+                                        />
+                                    </ListItem>
+                                    )
+                                })}
+                            </List>
+                        </Grid>
                     </Grid>
-                    <Grid container direction="column">
-                        <MyAddFilterDate buttonName={t(`AddFilter`)!}
-                            onChange={updateFilterStartDate}
-                            nameOfField={t(`Requests.StartDate`)!}
-                        />
-                        <List>
-                            {startDate.map((item) => {
-                                return (<ListItem
-                                    secondaryAction={
-                                        <IconButton edge="end" aria-label="delete"
-                                            onClick={(_event) => setUserFilter({ ...filter, [item]: startDate.splice(startDate.indexOf(item), 1) })}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }>
-                                    <ListItemText
-                                        primary={item}
-                                    />
-                                </ListItem>
-                                )
-                            })}
-                        </List>
-                    </Grid>
-                </Grid>
-                {/* StartDate By Filters end */}
+                    {/* StartDate By Filters end */}
 
-                {/* EndDate By Filters */}
-                <Grid item>
+                    {/* EndDate By Filters */}
+                    <Grid item>
 
-                    <Grid container justifyContent="center" >
-                        <Typography variant="overline" component="div">
-                            {t(`Requests.EndDate`)!}
-                        </Typography>
-                    </Grid>
+                        <Grid container justifyContent="center" >
+                            <Typography variant="overline" component="div">
+                                {t(`Requests.EndDate`)!}
+                            </Typography>
+                        </Grid>
 
-                    <Grid container direction="column">
-                        <MyAddFilterDate buttonName={t(`AddFilter`)!}
-                            onChange={updateFilterEndDate}
-                            nameOfField={t(`Requests.EndDate`)!}
-                        />
-                        <List>
-                            {endDate.map((item) => {
-                                return (<ListItem
-                                    secondaryAction={
-                                        <IconButton edge="end" aria-label="delete"
-                                            onClick={(_event) => setUserFilter({ ...filter, [item]: endDate.splice(endDate.indexOf(item), 1) })}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }>
-                                    <ListItemText
-                                        primary={item}
-                                    />
-                                </ListItem>
-                                )
-                            })}
-                        </List>
+                        <Grid container direction="column">
+                            <MyAddFilterDate buttonName={t(`AddFilter`)!}
+                                onChange={updateFilterEndDate}
+                                nameOfField={t(`Requests.EndDate`)!}
+                            />
+                            <List>
+                                {endDate.map((item) => {
+                                    return (<ListItem
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete"
+                                                onClick={(_event) => setUserFilter({ ...filter, [item]: endDate.splice(endDate.indexOf(item), 1) })}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        }>
+                                        <ListItemText
+                                            primary={item}
+                                        />
+                                    </ListItem>
+                                    )
+                                })}
+                            </List>
+                        </Grid>
                     </Grid>
-                </Grid>
-                {/* EndDate Filter end */}
+                    {/* EndDate Filter end */}
                 </Grid>
             </Grid>)
 
         } else {
             return (
-                <Grid item>
-            <CalendarRangePicker onDateChange={updateFilterWithCalendar} />
-              </Grid>
+                      <Grid item>
+
+                        <FormControl sx={{ m: 1, minWidth: 100 }}>
+                            <InputLabel id="range-label">{t('Range')}</InputLabel>
+                            <Select
+                                labelId="range-label"
+                                id="range-select"
+                                value={calendarOperation ? calendarOperation : " "}
+                                label="range"
+
+                                onChange={(event) => handleSelectChange(event.target.value)}
+                            >
+                                <MenuItem value={calendarOperations.sDateEdate}>{t('Start date - End Date')}</MenuItem>
+                                <MenuItem value={calendarOperations.sDateSdate}  >{t('Start date - Start Date')}</MenuItem>
+                                <MenuItem value={calendarOperations.eDateEdate}>{t('End date - End Date')}</MenuItem>
+                            </Select>
+                        </FormControl>
+
+
+                        {calendarOperation === calendarOperations.sDateEdate &&
+
+                        <CalendarRangePicker onDateChange={updateFilterWithCalendar}
+                            initialStartDate={ifMoreThanOneDateReturnNow(startDate)}
+                            initialEndDate={ifMoreThanOneDateReturnNow(endDate)} />
+                        } 
+
+                        {calendarOperation === calendarOperations.sDateSdate &&
+
+                            <CalendarRangePicker onDateChange={updateFilterWithCalendar}
+                                initialStartDate={startDate[0]}
+                                initialEndDate={startDate[endDate.length - 1]} />
+                        }
+
+
+                        {calendarOperation === calendarOperations.eDateEdate &&
+
+                            <CalendarRangePicker onDateChange={updateFilterWithCalendar}
+                                initialStartDate={endDate[0]}
+                                initialEndDate={endDate[endDate.length - 1]} />
+                        } 
+                    </Grid>
             )
 
         }
     }
 
+    function handleSelectChange(operation: string) {
+        setCalendarOperation(operation)
+    }
+
+    function handleUpdateFilterWithCalendar(sDate: string, eDate: string) {
+        console.log(calendarOperation)
+
+        if (calendarOperation === calendarOperations.sDateEdate) {
+            startDate.length = 0;
+            endDate.length = 0;
+            setUserFilter({ ...filter, [sDate]: startDate.push(sDate), [eDate]: endDate.push(eDate) })
+        } else if (calendarOperation === calendarOperations.sDateSdate) {
+
+            startDate.length = 0;
+            endDate.length = 0;
+            setUserFilter({ ...filter, [sDate]: startDate.push(sDate), [eDate]: startDate.push(eDate) })
+        } else if (calendarOperation === calendarOperations.eDateEdate) {
+            startDate.length = 0;
+            endDate.length = 0;
+            setUserFilter({ ...filter, [sDate]: endDate.push(sDate), [eDate]: endDate.push(eDate) })
+        }
+
+
+    }
     return (
         <React.Fragment>
             <Button startIcon={<FilterListIcon />} onClick={handleClickOpen} >
@@ -238,7 +303,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                         justifyContent="space-evenly"
                         wrap='wrap'
                         width="120vh"
-                        >
+                    >
 
                         {/* Created By Filters */}
                         <Grid item>

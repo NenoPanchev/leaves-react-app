@@ -28,13 +28,15 @@ dayjs.extend(isBetweenPlugin);
 
 type CustomDayProps = {
     onDateChange: (startDate: string, endDate: string) => void;
+    initialStartDate:string;
+    initialEndDate:string;
 }
 const CalendarRangePicker = (props: CustomDayProps): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [t, i18n] = useTranslation();
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
-    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
-    const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs());
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs(props.initialStartDate));
+    const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs(props.initialEndDate));
     // React.useImperativeHandle(ref, () => {
     //     return {
     //         reload: retrivePage
@@ -42,28 +44,43 @@ const CalendarRangePicker = (props: CustomDayProps): JSX.Element => {
     // }, [])
     const handleChange = (newValue: dayjs.Dayjs | null) => {
 
-   
+        let sDate=startDate;
+        let eDate=endDate;
+        console.log("handleChange")
             if (newValue?.isSame(endDate)) {
+                console.log("first")
+                sDate=newValue;
                 setStartDate(newValue)
             }
             if (newValue?.isSame(startDate)) {
+                console.log("second")
+                sDate=newValue;
+                eDate=newValue;
                 setEndDate(newValue)
                 setStartDate(newValue)
             }
             if (newValue?.isAfter(startDate)) {
+                console.log("third")
+                eDate=newValue;
                 setEndDate(newValue)
             }
 
             if (newValue?.isBefore(startDate)) {
+                console.log("Fourth")
+                sDate=newValue;
+                eDate=newValue;
                 setStartDate(newValue)
                 setEndDate(newValue)
             }
-        
+            console.log(startDate!)
+            console.log(endDate!)
+            props.onDateChange(sDate!.format('YYYY-MM-DD'), eDate!.format('YYYY-MM-DD'));
     };
 
-    React.useEffect(() => {
-        props.onDateChange(startDate!.format('YYYY-MM-DD'), endDate!.format('YYYY-MM-DD'));
-    }, [startDate, endDate]);
+    // React.useEffect(() => {
+    //     console.log("asdasdasd")
+    //     props.onDateChange(startDate!.format('YYYY-MM-DD'), endDate!.format('YYYY-MM-DD'));
+    // }, [handleChange]);
     return (
         <Grid container>
             <Grid item direction="row" >
