@@ -25,8 +25,6 @@ export default function Departments() {
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
   const { t } = useTranslation();
-  const navBarHeight = localStorage.getItem('navBarHeight')!;
-
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -44,7 +42,9 @@ export default function Departments() {
 
   const myGridToolbarComponents = [
     <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-      userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />]
+      userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />,
+      <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+      filter={departmentFilter} setFilter={setDepartmentFilter}/>]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setDepartmentFilter({
@@ -104,12 +104,7 @@ export default function Departments() {
 
   return (
     <React.Fragment>
-      <Grid sx={{ width: '100%', height: `calc(100% - ${navBarHeight})` }}>
-        <Grid container direction={'row'}>
-          <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-            filter={departmentFilter} setFilter={setDepartmentFilter}
-          ></DepartmentSearchFilter>
-        </Grid>
+      <Grid sx={{ width: '100%'}}>
         <DataGrid
           rows={rows}
           columns={columns}

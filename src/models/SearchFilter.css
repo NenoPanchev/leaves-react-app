@@ -1,3 +1,7 @@
 .searchForm > div, .searchForm > button {
     margin-right: 10px;
 }
+
+.searchForm .filterBar > div {
+    margin-right: 10px;
+}
