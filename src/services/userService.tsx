@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { axiosInstance as axios} from '../config/AxiosConfig';
+import { axiosInstance as axios } from '../config/AxiosConfig';
 import { AxiosError, formToJSON } from 'axios';
 import { BASE_URL, BASE_USER_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Role } from '../models/objects/Role';
@@ -76,18 +76,24 @@ export const getUser = async () => {
 }
 
 export const changePasswordClick = async (id: number) => {
-  return await axios.put(BASE_USER_URL + `change-password-token/${id}`);
+  return await axios.put(BASE_USER_URL + `${id}/change-password-token`);
 
 }
 
-export const getUserById = async (id:number) => {
-  return await axios.get<IUserDetails>(BASE_USER_URL+id);
-  }
+export const getUserById = async (id: number) => {
+  return await axios.get<IUserDetails>(BASE_USER_URL + id);
+}
 
 
-export const validateUserPassowrById = async (id:number,password:string ) => {
-  return await axios.put<IUserDetails>(BASE_USER_URL+`validate-password/${id}`,password);
-  }
+export const validateUserPassowrById = async (id: number, password: string) => {
+  return await axios.put<IUserDetails>(BASE_USER_URL + `${id}/validate-password`, password);
+}
+
+
+export const validateUserPasswordChangeTokenById = async (id: number, token: string) => {
+  return await axios.put<IUserDetails>(BASE_USER_URL + `${id}/validate-password-token`, token);
+}
+
 export const useCreate = () => {
 
   const addUser = async (user: FormData) => {
@@ -217,15 +223,15 @@ export const useChangePassword = () => {
     const passwordChangeUrl = BASE_USER_URL + 'change-password/' + id;
 
     const result = await axios.put(passwordChangeUrl, formToJSON(passwordDto))
-      .then(response => {} )
+      .then(response => { })
       .catch((e: AxiosError<any, any>) => {
         if (e.response) {
-        console.log(e)
-        serverResponse = e.response.data.message;
+          console.log(e)
+          serverResponse = e.response.data.message;
         }
       })
-      console.log(serverResponse)
-      return serverResponse;
+    console.log(serverResponse)
+    return serverResponse;
   }
   return editPassword;
 }
