@@ -51,27 +51,33 @@ export default function ChangePasswordButton() {
 
     const handleClose = () => {
         setOpen(false);
+        const timer= setTimeout(() => {
+            setToken('');
+            setOldPassword('');
+            setNewPassword('');
+            setNewPasswordConfirm('');
+            setServerErrorMessage('');
+            setServerError(false);
+            sethasError(true);
+          }, 100);
         console.log("handleClose")
-        setToken('');
-        setOldPassword('');
-        setNewPassword('');
-        setNewPasswordConfirm('');
-        setServerErrorMessage('');
-        setServerError(false);
-        sethasError(true);
-
+      
+        clearTimeout(timer);
     };
 
     useEffect(() => {
+      
+        const timer=setTimeout(() => {
+            setToken('');
+            setOldPassword('');
+            setNewPassword('');
+            setNewPasswordConfirm('');
+            setServerErrorMessage('');
+            setServerError(false);
+            sethasError(true);
+          }, 100);
 
-        setToken('');
-        setOldPassword('');
-        setNewPassword('');
-        setNewPasswordConfirm('');
-        setServerErrorMessage('');
-        setServerError(false);
-        sethasError(true);
-
+          return () => clearTimeout(timer);
     }, [open]);
 
 
