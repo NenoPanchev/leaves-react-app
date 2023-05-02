@@ -1,36 +1,14 @@
 
-import { Container, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CalendarById from '../../components/calendar/CalendarById';
+import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import { getUserById } from '../../services/userService';
-import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
-import { useCallback, useState } from 'react';
-// {
-//     id: 0,
-//     name: "",
-//     email: "",
-//     department: "",
-//     roles: [{
-//       name: "",
-//       permissions: [{
-//         name: ""
-//       }]}],
-//     createdAt: "",
-//     createdBy: "",
-//     lastModifiedAt: "",
-//     lastModifiedBy: "",
-//     employeeInfo:{ id: 0,
-//         name: "",
-//         typeName:"",
-//         daysLeave:0,
-//         contractStartDate: "",
-//         typeDaysLeave:0,
-//          ssn:"",
-//          address:""}
-// } 
+
 export default function DashBoardByEmployee() {
     const [userByiId, setUser] = React.useState<IUserDetails>({} as IUserDetails)
     const { t, i18n } = useTranslation();
@@ -66,7 +44,7 @@ export default function DashBoardByEmployee() {
                 {showDetails &&
                     <Grid item mt="2%" >
                         <Paper >
-                            <Typography>{t('My info:')}</Typography>
+                            <Typography>{t('User info:')}</Typography>
 
 
                             <UserBaseDetailsMemo email={userByiId.email} />

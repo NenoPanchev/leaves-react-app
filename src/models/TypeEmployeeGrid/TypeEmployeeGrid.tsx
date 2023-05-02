@@ -147,11 +147,6 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   }
   const columns: GridColDef[] = [
     {
-      field: 'id',
-      headerName: 'Id',
-      flex: 0.25
-    },
-    {
       field: 'typeName',
       headerName: t(`LeaveTypes.TypeName`)!,
       flex: 1

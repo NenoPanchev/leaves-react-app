@@ -1,20 +1,19 @@
-import { Button, Dialog, DialogActions, DialogContent, Grid, ListItemButton, ListItemIcon, Tooltip } from '@mui/material';
-import * as React from 'react';
-import { useTranslation } from 'react-i18next';
-import IRequestDataGet from '../interfaces/request/IRequestDataGet';
-import { DateField } from '@mui/x-date-pickers/DateField/DateField';
-import dayjs, { Dayjs } from 'dayjs';
-import RequestService from '../../services/RequestService';
-import { AxiosError } from 'axios';
-import { GridRowId } from '@mui/x-data-grid/models/gridRows';
+import DoneIcon from '@mui/icons-material/Done';
+import { Button, Dialog, DialogActions, DialogContent, Grid, Tooltip } from '@mui/material';
+import { GridActionsCellItem } from '@mui/x-data-grid/components/cell/GridActionsCellItem';
 import { GridApiCommunity } from '@mui/x-data-grid/models/api/gridApiCommunity';
-import { useEffect, useState } from 'react';
+import { GridRowId } from '@mui/x-data-grid/models/gridRows';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import DoneIcon from '@mui/icons-material/Done';
-import IRequestDataApprove from '../interfaces/request/IRequestDataAprove';
-import { GridActionsCellItem } from '@mui/x-data-grid/components/cell/GridActionsCellItem';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import RequestService from '../../services/RequestService';
 import IAlertProps from '../interfaces/errors/IAlertProps';
+import IRequestDataApprove from '../interfaces/request/IRequestDataAprove';
+import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 var customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
@@ -26,7 +25,6 @@ type ApproveRequestProps = {
 }
 
 const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element => {
-    console.log("line 24 ApproveRequestDialog ")
     console.log(props.request.startDate);
     console.log(dayjs(props.request.startDate).format());
     const [open, setOpen] = React.useState(false);
@@ -48,9 +46,6 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
       );
     console.log(props.request);
     const [t, i18n] = useTranslation();
-    useEffect(() => {
-        console.log("hereherehrerherherhe")
-    }, []);
     const handleClickOpen = () => {
         if(props.request.approved==null)
         {
