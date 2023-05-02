@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { changePasswordClick, useChangePassword, validateUserPassowrById } from '../../services/userService';
+import { changePasswordClick, useChangePassword, validateUserPassowrById, validateUserPasswordChangeTokenById } from '../../services/userService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import Step from '@mui/material/Step';
@@ -42,7 +42,7 @@ export default function ChangePasswordButton() {
     const navigate = useNavigate();
     const changePassword = useChangePassword();
 
-    const steps = [t('Old Password'), t('New Password'), t('Token')];
+    const steps = [t('Old Password'), t('Token'), t('New Password')];
 
     const handleClickOpen = () => {
         setActiveStep(0)
@@ -59,20 +59,20 @@ export default function ChangePasswordButton() {
         setServerErrorMessage('');
         setServerError(false);
         sethasError(true);
- 
+
     };
 
- useEffect(() => {
+    useEffect(() => {
 
-    setToken('');
-    setOldPassword('');
-    setNewPassword('');
-    setNewPasswordConfirm('');
-    setServerErrorMessage('');
-    setServerError(false);
-    sethasError(true);
- 
-   }, [open]);
+        setToken('');
+        setOldPassword('');
+        setNewPassword('');
+        setNewPasswordConfirm('');
+        setServerErrorMessage('');
+        setServerError(false);
+        sethasError(true);
+
+    }, [open]);
 
 
 
@@ -189,41 +189,49 @@ export default function ChangePasswordButton() {
 
     const stepsElement: Array<JSX.Element> = [
         renderOldPasswordField(),
-        renderNewPasswordFields(),
-        renderTokenField()
+        renderTokenField(),
+        renderNewPasswordFields()
+
     ]
 
     const handleNext = async () => {
-        if(activeStep===0)
-        {
-       await     validateUserPassowrById(userId,oldPassword)
+        if (activeStep === 0) {
+
+            await validateUserPassowrById(userId, oldPassword)
+                .then((response: any) => {
+
+                    //SEND TOKEN TO EMAIL
+                    changePasswordClick(userId)
+                        .then((response: any) => {
+                            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                        })
+                        .catch((e: Error) => {
+                            setServerErrorMessage("We can not send you Token right now!\nPlease try again later!")
+                            setServerError(true);
+                        });
+
+                })
+                .catch((e: AxiosError<any, any>) => {
+                    // if (e.response) {
+                    console.log(e)
+                    setServerErrorMessage(e.response!.data.message)
+
+                    setServerError(true);
+                })
+
+        } else if (activeStep === steps.length - 2) {
+
+            await  validateUserPasswordChangeTokenById(userId,token)
             .then((response: any) => {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             })
             .catch((e: AxiosError<any, any>) => {
-                // if (e.response) {
-                console.log(e)
                 setServerErrorMessage(e.response!.data.message)
-                
                 setServerError(true);
-              })
-              console.log("a1")
-
-        }else if (activeStep === steps.length - 2) {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            changePasswordClick(userId)
-                .then((response: any) => {
-                    //TODO ALERT MSG
-                    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
-                
-                })
-                .catch((e: Error) => {
-                    console.log(e);
-                });
-                console.log(userId)
+            });
+            
         }
-        else
-        {
+        else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             console.log("a3")
         }
@@ -238,30 +246,30 @@ export default function ChangePasswordButton() {
         setActiveStep(0);
     };
 
-  useEffect(() => {
-   validate()
+    useEffect(() => {
+        validate()
 
-  }, [token,oldPassword,newPassword,newPasswordConfirm]);
+    }, [token, oldPassword, newPassword, newPasswordConfirm]);
 
-  useEffect(() => {
+    useEffect(() => {
 
-   sethasError(oldPasswordError)
- 
-   }, [oldPasswordError]);
+        sethasError(oldPasswordError)
 
-   useEffect(() => {
+    }, [oldPasswordError]);
 
-    sethasError(newPasswordConfirm!==newPassword||newPasswordError)
+    useEffect(() => {
 
-    }, [newPasswordConfirm,newPassword]);
+        sethasError(newPasswordConfirm !== newPassword || newPasswordError)
+
+    }, [newPasswordConfirm, newPassword]);
 
     useEffect(() => {
 
         setServerErrorMessage('');
         setServerError(false);
         // sethasError(true);
-     
-       }, [activeStep]);
+
+    }, [activeStep]);
     return (
         <React.Fragment>
             <ListItemButton
@@ -324,7 +332,7 @@ export default function ChangePasswordButton() {
                                             {serverError &&
                                                 <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
                                             }
-         {/* <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography> */}
+                                            {/* <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography> */}
 
                                             {/* Text fields */}
                                             {stepsElement[activeStep]}
