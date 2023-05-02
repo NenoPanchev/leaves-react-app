@@ -177,8 +177,9 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     }
 
     function handleZoomClick() {
+        console.log("handleZoomClickCalendar")
         props.onShow()
-        if (calendarHeight === "auto" && calendarWidth === "auto") {
+       if (calendarHeight === "auto" && calendarWidth === "auto") {
             setCalendarHeight("65vh");
             setCalendarWidth("120vh");
             setCalendarDaysAndWeekLabels("56");
@@ -191,6 +192,9 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             setCalendarDaysAndWeekLabels("36");
             setCalendarWeekLabelHeight("40");
         }
+
+
+       
     }
 
     function calculateCalendarHeight() {

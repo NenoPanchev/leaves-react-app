@@ -93,7 +93,7 @@ const CalendarById = (props: CalendarByIdProps): JSX.Element => {
         }
     }
     function calculateCalendarHeight() {
-        let initialheight = 174;
+        let initialheight = 158;
         if (calendarHeight === "auto") {
             return initialheight + parseInt(calendarDaysAndWeekLabels) + parseInt(calendarDaysAndWeekLabels);
         }

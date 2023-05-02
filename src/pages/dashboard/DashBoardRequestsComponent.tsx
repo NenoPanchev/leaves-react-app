@@ -42,17 +42,19 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     );
 
     function handleZoomClick() {
+ 
         props.onShow()
 
-
-        if (requestsComponentHeight === "auto" && requestsComponentWidth === "auto") {
-            setRequestsComponentHeight("85vh")
-            setRequestsComponentWidth("173vh")
-        }
-        else {
-            setRequestsComponentHeight("auto")
-            setRequestsComponentWidth("auto")
-        }
+            if (requestsComponentHeight === "auto" && requestsComponentWidth === "auto") {
+                setRequestsComponentHeight("85vh")
+                setRequestsComponentWidth("173vh")
+            }
+            else {
+                setRequestsComponentHeight("auto")
+                setRequestsComponentWidth("auto")
+            }
+            console.log("handleClose")
+      
     }
     const calendarDayChange = (startDate: Dayjs | null, endDate: Dayjs | null) => {
         console.log("calendarDayChange")

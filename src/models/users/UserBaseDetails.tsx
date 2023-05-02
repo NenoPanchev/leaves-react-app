@@ -45,12 +45,12 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
   return (
     <React.Fragment>
-      <Backdrop
+      {/* <Backdrop
       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       open={loading}>
 
       <CircularProgress color="inherit" />
-    </Backdrop>
+    </Backdrop> */}
        <Grid container direction={'row'} minWidth="100%" width="100%">
           <Card >
             <Table>

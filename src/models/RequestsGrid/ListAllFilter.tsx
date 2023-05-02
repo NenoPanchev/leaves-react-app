@@ -135,7 +135,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         if (operation === "EQUAL") {
 
             return (<Grid item > {/* StartDate By Filters */}
-                <Grid container direction="row" spacing={5} >
+                <Grid container direction="row" spacing={10} >
                     <Grid item >
                         <Grid container justifyContent="center" >
                             <Typography variant="overline" component="div">
@@ -342,7 +342,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                         <Grid item>
                             <Grid container justifyContent="center" >
                                 <Typography variant="overline" component="div">
-                                    {t(`Requests.Aprooved`)!}
+                                    {t(`Requests.Approved`)!}
                                 </Typography>
                             </Grid>
                             <Grid container direction="column">

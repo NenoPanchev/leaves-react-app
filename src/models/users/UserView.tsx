@@ -137,7 +137,6 @@ export default function UserView(props: IViewProps) {
             </Table>
           </Card>
         </Grid>
-        <LeavesReport id={props.id}></LeavesReport>
       </DialogContent>
 
     </ React.Fragment>
