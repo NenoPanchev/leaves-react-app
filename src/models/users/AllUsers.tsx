@@ -27,6 +27,7 @@ export default function Users() {
   const { t } = useTranslation();
   const page = userService.useFetchPage(refreshCurrentState, userFilter);
 
+
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }

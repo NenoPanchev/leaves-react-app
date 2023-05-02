@@ -10,6 +10,8 @@ import { IUserDetails } from '../models/interfaces/user/IUserDetails';
 import { IUserPage } from '../models/interfaces/user/IUserPage';
 import { IUserFilter } from '../models/interfaces/user/IUserFilter';
 import { ILeavesAnnualReport } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReport';
+import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
+import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -228,14 +230,14 @@ export const useChangePassword = () => {
   return editPassword;
 }
 
-export const useFetchLeavesAnnualReport = (props: number) => {
-  const [report, setReport] = useState<ILeavesAnnualReport[]>();
+export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualReportFilter) => {
+  const [report, setReport] = useState<ILeavesReportPage>(DEFAULT_PAGE);
   useEffect(() => {
     loadReport();
-  }, []);
+  }, [filter]);
 
   const loadReport = async () => {
-    const result = await axios.get(BASE_USER_URL + 'leaves-report/' + props)
+    const result = await axios.post(BASE_USER_URL + 'leaves-report/' + props, filter)
       .then(response => setReport(response.data))
       .catch(error => console.log(error))
   }

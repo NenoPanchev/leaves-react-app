@@ -1,7 +1,7 @@
-import { IUser } from "./IUser";
+import { ILeavesAnnualReport } from "./ILeavesAnnualReport";
 
-export interface IUserPage {
-    content: IUser[],
+export interface ILeavesReportPage {
+    content: ILeavesAnnualReport[],
     totalElements: number,
     totalPages: number,
     numberOfElements: number,

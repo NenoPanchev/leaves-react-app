@@ -130,7 +130,7 @@ export default function UserView(props: IViewProps) {
                   <TableCell>{user?.employeeInfo.typeName}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>{t('Paid leave') + ':'}</TableCell>
+                  <TableCell className='tableHeader' variant='head'>{t('Paid leave left') + ':'}</TableCell>
                   <TableCell>{user?.employeeInfo.daysLeave}</TableCell>
                 </TableRow>
               </TableBody>

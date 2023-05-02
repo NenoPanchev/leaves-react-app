@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-import { Grid, Card, Table, Button, Typography, Accordion, AccordionSummary, AccordionDetails, TableContainer, TableHead, Paper } from '@mui/material';
-
+import { Table, TableContainer, TableHead, Paper } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
@@ -12,19 +10,7 @@ import './AnnualReportTable.css'
 
 
 export default function ContractTable(props: ILeavesAnnualReport) {
-    const contractBreakdowns = props.contractBreakdowns;
     const { t } = useTranslation();
-
-    function parseDouble(number: number) {
-        const numberToString = number.toString();
-        if (number % 1 === 0) {
-            return numberToString;
-        }
-        let decimal = parseFloat(numberToString).toFixed(2);
-        const result = '(' + Math.round(number) + ') ' + decimal;
-        return result;
-    }
-
     return (
         <React.Fragment>
             <TableContainer component={Paper} sx={{overflow: 'hidden'}}>
@@ -55,7 +41,6 @@ export default function ContractTable(props: ILeavesAnnualReport) {
                         </TableRow>
                     </TableBody>
                 </Table>
-
             </TableContainer>
         </ React.Fragment>
     );

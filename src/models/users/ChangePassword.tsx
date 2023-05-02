@@ -301,7 +301,7 @@ export default function ChangePasswordButton() {
                                             } = {};
 
                                             return (
-                                                <Step  {...stepProps}>
+                                                <Step key={index} {...stepProps}>
                                                     <StepLabel {...labelProps}>{label}</StepLabel>
                                                 </Step>
                                             );

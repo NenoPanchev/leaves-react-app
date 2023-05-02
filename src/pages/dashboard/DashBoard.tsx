@@ -1,4 +1,4 @@
-import { Container, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,16 +23,14 @@ export default function DashBoard() {
         }
     })
     const updateDetails = useCallback(
-
         (): void => setShowDetails(!showDetails),
-
         [showDetails]
     );
 
     return (
         <React.Fragment>
             {user !== null &&
-                
+            
                     <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
                         {/* User Details */}
@@ -40,11 +38,7 @@ export default function DashBoard() {
                             <Grid item mt="2%" >
                                 <Paper>
                                     <Typography>{t('My info:')}</Typography>
-
-
                                     <UserBaseDetails email={email!} />
-
-
                                 </Paper>
                             </Grid>
                         }
