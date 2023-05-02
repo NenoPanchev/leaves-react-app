@@ -148,16 +148,21 @@
     "Developer": "Developer",
     "Paid leave": "Paid leave",
     "Start date": "Start date",
+    "End date": "End date",
     "Employed at": "Employed at",
     "Change password": "Change password",
     "Old Password": "Old Password",
     "New Password": "New Password",
     "New Password Confirm": "New Password Confirm",
     "Clear": "Clear",
-    "Leaves App": "Leaves App"
-
-
-
+    "Leaves App": "Leaves App",
+    "Contract": "Contract",
+    "Days": "Days",
+    "Contract days": "Contract days",
+    "Days used": "Days used",
+    "Leaves report": "Leaves report",
+    "From previous year": "From previous year",
+    "Carryover days": "Carryover days"
 
 
 }

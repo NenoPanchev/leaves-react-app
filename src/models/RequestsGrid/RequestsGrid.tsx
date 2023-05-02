@@ -257,7 +257,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   ];
 
   return (
-    <Grid sx={{ width: '99.9%' }}>
+    <Grid sx={{ width: '100%' }}>
       <DataGrid
         disableColumnMenu
         localeText={{

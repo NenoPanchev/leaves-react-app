@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import AuthContext from '../../contexts/AuthContext';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
+import LeavesReport from '../../models/users/leavesReport/LeavesReport';
 
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
@@ -31,28 +32,31 @@ export default function DashBoard() {
     return (
         <React.Fragment>
             {user !== null &&
-                <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%'}}>
+                
+                    <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
-                    {/* User Details */}
-                    {showDetails &&
-                        <Grid item mt="2%" >
-                            <Paper>
-                                <Typography>{t('My info:')}</Typography>
-
-
-                                <UserBaseDetails email={email!}/>
+                        {/* User Details */}
+                        {showDetails &&
+                            <Grid item mt="2%" >
+                                <Paper>
+                                    <Typography>{t('My info:')}</Typography>
 
 
-                            </Paper>
+                                    <UserBaseDetails email={email!} />
+
+
+                                </Paper>
+                            </Grid>
+                        }
+                        {/* Calendar */}
+
+                        <Grid item mt="2%" ml="5%" >
+                            <DashBoardRequestsComponent onShow={updateDetails} />
                         </Grid>
-                    }
-                    {/* Calendar */}
-                    
-                    <Grid item mt="2%" ml="5%" >
-                            <DashBoardRequestsComponent onShow={updateDetails} />                    
+
+                    <LeavesReport id={user.getId()}></LeavesReport>
                     </Grid>
-                    
-                </Grid>
+                
             }
 
         </React.Fragment>

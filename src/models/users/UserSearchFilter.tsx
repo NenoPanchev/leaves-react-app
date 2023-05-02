@@ -2,19 +2,21 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { useFetchAllNames } from '../../services/roleService';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import { IUserSearchFilterProps } from '../interfaces/user/IUserSearchFilterProps';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import '../SearchFilter.css'
 
 
 function UserSearchFilter(props: IUserSearchFilterProps) {
     const [name, setName] = React.useState('');
+    const [open, setOpen] = React.useState(false);
     const [email, setEmail] = React.useState('');
     const [department, setDepartment] = React.useState('');
     const [roles, setRoles] = React.useState<string[]>([]);
@@ -29,14 +31,24 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
         event.stopPropagation();
         event.preventDefault();
 
-        props.setFilter({...props.filter, name: name, email: email, department: department,
-            roles: roles, offset: DEFAULT_OFFSET})
+        props.setFilter({
+            ...props.filter, name: name, email: email, department: department,
+            roles: roles, offset: DEFAULT_OFFSET
+        })
 
         props.refresh(props.refreshCurrentState + 1);
     }
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     function clearFilter() {
-        setName('');  
+        setName('');
         setEmail('');
         setDepartment('');
         setRoles([]);
@@ -44,96 +56,105 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
         props.refresh(props.refreshCurrentState + 1);
 
     }
-
-
     return (
         <React.Fragment>
-            <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Button startIcon={<FilterListIcon />} onClick={handleClickOpen} >
 
-                <TextField
-                    margin="normal"
-                    size='small'
-                    required
-                    id="name"
-                    label={t('Name')}
-                    name="name"
-                    autoComplete="name"
-                    value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    required
-                    id="email"
-                    label={t('Email')}
-                    name="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    required
-                    id="department"
-                    label={t('Department')}
-                    name="department"
-                    autoComplete="department"
-                    value={department}
-                    onChange={(e) => {
-                        setDepartment(e.target.value);
-                    }}
-                />
-                <Autocomplete
-                    multiple
-                    id="users"
-                    options={roleNames}
-                    size='small'
-                    sx={{minWidth: '20%'}}
-                    value={roles}
-                    onChange={( event, newValue) => {
-                        setRoles(newValue)
-                    }}
-                    renderInput={(params) => (
+                <Typography variant="overline" >
+                    {t(`DataGridToolBar.ManageFilters`)!}
+                </Typography>
+
+            </Button>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth='lg'
+            >
+                <Grid container
+                    alignItems="center"
+                    justifyContent="center">
+                    <DialogTitle alignItems="center">{t(`ListAllFilters.Filter`)!}</DialogTitle>
+                </Grid>
+                <DialogContent>
+                    <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+
                         <TextField
-                            {...params}
-                            margin='normal'
-                            label={t('Roles')}
-                            placeholder={t('Roles')!}
+                            margin="normal"
+                            size='small'
+                            required
+                            id="name"
+                            label={t('Name')}
+                            name="name"
+                            autoComplete="name"
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value);
+                            }}
                         />
-                    )}
-                />
-                <Button
-                    type='submit'
-                    variant='outlined'
-                    color='success'
-                    size='small'
-                    sx={{marginTop: '16px',
-                        marginBottom: '8px',
-                        minWidth: 'auto'}}
-                >
-                    <SearchIcon />
-                    {t('Search')}
-                </Button>
-                <Button
-                    type='submit'
-                    variant='outlined'
-                    color='error'
-                    size='small'
-                    sx={{marginTop: '16px',
-                        marginBottom: '8px',
-                        minWidth: 'auto'}}
-                        onClick={clearFilter}
-                >
-                    <CloseIcon />
-                    {t('Clear')}
-                </Button>
-            </Box>
+                        <TextField
+                            margin="normal"
+                            size='small'
+                            required
+                            id="email"
+                            label={t('Email')}
+                            name="email"
+                            autoComplete="email"
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
+                        />
+                        <TextField
+                            margin="normal"
+                            size='small'
+                            required
+                            id="department"
+                            label={t('Department')}
+                            name="department"
+                            autoComplete="department"
+                            value={department}
+                            onChange={(e) => {
+                                setDepartment(e.target.value);
+                            }}
+                        />
+                        <Autocomplete
+                            multiple
+                            id="users"
+                            options={roleNames}
+                            size='small'
+                            sx={{ minWidth: '20%' }}
+                            value={roles}
+                            onChange={(event, newValue) => {
+                                setRoles(newValue)
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    margin='normal'
+                                    label={t('Roles')}
+                                    placeholder={t('Roles')!}
+                                />
+                            )}
+                        />
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                        <Grid container direction={'row-reverse'}>
+                        <Button
+                            type='submit'
+                            onClick={clearFilter}>
+                            <CloseIcon />
+                            {t('Clear')}
+                        </Button>
+                        <Button
+                            type='submit'
+                            startIcon={<FilterAltIcon />}>
+                            {t('Filter')}
+                        </Button>
+                        </Grid>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     )
 }
