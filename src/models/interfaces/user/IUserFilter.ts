@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs"
+
 export interface IUserFilter {
     name: string
     email: string
@@ -5,4 +7,9 @@ export interface IUserFilter {
     roles: string[]
     offset: number
     limit: number
+    position: string
+    greaterThanOrEqualToDate: Dayjs | null
+    lessThanOrEqualToDate: Dayjs | null
+    greaterThanOrEqualToPaidLeave: number | null
+    lessThanOrEqualToPaidLeave: number | null
 }

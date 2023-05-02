@@ -5,4 +5,6 @@ export interface IUserSearchFilterProps {
     refresh: (value: number) => void;
     filter: IUserFilter;
     setFilter: (value: IUserFilter) => void;
+    typeNames: string[];
+    departmentNames: string[];
 }

@@ -30,7 +30,12 @@ export const DEFAULT_USER_FILTER = {
   department: '',
   roles: [],
   offset: DEFAULT_OFFSET,
-  limit: DEFAULT_LIMIT
+  limit: DEFAULT_LIMIT,
+  position: '',
+  greaterThanOrEqualToDate: null,
+  lessThanOrEqualToDate: null,
+  greaterThanOrEqualToPaidLeave: null,
+  lessThanOrEqualToPaidLeave: null
 };
 
 export const DEFAULT_ROLE_FILTER = {

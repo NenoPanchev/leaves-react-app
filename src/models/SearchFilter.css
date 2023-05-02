@@ -5,3 +5,7 @@
 .searchForm .filterBar > div {
     margin-right: 10px;
 }
+
+.searchForm .filterBar > p {
+    margin: auto;
+}
