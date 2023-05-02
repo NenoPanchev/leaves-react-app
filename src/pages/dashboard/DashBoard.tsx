@@ -23,34 +23,43 @@ export default function DashBoard() {
         }
     })
     const updateDetails = useCallback(
-        (): void => setShowDetails(!showDetails),
+        (): void =>  setShowDetails(!showDetails),
         [showDetails]
     );
 
+    React.useEffect(() => {
+    
+    }, [showDetails]);
+    const UserBaseDetailsMemo = React.memo(UserBaseDetails);
+    const LeavesReportMemo = React.memo(LeavesReport);
     return (
         <React.Fragment>
             {user !== null &&
-            
-                    <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
-                        {/* User Details */}
-                        {showDetails &&
-                            <Grid item mt="2%" >
-                                <Paper>
-                                    <Typography>{t('My info:')}</Typography>
-                                    <UserBaseDetails email={email!} />
-                                </Paper>
-                            </Grid>
-                        }
-                        {/* Calendar */}
+                <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
-                        <Grid item mt="2%" ml="5%" >
-                            <DashBoardRequestsComponent onShow={updateDetails} />
+                    {/* User Details */}
+
+                    {showDetails &&
+                        <Grid item mt="2%" >
+                            <Paper>
+                                <Typography>{t('My info:')}</Typography>
+                                <UserBaseDetailsMemo email={email!} />
+                            </Paper>
                         </Grid>
+                    }
 
-                    <LeavesReport id={user.getId()}></LeavesReport>
+                    {/* Calendar */}
+                    <Grid item mt="2%" ml="5%" >
+                        <DashBoardRequestsComponent onShow={updateDetails} />
                     </Grid>
-                
+
+                     {/* LeavesReport */}
+                    {showDetails &&
+                        <LeavesReportMemo id={user.getId()}/>
+                    }
+                </Grid>
+
             }
 
         </React.Fragment>
