@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
 import { Grid } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
-import { ReactNode } from 'react';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
 import '../ViewAll.css'
@@ -25,7 +24,7 @@ export default function Users() {
   const roleNames = fetchRoleNames(refreshCurrentState);
   const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
   const { t } = useTranslation();
-  const page = userService.useFetchPage(refreshCurrentState, userFilter);
+  const page = userService.useFetchPage(userFilter);
 
 
   const renderViewButton = (id: number) => {
@@ -46,14 +45,13 @@ export default function Users() {
     <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
     <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-    filter={userFilter} setFilter={setUserFilter} />]
+    filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames}/>]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setUserFilter({
       ...userFilter, offset: paginationModel.pageSize * (paginationModel.page),
       limit: paginationModel.pageSize
     })
-    setRefreshCurrentState(refreshCurrentState + 1);
   };
 
   const columns: GridColDef[] = [

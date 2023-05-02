@@ -153,5 +153,9 @@
     "Leaves report": "Отчет на отпуски",
     "From previous year": "Oт предходната година",
     "Carryover days": "Дни за прехвърляне",
-    "Filter": "Филтрирай"
+    "Filter": "Филтрирай",
+    "Start date is after": "Началната дата е след",
+    "Start date is before": "Началната дата е преди",
+    "More than": "Повече от",
+    "Less than": "По-малко от"
 }

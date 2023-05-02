@@ -164,7 +164,11 @@
     "Leaves report": "Leaves report",
     "From previous year": "From previous year",
     "Carryover days": "Carryover days",
-    "Filter": "Filter"
+    "Filter": "Filter",
+    "Start date is after": "Start date is after",
+    "Start date is before": "Start date is before",
+    "More than": "More than",
+    "Less than": "Less than"
 
 
 }

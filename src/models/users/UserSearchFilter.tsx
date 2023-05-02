@@ -11,6 +11,9 @@ import { IUserSearchFilterProps } from '../interfaces/user/IUserSearchFilterProp
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import '../SearchFilter.css'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 
 
 function UserSearchFilter(props: IUserSearchFilterProps) {
@@ -19,6 +22,11 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     const [email, setEmail] = React.useState(props.filter.email);
     const [department, setDepartment] = React.useState(props.filter.department);
     const [roles, setRoles] = React.useState<string[]>(props.filter.roles);
+    const [position, setPosition] = React.useState(props.filter.position);
+    const [greaterThanOrEqualToDate, setGreaterThanOrEqualToDate] = React.useState<Dayjs | null>(props.filter.greaterThanOrEqualToDate);
+    const [lessThanOrEqualToDate, setLessThanOrEqualToDate] = React.useState<Dayjs | null>(props.filter.lessThanOrEqualToDate);
+    const [greaterThanOrEqualToPaidLeave, setGreaterThanOrEqualToPaidLeave] = React.useState(props.filter.greaterThanOrEqualToPaidLeave);
+    const [lessThanOrEqualToPaidLeave, setLessThanOrEqualToPaidLeave] = React.useState(props.filter.lessThanOrEqualToPaidLeave);
     const roleNames = useFetchAllNames(props.refreshCurrentState);
     if (!roleNames.includes('SUPER_ADMIN')) {
         roleNames.unshift('SUPER_ADMIN');
@@ -30,9 +38,9 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
         event.preventDefault();
         props.setFilter({
             ...props.filter, name: name, email: email, department: department,
-            roles: roles, offset: DEFAULT_OFFSET
+            roles: roles, position: position, greaterThanOrEqualToDate: greaterThanOrEqualToDate,
+            offset: DEFAULT_OFFSET
         })
-        props.refresh(props.refreshCurrentState + 1);
     }
 
     const handleClickOpen = () => {
@@ -48,7 +56,6 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
             ...props.filter, name: '', email: '', department: '',
             roles: [], offset: DEFAULT_OFFSET
         })
-        props.refresh(props.refreshCurrentState + 1);
     }
     return (
         <React.Fragment>
@@ -71,7 +78,8 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                     <DialogTitle alignItems="center">{t(`ListAllFilters.Filter`)!}</DialogTitle>
                 </Grid>
                 <Box id='userFilterForm' className='searchForm' component="form" onSubmit={handleSubmit} noValidate>
-                    <DialogContent className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <DialogContent>
+                        <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
                             <TextField
                                 margin="normal"
                                 size='small'
@@ -96,17 +104,25 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     setEmail(e.target.value);
                                 }}
                             />
-                            <TextField
-                                margin="normal"
-                                size='small'
+                            <Autocomplete
                                 id="department"
-                                label={t('Department')}
-                                name="department"
-                                autoComplete="department"
+                                options={props.departmentNames}
+                                size='small'
+                                filterSelectedOptions
+                                sx={{ minWidth: '20%' }}
                                 value={department}
-                                onChange={(e) => {
-                                    setDepartment(e.target.value);
+                                onChange={(event, newValue) => {
+                                    setDepartment(newValue!);
                                 }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name='department'
+                                        margin='normal'
+                                        label={t('Department')}
+                                        placeholder={t('Department')!}
+                                    />
+                                )}
                             />
                             <Autocomplete
                                 multiple
@@ -127,6 +143,74 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     />
                                 )}
                             />
+                            <Autocomplete
+                                id="position"
+                                options={props.typeNames}
+                                size='small'
+                                filterSelectedOptions
+                                sx={{ minWidth: '20%' }}
+                                value={position}
+                                onChange={(event, newValue) => {
+                                    setPosition(newValue!);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name='position'
+                                        margin='normal'
+                                        label={t('Position')}
+                                        placeholder={t('Position')!}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                                <DatePicker label={t('Start date is after')}
+                                    value={greaterThanOrEqualToDate}
+
+                                    sx={{ marginTop: '5px', marginBottom: '5px' }}
+                                    onChange={(newValue) => setGreaterThanOrEqualToDate(newValue)} />
+
+                                <Typography>≤</Typography>
+                                <Typography>{t('Start date')}</Typography>
+                                <Typography>≤</Typography>
+
+                                <DatePicker label={t('Start date is before')}
+                                    value={lessThanOrEqualToDate}
+                                    sx={{ marginTop: '5px', marginBottom: '5px' }}
+                                    onChange={(newValue) => setLessThanOrEqualToDate(newValue)} />
+                            </LocalizationProvider>
+                        </Grid>
+                        <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
+                            <TextField
+                                id="greaterThanOrEqualToPaidLeave"
+                                name='greaterThanOrEqualToPaidLeave'
+                                label={t('More than')!}
+                                type="number"
+                                value={greaterThanOrEqualToPaidLeave}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={e => setGreaterThanOrEqualToPaidLeave(Number(e.target.value))}
+                                sx={{ marginTop: '10px', marginBottom: '5px' }}
+                            />
+                            <Typography>≤</Typography>
+                            <Typography>{t('Paid leave left')}</Typography>
+                            <Typography>≤</Typography>
+                            <TextField
+                                id="greaterThanOrEqualToPaidLeave"
+                                name='greaterThanOrEqualToPaidLeave'
+                                label={t('Less than')!}
+                                type="number"
+                                value={lessThanOrEqualToPaidLeave}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={e => setLessThanOrEqualToPaidLeave(Number(e.target.value))}
+                                sx={{ marginTop: '10px', marginBottom: '5px' }}
+                            />
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <Grid container direction={'row-reverse'}>

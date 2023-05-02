@@ -105,11 +105,11 @@ export const useCreate = () => {
   return addUser;
 }
 
-export const useFetchPage = (refresh: number, filter: IUserFilter) => {
+export const useFetchPage = (filter: IUserFilter) => {
   const [page, setPage] = useState<IUserPage>(DEFAULT_PAGE);
   useEffect(() => {
     fetchPage();
-  }, [refresh]);
+  }, [filter]);
 
   const fetchPage = () => {
 
