@@ -261,8 +261,8 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
                                 nameOfField={t(`LeaveTypes.DaysLeave`)!}
                                 operation={operation}
                                 onChangeSlider={updateFilterDaysSlider} 
-                                initialStart={parseInt(daysLeave[0])} 
-                                initialEnd={parseInt(daysLeave[1])} />
+                                initialStart={daysLeave[0]} 
+                                initialEnd={daysLeave[1]} />
 
                                 {renderDaysList()}
 

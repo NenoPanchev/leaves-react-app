@@ -100,7 +100,6 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     [setRows]
   );
   const handleDeleteRow = (rowId: number) => {
-    console.log(typesFilter.deleted);
     if (typesFilter.deleted !== "null") {
       apiRef.current.updateRows([{ id: rowId, _action: 'delete' }]);
     }
@@ -184,77 +183,12 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
       },
     }
   ];
-
-  const onPreviousPage = async () => {
-    if (!page.first) {
-      setTypesFilter({ ...typesFilter, offset: (typesFilter.offset - typesFilter.limit) })
-    }
-  };
-
-  const onNextPage = async () => {
-    if (!page.last) {
-      setTypesFilter({ ...typesFilter, offset: (typesFilter.offset + typesFilter.limit) })
-    }
-
-
-  };
-
-  const calculateElements = () => {
-    if (!page.last) {
-      return <Grid >{typesFilter.offset + 1}-{page.numberOfElements * (page.number + 1)} {t('of')}  {page.totalElements}</Grid>
-    } else {
-      return <Grid >{typesFilter.offset + 1}-{page.totalElements} {t('of')}  {page.totalElements}</Grid>
-    }
-  };
-
-  const updateFilterLimit = useCallback(
-    (newValue: number): void => setTypesFilter({ ...typesFilter, limit: newValue }),
-
-    [setTypesFilter]
-
-  );
-
   const handlePaginationModelChange = (paginationModel: any) => {
     setTypesFilter({
       ...typesFilter, offset: paginationModel.pageSize * (paginationModel.page),
       limit: paginationModel.pageSize
     })
   };
-  const onFirstPage = async () => {
-    if (!page.first) {
-      setTypesFilter({ ...typesFilter, offset: 0 })
-    }
-  };
-  const onLastPage = async () => {
-    if (!page.last) {
-      setTypesFilter({ ...typesFilter, offset: (limit * (page.totalPages - 1)) })
-    }
-
-
-  };
-
-  function CustomPagination() {
-    
-    return <Grid container direction={'row'} alignItems="center" >
-      <Grid container justifyContent="left" marginTop={1} marginBottom={-7} marginLeft={1}>
-        <Grid item > <LimitDropDown onChange={updateFilterLimit} value={typesFilter.limit} /></Grid>
-      </Grid>
-
-      <Grid container justifyContent="right" marginBottom={2} marginTop={1}>
-        <Grid item>{calculateElements()}
-          {t('page')} {page.number + 1} {t('of')} {page.totalPages}
-        </Grid>
-        <Grid item marginRight={2}>
-          <IconButton onClick={onFirstPage} ><FirstPageIcon /></IconButton>
-          <IconButton onClick={onPreviousPage} ><NavigateBeforeIcon /></IconButton>
-          <IconButton onClick={onNextPage} >< NavigateNextIcon /></IconButton>
-          <IconButton onClick={onLastPage} >< LastPageIcon /></IconButton>
-        </Grid>
-      </Grid>
-    </Grid>
-
-  }
-
   const ListAllFilterProps = {
     onAdd: updateFilter,
     onSubmitChild: onSubmit,

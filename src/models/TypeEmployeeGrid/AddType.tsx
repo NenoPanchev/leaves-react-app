@@ -81,13 +81,15 @@ const AddType: React.FC<RequestsGridProps> = (props): JSX.Element => {
                             width: 'fit-content',
                         }}>
                         <FormControl sx={{ mt: 2, minWidth: 120 }}>
+                        <FormControl>
                             <Input id="typeName"
                                 error={type.typeName === ""}
                                 aria-describedby="typeName-helper-text"
                                 onChange={(event) => setType({ ...type, typeName: event.target.value })}
                             />
                             <FormHelperText id="typeName-helper-text">{type.typeName === "" ? 'Empty field!' : t(`LeaveTypes.TypeName`)!}</FormHelperText>
-
+                            </FormControl>
+                            <FormControl>
                             <Input id="daysLeave"
                                 defaultValue={"20"}
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -96,6 +98,7 @@ const AddType: React.FC<RequestsGridProps> = (props): JSX.Element => {
                                 error={type.daysLeave === ""}
                                 onChange={(event) => setType({ ...type, daysLeave: event.target.value })} />
                             <FormHelperText id="daysLeave-helper-text">{type.daysLeave === "" ? 'Empty field!' : t(`LeaveTypes.DaysLeave`)!}</FormHelperText>
+                            </FormControl>
                         </FormControl>
 
 

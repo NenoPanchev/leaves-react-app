@@ -55,17 +55,18 @@ export default function DashBoardByEmployee() {
                     </Grid>
                 }
                 {/* Calendar */}
-                <Grid height="fit-content">
+          
                     <Grid item mt="2%" ml="5%"  justifySelf="end">
                         <Paper sx={{ height: "fit-content", width: "fit-content" }} >
                             <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
                         </Paper>
                     </Grid>
-
-                    <Grid item mt="2%" ml="5%" >
+                    {showDetails &&
+                    <Grid item  ml="5%" >
                         <LeavesReport id={parseInt(id!)}></LeavesReport>
                     </Grid>
-                </Grid>
+}
+               
             </Grid>
         </React.Fragment>
 

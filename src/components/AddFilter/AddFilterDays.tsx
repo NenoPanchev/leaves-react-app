@@ -8,8 +8,8 @@ type AddFilterProps = {
     buttonName: string,
     nameOfField: string,
     operation: string,
-    initialStart: number,
-    initialEnd: number,
+    initialStart: string,
+    initialEnd: string,
     onChange: (newValue: string) => void;
     onChangeSlider: (startRange: string, endRange: string) => void;
 }
@@ -22,7 +22,7 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [t, i18n] = useTranslation();
     let valueOneAdd = '1'
     const [value, setValue] = React.useState<number[]>(
-        [Number.isNaN(props.initialStart) ? 20 : props.initialStart, Number.isNaN(props.initialEnd) ? 20 : props.initialEnd]
+        [Number.isNaN(parseInt(props.initialStart)) ? 20 : parseInt(props.initialStart), Number.isNaN(parseInt(props.initialEnd)) ? 40 : parseInt(props.initialEnd)]
     );
 
 

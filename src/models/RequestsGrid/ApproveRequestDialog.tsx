@@ -14,6 +14,7 @@ import RequestService from '../../services/RequestService';
 import IAlertProps from '../interfaces/errors/IAlertProps';
 import IRequestDataApprove from '../interfaces/request/IRequestDataAprove';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
+
 var customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
@@ -25,8 +26,6 @@ type ApproveRequestProps = {
 }
 
 const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element => {
-    console.log(props.request.startDate);
-    console.log(dayjs(props.request.startDate).format());
     const [open, setOpen] = React.useState(false);
     const [leaveRequestDto, setLeaveRequestDto] = React.useState<IRequestDataApprove>({
 
@@ -44,7 +43,6 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
           open: false
         }
       );
-    console.log(props.request);
     const [t, i18n] = useTranslation();
     const handleClickOpen = () => {
         if(props.request.approved==null)
@@ -62,7 +60,6 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
     };
 
     const handleApprove = async () => {
-        console.log(leaveRequestDto);
         await RequestService.approve(props.request.id, leaveRequestDto)
             .then((_response: any) => {
                 props.apiRef.updateRows([{ id: props.rowId, approved: true
@@ -101,6 +98,7 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
                             <Grid item direction="row" marginBottom="1.5vh">
                                 <DatePicker label="Start date" defaultValue={dayjs(props.request.startDate)} disabled/>
                                 <DatePicker label="End date" defaultValue={dayjs(props.request.endDate)} disabled />
+                                
                             </Grid>
 
                             <Grid item direction="row">
