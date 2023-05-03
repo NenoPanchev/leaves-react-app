@@ -36,28 +36,28 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
     function renderEmployeeLink(employeeInfo: IEmploeeGet) {
         let isUser = currentUser.user!.getId() === employeeInfo.id;
         if (isUser) {
-            return (<Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%" >
+            return (
                 <Link to="/">
-                    <Typography variant="overline" component="div">
-                        {"Id:" + employeeInfo.id + " " + t('name') + employeeInfo.name}
+                    <Typography variant="overline" >
+                        {employeeInfo.name}
                     </Typography>
 
                 </ Link>
-            </Grid>
+
             )
         } else {
 
             return (
-                <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
-                    <Link to={{ pathname: `/requests/employee/${employeeInfo.id}` }} style={{
-                        textDecoration: 'none',
-                        color: 'black'
-                    }}>
-                        <Typography variant="overline" component="div">
-                            {"Id:" + employeeInfo.id + " " + t('name') + employeeInfo.name}
-                        </Typography>
-                    </ Link>
-                </Grid>)
+
+                <Link to={{ pathname: `/requests/employee/${employeeInfo.id}` }} style={{
+                    textDecoration: 'none',
+                    color: 'black'
+                }}>
+                    <Typography variant="overline" >
+                        {employeeInfo.name}
+                    </Typography>
+                </ Link>
+            )
 
         }
     }
@@ -90,13 +90,13 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                 </DialogTitle>
 
                 <DialogContent>
-                    <Grid container alignContent="center" justifyContent="center">
+                    <Grid container alignContent="center" justifyContent="center" width="100%">
 
 
                         <List>
                             {props.typeEmployee.employeeWithType.map((item) => {
                                 return (
-                                    <Grid >
+                                    <Grid item width="100%" >
                                         <ListItem key={item.id}>
                                             {renderEmployeeLink(item)}
                                         </ListItem>

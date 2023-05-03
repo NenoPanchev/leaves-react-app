@@ -101,7 +101,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       return t('Requests.approved')
     }
     if (params.row.approved === false) {
-      return t('Requests.rejected')
+      return t('Requests.Rejected')
     }
 
     if (params.row.approved === null) {

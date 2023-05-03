@@ -56,7 +56,11 @@ export default function DashBoard() {
 
                      {/* LeavesReport */}
                     {showDetails &&
+                    <Grid item mt="2%" >
+                     <Paper>
                         <LeavesReportMemo id={user.getId()}/>
+                        </Paper>
+                        </Grid>
                     }
                 </Grid>
 

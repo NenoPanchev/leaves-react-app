@@ -263,7 +263,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
                 <Grid item direction="row" marginLeft="60%" >
                     <IconButton onClick={handleShowClick} >
-                        <Tooltip title={t('showAddRequest')}><ControlPointIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
+                        <Tooltip title={t('AddRequests.AddRequest')}><ControlPointIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
                     </IconButton>
                     <IconButton onClick={handleZoomClick} >
                         <Tooltip title={t('Zoom')}><ZoomOutMapIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
