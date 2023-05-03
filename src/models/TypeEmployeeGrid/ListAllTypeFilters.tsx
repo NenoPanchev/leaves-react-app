@@ -257,10 +257,12 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
                             </Grid>
                             <Grid container direction="column" >
                                 <MyAddFilterDays buttonName={t(`AddFilter`)!}
-                                    onChange={updateFilterDaysLeave}
-                                    nameOfField={t(`LeaveTypes.DaysLeave`)!}
-                                    operation={operation}
-                                    onChangeSlider={updateFilterDaysSlider} />
+                                onChange={updateFilterDaysLeave}
+                                nameOfField={t(`LeaveTypes.DaysLeave`)!}
+                                operation={operation}
+                                onChangeSlider={updateFilterDaysSlider} 
+                                initialStart={parseInt(daysLeave[0])} 
+                                initialEnd={parseInt(daysLeave[1])} />
 
                                 {renderDaysList()}
 

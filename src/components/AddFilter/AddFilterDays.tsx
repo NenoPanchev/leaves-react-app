@@ -8,6 +8,8 @@ type AddFilterProps = {
     buttonName: string,
     nameOfField: string,
     operation: string,
+    initialStart: number,
+    initialEnd: number,
     onChange: (newValue: string) => void;
     onChangeSlider: (startRange: string, endRange: string) => void;
 }
@@ -18,7 +20,15 @@ const minDistance = 0;
 const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const [t, i18n] = useTranslation();
-    let valueOneAdd = '1';
+    let valueOneAdd = '1'
+    const [value, setValue] = React.useState<number[]>(
+        [Number.isNaN(props.initialStart) ? 20 : props.initialStart, Number.isNaN(props.initialEnd) ? 20 : props.initialEnd]
+    );
+
+
+
+
+
     const handleChange = (
         event: Event,
         newValue: number | number[],
@@ -41,40 +51,37 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
         }
     };
 
-    const handleChangeInput = (newValue: number | number[] , activeInput: number) => {
-     
+    const handleChangeInput = (newValue: number | number[], activeInput: number) => {
+
         if (!Array.isArray(newValue)) {
             return;
         }
 
-        if(Number.isNaN(newValue[0]))
-        {
-            newValue[0]=0;
+        if (Number.isNaN(newValue[0])) {
+            newValue[0] = 0;
         }
-        if(Number.isNaN(newValue[1]))
-        {
-            newValue[1]=0;
+        if (Number.isNaN(newValue[1])) {
+            newValue[1] = 0;
         }
-        if(newValue[1]>100)
-        {
-            newValue[1]=100;
+        if (newValue[1] > 100) {
+            newValue[1] = 100;
         }
-      
-            if (newValue[1] - newValue[0] < minDistance) {
-                if (activeInput === 0) {
-                    const clamped = Math.min(newValue[0], 100 - minDistance);
-                    setValue([clamped, clamped + minDistance]);
-                } else {
-                    const clamped = Math.max(newValue[1], minDistance);
-                    setValue([clamped - minDistance, clamped]);
-                }
+
+        if (newValue[1] - newValue[0] < minDistance) {
+            if (activeInput === 0) {
+                const clamped = Math.min(newValue[0], 100 - minDistance);
+                setValue([clamped, clamped + minDistance]);
             } else {
-                setValue(newValue as number[]);
+                const clamped = Math.max(newValue[1], minDistance);
+                setValue([clamped - minDistance, clamped]);
             }
-        
+        } else {
+            setValue(newValue as number[]);
+        }
+
         console.log(newValue[0])
     };
-    const [value, setValue] = React.useState<number[]>([20, 40]);
+
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
 
@@ -145,14 +152,14 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
                                         type="number"
                                         value={value[0].toString()}
                                         // inputProps={{min:"1",max:"90"}}
-                                        onChange={(event) =>  handleChangeInput([parseInt(event.target.value),value[1]],0) } />
+                                        onChange={(event) => handleChangeInput([parseInt(event.target.value), value[1]], 0)} />
                                 </FormControl>
                                 {/* <Typography variant="h6" width="10%">{value[0]}</Typography> */}
                             </Grid>
                         </Paper>
                         <Grid item ml="2%" mr="2%">
                             <Typography variant="h6" >-</Typography>
-                        </Grid>+-
+                        </Grid>
                         <Paper sx={{ backgroundColor: grey[300] }} >
                             <Grid item width="5vh">
                                 <FormControl >
@@ -161,7 +168,7 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
                                         type="number"
                                         value={value[1].toString()}
                                         // inputProps={{min:"10",max:"100"}}
-                                        onChange={(event) => handleChangeInput([value[0],parseInt(event.target.value)],1)} />
+                                        onChange={(event) => handleChangeInput([value[0], parseInt(event.target.value)], 1)} />
                                     {/* <FormHelperText id="my-helper-text">{}</FormHelperText> */}
                                 </FormControl>
                                 {/* <Typography variant="h6" width="10%" > {value[1]}</Typography> */}
