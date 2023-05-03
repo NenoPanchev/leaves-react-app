@@ -44,7 +44,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         setOpen(false);
     };
     const onSubmitChild = async (e: { preventDefault: () => void; }) => {
-        console.log(filter);
         props.onAdd(filter);
         props.onSubmitChild(e);
         setOpen(false);

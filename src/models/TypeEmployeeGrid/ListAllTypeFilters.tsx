@@ -3,7 +3,7 @@ import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
+import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Slider, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,9 +12,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MyAddFilter from '../../components/AddFilter/AddFilter';
-import MyAddFilterId from '../../components/AddFilter/AddFilterId';
+import MyAddFilterDays from '../../components/AddFilter/AddFilterDays';
 import ITypesFilter from '../interfaces/type/ITypesFilter';
-
 
 
 type ListAllTypeFilterProps = {
@@ -33,6 +32,8 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
         setOpen(false);
     };
     const onSubmitChild = async (e: { preventDefault: () => void; }) => {
+
+        e.preventDefault();
         props.onAdd(filter);
         props.onSubmitChild(e);
         setOpen(false);
@@ -71,12 +72,21 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
         [setUserFilter]
 
     );
-    const updateFilterId = useCallback(
-        (newValue: any): void => setUserFilter({ ...filter, [newValue]: checkForSameString(newValue, id) }),
+    const updateFilterDaysSlider = useCallback(
+        (startValue: any, endValue: any): void => handleUpdateFilterDaysSlider(startValue, endValue),
 
         [setUserFilter]
 
     );
+
+    function handleUpdateFilterDaysSlider(startValue: any, endValue: any) {
+
+        daysLeave.length = 0;
+
+        setUserFilter({ ...filter, [startValue]: daysLeave.push(startValue), [endValue]: daysLeave.push(endValue) })
+
+    }
+    
     function limitString(txt: string) {
         if (txt.length >= 15) {
             return txt.substring(0, 15).concat('...');
@@ -84,14 +94,8 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
             return txt;
         }
     }
-    function checkForNullString(txt: string) {
-        if (txt === "null") {
-            return "Not Processed";
-        } else {
-            return txt;
-        }
-    }
     function changeOperation(txt: string) {
+        daysLeave.length=0;
         setUserFilter({ ...filter, operation: txt })
         props.value.operation = txt;
     }
@@ -102,6 +106,53 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
     function changeDeleted(txt: string) {
         setUserFilter({ ...filter, deleted: txt })
         props.value.deleted = txt;
+    }
+
+    function renderDaysList() {
+        if (operation === "EQUAL") {
+            return (<List >
+                {daysLeave.map((item) => {
+                    return (<ListItem key={item}
+                        secondaryAction={
+                            <IconButton edge="end" aria-label="delete"
+                                onClick={(_event) => setUserFilter({ ...filter, [item]: daysLeave.splice(daysLeave.indexOf(item), 1) })}>
+                                <DeleteIcon />
+                            </IconButton>
+                        }>
+                        <ListItemText
+                            primary={limitString(String(item))}
+                        />
+                    </ListItem>
+                    )
+                })}
+            </List>);
+        }
+        else if (operation === "RANGE") {
+            if (daysLeave.length > 1) {
+                return (
+
+                    <List >
+                        <ListItem
+                            secondaryAction={
+                                <IconButton edge="end" aria-label="delete"
+                                    onClick={(_event) => setUserFilter({
+                                        ...filter,
+                                        [daysLeave[0]]: daysLeave.splice(daysLeave.indexOf(daysLeave[0]), 1),
+                                        [daysLeave[0]]: daysLeave.splice(daysLeave.indexOf(daysLeave[1]), 1)
+                                    })}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            }>
+                            <ListItemText
+                                primary={daysLeave[0] + " - " + daysLeave[1]}
+                            />
+                        </ListItem>
+                    </List>
+                );
+            }
+
+        }
+
     }
 
     return (
@@ -205,61 +256,18 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
                                 </Typography>
                             </Grid>
                             <Grid container direction="column" >
-                                <MyAddFilterId buttonName={t(`AddFilter`)!}
+                                <MyAddFilterDays buttonName={t(`AddFilter`)!}
                                     onChange={updateFilterDaysLeave}
                                     nameOfField={t(`LeaveTypes.DaysLeave`)!}
-                                />
-                                <List >
-                                    {daysLeave.map((item) => {
-                                        return (<ListItem key={item}
-                                            secondaryAction={
-                                                <IconButton edge="end" aria-label="delete"
-                                                    onClick={(_event) => setUserFilter({ ...filter, [item]: daysLeave.splice(daysLeave.indexOf(item), 1) })}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            }>
-                                            <ListItemText
-                                                primary={limitString(String(item))}
-                                            />
-                                        </ListItem>
-                                        )
-                                    })}
-                                </List>
+                                    operation={operation}
+                                    onChangeSlider={updateFilterDaysSlider} />
+
+                                {renderDaysList()}
+
                             </Grid>
                         </Grid>
                         {/* DaysLeave Filter */}
 
-                        {/* Id Filter */}
-                        <Grid item>
-                            <Grid container justifyContent="center" >
-                                <Typography variant="overline" component="div">
-                                    Id
-                                </Typography>
-                            </Grid>
-                            <Grid container direction="column">
-                                <MyAddFilterId buttonName={t(`AddFilter`)!}
-                                    onChange={updateFilterId}
-                                    nameOfField={'Id'}
-                                />
-                                <List >
-                                    {id.map((item) => {
-                                        return (<ListItem key={item}
-                                            secondaryAction={
-                                                <IconButton edge="end" aria-label="delete"
-                                                    onClick={(_event) => setUserFilter({ ...filter, [item]: id.splice(id.indexOf(item), 1) })}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            }>
-                                            <ListItemText
-                                                primary={limitString(String(item))}
-                                            />
-                                        </ListItem>
-                                        )
-                                    })}
-                                </List>
-                            </Grid>
-                        </Grid>
-                        {/* Id By Filter end */}
                     </Grid >
                 </DialogContent>
 
@@ -278,8 +286,7 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
                                     onChange={(event) => changeOperation(event.target.value)}
                                 >
                                     <MenuItem value={"EQUAL"}>{t('equal')}</MenuItem>
-                                    <MenuItem value={"LESS_THAN"}>{t('lessThan')}</MenuItem>
-                                    <MenuItem value={"GREATER_THAN"}>{t('greaterThan')}</MenuItem>
+                                    <MenuItem value={"RANGE"}>{t('range')}</MenuItem>
                                 </Select>
                             </FormControl>
                             <FormControl sx={{ m: 1, minWidth: 100 }}>
@@ -291,7 +298,6 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
                                     label="Sort"
                                     onChange={(event) => changeSort(event.target.value)}
                                 >
-                                    <MenuItem value={"id"}>ID</MenuItem>
                                     <MenuItem value={"typeName"}>{t('LeaveTypes.TypeName')}</MenuItem>
                                     <MenuItem value={"daysLeave"}>{t('LeaveTypes.DaysLeave')}</MenuItem>
                                 </Select>
