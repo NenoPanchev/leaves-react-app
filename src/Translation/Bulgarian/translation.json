@@ -120,7 +120,7 @@
     "alertMassageDuplicateEntity": "Вече имате заявление за отпуск от {{startDate}} до {{endDate}}!",
     "alertMassagePaidLeave": "Дните ви отпуска не достигат!\n Поискани дни:{{daysRequested}}.\n Останали дни отпуска:{{leftDays}}.",
     "alertMassagePaidLeaveZero": "Заявление за 0 дни отпуск или по-малко не е позволено!",
-    "alertRequestProcessed": "Заявление за отпуск с id:{{id}} е вече обработено!",
+    "alertRequestProcessed": "Заявлението за отпуск{{id}} е вече обработено!",
     "alertAddSuccess": "Успешно заявена отпуска!",
     "alertMassageDeleteType": "Това е типът на {{employeeWithType}} работника!",
     "LeaveTypes": {

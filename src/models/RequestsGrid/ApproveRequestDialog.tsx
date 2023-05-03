@@ -50,7 +50,7 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
             setOpen(true);
         }else
         {
-            props.onClick({ ...alertProps, message: props.request.id.toString(), hasError: true, open: true, type: "Approve" })
+            props.onClick({ ...alertProps, message: "", hasError: true, open: true, type: "Approve" })
         }
 
     };

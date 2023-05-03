@@ -39,7 +39,6 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);
   useEffect(() => {
     retrivePage();
-    console.log(openForm)
   }, [leaveRequestFilter, setOpen]);
 
   let numberOfElements = page.numberOfElements * (page.number + 1);
@@ -66,9 +65,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         })
         .catch((e: AxiosError<any, any>) => {
           if (e.response) {
-            console.log();
             setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
-            console.log(alertProps);
           }
 
         });
@@ -82,10 +79,8 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       })
       .catch((e: AxiosError<any, any>) => {
         if (e.response) {
-          setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
+          setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: e.response.data.type })
         }
-        console.log(alertProps);
-        console.log(e);
       });
   };
 

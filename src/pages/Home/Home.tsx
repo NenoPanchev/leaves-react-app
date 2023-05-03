@@ -24,17 +24,10 @@ import RoutesComponent from './RoutesComponent';
 const mdTheme = createTheme();
 
 function HomeContent() {
- 
-  // const toggleDrawer = useCallback(
-  //   (): void => setOpen(!open),
-
-  //   [open]
-
-  // );
   const RouteMemo = React.memo(RoutesComponent);
-
   const navBarRef = React.useRef<NavBarRef>(null);
   const DrawerMenuRef = React.useRef<DrawerMenuRef>(null);
+  
   const toggleDrawer = () => {
    console.log("toggleDrawer")
     if (navBarRef && navBarRef.current && DrawerMenuRef && DrawerMenuRef.current) {
