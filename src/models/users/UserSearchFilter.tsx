@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IStartDateComparison } from '../interfaces/user/IStartDateComparison';
+import { IDateComparison } from '../interfaces/user/IStartDateComparison';
 import { IDaysLeaveComparison } from '../interfaces/user/IDaysLeaveComparison';
 
 
@@ -30,7 +30,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     const today = dayjs();
     const [startDate, setStartDate] = React.useState<Dayjs | null>(today);
     const [daysLeave, setDaysLeave] = React.useState(0);
-    const [operator, setOperator] = React.useState('EQUAL');
+    const [operator, setOperator] = React.useState('GREATER');
     const [startDateComparisons, setStartDateComparisons] = React.useState(props.filter.startDateComparisons);
     const [daysLeaveComparisons, setDaysLeaveComparisons] = React.useState(props.filter.daysLeaveComparisons);
     const [refreshCounter, setRefreshCounter] = React.useState(0);
@@ -53,7 +53,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     function addStartDateFilter(newDate: Dayjs) {
         let arr = startDateComparisons;
         const dateString = dayjs(newDate, "DD.MM.YYYY");
-        const comparison: IStartDateComparison = {
+        const comparison: IDateComparison = {
             operator: operator,
             date: dateString.format('DD.MM.YYYY')
         }
@@ -169,7 +169,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     setEmail(e.target.value);
                                 }}
                             />
-                            {/* <Autocomplete
+                            <Autocomplete
                                 id="department"
                                 options={props.departmentNames}
                                 size='small'
@@ -188,7 +188,24 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                         placeholder={t('Department')!}
                                     />
                                 )}
-                            /> */}
+                            />
+                            {/* <FormControl sx={{ minWidth: 150, mt: 2 }}>
+                                <InputLabel sx={{verticalAlign: 'center'}} id="position-label">{t('Position')}</InputLabel>
+                                <Select
+                                    labelId="operation-label"
+                                    id="position"
+                                    value={department}
+                                    size='small'
+                                    label={t('Position')}
+                                    onChange={(event) => setDepartment(event.target.value)}
+                                >
+                                    {
+                                        props.departmentNames.map((name, index) => {
+                                            return <MenuItem key={index} value={name}>{name}</MenuItem>
+                                        })
+                                    }
+                                </Select>
+                            </FormControl> */}
                             <Autocomplete
                                 multiple
                                 id="users"
@@ -208,7 +225,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     />
                                 )}
                             />
-                            {/* <Autocomplete
+                            <Autocomplete
                                 id="position"
                                 options={props.typeNames}
                                 size='small'
@@ -227,9 +244,9 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                         placeholder={t('Position')!}
                                     />
                                 )}
-                            /> */}
-                            <FormControl sx={{ minWidth: 150, mt: 2 }}>
-                                {/* <InputLabel id="position-label">{t('Position')}</InputLabel> */}
+                            />
+                            {/* <FormControl sx={{ minWidth: 150, mt: 2 }}>
+                                <InputLabel sx={{verticalAlign: 'center'}} id="position-label">{t('Position')}</InputLabel>
                                 <Select
                                     labelId="operation-label"
                                     id="position"
@@ -244,7 +261,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                         })
                                     }
                                 </Select>
-                            </FormControl>
+                            </FormControl> */}
                         </Grid>
                         <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
                             <Grid container direction="column">

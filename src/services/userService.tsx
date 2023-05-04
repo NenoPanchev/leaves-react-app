@@ -105,11 +105,11 @@ export const useCreate = () => {
   return addUser;
 }
 
-export const useFetchPage = (filter: IUserFilter) => {
+export const useFetchPage = (refreshCounter: number, filter: IUserFilter) => {
   const [page, setPage] = useState<IUserPage>(DEFAULT_PAGE);
   useEffect(() => {
     fetchPage();
-  }, [filter]);
+  }, [refreshCounter, filter]);
 
   const fetchPage = () => {
 
@@ -129,15 +129,22 @@ export const useFetchPage = (filter: IUserFilter) => {
 }
 
 export const useEdit = () => {
+  let serverResponse = '';
 
   const editUser = async (id: number, role: FormData) => {
-
     const updateUrl = BASE_USER_URL + id;
 
     const result = await axios.put(updateUrl, formToJSON(role))
       .then(response => {
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        if (error.response) {
+          console.log(error)
+          serverResponse = error.response.data;          
+        }
+      })
+      return serverResponse;
   }
   return editUser;
 }

@@ -3,6 +3,7 @@ export const PERMISSIONS = ['READ', 'WRITE', 'DELETE'];
 export const BASE_URL = 'http://localhost:8080';
 export const BASE_ROLE_URL = 'http://localhost:8080/roles/';
 export const BASE_DEPARTMENT_URL = 'http://localhost:8080/departments/';
+export const BASE_CONTRACT_URL = 'http://localhost:8080/contracts/';
 export const BASE_USER_URL = 'http://localhost:8080/users/';
 export const LOGIN_URL = "http://localhost:8080/authenticate";
 export const DEFAULT_OFFSET = 0;
@@ -34,6 +35,14 @@ export const DEFAULT_USER_FILTER = {
   position: '',
   startDateComparisons: [],
   daysLeaveComparisons: []
+};
+
+export const DEFAULT_CONTRACT_FILTER = {
+  typeName: '',
+  startDateComparisons: [],
+  endDateComparisons: [],
+  offset: DEFAULT_OFFSET,
+  limit: DEFAULT_LIMIT,
 };
 
 export const DEFAULT_ROLE_FILTER = {

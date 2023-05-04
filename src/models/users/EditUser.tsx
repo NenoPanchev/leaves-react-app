@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, Autocomplete, Tooltip, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
+    DialogTitle, Box, TextField, Autocomplete, Tooltip, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
@@ -25,6 +25,8 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const [position, setPosition] = React.useState<string | null>(props.user.position);
     const initialDay = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(initialDay);
+    const [refreshCounter, setRefreshCounter] = React.useState<number>(0);
+    
 
 
     const [roles, setRoles] = React.useState<Role[]>([]);
@@ -32,8 +34,11 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const [nameError, setNameError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
 
+    const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
+    const [serverError, setServerError] = React.useState<boolean>(false);
     let nError = false;
     let eError = false;
+    let sError = false;
     // let pError = false;
     // let pcError = false;
     const [password, setPassword] = React.useState<string>('');
@@ -48,6 +53,7 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const [showContractFields, setShowContractFields] = React.useState(false);
     const [contractChange, setContractChange] = React.useState('Initial');
     let typeNames = props.typeNames;
+    let serverResponse = '';
 
     const handleContractChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = (event.target as HTMLInputElement).value;
@@ -79,20 +85,24 @@ export default function EditUserButton(props: IUserEditButtonProps) {
         setShowContractFields(true);
     }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const data = new FormData(event.currentTarget);        
         appendRolesToFormData(data, roles);
         appendEmployeeInfoToFormData(data, startDate)
-        const errors = validate();
+        let errors = validate();
         if (errors) {
             return;
         }
-        editUser(props.user.id, data)
-            .then(() => props.refresh(props.refreshCurrentState + 1))
-            .then(() => navigate(path))
-        handleClose();
+        serverResponse = await editUser(props.user.id, data);
+        setServerErrorMessage(serverResponse);
+        errors = validate();
 
+        if (errors) {
+            return;
+        }
+        props.refresh(props.refreshCurrentState + 1);
+        handleClose();
     }
 
     function validate(): boolean {
@@ -103,13 +113,16 @@ export default function EditUserButton(props: IUserEditButtonProps) {
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 
+        sError = serverResponse !== '';
+        setServerError(serverResponse !== '');       
+        
         // setPasswordError((password.length < 4 || password.length > 20));
         // pError = ((password.length < 4 || password.length > 20));
 
         // setPasswordConfirmError(password !== passwordConfirm);
         // pcError = (password !== passwordConfirm);
 
-        return nError || eError;
+        return nError || eError || sError;
     }
 
     if (!user?.hasAuthority('WRITE') || (props.user.id === 1)) {
@@ -193,13 +206,16 @@ export default function EditUserButton(props: IUserEditButtonProps) {
                             }
                             {showContractFields &&
                                 <>
+                                    {serverError &&
+                                        <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
+                                    }
                                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
                                         <DatePicker label={t('Employed at')}
                                             value={startDate}
                                             sx={{ marginTop: '15px', marginBottom: '5px' }}
                                             onChange={(newValue) => setStartDate(newValue)} />
                                     </LocalizationProvider>
-                                    <FormControl sx={{marginLeft: '15px'}}>
+                                    <FormControl sx={{ marginLeft: '15px' }}>
                                         <FormLabel id="demo-controlled-radio-buttons-group">{t('Contract')}</FormLabel>
                                         <RadioGroup
                                             aria-labelledby="demo-controlled-radio-buttons-group"
