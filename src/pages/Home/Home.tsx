@@ -1,35 +1,22 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React from 'react';
 import CustomErrorBoundary from '../../components/CustomErrorBoundary/CustomErrorBoundary';
-import SignIn from '../SignIn';
-import Roles from '../../models/roles/AllRoles'
-import { LogOut } from '../../services/authService';
-import Departments from '../../models/departments/AllDepartments';
-import Users from '../../models/users/AllUsers';
-import isAuth from '../../hoc/isAuth';
-import DashBoard from '../dashboard/DashBoard';
-import RequestsGrid from '../../models/RequestsGrid/RequestsGrid';
-import TypeEmployeeGrid from '../../models/TypeEmployeeGrid/TypeEmployeeGrid';
-import NotFound from '../NotFound';
-import DashBoardByEmployee from '../dashboard/DashBoardByEmployee';
+import DrawerMenu, { DrawerMenuRef } from '../../components/nav/DrawerMenu';
 import NavBar, { NavBarRef } from '../../components/nav/NavBar';
-import './Home.css'
-import React, { useCallback } from 'react';
-import DrawerMenu , { DrawerMenuRef } from '../../components/nav/DrawerMenu';
+import './Home.css';
 import RoutesComponent from './RoutesComponent';
 
 const mdTheme = createTheme();
+const RouteMemo = React.memo(RoutesComponent);
 
 function HomeContent() {
-  const RouteMemo = React.memo(RoutesComponent);
+
   const navBarRef = React.useRef<NavBarRef>(null);
   const DrawerMenuRef = React.useRef<DrawerMenuRef>(null);
   
   const toggleDrawer = () => {
-   console.log("toggleDrawer")
     if (navBarRef && navBarRef.current && DrawerMenuRef && DrawerMenuRef.current) {
       navBarRef.current.open();
       DrawerMenuRef.current.open();

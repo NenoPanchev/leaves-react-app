@@ -2,7 +2,7 @@ import * as React from 'react';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as userService from '../../services/userService';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
@@ -25,15 +25,15 @@ export default function Users() {
   const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
   const { t } = useTranslation();
   const page = userService.useFetchPage(userFilter);
-
+  const apiRef = useGridApiRef();
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (user: IUserEdit) => {
+  const renderEditButton = (user: IUserEdit,rowId:number) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />
+    departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -113,7 +113,7 @@ export default function Users() {
       flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
-        renderEditButton(params.row),
+        renderEditButton(params.row,params.row.id),
         renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
       ]
     },

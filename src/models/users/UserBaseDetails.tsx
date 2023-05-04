@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Backdrop, Card, CircularProgress, Grid, Table } from '@mui/material';
+import { Card, Grid, Table } from '@mui/material';
 
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import * as userService from '../../services/userService';
 
 import { useTranslation } from 'react-i18next';
-import { IUserDetails } from '../interfaces/user/IUserDetails';
 import '../SingleItemView.css';
+import { IUserDetails } from '../interfaces/user/IUserDetails';
 
 
 interface UserViewProp {
@@ -19,38 +19,26 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
 
 
   const [user,setUser]=React.useState<IUserDetails>();
-  const [loading,setLoading]=React.useState(true);
 
-  // const user = userService.useFetchOneEmail(props.email);
-  const names = new Set<string>();
+  const names= new Set(user?.roles.flatMap((role)=>  role.permissions.flatMap((permission)=> permission.name)));
+
   const { t } = useTranslation();
+
+
   React.useEffect(() => {
-    userService.getUserByEmail(props.email)
+    const controller = new AbortController();
+    userService.getUserByEmail(props.email,controller)
       .then((r) => {
-        console.log(r);
         setUser(r.data);
-        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
+      return () => controller.abort();
   }, []);
-  user?.roles.forEach(role => {
-    role.permissions.forEach(permission => {
-        names.add(permission.name);
-    })
-})
-
-
 
   return (
     <React.Fragment>
-      {/* <Backdrop
-      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}>
-
-      <CircularProgress color="inherit" />
-    </Backdrop> */}
        <Grid container direction={'row'} minWidth="100%" width="100%">
           <Card >
             <Table>

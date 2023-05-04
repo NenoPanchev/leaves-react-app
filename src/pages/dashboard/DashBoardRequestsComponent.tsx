@@ -2,7 +2,6 @@ import { Grid, Paper } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import CalendarBase, { CalendarBaseRef } from '../../components/calendar/CalendarBase';
 import AddRequestBase, { AddRequestBaseRef } from '../../models/AddRequest/AddRequestBase';
 
@@ -17,7 +16,6 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
 
     const calendarRef = React.useRef<CalendarBaseRef>(null);
     const AddRequestBaseRef = React.useRef<AddRequestBaseRef>(null);
-    const { t, i18n } = useTranslation();
     const [showAddRequest, setShowAddRequest] = React.useState<boolean>(false);
 
     const [requestsComponentHeight, setRequestsComponentHeight] = React.useState("auto");
@@ -42,24 +40,20 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     );
 
     function handleZoomClick() {
- 
+
         props.onShow()
 
-            if (requestsComponentHeight === "auto" && requestsComponentWidth === "auto") {
-                setRequestsComponentHeight("85vh")
-                setRequestsComponentWidth("173vh")
-            }
-            else {
-                setRequestsComponentHeight("auto")
-                setRequestsComponentWidth("auto")
-            }
-            console.log("handleClose")
-      
+        if (requestsComponentHeight === "auto" && requestsComponentWidth === "auto") {
+            setRequestsComponentHeight("85vh")
+            setRequestsComponentWidth("173vh")
+        }
+        else {
+            setRequestsComponentHeight("auto")
+            setRequestsComponentWidth("auto")
+        }
     }
     const calendarDayChange = (startDate: Dayjs | null, endDate: Dayjs | null) => {
-        console.log("calendarDayChange")
         if (AddRequestBaseRef && AddRequestBaseRef.current) {
-            console.log("calendarDayChangeIFFFFFFFFF")
             AddRequestBaseRef.current.onCalendarChange(startDate, endDate);
         }
     }
@@ -71,12 +65,9 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     );
 
     function showAddRequestCallback(startDate: Dayjs | null, endDate: Dayjs | null) {
-        console.log("showAddRequestCallback")
-        calendarDayChange(startDate,endDate)
+        calendarDayChange(startDate, endDate)
         setInitialStartDate(startDate);
         setinitialEndDate(endDate);
-        console.log(initialStartDate)
-        console.log(initialEndDate)
     }
 
 
@@ -92,13 +83,13 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
             <Paper sx={{ height: "fit-content" }} >
                 <Grid item>
                     <CalendarBase ref={calendarRef} onDateChange={changeDate} onShow={handleZoomClick} onShowAddRequest={showAddRequestFc} />
-                    {showAddRequest &&
 
-                        <Grid item>
-                            <AddRequestBase ref={AddRequestBaseRef} onSubmit={reloadCalendar} onClose={updateAddRequestComponent} 
+
+                    <Grid item sx={{ display: !showAddRequest ? 'none' : undefined }}>
+                        <AddRequestBase ref={AddRequestBaseRef} onSubmit={reloadCalendar} onClose={updateAddRequestComponent}
                             initialStartDate={initialStartDate} initialendDate={initialEndDate} />
-                        </Grid>
-                    }
+                    </Grid>
+
                 </Grid>
             </Paper>
 

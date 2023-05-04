@@ -67,8 +67,8 @@ export const useFetchOneEmail = (props: string) => {
   return user;
 }
 
-export const getUserByEmail = (data: string) => {
-  return axios.post<IUserDetails>(BASE_USER_URL + "email", data)
+export const getUserByEmail = (data: string,controller:any) => {
+  return axios.post<IUserDetails>(BASE_USER_URL + "email", data,{signal:controller.signal})
 };
 
 export const getUser = async () => {

@@ -46,8 +46,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
         }
     );
     let value: any;
-console.log(props.initialStartDate)
-console.log(props.initialendDate)
+
     const saveRequest = () => {
         request.startDate = startDate?.format("YYYY-MM-DD")!;
         request.endDate = endDate?.format("YYYY-MM-DD")!;
@@ -76,16 +75,6 @@ console.log(props.initialendDate)
     }, [])
 
 
-    // React.useEffect(() => {
-
-
-    //     if (!startDate?.isSame(dayjs())) {
-    //         SetEndDate(startDate);
-    //     }
-
-    // }, [startDate]);
-
-
     function onStartDateChange(startDate: Dayjs | null) {
         SetStartDate(startDate);
         SetEndDate(startDate);
@@ -93,12 +82,8 @@ console.log(props.initialendDate)
 
 
     function setRange(startDates: Dayjs | null, endDates: Dayjs | null) {
-        console.log("setRange")
         SetStartDate(startDates);
         SetEndDate(endDates);
-
-        console.log(startDate)
-        console.log(endDate)
     }
 
     React.useEffect(() => {

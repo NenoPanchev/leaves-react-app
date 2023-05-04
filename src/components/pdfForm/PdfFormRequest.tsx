@@ -33,10 +33,29 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [t, i18n] = useTranslation();
   const { user } = useContext(AuthContext);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
-  let userDetails:IUserDetails | any = null;
-  if (user != null) {
-     userDetails = userService.useFetchOneEmail(user.getEmail());
-  }
+  // let userDetails:IUserDetails | any = null;
+  const [userDetails, setUserDetails] = React.useState<IUserDetails|any>(null);
+ 
+
+  React.useEffect(() => {
+    const controller = new AbortController();
+    if(user!=null)
+    { 
+      if(open===true)
+      {
+        userService.getUserByEmail(user?.getEmail(),controller)
+        .then((r) => {
+          setUserDetails(r.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      }
+    }
+
+   
+      return () => controller.abort();
+  }, []);
 
   const handleClose = () => {
     props.onClose(false);
@@ -56,6 +75,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   
 
   useEffect(() => {
+
     if(userDetails!=null)
   {
     setRequestForm({...requestForm,
@@ -65,6 +85,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
   }
   }, [userDetails]);
+
   const [checked, setChecked] = React.useState(false);
 
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +105,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     },
     [setRequestForm]
   );
+
   const handleSubmit = async () => {
     setOpen(false);
     setOpenBackdrop(true);

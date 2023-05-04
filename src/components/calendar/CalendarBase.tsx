@@ -34,7 +34,6 @@ type CustomDayProps = {
     onShowAddRequest: (startDate: Dayjs | null, endDate: Dayjs | null) => void;
 }
 
-
 const alertMassage = "You can not download Pdf of a request that is not approved!";
 const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
@@ -49,13 +48,9 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [calendarDaysAndWeekLabels, setCalendarDaysAndWeekLabels] = React.useState("36px");
     const [calendarWeekLabelHeight, setCalendarWeekLabelHeight] = React.useState("40px");
 
+    const ChildMemo = React.memo(PdfFormRequest);
+    const AlertMemo = React.memo(BasicDialogAlert);
 
-
-
-
-
-
-    const [isRequest, setIsRequest] = React.useState<boolean>(false);
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
@@ -69,8 +64,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         deleted: false
     });
     const [openForm, setOpen] = useState<boolean>(false);
-    const ChildMemo = React.memo(PdfFormRequest);
-    const AlertMemo = React.memo(BasicDialogAlert);
+
 
     React.useImperativeHandle(ref, () => {
         return {
@@ -81,7 +75,31 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     React.useEffect(() => {
         retrivePage();
         retriveHolidays();
-    }, [setLeaveRequest]);
+    }, []);
+
+    React.useEffect(() => {
+        props.onDateChange(startDate, endDate);
+    }, [startDate, endDate]);
+
+
+    const retrivePage = async () => {
+        await RequestService.getAllByUser()
+            .then((response: any) => {
+                setLeaveRequests(response.data);
+            })
+            .catch((e: Error) => {
+                console.log(e);
+            });
+    }
+    const retriveHolidays = async () => {
+        await HolidayService.getAll()
+            .then((response: any) => {
+                setHolidays(response.data);
+            })
+            .catch((e: Error) => {
+                console.log(e);
+            });
+    }
 
 
     const updateFormOpen = React.useCallback(
@@ -153,33 +171,10 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         }
     };
 
-    React.useEffect(() => {
-        props.onDateChange(startDate, endDate);
-    }, [startDate, endDate]);
-
-    const retrivePage = async () => {
-        await RequestService.getAllByUser()
-            .then((response: any) => {
-                setLeaveRequests(response.data);
-            })
-            .catch((e: Error) => {
-                console.log(e);
-            });
-    }
-    const retriveHolidays = async () => {
-        await HolidayService.getAll()
-            .then((response: any) => {
-                setHolidays(response.data);
-            })
-            .catch((e: Error) => {
-                console.log(e);
-            });
-    }
 
     function handleZoomClick() {
-        console.log("handleZoomClickCalendar")
         props.onShow()
-       if (calendarHeight === "auto" && calendarWidth === "auto") {
+        if (calendarHeight === "auto" && calendarWidth === "auto") {
             setCalendarHeight("65vh");
             setCalendarWidth("120vh");
             setCalendarDaysAndWeekLabels("56");
@@ -193,8 +188,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             setCalendarWeekLabelHeight("40");
         }
 
-
-       
     }
 
     function calculateCalendarHeight() {
@@ -209,10 +202,12 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     }
 
 
+
     function handleShowClick() {
         props.onShowAddRequest(startDate, endDate)
     }
     return (
+
         <Grid container>
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
