@@ -64,13 +64,15 @@ const CalendarById = (props: CalendarByIdProps): JSX.Element => {
             });
     }
     const retriveHolidays = async () => {
-        await HolidayService.getAll()
+        const controller = new AbortController();
+        await HolidayService.getAll(controller)
             .then((response: any) => {
                 setHolidays(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
             });
+            return () => controller.abort();
     }
     function disableWeekends(date: dayjs.Dayjs) {
         return date.day() === 0 || date.day() === 6 || date.isBefore(dayjs().subtract(1, 'day'));

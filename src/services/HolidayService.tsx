@@ -6,8 +6,8 @@ import ITypeEmploeePost from '../models/interfaces/type/ITypeEmploeePost';
 
 
 
-const getAll = () => {
-  return axios.get<Array<string>>("http://localhost:8080/api/dates")
+const getAll = (controller:any) => {
+  return axios.get<Array<string>>("http://localhost:8080/api/dates",{signal:controller.signal})
 };
 
 const HolidayService = {

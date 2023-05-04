@@ -83,22 +83,26 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
 
     const retrivePage = async () => {
-        await RequestService.getAllByUser()
+        const controller = new AbortController();
+        await RequestService.getAllByUser(controller)
             .then((response: any) => {
                 setLeaveRequests(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
             });
+            return () => controller.abort();
     }
     const retriveHolidays = async () => {
-        await HolidayService.getAll()
+        const controller = new AbortController();
+        await HolidayService.getAll(controller)
             .then((response: any) => {
                 setHolidays(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
             });
+            return () => controller.abort();
     }
 
 

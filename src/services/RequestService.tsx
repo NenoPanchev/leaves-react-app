@@ -13,8 +13,8 @@ const getAll = () => {
   return axios.get<Array<IRequestDataGet>>("http://localhost:8080/api/requests")
 
 };
-const getAllByUser = () => {
-  return axios.get<Array<IRequestDataGet>>("http://localhost:8080/api/requests/employee")
+const getAllByUser = (controller:any) => {
+  return axios.get<Array<IRequestDataGet>>("http://localhost:8080/api/requests/employee",{signal:controller.signal})
 };
 const getAllFilter = (data: any) => {
   return axios.post<Array<IRequestDataGet>>("http://localhost:8080/api/requests/filter",data)

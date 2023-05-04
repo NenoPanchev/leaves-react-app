@@ -73,7 +73,13 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   };
 
   const handleDisapproveClick = (request: IRequestDataGet, rowId: GridRowId) => async () => {
-    await RequestService.disapprove(request.id)
+    if(request.approved!=null)
+    {
+      setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: "Approve" })
+    }
+    else
+    {
+      await RequestService.disapprove(request.id)
       .then((_response: any) => {
         apiRef.current.updateRows([{ id: rowId, approved: false }]);
       })
@@ -82,6 +88,8 @@ const RequestsGrid: React.FC = (): JSX.Element => {
           setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: e.response.data.type })
         }
       });
+    }
+   
   };
 
   const onSubmit = async (e: { preventDefault: () => void; }) => {
