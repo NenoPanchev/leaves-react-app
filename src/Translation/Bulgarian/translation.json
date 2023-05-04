@@ -166,5 +166,7 @@
     "Start date is after": "Началната дата е след",
     "Start date is before": "Началната дата е преди",
     "More than": "Повече от",
-    "Less than": "По-малко от"
+    "Less than": "По-малко от",
+    "Add start date filter": "Добави филтриране по начална дата",
+    "Add days leave filter": "Добави филтриране по оставащи дни отпуск"
 }

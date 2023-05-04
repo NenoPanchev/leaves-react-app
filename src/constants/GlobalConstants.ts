@@ -32,10 +32,8 @@ export const DEFAULT_USER_FILTER = {
   offset: DEFAULT_OFFSET,
   limit: DEFAULT_LIMIT,
   position: '',
-  greaterThanOrEqualToDate: null,
-  lessThanOrEqualToDate: null,
-  greaterThanOrEqualToPaidLeave: null,
-  lessThanOrEqualToPaidLeave: null
+  startDateComparisons: [],
+  daysLeaveComparisons: []
 };
 
 export const DEFAULT_ROLE_FILTER = {

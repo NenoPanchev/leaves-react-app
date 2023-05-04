@@ -1,4 +1,5 @@
-import { Dayjs } from "dayjs"
+import { IStartDateComparison } from "./IStartDateComparison"
+import { IDaysLeaveComparison } from "./IDaysLeaveComparison"
 
 export interface IUserFilter {
     name: string
@@ -8,8 +9,6 @@ export interface IUserFilter {
     offset: number
     limit: number
     position: string
-    greaterThanOrEqualToDate: Dayjs | null
-    lessThanOrEqualToDate: Dayjs | null
-    greaterThanOrEqualToPaidLeave: number | null
-    lessThanOrEqualToPaidLeave: number | null
+    startDateComparisons: IStartDateComparison[]
+    daysLeaveComparisons: IDaysLeaveComparison[]
 }
