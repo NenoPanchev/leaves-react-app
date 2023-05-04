@@ -2,18 +2,22 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { useFetchAllNames } from '../../services/roleService';
-import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET, DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
 import { IUserSearchFilterProps } from '../interfaces/user/IUserSearchFilterProps';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import '../SearchFilter.css'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IStartDateComparison } from '../interfaces/user/IStartDateComparison';
+import { IDaysLeaveComparison } from '../interfaces/user/IDaysLeaveComparison';
 
 
 function UserSearchFilter(props: IUserSearchFilterProps) {
@@ -23,10 +27,13 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     const [department, setDepartment] = React.useState(props.filter.department);
     const [roles, setRoles] = React.useState<string[]>(props.filter.roles);
     const [position, setPosition] = React.useState(props.filter.position);
-    const [greaterThanOrEqualToDate, setGreaterThanOrEqualToDate] = React.useState<Dayjs | null>(props.filter.greaterThanOrEqualToDate);
-    const [lessThanOrEqualToDate, setLessThanOrEqualToDate] = React.useState<Dayjs | null>(props.filter.lessThanOrEqualToDate);
-    const [greaterThanOrEqualToPaidLeave, setGreaterThanOrEqualToPaidLeave] = React.useState(props.filter.greaterThanOrEqualToPaidLeave);
-    const [lessThanOrEqualToPaidLeave, setLessThanOrEqualToPaidLeave] = React.useState(props.filter.lessThanOrEqualToPaidLeave);
+    const today = dayjs();
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(today);
+    const [daysLeave, setDaysLeave] = React.useState(0);
+    const [operator, setOperator] = React.useState('EQUAL');
+    const [startDateComparisons, setStartDateComparisons] = React.useState(props.filter.startDateComparisons);
+    const [daysLeaveComparisons, setDaysLeaveComparisons] = React.useState(props.filter.daysLeaveComparisons);
+    const [refreshCounter, setRefreshCounter] = React.useState(0);
     const roleNames = useFetchAllNames(props.refreshCurrentState);
     if (!roleNames.includes('SUPER_ADMIN')) {
         roleNames.unshift('SUPER_ADMIN');
@@ -38,11 +45,50 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
         event.preventDefault();
         props.setFilter({
             ...props.filter, name: name, email: email, department: department,
-            roles: roles, position: position, greaterThanOrEqualToDate: greaterThanOrEqualToDate,
-            offset: DEFAULT_OFFSET
+            roles: roles, position: position, startDateComparisons: startDateComparisons,
+            daysLeaveComparisons: daysLeaveComparisons, offset: DEFAULT_OFFSET
         })
     }
 
+    function addStartDateFilter(newDate: Dayjs) {
+        let arr = startDateComparisons;
+        const dateString = dayjs(newDate, "DD.MM.YYYY");
+        const comparison: IStartDateComparison = {
+            operator: operator,
+            date: dateString.format('DD.MM.YYYY')
+        }
+        arr.push(comparison);
+        setStartDate(dateString);
+        setStartDateComparisons(arr);
+    };
+
+    function removeStartDateFilter(index: number) {
+        let arr = startDateComparisons;
+        arr.splice(index, 1);
+        setStartDateComparisons(arr);
+        setRefreshCounter(refreshCounter + 1);
+    }
+
+    function addDaysLeaveFilter(value: number) {
+        console.log('addDaysLeaveFilter method value: ', value);
+
+        let arr = daysLeaveComparisons;
+        const comparison: IDaysLeaveComparison = {
+            operator: operator,
+            value: value
+        }
+        arr.push(comparison);
+        setDaysLeave(value);
+        setDaysLeaveComparisons(arr);
+        setRefreshCounter(refreshCounter + 1);
+    }
+
+    function removeDaysLeaveFilter(index: number) {
+        let arr = daysLeaveComparisons;
+        arr.splice(index, 1);
+        setDaysLeaveComparisons(arr);
+        setRefreshCounter(refreshCounter + 1);
+    }
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -54,8 +100,27 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     function clearFilter() {
         props.setFilter({
             ...props.filter, name: '', email: '', department: '',
-            roles: [], offset: DEFAULT_OFFSET
-        })
+            roles: [], position: '', startDateComparisons: [],
+            daysLeaveComparisons: [], offset: DEFAULT_OFFSET
+        });
+    }
+    function getOperatorSign(operator: string) {
+        switch (operator) {
+            case 'GREATER':
+                return '>'
+            case 'GREATER_OR_EQUAL':
+                return '≥'
+            case 'EQUAL':
+                return '='
+            case 'NOT_EQUAL':
+                return '≠'
+            case 'LESS_OR_EQUAL':
+                return '≤'
+            case 'LESS':
+                return '<'
+            default:
+                break;
+        }
     }
     return (
         <React.Fragment>
@@ -104,7 +169,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     setEmail(e.target.value);
                                 }}
                             />
-                            <Autocomplete
+                            {/* <Autocomplete
                                 id="department"
                                 options={props.departmentNames}
                                 size='small'
@@ -123,7 +188,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                         placeholder={t('Department')!}
                                     />
                                 )}
-                            />
+                            /> */}
                             <Autocomplete
                                 multiple
                                 id="users"
@@ -143,7 +208,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     />
                                 )}
                             />
-                            <Autocomplete
+                            {/* <Autocomplete
                                 id="position"
                                 options={props.typeNames}
                                 size='small'
@@ -162,74 +227,169 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                         placeholder={t('Position')!}
                                     />
                                 )}
-                            />
+                            /> */}
+                            <FormControl sx={{ minWidth: 150, mt: 2 }}>
+                                {/* <InputLabel id="position-label">{t('Position')}</InputLabel> */}
+                                <Select
+                                    labelId="operation-label"
+                                    id="position"
+                                    value={position}
+                                    size='small'
+                                    label={t('Position')}
+                                    onChange={(event) => setPosition(event.target.value)}
+                                >
+                                    {
+                                        props.typeNames.map((name, index) => {
+                                            return <MenuItem key={index} value={name}>{name}</MenuItem>
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                                <DatePicker label={t('Start date is after')}
-                                    value={greaterThanOrEqualToDate}
+                            <Grid container direction="column">
+                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                                    <DatePicker label={t('Start date')}
+                                        value={startDate}
 
-                                    sx={{ marginTop: '5px', marginBottom: '5px' }}
-                                    onChange={(newValue) => setGreaterThanOrEqualToDate(newValue)} />
+                                        sx={{ marginTop: '10px', marginBottom: '5px' }}
+                                        onChange={(newValue) => setStartDate(newValue)} />
 
-                                <Typography>≤</Typography>
-                                <Typography>{t('Start date')}</Typography>
-                                <Typography>≤</Typography>
-
-                                <DatePicker label={t('Start date is before')}
-                                    value={lessThanOrEqualToDate}
-                                    sx={{ marginTop: '5px', marginBottom: '5px' }}
-                                    onChange={(newValue) => setLessThanOrEqualToDate(newValue)} />
-                            </LocalizationProvider>
+                                </LocalizationProvider>
+                                <Button
+                                    onClick={(e) => addStartDateFilter(startDate!)}>
+                                    {t('Add start date filter')}
+                                </Button>
+                                <List>
+                                    {startDateComparisons.map((comparison, index) => {
+                                        return (<ListItem key={index}
+                                            secondaryAction={
+                                                <IconButton edge="end" aria-label="delete"
+                                                    onClick={(e) => removeStartDateFilter(index)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            }>
+                                            <ListItemText
+                                                primary={getOperatorSign(comparison.operator) + ' ' + comparison.date}
+                                                sx={{ textAlign: 'center' }}
+                                            />
+                                        </ListItem>
+                                        )
+                                    })}
+                                </List>
+                            </Grid>
+                            <Grid container direction="column">
+                                <TextField
+                                    id="greaterThanOrEqualToPaidLeave"
+                                    name='greaterThanOrEqualToPaidLeave'
+                                    label={t('Paid leave left')!}
+                                    type="number"
+                                    value={daysLeave}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    onChange={e => {
+                                        setDaysLeave(Number(e.target.value));
+                                    }}
+                                    sx={{ marginTop: '10px', marginBottom: '5px' }}
+                                />
+                                <Button
+                                    onClick={(e) => addDaysLeaveFilter(daysLeave)}>
+                                    {t('Add days leave filter')}
+                                </Button>
+                                <List>
+                                    {daysLeaveComparisons.map((comparison, index) => {
+                                        return (<ListItem key={index}
+                                            secondaryAction={
+                                                <IconButton edge="end" aria-label="delete"
+                                                    onClick={(e) => removeDaysLeaveFilter(index)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            }>
+                                            <ListItemText
+                                                primary={getOperatorSign(comparison.operator) + ' ' + comparison.value}
+                                                sx={{ textAlign: 'center' }}
+                                            />
+                                        </ListItem>
+                                        )
+                                    })}
+                                </List>
+                            </Grid>
                         </Grid>
-                        <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <TextField
-                                id="greaterThanOrEqualToPaidLeave"
-                                name='greaterThanOrEqualToPaidLeave'
-                                label={t('More than')!}
-                                type="number"
-                                value={greaterThanOrEqualToPaidLeave}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                onChange={e => setGreaterThanOrEqualToPaidLeave(Number(e.target.value))}
-                                sx={{ marginTop: '10px', marginBottom: '5px' }}
-                            />
-                            <Typography>≤</Typography>
-                            <Typography>{t('Paid leave left')}</Typography>
-                            <Typography>≤</Typography>
-                            <TextField
-                                id="greaterThanOrEqualToPaidLeave"
-                                name='greaterThanOrEqualToPaidLeave'
-                                label={t('Less than')!}
-                                type="number"
-                                value={lessThanOrEqualToPaidLeave}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                onChange={e => setLessThanOrEqualToPaidLeave(Number(e.target.value))}
-                                sx={{ marginTop: '10px', marginBottom: '5px' }}
-                            />
-                        </Grid>
+                        {/* <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}> 
+                            <Grid item>
+
+                                <Grid container justifyContent="center" >
+                                    <Typography variant="overline" component="div">
+                                        {t(`Start date`)!}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid container direction="column">
+                                    <MyAddFilterDate buttonName={t(`AddFilter`)!}
+                                        onChange={(newDate) => addStartDateFilter(newDate)}
+                                        nameOfField={t(`Requests.EndDate`)!}
+                                    />
+                                    <List>
+                                        {startDateComparisons.map((comparison, index) => {
+                                            return (<ListItem key={index}
+                                                secondaryAction={
+                                                    <IconButton edge="end" aria-label="delete"
+                                                        onClick={(e) => removeStartDateFilter(index)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                }>
+                                                <ListItemText
+                                                    primary={getOperatorSign(comparison.operator) + ' ' + comparison.date}
+                                                />
+                                            </ListItem>
+                                            )
+                                        })}
+                                    </List>
+                                </Grid>
+                            </Grid>
+                        </Grid> */}
                     </DialogContent>
                     <DialogActions>
-                        <Grid container direction={'row-reverse'}>
-                            <Button
-                                type='submit'
-                                onClick={clearFilter}>
-                                <CloseIcon />
-                                {t('Clear')}
-                            </Button>
-                            <Button
-                                type='submit'
-                                startIcon={<FilterAltIcon />}>
-                                {t('Filter')}
-                            </Button>
+                        <Grid container direction={'row'}>
+                            <Grid item>
+                                <FormControl sx={{ m: 1, minWidth: 100 }}>
+                                    <InputLabel id="operation-label">{t('operation')}</InputLabel>
+                                    <Select
+                                        labelId="operation-label"
+                                        id="operation-select"
+                                        value={operator}
+                                        label="Operetion"
+                                        onChange={(event) => setOperator(event.target.value)}
+                                    >
+                                        <MenuItem value={"GREATER"}>{'>'}</MenuItem>
+                                        <MenuItem value={"GREATER_OR_EQUAL"}>{'≥'}</MenuItem>
+                                        <MenuItem value={"EQUAL"}>{'='}</MenuItem>
+                                        <MenuItem value={"NOT_EQUAL"}>{'≠'}</MenuItem>
+                                        <MenuItem value={"LESS_OR_EQUAL"}>{'≤'}</MenuItem>
+                                        <MenuItem value={"LESS"}>{'<'}</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                            </Grid>
+                            <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto">
+                                <Button
+                                    type='submit'
+                                    startIcon={<FilterAltIcon />}>
+                                    {t('Filter')}
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    onClick={clearFilter}>
+                                    <CloseIcon />
+                                    {t('Clear')}
+                                </Button>
+                            </Grid>
                         </Grid>
                     </DialogActions>
                 </Box>
             </Dialog>
-        </React.Fragment>
+        </React.Fragment >
     )
 }
 
