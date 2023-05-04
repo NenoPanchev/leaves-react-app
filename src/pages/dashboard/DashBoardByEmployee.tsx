@@ -7,19 +7,19 @@ import { useParams } from 'react-router-dom';
 import CalendarById from '../../components/calendar/CalendarById';
 import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
+import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 import { getUserById } from '../../services/userService';
-import LeavesReport from '../../models/users/leavesReport/LeavesReport';
 
-const UserBaseDetailsMemo = React.memo(UserBaseDetails);
-const LeavesReportMemo = React.memo(LeavesReport);
+const LeavesReportDialogMemo = React.memo(LeavesReportDialog);
 export default function DashBoardByEmployee() {
     const [userByiId, setUser] = React.useState<IUserDetails>({} as IUserDetails)
     const { t, i18n } = useTranslation();
     let { id } = useParams();
+
     const [showDetails, setShowDetails] = useState(true)
     React.useEffect(() => {
         retriveEmpl();
-    }, [setUser]);
+    }, []);
 
     const retriveEmpl = async () => {
         getUserById(parseInt(id!))
@@ -31,6 +31,7 @@ export default function DashBoardByEmployee() {
                 console.log(e);
             });
     }
+
     const updateDetails = useCallback(
 
         (): void => setShowDetails(!showDetails),
@@ -44,30 +45,25 @@ export default function DashBoardByEmployee() {
             <Grid container display="flex" justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
                 {/* User Details */}
-                    <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}} >
-                        <Paper >
-                            <Typography>{t('User info:')}</Typography>
+                <Grid item mt="2%" sx={{ display: !showDetails ? 'none' : undefined }} >
+                    <Paper >
+                        <Typography>{t('User info:')}</Typography>
+
+                        <LeavesReportDialogMemo id={userByiId.id}/>
+
+                        <UserBaseDetails email={userByiId.email} />
 
 
-                            <UserBaseDetailsMemo email={userByiId.email} />
+                    </Paper>
+                </Grid>
 
-
-                        </Paper>
-                    </Grid>
-            
                 {/* Calendar */}
-          
-                    <Grid item mt="2%" ml="5%"  justifySelf="end">
-                        <Paper sx={{ height: "fit-content", width: "fit-content" }} >
-                            <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
-                        </Paper>
-                    </Grid>
-                    
-                    <Grid item  ml="5%" sx={{display: !showDetails ? 'none' : undefined}} >
-                        <LeavesReportMemo id={parseInt(id!)}/>
-                    </Grid>
 
-               
+                <Grid item mt="2%" ml="5%" justifySelf="end">
+                    <Paper sx={{ height: "fit-content", width: "fit-content" }} >
+                        <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
+                    </Paper>
+                </Grid>
             </Grid>
         </React.Fragment>
 
