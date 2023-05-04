@@ -91,7 +91,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             .catch((e: Error) => {
                 console.log(e);
             });
-            return () => controller.abort();
+        return () => controller.abort();
     }
     const retriveHolidays = async () => {
         const controller = new AbortController();
@@ -102,7 +102,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             .catch((e: Error) => {
                 console.log(e);
             });
-            return () => controller.abort();
+        return () => controller.abort();
     }
 
 
@@ -120,22 +120,19 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     );
 
     function openRequest(newValue: dayjs.Dayjs | null) {
-
+        let isCurrentElement = false;
         for (const element of leaveRequests) {
+          
 
             if (element.approved) {
-                if (newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
+                console.log("true")
+                if (newValue?.isBetween(element.startDate, element.endDate, null, '[]') || newValue?.isSame(element.endDate, 'day')) {
                     setLeaveRequest(element);
                     setOpen(true);
                     return false;
                 }
-                if (newValue?.isSame(element.endDate, 'day')) {
-                    setLeaveRequest(element);
-                    setOpen(true);
-                    return false;
-                }
-            }
-            else if (element.approved == null || element.approved == false) {
+            } else if (element.approved === null || element.approved === false) {
+                console.log("false|null")
                 if (newValue?.isSame(element.endDate, 'day') || newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
                     setOpen(false);
                     setOpenAlert(true);
@@ -143,20 +140,25 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                     return false;
                 }
             }
-
-            if (dayjs(element.startDate).isBetween(startDate, newValue, null, '[]') || dayjs(element.endDate).isBetween(startDate, newValue, null, '[]')) {
-                setStartDate(newValue);
-                setEndDate(newValue);
-                return false;
-            }
+        if ((dayjs(element.startDate).isBetween(startDate, newValue, null, '[]') || dayjs(element.endDate).isBetween(startDate, newValue, null, '[]'))) {
+            isCurrentElement=true;
         }
+        }
+        
+        if(isCurrentElement)
+        {
+            setStartDate(newValue);
+            setEndDate(newValue);
+        }
+
         return true;
     }
 
 
     const handleChange = (newValue: dayjs.Dayjs | null) => {
-
+        console.log("out")
         if (openRequest(newValue)) {
+            console.log("in")
             if (newValue?.isSame(endDate)) {
                 setStartDate(newValue)
             }
