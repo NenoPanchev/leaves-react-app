@@ -215,6 +215,7 @@ export const useFetchAllTypeNames = (refresh: number) => {
   return typeNames;
 }
 
+
 export const useChangePassword = () => {
   let serverResponse = '';
 

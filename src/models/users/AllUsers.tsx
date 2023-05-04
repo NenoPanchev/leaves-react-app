@@ -6,8 +6,8 @@ import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
-import { useFetchAllNames as fetchDepartmentNames } from '../../services/departmentService';
-import { useFetchAllNames as fetchRoleNames } from '../../services/roleService';
+import { useFetchAllNames as fetchDepartmentNames, getAllDepartmentNamesNoRefresh } from '../../services/departmentService';
+import { useFetchAllNames as fetchRoleNames, getAllRoleNamesNoRefresh } from '../../services/roleService';
 
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
@@ -16,24 +16,56 @@ import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
 import '../ViewAll.css'
+import TypeService from '../../services/TypeService';
+import AuthContext from '../../contexts/AuthContext';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>(DEFAULT_USER_FILTER);
-  const departmentNames = fetchDepartmentNames(refreshCurrentState);
-  const roleNames = fetchRoleNames(refreshCurrentState);
-  const typeNames = userService.useFetchAllTypeNames(refreshCurrentState);
+
+  const { user } = React.useContext(AuthContext);
+  
+  const [departmentNames, setDepartmentNames] = React.useState<string[]>([]);
+  const [roleNames, setRoleNames] = React.useState<string[]>([]);
+  const [typeNames, setTypeNames] = React.useState<string[]>([]);
+
   const { t } = useTranslation();
   const page = userService.useFetchPage(userFilter);
   const apiRef = useGridApiRef();
+
+  React.useEffect(() => {
+    
+    TypeService.getAllTypeNames()
+      .then((response) => {
+        setTypeNames(response.data)
+      })
+      .catch(error => console.log(error));
+
+     getAllDepartmentNamesNoRefresh()
+      .then((response) => {
+        setDepartmentNames(response.data)
+      })
+      .catch(error => console.log(error));
+
+      getAllRoleNamesNoRefresh()
+       .then((response) => {
+        let initArr = (response.data).filter((names: string) => names !== 'SUPER_ADMIN');
+        if (!user?.hasRole('SUPER_ADMIN')) {
+          initArr = initArr.filter((name: string) => name !== 'ADMIN')
+        }
+        setRoleNames(initArr)
+      })
+      .catch(error => console.log(error))
+
+  }, []);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (user: IUserEdit,rowId:number) => {
+  const renderEditButton = (user: IUserEdit, rowId: number) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-    departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
+      departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -45,7 +77,7 @@ export default function Users() {
     <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
     <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-    filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames}/>]
+      filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setUserFilter({
@@ -113,7 +145,7 @@ export default function Users() {
       flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
-        renderEditButton(params.row,params.row.id),
+        renderEditButton(params.row, params.row.id),
         renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
       ]
     },
@@ -127,7 +159,7 @@ export default function Users() {
   });
 
   return (
-    <Grid sx={{ width: '100%'}}>
+    <Grid sx={{ width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}

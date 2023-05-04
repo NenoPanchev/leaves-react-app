@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { axiosInstance as axios} from '../config/AxiosConfig';
+import { axiosInstance as axios } from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { BASE_DEPARTMENT_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { IDepartment } from '../models/interfaces/department/IDepartment';
@@ -8,30 +8,30 @@ import { IDepartmentPage } from '../models/interfaces/department/IDepartmentPage
 import { IDepartmentFilter } from '../models/interfaces/department/IDepartmentFilter';
 
 export const useFetchAll = (refresh: number) => {
-    const [department, setDepartment] = useState<IDepartment[]>([]);
+  const [department, setDepartment] = useState<IDepartment[]>([]);
 
 
-    useEffect(() => {
-      loadDepartments();
-    }, [refresh]);
-  
-    const loadDepartments = async () => {
-      const result = await axios.get(BASE_DEPARTMENT_URL)
-        .then(response => setDepartment(response.data))
-        .catch(error => console.log(error))
-        
-    } 
+  useEffect(() => {
+    loadDepartments();
+  }, [refresh]);
 
-    return department;
+  const loadDepartments = async () => {
+    const result = await axios.get(BASE_DEPARTMENT_URL)
+      .then(response => setDepartment(response.data))
+      .catch(error => console.log(error))
+
+  }
+
+  return department;
 }
 
-export const useFetchOne = (props:number) => {
-    const [department, setDepartment] = useState<IDepartmentDetails>();
-    
+export const useFetchOne = (props: number) => {
+  const [department, setDepartment] = useState<IDepartmentDetails>();
+
   useEffect(() => {
     loadDepartment();
   }, []);
-  
+
 
   const loadDepartment = async () => {
     const result = await axios.get(BASE_DEPARTMENT_URL + props)
@@ -76,17 +76,17 @@ export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
   }, [refresh]);
 
   const fetchPage = () => {
-    
+
     const loadPage = async () => {
       const result = await axios.post(BASE_DEPARTMENT_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
-        .then(response =>  {
-          
+        .then(response => {
+
           setPage(response.data)
-          
+
         })
         .catch(error => console.log(error))
     }
-    loadPage();      
+    loadPage();
     return page;
   }
   return page;
@@ -108,12 +108,16 @@ export const useFetchAllNames = (refresh: number) => {
   return departmentNames;
 }
 
+export const getAllDepartmentNamesNoRefresh = () => {
+  return axios.get(BASE_DEPARTMENT_URL + 'names');
+}
+
 export function appendEmployeesToFormData(formData: FormData, employees: string[] | null) {
   if (employees === null) {
-    return; 
+    return;
   }
   employees.forEach((emp) => {
-      formData.append(`employeeEmails[]`, emp.toString());
-    });
-  
+    formData.append(`employeeEmails[]`, emp.toString());
+  });
+
 }

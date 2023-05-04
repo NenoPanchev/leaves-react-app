@@ -24,9 +24,6 @@ export default function DashBoard() {
         [showDetails]
     );
  
-    useEffect(() => {
-        console.log(email);
-      }, []);
     return (
         <React.Fragment>
             {user !== null &&

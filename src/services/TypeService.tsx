@@ -1,4 +1,5 @@
 import { axiosInstance as axios } from '../config/AxiosConfig';
+import { BASE_URL } from '../constants/GlobalConstants';
 import ITypeEmploeeGet from '../models/interfaces/type/ITypeEmploeeGet';
 import ITypeEmploeePage from '../models/interfaces/type/ITypeEmploeePage';
 import ITypeEmploeePost from '../models/interfaces/type/ITypeEmploeePost';
@@ -37,6 +38,11 @@ const unMarkAsDeleted = (id: any) => {
   return axios.put<any>(`http://localhost:8080/api/types/${id}/unmark`)
 };
 
+const getAllTypeNames = () => {
+  
+  return axios.get<string[]>(BASE_URL + '/api/types/names');
+};
+
 const TypeService = {
   getAll,
   get,
@@ -46,6 +52,7 @@ const TypeService = {
   getAllFilter,
   getAllFilterPage,
   unMarkAsDeleted,
+  getAllTypeNames,
 };
 
 export default TypeService;

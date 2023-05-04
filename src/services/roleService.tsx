@@ -120,6 +120,9 @@ export const useFetchAllNames = (refresh: number) => {
   return roleNames;
 }
 
+export const getAllRoleNamesNoRefresh = () => {
+    return axios.get(BASE_ROLE_URL + 'names');  
+}
 export function appendPermissionsToFormData(formData: FormData, permissions: Permission[] | null) {
   if (permissions === null) {
     const perm = new Permission();

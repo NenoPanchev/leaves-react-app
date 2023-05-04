@@ -31,8 +31,7 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
-    const [passwordError, setPasswordError] = React.useState(false);
-    const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
+
     let nError = false;
     let eError = false;
     // let pError = false;
