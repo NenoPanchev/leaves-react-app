@@ -123,6 +123,7 @@
     "alertRequestProcessed": "Заявлението за отпуск{{id}} е вече обработено!",
     "alertAddSuccess": "Успешно заявена отпуска!",
     "alertMassageDeleteType": "Това е типът на {{employeeWithType}} работника!",
+    "leavesReport":"Отчет на отпуски",
     "LeaveTypes": {
         "TypeName": "Име на тип",
         "DaysLeave": "Дни отпуска",

@@ -1,23 +1,23 @@
-import * as React from 'react';
-import ViewButton from '../../components/common/ViewButton';
-import DeleteButton from '../../components/common/DeleteButton';
-import * as userService from '../../services/userService';
 import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
+import * as React from 'react';
+import DeleteButton from '../../components/common/DeleteButton';
+import ViewButton from '../../components/common/ViewButton';
+import { getAllDepartmentNamesNoRefresh } from '../../services/departmentService';
+import { getAllRoleNamesNoRefresh } from '../../services/roleService';
+import * as userService from '../../services/userService';
 import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
-import { useFetchAllNames as fetchDepartmentNames, getAllDepartmentNamesNoRefresh } from '../../services/departmentService';
-import { useFetchAllNames as fetchRoleNames, getAllRoleNamesNoRefresh } from '../../services/roleService';
 
-import { useTranslation } from 'react-i18next';
-import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
 import { Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
+import AuthContext from '../../contexts/AuthContext';
+import TypeService from '../../services/TypeService';
+import '../ViewAll.css';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
-import '../ViewAll.css'
-import TypeService from '../../services/TypeService';
-import AuthContext from '../../contexts/AuthContext';
 
 export default function Users() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
@@ -34,7 +34,7 @@ export default function Users() {
   const apiRef = useGridApiRef();
 
   React.useEffect(() => {
-    
+
     TypeService.getAllTypeNames()
       .then((response) => {
         setTypeNames(response.data)

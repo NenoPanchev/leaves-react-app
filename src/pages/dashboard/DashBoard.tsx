@@ -4,12 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../contexts/AuthContext';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
-import LeavesReport from '../../models/users/leavesReport/LeavesReport';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
+import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
-const LeavesReportMemo = React.memo(LeavesReport);
-
+const LeavesReportDialogMemo = React.memo(LeavesReportDialog);
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
     const email = user?.getEmail();
@@ -36,6 +35,7 @@ export default function DashBoard() {
                         <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}}>
                             <Paper>
                                 <Typography>{t('My info:')}</Typography>
+                                <LeavesReportDialogMemo id={user.getId()}/>
                                 <UserBaseDetailsMemo email={email!} />
                             </Paper>
                         </Grid>
@@ -47,13 +47,6 @@ export default function DashBoard() {
                     </Grid>
 
                      {/* LeavesReport */}
-                    {/* {showDetails && */}
-                    <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}} >
-                     <Paper>
-                        <LeavesReportMemo id={user.getId()}/>
-                        </Paper>
-                        </Grid>
-                    {/* } */}
                 </Grid>
 
             }
