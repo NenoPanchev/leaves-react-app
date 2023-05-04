@@ -125,14 +125,12 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
           
 
             if (element.approved) {
-                console.log("true")
                 if (newValue?.isBetween(element.startDate, element.endDate, null, '[]') || newValue?.isSame(element.endDate, 'day')) {
                     setLeaveRequest(element);
                     setOpen(true);
                     return false;
                 }
             } else if (element.approved === null || element.approved === false) {
-                console.log("false|null")
                 if (newValue?.isSame(element.endDate, 'day') || newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
                     setOpen(false);
                     setOpenAlert(true);
@@ -144,7 +142,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             isCurrentElement=true;
         }
         }
-        
+
         if(isCurrentElement)
         {
             setStartDate(newValue);
@@ -156,9 +154,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
 
     const handleChange = (newValue: dayjs.Dayjs | null) => {
-        console.log("out")
         if (openRequest(newValue)) {
-            console.log("in")
             if (newValue?.isSame(endDate)) {
                 setStartDate(newValue)
             }

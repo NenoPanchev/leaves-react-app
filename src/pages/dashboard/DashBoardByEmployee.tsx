@@ -10,6 +10,8 @@ import UserBaseDetails from '../../models/users/UserBaseDetails';
 import { getUserById } from '../../services/userService';
 import LeavesReport from '../../models/users/leavesReport/LeavesReport';
 
+const UserBaseDetailsMemo = React.memo(UserBaseDetails);
+const LeavesReportMemo = React.memo(LeavesReport);
 export default function DashBoardByEmployee() {
     const [userByiId, setUser] = React.useState<IUserDetails>({} as IUserDetails)
     const { t, i18n } = useTranslation();
@@ -35,15 +37,14 @@ export default function DashBoardByEmployee() {
 
         [showDetails]
     );
-    const UserBaseDetailsMemo = React.memo(UserBaseDetails);
+
     return (
         <React.Fragment>
 
             <Grid container display="flex" justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
 
                 {/* User Details */}
-                {showDetails &&
-                    <Grid item mt="2%" >
+                    <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}} >
                         <Paper >
                             <Typography>{t('User info:')}</Typography>
 
@@ -53,7 +54,7 @@ export default function DashBoardByEmployee() {
 
                         </Paper>
                     </Grid>
-                }
+            
                 {/* Calendar */}
           
                     <Grid item mt="2%" ml="5%"  justifySelf="end">
@@ -61,11 +62,11 @@ export default function DashBoardByEmployee() {
                             <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
                         </Paper>
                     </Grid>
-                    {showDetails &&
-                    <Grid item  ml="5%" >
-                        <LeavesReport id={parseInt(id!)}></LeavesReport>
+                    
+                    <Grid item  ml="5%" sx={{display: !showDetails ? 'none' : undefined}} >
+                        <LeavesReportMemo id={parseInt(id!)}/>
                     </Grid>
-}
+
                
             </Grid>
         </React.Fragment>
