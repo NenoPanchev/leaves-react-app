@@ -108,7 +108,6 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     }
 
     if (params.row.approved === null) {
-      console.log(params.row.approved)
       return t('Requests.notProcessed')
     }
   }

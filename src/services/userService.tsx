@@ -157,7 +157,9 @@ export const useFetchAllEmails = (refresh: number) => {
 
   return userEmails;
 }
-
+export const getAllEmailsNotHook = (controller:any) => {
+    return axios.get(BASE_USER_URL + 'emails',{signal:controller.signal});
+}
 export const useFetchEmailsOfAvailableEmployees = (refresh: number) => {
   const [userEmails, setUserEmails] = useState<string[]>([]);
 

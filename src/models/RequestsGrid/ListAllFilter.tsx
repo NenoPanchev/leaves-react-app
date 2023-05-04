@@ -37,12 +37,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const [calendarOperation, setCalendarOperation] = React.useState<string>(calendarOperations.sDateEdate);
 
     const { id, dateCreated, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort, operation, deleted } = filter;
-    let value: number = limit;
-    const onAdd = async () => {
-        console.log(filter);
-        props.onAdd(filter);
-        setOpen(false);
-    };
+
     const onSubmitChild = async (e: { preventDefault: () => void; }) => {
         props.onAdd(filter);
         props.onSubmitChild(e);
@@ -110,6 +105,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
 
 
     function changeOperation(txt: string) {
+        startDate.length=0;
+        endDate.length=0;
         setUserFilter({ ...filter, operation: txt })
         props.value.operation = txt;
     }

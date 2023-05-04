@@ -109,6 +109,7 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
     }
 
     function renderDaysList() {
+        
         if (operation === "EQUAL") {
             return (<List >
                 {daysLeave.map((item) => {
@@ -130,7 +131,6 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
         else if (operation === "RANGE") {
             if (daysLeave.length > 1) {
                 return (
-
                     <List >
                         <ListItem
                             secondaryAction={
