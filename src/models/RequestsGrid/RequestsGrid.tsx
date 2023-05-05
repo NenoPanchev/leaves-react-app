@@ -33,26 +33,33 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     deleted: "false"
   });
 
-  const [openForm, setOpen] = useState<boolean>(false);
   // const ChildMemo = React.memo(ApproveRequestDialog);
 
   const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);
+  const [notLoaded, setNotLoaded] = useState<boolean>(true);
+
   useEffect(() => {
     retrivePage();
-  }, [leaveRequestFilter, setOpen]);
+
+  }, [leaveRequestFilter]);
 
   let numberOfElements = page.numberOfElements * (page.number + 1);
 
 
   const retrivePage = async () => {
-    await RequestService.getAllFilterPage(leaveRequestFilter)
+    const controller = new AbortController();
+
+    await RequestService.getAllFilterPage(leaveRequestFilter,controller)
       .then((response: any) => {
         setPage(response.data);
         setRows(response.data.content)
+        setNotLoaded(false)
       })
       .catch((e: Error) => {
         console.log(e);
       });
+
+      return () => controller.abort();
   }
 
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {

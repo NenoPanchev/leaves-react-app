@@ -31,7 +31,7 @@ export default function DashBoardByEmployee() {
                 console.log(e);
             });
     }
-
+    const UserBaseDetailsMemo = React.memo(UserBaseDetails);
     const updateDetails = useCallback(
 
         (): void => setShowDetails(!showDetails),
@@ -51,7 +51,7 @@ export default function DashBoardByEmployee() {
 
                         <LeavesReportDialogMemo id={userByiId.id}/>
 
-                        <UserBaseDetails email={userByiId.email} />
+                        <UserBaseDetailsMemo email={userByiId.email} />
 
 
                     </Paper>

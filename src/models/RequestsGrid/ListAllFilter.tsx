@@ -127,7 +127,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
 
 
     function renderDatesElement() {
-        console.log(operation)
         if (operation === "EQUAL") {
 
             return (<Grid item > {/* StartDate By Filters */}

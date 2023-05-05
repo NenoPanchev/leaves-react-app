@@ -20,8 +20,8 @@ const getAllFilter = (data: any) => {
   return axios.post<Array<IRequestDataGet>>("http://localhost:8080/api/requests/filter",data)
 };
 
-const getAllFilterPage = (data: any) => {
-  return axios.post<ILeaveRequestPage>("http://localhost:8080/api/requests/Page",data)
+const getAllFilterPage = (data: any,controller:any) => {
+  return axios.post<ILeaveRequestPage>("http://localhost:8080/api/requests/Page",data,{signal:controller.signal})
 };
 
 const get = (id: any) => {
