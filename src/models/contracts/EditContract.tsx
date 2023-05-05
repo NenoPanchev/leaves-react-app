@@ -58,7 +58,7 @@ export default function EditContractButton(props: IContractEditButtonProps) {
         let endDateString = endDate? endDate.format('DD.MM.YYYY') : null;
 
         formData.append('[startDate]', startDateString!)
-        if (endDateString) {
+        if (endDateString && endDateString !== 'Invalid Date') {
             formData.append('[endDate]', endDateString!)
         }
       }
