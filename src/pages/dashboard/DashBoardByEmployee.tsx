@@ -22,7 +22,7 @@ export default function DashBoardByEmployee() {
     }, []);
 
     const retriveEmpl = async () => {
-        getUserById(parseInt(id!))
+       await getUserById(parseInt(id!))
             .then((response: any) => {
                 console.log(response.data);
                 setUser(response.data);
@@ -51,7 +51,7 @@ export default function DashBoardByEmployee() {
 
                         <LeavesReportDialogMemo id={userByiId.id}/>
 
-                        <UserBaseDetailsMemo email={userByiId.email} />
+                        <UserBaseDetailsMemo email={userByiId!.email} />
 
 
                     </Paper>

@@ -130,9 +130,9 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
               width: 'fit-content',
             }}>
             <CardContent sx={{ pt: 0 }}>
-              <Box sx={{ m: -1.5 }} >
+              <Box sx={{ m: -1.5 }} justifyContent="center">
                 <Grid container direction="row">
-                  <Grid item marginLeft="-20%" marginRight="20%">
+                  <Grid item marginLeft="-10%">
                     <Grid
                       container
                       direction="column"
@@ -141,8 +141,6 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
                       <Grid
                         item
-                        xs={12}
-                        md={6}
                       >
                         <CardHeader
                           title={t('RequestInfo')} sx={{ marginLeft: "5%" }} />
@@ -176,7 +174,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                     </Grid>
                   </Grid>
 
-                  <Grid item mr="-30%" ml="15%">
+                  <Grid item mr="-30%" ml="20%">
                     <Grid
                       container
                       direction="column"
@@ -185,8 +183,6 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
                       <Grid
                         item
-                        xs={12}
-                        md={6}
                       >
                         <CardHeader
                           title={t('DocumentFields')} sx={{ marginLeft: "5%" }} />
