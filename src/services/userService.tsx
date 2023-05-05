@@ -98,12 +98,19 @@ export const updatePersonalInfo = (data: any) => {
   return axios.put<any>(`http://localhost:8080/users/personal-info`,data)
 };
 export const useCreate = () => {
-
+  let serverResponse = '';
   const addUser = async (user: FormData) => {
     const result = await axios.post(BASE_USER_URL, formToJSON(user))
       .then(response => {
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        if (error.response) {
+            console.log(error)
+            serverResponse = error.response.data;
+        }
+    })
+    return serverResponse;
   }
   return addUser;
 }

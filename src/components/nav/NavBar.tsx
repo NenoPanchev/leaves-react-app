@@ -63,6 +63,9 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
         {
             path=path.substring(0,path.length-1)
         }
+        if (path.startsWith('Contracts')) {
+            path = 'Contracts'
+        }
         switch (path) {
             case '':
                 path = 'Home'

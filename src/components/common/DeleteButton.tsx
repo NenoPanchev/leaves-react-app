@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 
@@ -21,13 +21,15 @@ import { useTranslation } from 'react-i18next';
 import { IDeleteButtonProps } from '../../models/interfaces/common/IDeleteButtonProps';
 
 export default function DeleteButton(props: IDeleteButtonProps) {
-    const path = useLocation().pathname;
+    let path = useLocation().pathname;
+    if (path.startsWith('/contracts')) {
+        path = '/contracts';
+    }
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const [t, i18n] = useTranslation();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
-    const navigate = useNavigate();
     const {user} = React.useContext(AuthContext);
 
     const handleClickOpen = () => {
@@ -41,7 +43,6 @@ export default function DeleteButton(props: IDeleteButtonProps) {
     function handleDelete() {
         deleteItem(props.id)
         .then(() => props.refresh(props.refreshCurrentState + 1))
-        .then(() => navigate(path));
     }
 
     if (!user?.hasAuthority('DELETE') || (props.id == 1 && path != '/departments')) {

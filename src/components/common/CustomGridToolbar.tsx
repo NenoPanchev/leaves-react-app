@@ -1,7 +1,4 @@
-import { GridToolbarContainer, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
-import ListAllFilter from "../../models/RequestsGrid/ListAllFilter";
-import ApproveDialogAlerts from "../Alert/ApproveDialogAlert";
-import AddRoleButton from "../../models/roles/AddRole";
+import { GridToolbarContainer, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport } from "@mui/x-data-grid";
 import { ReactNode } from "react";
 import React from "react";
 
@@ -10,7 +7,7 @@ interface CustomGridToolbarProps {
   components: ReactNode[];
 }
 
-const CustomGridToolbar: React.FC<CustomGridToolbarProps> = ({ components }) => {
+const CustomGridToolbar: React.FC<CustomGridToolbarProps> = ({ components }) => {  
   return (
 
     <GridToolbarContainer >

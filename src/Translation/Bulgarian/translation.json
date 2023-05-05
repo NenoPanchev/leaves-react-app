@@ -5,6 +5,7 @@
     "Departments": "Отдели",
     "Department": "Отдел",
     "Roles": "Роли",
+    "Contracts": "Договори",
     "Role": "Роля",
     "Login": "Вход",
     "Logout": "Изход",
@@ -98,6 +99,7 @@
 
     "Add": "Добави",
     "seeDetails":"Виж детайли",
+    "seeContracts": "Виж договори",
     "limitAlert": "Лимитът не може да бъде по-малък или равен на нула!",
     "offSetAlert": "Отместването не може да бъде по-малко от нула!",
     "holiday":"Неработни дни",
@@ -170,7 +172,9 @@
     "More than": "Повече от",
     "Less than": "По-малко от",
     "Add start date filter": "Добави филтриране по начална дата",
+    "Add end date filter": "Добави филтриране по крайна дата",
     "Add days leave filter": "Добави филтриране по оставащи дни отпуск",
+    "Add contract": "Добави договор",
     "DownloadPdf":"Изтегли Pdf",
     "DocumentFields": "Полета за документa:",
     "RequestInfo":"Информация за заявлението:"
