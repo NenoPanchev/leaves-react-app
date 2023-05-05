@@ -64,7 +64,7 @@ export default function Departments() {
     <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />,
       <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-      filter={departmentFilter} setFilter={setDepartmentFilter}/>]
+      filter={departmentFilter} setFilter={setDepartmentFilter} allEmails={userEmails}/>]
 
   const handlePaginationModelChange = (paginationModel: any) => {
     setDepartmentFilter({

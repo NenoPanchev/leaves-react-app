@@ -18,7 +18,7 @@ function DepartmentSearchFilter(props: IDepartmentSearchFilterProps) {
     const [adminEmail, setAdminEmail] = React.useState(props.filter.adminEmail);
     const [employeeEmails, setEmployeeEmails] = React.useState<string[]>(props.filter.employeeEmails);
 
-    const userEmails = useFetchAllEmails(props.refreshCurrentState);
+    const userEmails =props.allEmails;
     const { t } = useTranslation();
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

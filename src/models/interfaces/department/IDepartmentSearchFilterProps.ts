@@ -5,4 +5,5 @@ export interface IDepartmentSearchFilterProps {
     refresh: (value: number) => void;
     filter: IDepartmentFilter;
     setFilter: (value: IDepartmentFilter) => void;
+    allEmails: string[];
 }
