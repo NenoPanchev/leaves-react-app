@@ -17,7 +17,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IUserEditButtonProps } from '../interfaces/user/IUserEditButtonProps';
 
 export default function EditUserButton(props: IUserEditButtonProps) {
-    const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.user.name);
     const [email, setEmail] = React.useState(props.user.email);
@@ -25,11 +24,11 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     const [position, setPosition] = React.useState<string | null>(props.user.position);
     const initialDay = dayjs(props.user.contractStartDate, 'DD.MM.YYYY');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(initialDay);
-    const [refreshCounter, setRefreshCounter] = React.useState<number>(0);
+
     
-
-
-    const [roles, setRoles] = React.useState<Role[]>([]);
+    const str = props.user.roles.toString();
+    const arr = str.split(', ');
+    const [roles, setRoles] = React.useState<Role[]>(mapRoleName(arr));
     const { t } = useTranslation();
     const [nameError, setNameError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
@@ -39,19 +38,23 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     let nError = false;
     let eError = false;
     let sError = false;
-    // let pError = false;
-    // let pcError = false;
-    const [password, setPassword] = React.useState<string>('');
-    const [passwordConfirm, setPasswordConfirm] = React.useState<string>('');
     const { user } = React.useContext(AuthContext);
-    const str = props.user.roles.toString();
-    const arr = str.split(', ');
-    const [roleNames, setRoleNames] = React.useState<string[] | null>(arr);
-    const navigate = useNavigate();
+    let initArr:string[] =[];
+
+
+    if (!user?.hasRole('SUPER_ADMIN')) {
+        initArr=(props.roleNames).filter((name) =>!['SUPER_ADMIN','ADMIN'].includes(name));
+    }
+    else
+    {
+        initArr=props.roleNames;
+    }
+    const [roleNames, setRoleNames] = React.useState<string[] >(initArr);
+
     const editUser = useEdit();
-    // const [showPasswordFields, setShowPasswordFields] = React.useState(false);
     const [showContractFields, setShowContractFields] = React.useState(false);
     const [contractChange, setContractChange] = React.useState('Initial');
+
     let typeNames = props.typeNames;
     let serverResponse = '';
 
@@ -78,9 +81,6 @@ export default function EditUserButton(props: IUserEditButtonProps) {
         setOpen(false);
     };
 
-    // const handleShowPasswordFields = () => {
-    //     setShowPasswordFields(true);
-    // }
     const handleShowContractFields = () => {
         setShowContractFields(true);
     }
@@ -115,13 +115,6 @@ export default function EditUserButton(props: IUserEditButtonProps) {
 
         sError = serverResponse !== '';
         setServerError(serverResponse !== '');       
-        
-        // setPasswordError((password.length < 4 || password.length > 20));
-        // pError = ((password.length < 4 || password.length > 20));
-
-        // setPasswordConfirmError(password !== passwordConfirm);
-        // pcError = (password !== passwordConfirm);
-
         return nError || eError || sError;
     }
 
@@ -251,13 +244,12 @@ export default function EditUserButton(props: IUserEditButtonProps) {
                             <Autocomplete
                                 multiple
                                 id="roles"
-                                options={props.roleNames}
+                                options={roleNames}
                                 filterSelectedOptions
                                 size='medium'
                                 sx={{ minWidth: '20%' }}
-                                value={roleNames!}
+                                value={roles.map(x=>x.getName())}
                                 onChange={(event, newValue) => {
-                                    setRoleNames(newValue)
                                     setRoles(mapRoleName(newValue))
                                 }}
                                 renderInput={(params) => (
@@ -268,41 +260,7 @@ export default function EditUserButton(props: IUserEditButtonProps) {
                                         placeholder={t('Roles')!}
                                     />
                                 )}
-                            />
-                            {/* {!showPasswordFields &&
-                                <Button autoFocus onClick={handleShowPasswordFields}>
-                                    {t('Change password')}
-                                </Button>
-                            }
-                            {showPasswordFields &&
-                                <>
-                                    <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label={t('Password')}
-                                        type="password"
-                                        id="password"
-                                        autoComplete="password"
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        error={passwordError}
-                                        helperText={passwordError ? t('Password must be between 4 and 20 characters') : null}
-                                    />
-                                    <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        name="confirmPassword"
-                                        label={t('Password Confirm')}
-                                        type="password"
-                                        id="confirm-password"
-                                        onChange={(e) => setPasswordConfirm(e.target.value)}
-                                        error={passwordConfirmError}
-                                        helperText={passwordConfirmError ? t('Passwords must match!') : null}
-                                    />
-                                </>
-                            } */}
+                            />    
                         </DialogContent>
                         <DialogActions>
                             <Button autoFocus onClick={handleClose}>
