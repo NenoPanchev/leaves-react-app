@@ -56,6 +56,18 @@ export default function UserView(props: IViewProps) {
 
 
             <Grid item marginLeft="auto" marginTop="auto" marginBottom="auto" marginRight="2%">
+              <Link to={{ pathname: `/contracts/employee/${props.id}` }} style={{
+                textDecoration: 'none',
+                color: 'black'
+              }}>
+
+                <Button variant='outlined'>
+                  <Typography variant="overline" component="div">
+                    {t(`Contracts`)!}
+                  </Typography>
+                </Button>
+              </ Link>
+
               <Link to={{ pathname: `/requests/employee/${props.id}` }} style={{
                 textDecoration: 'none',
                 color: 'black'
@@ -137,8 +149,8 @@ export default function UserView(props: IViewProps) {
             </Table>
           </Card>
         </Grid>
+        <LeavesReport id={props.id}></LeavesReport>
       </DialogContent>
-
     </ React.Fragment>
   );
 }

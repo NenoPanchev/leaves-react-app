@@ -20,7 +20,7 @@ import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
 
 export default function Users() {
-  const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
+  const [refreshCurrenter, setRefreshCounter] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>(DEFAULT_USER_FILTER);
 
   const { user } = React.useContext(AuthContext);
@@ -56,6 +56,7 @@ export default function Users() {
         setRoleNames(initArr)
       })
       .catch(error => console.log(error))
+  const page = userService.useFetchPage(refreshCurrenter, userFilter);
 
   }, []);
 
@@ -70,11 +71,11 @@ export default function Users() {
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
-      refresh={setRefreshCurrentState}></DeleteButton>
+      refresh={setRefreshCounter}></DeleteButton>
   }
 
   const myGridToolbarComponents = [
-    <AddUserButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    <AddUserButton refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
     <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]

@@ -1,4 +1,4 @@
-import { IStartDateComparison } from "./IStartDateComparison"
+import { IDateComparison } from "./IStartDateComparison"
 import { IDaysLeaveComparison } from "./IDaysLeaveComparison"
 
 export interface IUserFilter {
@@ -9,6 +9,6 @@ export interface IUserFilter {
     offset: number
     limit: number
     position: string
-    startDateComparisons: IStartDateComparison[]
+    startDateComparisons: IDateComparison[]
     daysLeaveComparisons: IDaysLeaveComparison[]
 }
