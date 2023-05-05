@@ -94,6 +94,9 @@ export const validateUserPasswordChangeTokenById = async (id: number, token: str
   return await axios.put<IUserDetails>(BASE_USER_URL + `${id}/validate-password-token`, token);
 }
 
+export const updatePersonalInfo = (data: any) => {
+  return axios.put<any>(`http://localhost:8080/users/personal-info`,data)
+};
 export const useCreate = () => {
 
   const addUser = async (user: FormData) => {

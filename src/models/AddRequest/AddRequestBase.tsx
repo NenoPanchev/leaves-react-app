@@ -149,6 +149,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                             minDate={dayjs()}
                                             disableOpenPicker
                                             value={startDate}
+                                            disabled
                                             onChange={(newValue) => onStartDateChange(newValue)} />
                                     </Grid>
 
@@ -164,6 +165,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                         <DatePicker slotProps={{ textField: { size: 'small' } }}
                                         disablePast={true}
                                         disableOpenPicker
+                                        disabled
                                         value={endDate}
                                         onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
@@ -190,6 +192,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                          minDate={dayjs()}
                                         value={startDate}
                                         disableOpenPicker
+                                        disabled
                                         onChange={(newValue) => onStartDateChange(newValue)} />
                                     </Grid>
 
@@ -206,6 +209,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                          minDate={endDate} 
                                          disableOpenPicker
                                          value={endDate} 
+                                         disabled
                                          onChange={(newValue) => SetEndDate(newValue)} />
                                     </Grid>
 

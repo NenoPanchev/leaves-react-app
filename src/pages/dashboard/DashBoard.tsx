@@ -6,8 +6,10 @@ import AuthContext from '../../contexts/AuthContext';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
+import UserPersonalInfo from '../../models/users/UserPersonalInfo';
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
+// const UserPersonalInfoMemo = React.memo(UserPersonalInfo);
 const LeavesReportDialogMemo = React.memo(LeavesReportDialog);
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
@@ -35,7 +37,10 @@ export default function DashBoard() {
                         <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}}>
                             <Paper>
                                 <Typography>{t('My info:')}</Typography>
+                                <Grid container direction="row" justifyContent="center">
+                                <UserPersonalInfo/>
                                 <LeavesReportDialogMemo id={user.getId()}/>
+                                </Grid>
                                 <UserBaseDetailsMemo email={email!} />
                             </Paper>
                         </Grid>

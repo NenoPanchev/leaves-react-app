@@ -124,6 +124,7 @@
     "alertAddSuccess": "Успешно заявена отпуска!",
     "alertMassageDeleteType": "Това е типът на {{employeeWithType}} работника!",
     "leavesReport":"Отчет на отпуски",
+    "personalInfo":"Лична информация",
     "LeaveTypes": {
         "TypeName": "Име на тип",
         "DaysLeave": "Дни отпуска",
@@ -169,5 +170,9 @@
     "More than": "Повече от",
     "Less than": "По-малко от",
     "Add start date filter": "Добави филтриране по начална дата",
-    "Add days leave filter": "Добави филтриране по оставащи дни отпуск"
+    "Add days leave filter": "Добави филтриране по оставащи дни отпуск",
+    "DownloadPdf":"Изтегли Pdf",
+    "DocumentFields": "Полета за документa:",
+    "RequestInfo":"Информация за заявлението:"
+
 }

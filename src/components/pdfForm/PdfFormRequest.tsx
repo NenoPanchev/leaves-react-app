@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Divider, Grid, TextField, Typography } from '@mui/material';
+import { Backdrop, Button, Card, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Divider, Grid, Table, TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,27 +34,25 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const { user } = useContext(AuthContext);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
   // let userDetails:IUserDetails | any = null;
-  const [userDetails, setUserDetails] = React.useState<IUserDetails|any>(null);
- 
+  const [userDetails, setUserDetails] = React.useState<IUserDetails | any>(null);
+
 
   React.useEffect(() => {
     const controller = new AbortController();
-    if(user!=null)
-    { 
-      if(open===true)
-      {
-        userService.getUserByEmail(user?.getEmail(),controller)
-        .then((r) => {
-          setUserDetails(r.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    if (user != null) {
+      if (open === true) {
+        userService.getUserByEmail(user?.getEmail(), controller)
+          .then((r) => {
+            setUserDetails(r.data);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     }
 
-   
-      return () => controller.abort();
+
+    return () => controller.abort();
   }, []);
 
   const handleClose = () => {
@@ -67,24 +65,10 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [requestForm, setRequestForm] = useState<IRequestFormPdf>({
     requestToName: "Александър Василев",
     year: dayjs().year().toString(),
-    position: ((userDetails == null) ? "" : userDetails.employeeInfo.typeName),
-    address: ((userDetails == null) ? "" : userDetails.employeeInfo.address),
-    ssn: ((userDetails == null) ? "" : userDetails.employeeInfo.ssn),
-    saved: false
+    usePersonalInfo: false
   });
-  
 
-  useEffect(() => {
 
-    if(userDetails!=null)
-  {
-    setRequestForm({...requestForm,
-      position:userDetails.employeeInfo.typeName,
-      address:userDetails.employeeInfo.address,
-      ssn:userDetails.employeeInfo.ssn})
-
-  }
-  }, [userDetails]);
 
   const [checked, setChecked] = React.useState(false);
 
@@ -93,7 +77,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   };
 
   useEffect(() => {
-    setRequestForm({ ...requestForm, saved: checked })
+    setRequestForm({ ...requestForm, usePersonalInfo: checked })
   }, [checked]);
 
   const handleChange = useCallback(
@@ -127,12 +111,12 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     >
       <CircularProgress color="inherit" />
     </Backdrop>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullWidth
-      maxWidth="lg"
-    >
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+      >
 
         <DialogContent>
 
@@ -145,98 +129,107 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
               m: 'auto',
               width: 'fit-content',
             }}>
-            <CardHeader
-              title="Profile" />
             <CardContent sx={{ pt: 0 }}>
-              <Box sx={{ m: -1.5 }}>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <TextField
-                      fullWidth
-                      margin={'normal'}
-                      label="Address"
-                      name="address"
-                      onChange={handleChange}
-                      value={requestForm.address}
-                      required />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <TextField
-                      fullWidth
-                      margin={'normal'}
-                      label="Position"
-                      name="position"
-                      onChange={handleChange}
-                      value={requestForm.position}
-                      required />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <TextField
-                      fullWidth
-                      margin={'normal'}
-                      label="Year"
-                      name="year"
-                      onChange={handleChange}
-                      required
-                      value={requestForm.year} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <TextField
-                      fullWidth
-                      margin={'normal'}
-                      label="Ssn"
-                      name="ssn"
-                      onChange={handleChange}
-                      value={requestForm.ssn}
-                      type="number" />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <TextField
-                      fullWidth
-                      margin={'normal'}
-                      label="Request To"
-                      name="requestToName"
-                      onChange={handleChange}
-                      required
-                      select
-                      SelectProps={{ native: true }}
+              <Box sx={{ m: -1.5 }} >
+                <Grid container direction="row">
+                  <Grid item marginLeft="-20%" marginRight="20%">
+                    <Grid
+                      container
+                      direction="column"
+                      spacing={3}
                     >
-                      {states.map((option) => (
-                        <option
-                          key={option.value}
-                          value={option.value}
+
+                      <Grid
+                        item
+                        xs={12}
+                        md={6}
+                      >
+                        <CardHeader
+                          title={t('RequestInfo')} sx={{ marginLeft: "5%" }} />
+                        <Card >
+                          <Table>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell className='tableHeader' variant='head'>{t('Requests.StartDate') + ':'}</TableCell>
+                                <TableCell>{leaveRequest.startDate}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell className='tableHeader' variant='head'>{t('Requests.EndDate') + ':'}</TableCell>
+                                <TableCell>{leaveRequest.endDate}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell className='tableHeader' variant='head'>{t('Requests.approvedStartDate') + ':'}</TableCell>
+                                <TableCell>{leaveRequest.approvedStartDate}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell className='tableHeader' variant='head'>{t('Requests.approvedEndDate') + ':'}</TableCell>
+                                <TableCell>{leaveRequest.approvedEndDate}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell className='tableHeader' variant='head'>{t('Requests.daysRequested') + ':'}</TableCell>
+                                <TableCell>{leaveRequest.daysRequested}</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Card>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item mr="-30%" ml="15%">
+                    <Grid
+                      container
+                      direction="column"
+                      spacing={1}
+                    >
+
+                      <Grid
+                        item
+                        xs={12}
+                        md={6}
+                      >
+                        <CardHeader
+                          title={t('DocumentFields')} sx={{ marginLeft: "5%" }} />
+                        <TextField
+                          fullWidth
+                          margin={'normal'}
+                          label="Year"
+                          name="year"
+                          onChange={handleChange}
+                          required
+                          value={requestForm.year} />
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        md={6}
+                      >
+                        <TextField
+                          fullWidth
+                          margin={'normal'}
+                          label="Request To"
+                          name="requestToName"
+                          onChange={handleChange}
+                          required
+                          select
+                          SelectProps={{ native: true }}
                         >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
+                          {states.map((option) => (
+                            <option
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Box>
             </CardContent>
+
           </Box>
         </DialogContent>
 
@@ -248,13 +241,13 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
             direction="row"
           >
             <Grid item>
-              <Typography>Save Information :</Typography>
-              <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
+              <Grid container direction="row">
+                <Typography marginTop="5%">{t('Use Presonal info:')}</Typography>
+                <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
+              </Grid>
             </Grid>
-
-
             <Grid marginLeft="auto">
-              <Button onClick={handleSubmit}>{t('Submit')}</Button>
+              <Button onClick={handleSubmit}>{t('DownloadPdf')}</Button>
               <Button onClick={handleClose}>{t('Close')}</Button>
             </Grid>
           </Grid>
