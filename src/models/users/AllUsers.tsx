@@ -30,7 +30,7 @@ export default function Users() {
   const [typeNames, setTypeNames] = React.useState<string[]>([]);
 
   const { t } = useTranslation();
-  const page = userService.useFetchPage(userFilter);
+  const page = userService.useFetchPage(refreshCurrenter,userFilter);
   const apiRef = useGridApiRef();
 
   React.useEffect(() => {
@@ -56,7 +56,7 @@ export default function Users() {
         setRoleNames(initArr)
       })
       .catch(error => console.log(error))
-  const page = userService.useFetchPage(refreshCurrenter, userFilter);
+  // const page = userService.useFetchPage(refreshCurrenter, userFilter);
 
   }, []);
 
@@ -65,7 +65,7 @@ export default function Users() {
   }
 
   const renderEditButton = (user: IUserEdit, rowId: number) => {
-    return <EditUserButton user={user} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    return <EditUserButton user={user} refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
   }
 
@@ -77,7 +77,7 @@ export default function Users() {
   const myGridToolbarComponents = [
     <AddUserButton refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
-    <UserSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    <UserSearchFilter refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {
@@ -147,7 +147,7 @@ export default function Users() {
       getActions: (params) => [
         renderViewButton(params.row.id),
         renderEditButton(params.row, params.row.id),
-        renderDeleteButton(params.row.id, refreshCurrentState, setRefreshCurrentState)
+        renderDeleteButton(params.row.id, refreshCurrenter, setRefreshCounter)
       ]
     },
   ];
