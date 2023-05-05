@@ -65,7 +65,7 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
         }
         switch (path) {
             case '':
-                path = 'Dashboard'
+                path = 'Home'
                 break;
             case 'Requests':
                 path = 'Request'

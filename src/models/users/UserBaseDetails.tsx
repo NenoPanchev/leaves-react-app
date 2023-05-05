@@ -40,7 +40,7 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
   return (
     <React.Fragment>
        <Grid container direction={'row'} minWidth="100%" width="100%">
-          <Card >
+          <Card sx={{width:"100%"}}>
             <Table>
               <TableBody>
                 <TableRow>
