@@ -3,7 +3,6 @@ import {
     Button, Dialog, DialogActions, DialogContent,
     DialogTitle, Box, TextField, Autocomplete, Typography
 } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeeInfoToFormData, appendRolesToFormData, useCreate } from '../../services/userService';
 import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
@@ -17,20 +16,23 @@ import { IUserAddButtonProps } from '../interfaces/user/IUserAddButtonProps';
 
 
 export default function AddUserButton(props: IUserAddButtonProps) {
-    const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const [nameError, setNameError] = React.useState(false);
     const [emailError, setEmailError] = React.useState(false);
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordConfirmError, setPasswordConfirmError] = React.useState(false);
+    const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
+    const [serverError, setServerError] = React.useState<boolean>(false);
+    let serverResponse = '';
+
+    let sError = false;
     let nError = false;
     let eError = false;
     let pError = false;
     let pcError = false;
     const [roles, setRoles] = React.useState<Role[] | null>(null);
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const addUser = useCreate();
 
 
@@ -42,19 +44,24 @@ export default function AddUserButton(props: IUserAddButtonProps) {
         setOpen(false);
     };
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         appendRolesToFormData(data, roles);
         appendEmployeeInfoToFormData(data, startDate);
 
-        const errors = validate(data);
+        let errors = validate(data);
         if (errors) {
             return;
         }
-        addUser(data)
-            .then(() => props.refresh(props.refreshCurrentState + 1))
-            .then(() => navigate(path))
+        serverResponse = await addUser(data);
+        setServerErrorMessage(serverResponse);
+        errors = validate(data);
+
+        if (errors) {
+            return;
+        }
+        props.refresh(props.refreshCurrentState + 1);
         handleClose();
     }
 
@@ -76,7 +83,10 @@ export default function AddUserButton(props: IUserAddButtonProps) {
         setPasswordConfirmError(password !== confirmPassword);
         pcError = (password !== confirmPassword);
 
-        return nError || eError || pError || pcError;
+        sError = serverResponse !== '';
+        setServerError(serverResponse !== '');
+
+        return nError || eError || pError || pcError || sError;
     }
 
     return (
@@ -110,7 +120,9 @@ export default function AddUserButton(props: IUserAddButtonProps) {
                             error={nameError}
                             helperText={nameError ? t('Username must be between 2 and 20 characters') : null}
                         />
-
+                        {serverError &&
+                            <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
+                        }
                         <TextField
                             margin="normal"
                             required
@@ -139,11 +151,12 @@ export default function AddUserButton(props: IUserAddButtonProps) {
                                 />
                             )}
                         />
+
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
-                            <DatePicker label={t('Employed at')} 
-                            value={startDate} 
-                            sx={{marginTop: '15px', marginBottom: '5px'}}
-                            onChange={(newValue) => setStartDate(newValue)}/>
+                            <DatePicker label={t('Employed at')}
+                                value={startDate}
+                                sx={{ marginTop: '15px', marginBottom: '5px' }}
+                                onChange={(newValue) => setStartDate(newValue)} />
                         </LocalizationProvider>
                         <Autocomplete
                             id="position"

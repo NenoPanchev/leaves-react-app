@@ -4,47 +4,47 @@ import DeleteButton from '../../components/common/DeleteButton';
 import * as contractService from '../../services/contractService';
 import * as userService from '../../services/userService';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-// import AddUserButton from './AddUser';
-// import EditUserButton from './EditUser';
-// import UserSearchFilter from './UserSearchFilter';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_CONTRACT_FILTER } from '../../constants/GlobalConstants';
 import { Grid } from '@mui/material';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { IContractFilter } from '../interfaces/contract/IContractFilter';
 import { useParams } from 'react-router-dom';
-import '../ViewAll.css'
 import { IContract } from '../interfaces/contract/IContract';
 import EditContractButton from './EditContract';
+import AddContractButton from './AddContract';
+import '../ViewAll.css'
+import ContractFilter from './ContractsFilter';
 
 export default function Contracts() {
-    const [refreshCurrenter, setRefreshCounter] = React.useState(0);
+    const [refreshCounter, setRefreshCounter] = React.useState(0);
     const [contractFilter, setContractFilter] = React.useState<IContractFilter>(DEFAULT_CONTRACT_FILTER);
-    const typeNames = userService.useFetchAllTypeNames(refreshCurrenter);
+    const typeNames = userService.useFetchAllTypeNames(refreshCounter);
     const { t } = useTranslation();
     let { id } = useParams();
-    const page = contractService.useFetchPage(refreshCurrenter, contractFilter, Number(id));
+    const userId: number = Number(id);
+    const page = contractService.useFetchPage(refreshCounter, contractFilter, userId);
 
     const renderViewButton = (id: number) => {
         return <ViewButton id={id}></ViewButton>
     }
 
-      const renderEditButton = (contract: IContract) => {
-        return <EditContractButton contract={contract} refreshCounter={refreshCurrenter} setRefreshCounter={setRefreshCounter}
-          typeNames={typeNames} />
-      }
+    const renderEditButton = (contract: IContract) => {
+        return <EditContractButton contract={contract} refreshCounter={refreshCounter} setRefreshCounter={setRefreshCounter}
+            typeNames={typeNames} />
+    }
 
     const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
         return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
             refresh={setRefreshCounter}></DeleteButton>
     }
 
-    //   const myGridToolbarComponents = [
-    //     <AddUserButton refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
-    //       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
-    //     <UserSearchFilter refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
-    //     filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames}/>
-    // ]
+    const myGridToolbarComponents = [
+        <AddContractButton userId={userId} refreshCounter={refreshCounter} setRefreshCounter={setRefreshCounter}
+            typeNames={typeNames} />,
+        <ContractFilter refreshCounter={refreshCounter} setRefreshCounter={setRefreshCounter}
+            filter={contractFilter} setFilter={setContractFilter} typeNames={typeNames} />
+    ]
 
     const handlePaginationModelChange = (paginationModel: any) => {
         setContractFilter({
@@ -85,11 +85,11 @@ export default function Contracts() {
             getActions: (params) => [
                 renderViewButton(params.row.id),
                 renderEditButton(params.row),
-                renderDeleteButton(params.row.id, refreshCurrenter, setRefreshCounter)
+                renderDeleteButton(params.row.id, refreshCounter, setRefreshCounter)
             ]
         },
     ];
-    const rows = page.content.map((contract, index) => {
+    const rows = page.content.map((contract) => {
         return {
             key: contract.id, id: contract.id, typeName: contract.typeName, startDate: contract.startDate,
             endDate: contract.endDate
@@ -109,7 +109,7 @@ export default function Contracts() {
                 onPaginationModelChange={handlePaginationModelChange}
                 disableRowSelectionOnClick
                 disableColumnMenu
-                slots={{ toolbar: () => <CustomGridToolbar components={[]} /> }}
+                slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
                 sx={{
                     '& .MuiDataGrid-virtualScroller': {
                         overflow: "hidden"

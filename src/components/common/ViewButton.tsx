@@ -11,10 +11,14 @@ import UserView from '../../models/users/UserView';
 import Tooltip from '@mui/material/Tooltip/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { IViewProps } from '../../models/interfaces/common/IViewProps';
+import ContractView from '../../models/contracts/ContractView';
 
 
 export default function ViewButton(props: IViewProps) {
-    const path = useLocation().pathname;
+    let path = useLocation().pathname;
+    if (path.startsWith('/contracts')) {
+        path = '/contracts';
+    }
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -50,6 +54,7 @@ export default function ViewButton(props: IViewProps) {
                         '/roles': <RoleView id={props.id} />,
                         '/departments': <DepartmentView id={props.id} />,
                         '/users': <UserView id={props.id} />,
+                        '/contracts': <ContractView id={props.id}/>
                     }[path]
                 }
             </Dialog>

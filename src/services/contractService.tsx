@@ -4,6 +4,7 @@ import { IContractFilter } from "../models/interfaces/contract/IContractFilter";
 import { IContractPage } from "../models/interfaces/contract/IContractPage";
 import { BASE_CONTRACT_URL, DEFAULT_PAGE } from '../constants/GlobalConstants';
 import { formToJSON } from 'axios';
+import { IContractDetails } from '../models/interfaces/contract/IContractDetails';
 
 export const useFetchPage = (refreshCounter: number, filter: IContractFilter, id: number) => {
     const [page, setPage] = useState<IContractPage>(DEFAULT_PAGE);
@@ -28,6 +29,24 @@ export const useFetchPage = (refreshCounter: number, filter: IContractFilter, id
     return page;
 }
 
+export const useCreate = () => {
+    let serverResponse = '';
+    const addContract = async (contract: FormData, userId: number) => {
+      const result = await axios.post(BASE_CONTRACT_URL + userId, formToJSON(contract))
+        .then(response => {
+        })
+        .catch(error => {
+            console.log(error)
+            if (error.response) {
+                console.log(error)
+                serverResponse = error.response.data;
+            }
+        })
+        return serverResponse;
+    }
+    return addContract;
+  }
+
 export const useEdit = () => {
     let serverResponse = '';
 
@@ -48,3 +67,20 @@ export const useEdit = () => {
     }
     return editContract;
 }
+
+export const useFetchOne = (props: number) => {
+
+    const [contract, setContract] = useState<IContractDetails>();
+  
+    useEffect(() => {
+      loadContract();
+    }, []);
+  
+  
+    const loadContract = async () => {
+      const result = await axios.get(BASE_CONTRACT_URL + props)
+        .then(response => setContract(response.data))
+        .catch(error => console.log(error))
+    }
+    return contract;
+  }

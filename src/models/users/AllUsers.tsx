@@ -1,7 +1,8 @@
-import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import * as React from 'react';
 import DeleteButton from '../../components/common/DeleteButton';
 import ViewButton from '../../components/common/ViewButton';
+import ArticleIcon from '@mui/icons-material/Article';
 import { getAllDepartmentNamesNoRefresh } from '../../services/departmentService';
 import { getAllRoleNamesNoRefresh } from '../../services/roleService';
 import * as userService from '../../services/userService';
@@ -9,28 +10,29 @@ import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
 
-import { Grid } from '@mui/material';
+import { Grid, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
 import AuthContext from '../../contexts/AuthContext';
 import TypeService from '../../services/TypeService';
-import '../ViewAll.css';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
+import '../ViewAll.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
-  const [refreshCurrenter, setRefreshCounter] = React.useState(0);
+  const [refreshCounter, setRefreshCounter] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>(DEFAULT_USER_FILTER);
-
+  const navigate = useNavigate();
   const { user } = React.useContext(AuthContext);
-  
+
   const [departmentNames, setDepartmentNames] = React.useState<string[]>([]);
   const [roleNames, setRoleNames] = React.useState<string[]>([]);
   const [typeNames, setTypeNames] = React.useState<string[]>([]);
 
   const { t } = useTranslation();
-  const page = userService.useFetchPage(refreshCurrenter,userFilter);
+  const page = userService.useFetchPage(refreshCounter, userFilter);
   const apiRef = useGridApiRef();
 
   React.useEffect(() => {
@@ -41,7 +43,7 @@ export default function Users() {
       })
       .catch(error => console.log(error));
 
-     getAllDepartmentNamesNoRefresh()
+    getAllDepartmentNamesNoRefresh()
       .then((response) => {
         setDepartmentNames(response.data)
       })
@@ -52,16 +54,29 @@ export default function Users() {
         setRoleNames(response.data)
       })
       .catch(error => console.log(error))
-  // const page = userService.useFetchPage(refreshCurrenter, userFilter);
+    // const page = userService.useFetchPage(refreshCounter, userFilter);
 
   }, [setTypeNames,setRoleNames,setDepartmentNames]);
+
+  const redirectToContracts = (id: number) => {
+    navigate(`/contracts/employee/${id}`);
+  }
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
+  const renderContractsButton = (id: number) => {
+    return <GridActionsCellItem
+      icon={<Tooltip title={t('seeContracts')}><ArticleIcon /></Tooltip>}
+      label="View"
+      onClick={(e) => redirectToContracts(id)}
+    />;
+  }
+
+
   const renderEditButton = (user: IUserEdit, rowId: number) => {
-    return <EditUserButton user={user} refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
+    return <EditUserButton user={user} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
   }
 
@@ -71,9 +86,9 @@ export default function Users() {
   }
 
   const myGridToolbarComponents = [
-    <AddUserButton refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
+    <AddUserButton refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
-    <UserSearchFilter roleNames={roleNames} refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
+    <UserSearchFilter refreshCurrentState={refreshCounter} refresh={setRefreshCounter} roleNames={roleNames}
       filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {
@@ -142,8 +157,9 @@ export default function Users() {
       flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
+        renderContractsButton(params.row.id),
         renderEditButton(params.row, params.row.id),
-        renderDeleteButton(params.row.id, refreshCurrenter, setRefreshCounter)
+        renderDeleteButton(params.row.id, refreshCounter, setRefreshCounter)
       ]
     },
   ];
