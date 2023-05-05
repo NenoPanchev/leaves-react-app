@@ -49,16 +49,12 @@ export default function Users() {
 
       getAllRoleNamesNoRefresh()
        .then((response) => {
-        let initArr = (response.data).filter((names: string) => names !== 'SUPER_ADMIN');
-        if (!user?.hasRole('SUPER_ADMIN')) {
-          initArr = initArr.filter((name: string) => name !== 'ADMIN')
-        }
-        setRoleNames(initArr)
+        setRoleNames(response.data)
       })
       .catch(error => console.log(error))
   // const page = userService.useFetchPage(refreshCurrenter, userFilter);
 
-  }, []);
+  }, [setTypeNames,setRoleNames,setDepartmentNames]);
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
@@ -77,7 +73,7 @@ export default function Users() {
   const myGridToolbarComponents = [
     <AddUserButton refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
-    <UserSearchFilter refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
+    <UserSearchFilter roleNames={roleNames} refreshCurrentState={refreshCurrenter} refresh={setRefreshCounter}
       filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {

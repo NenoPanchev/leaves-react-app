@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { useFetchAllNames } from '../../services/roleService';
 import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,10 +13,10 @@ import '../SearchFilter.css'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IDateComparison } from '../interfaces/user/IStartDateComparison';
 import { IDaysLeaveComparison } from '../interfaces/user/IDaysLeaveComparison';
+
 
 
 function UserSearchFilter(props: IUserSearchFilterProps) {
@@ -34,7 +33,8 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     const [startDateComparisons, setStartDateComparisons] = React.useState(props.filter.startDateComparisons);
     const [daysLeaveComparisons, setDaysLeaveComparisons] = React.useState(props.filter.daysLeaveComparisons);
     const [refreshCounter, setRefreshCounter] = React.useState(0);
-    const roleNames = useFetchAllNames(props.refreshCurrentState);
+    const roleNames = props.roleNames;
+
     if (!roleNames.includes('SUPER_ADMIN')) {
         roleNames.unshift('SUPER_ADMIN');
     }
@@ -189,23 +189,6 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     />
                                 )}
                             />
-                            {/* <FormControl sx={{ minWidth: 150, mt: 2 }}>
-                                <InputLabel sx={{verticalAlign: 'center'}} id="position-label">{t('Position')}</InputLabel>
-                                <Select
-                                    labelId="operation-label"
-                                    id="position"
-                                    value={department}
-                                    size='small'
-                                    label={t('Position')}
-                                    onChange={(event) => setDepartment(event.target.value)}
-                                >
-                                    {
-                                        props.departmentNames.map((name, index) => {
-                                            return <MenuItem key={index} value={name}>{name}</MenuItem>
-                                        })
-                                    }
-                                </Select>
-                            </FormControl> */}
                             <Autocomplete
                                 multiple
                                 id="users"
@@ -245,23 +228,6 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                     />
                                 )}
                             />
-                            {/* <FormControl sx={{ minWidth: 150, mt: 2 }}>
-                                <InputLabel sx={{verticalAlign: 'center'}} id="position-label">{t('Position')}</InputLabel>
-                                <Select
-                                    labelId="operation-label"
-                                    id="position"
-                                    value={position}
-                                    size='small'
-                                    label={t('Position')}
-                                    onChange={(event) => setPosition(event.target.value)}
-                                >
-                                    {
-                                        props.typeNames.map((name, index) => {
-                                            return <MenuItem key={index} value={name}>{name}</MenuItem>
-                                        })
-                                    }
-                                </Select>
-                            </FormControl> */}
                         </Grid>
                         <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
                             <Grid container direction="column">
@@ -333,39 +299,6 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                 </List>
                             </Grid>
                         </Grid>
-                        {/* <Grid className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}> 
-                            <Grid item>
-
-                                <Grid container justifyContent="center" >
-                                    <Typography variant="overline" component="div">
-                                        {t(`Start date`)!}
-                                    </Typography>
-                                </Grid>
-
-                                <Grid container direction="column">
-                                    <MyAddFilterDate buttonName={t(`AddFilter`)!}
-                                        onChange={(newDate) => addStartDateFilter(newDate)}
-                                        nameOfField={t(`Requests.EndDate`)!}
-                                    />
-                                    <List>
-                                        {startDateComparisons.map((comparison, index) => {
-                                            return (<ListItem key={index}
-                                                secondaryAction={
-                                                    <IconButton edge="end" aria-label="delete"
-                                                        onClick={(e) => removeStartDateFilter(index)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                }>
-                                                <ListItemText
-                                                    primary={getOperatorSign(comparison.operator) + ' ' + comparison.date}
-                                                />
-                                            </ListItem>
-                                            )
-                                        })}
-                                    </List>
-                                </Grid>
-                            </Grid>
-                        </Grid> */}
                     </DialogContent>
                     <DialogActions>
                         <Grid container direction={'row'}>

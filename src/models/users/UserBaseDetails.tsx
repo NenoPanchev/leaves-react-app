@@ -44,10 +44,6 @@ const UserBaseDetails: React.FC<UserViewProp> = (props): JSX.Element => {
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell className='tableHeader' variant='head'>{t('Id') + ':'}</TableCell>
-                  <TableCell>{user?.id}</TableCell>
-                </TableRow>
-                <TableRow>
                   <TableCell className='tableHeader' variant='head'>{t('Name') + ':'}</TableCell>
                   <TableCell>{user?.name}</TableCell>
                 </TableRow>
