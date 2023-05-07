@@ -60,11 +60,15 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
     const adjustPathToLocaleKey = (path: string): string => {
         path = path.charAt(0).toUpperCase() + path.slice(1);
         if(!Number.isNaN(parseInt(path.charAt(path.length-1))))
-        {
-            path=path.substring(0,path.length-1)
-        }
+        console.log(path);
+        // {
+        //     path=path.substring(0,path.length-1)
+        // }
+        
         if (path.startsWith('Contracts')) {
             path = 'Contracts'
+        } else if (path.startsWith('Requestsemployee')) {
+            path = 'Request'
         }
         switch (path) {
             case '':
@@ -76,9 +80,7 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
             case 'Types':
                 path = 'LeaveType'
                 break;
-                case 'Requestsemployee':
-                    path = 'Employee-Dashboard'
-                    break;   
+  
             default:
                 break;
         }
@@ -124,7 +126,7 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
                 >
                     {t(path)}
                 </Typography>
-                <Typography component={'h6'} variant='h6'>{user?.getEmail()}</Typography>
+                <Typography component={'h6'} variant='h6'>{user?.getName()}</Typography>
                 {lang === 'en'
                     ? <IconButton onClick={onClickSetLanguageBG}>
                         <Flag code='BG' height='16' />

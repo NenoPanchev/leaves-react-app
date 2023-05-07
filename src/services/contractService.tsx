@@ -5,9 +5,11 @@ import { IContractPage } from "../models/interfaces/contract/IContractPage";
 import { BASE_CONTRACT_URL, DEFAULT_PAGE } from '../constants/GlobalConstants';
 import { formToJSON } from 'axios';
 import { IContractDetails } from '../models/interfaces/contract/IContractDetails';
+import { useNavigate } from 'react-router';
 
 export const useFetchPage = (refreshCounter: number, filter: IContractFilter, id: number) => {
     const [page, setPage] = useState<IContractPage>(DEFAULT_PAGE);
+    const navigate = useNavigate();
     useEffect(() => {
         fetchPage();
     }, [refreshCounter, filter]);
@@ -21,7 +23,12 @@ export const useFetchPage = (refreshCounter: number, filter: IContractFilter, id
                     setPage(response.data)
 
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    console.log(error)
+                    if (error.response.status == 403) {
+                      navigate('/403');
+                    }
+                  })
         }
         loadPage();
         return page;

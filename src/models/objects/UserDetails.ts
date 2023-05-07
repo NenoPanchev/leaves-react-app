@@ -1,5 +1,6 @@
 export class UserDetails {
     private id: number;
+    private name: string;
     private email: string;
     private authorities: string[];
 
@@ -12,6 +13,14 @@ export class UserDetails {
 
     public setId(id: number): void {
         this.id = id;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public setName(name: string): void {
+        this.name = name;
     }
 
     public getEmail(): string {

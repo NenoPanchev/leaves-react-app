@@ -21,6 +21,7 @@ import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
 import ITypeEmploeePage from '../interfaces/type/ITypeEmploeePage';
 import ITypesFilter from '../interfaces/type/ITypesFilter';
 import { DEFAULT_PAGE } from '../../constants/GlobalConstants';
+import { useNavigate } from 'react-router';
 
 const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
@@ -29,6 +30,7 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const navBarHeight = localStorage.getItem('navBarHeight')!;
   const [page, setPage] = useState<ITypeEmploeePage>(DEFAULT_PAGE);
+  const navigate = useNavigate();
   const [typesFilter, setTypesFilter] = useState<ITypesFilter>({
     id: [],
     dateCreated: [],
@@ -67,8 +69,11 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
         setRows(response.data.content)
         setIsLoading(false)
       })
-      .catch((e: Error) => {
-        console.log(e);
+      .catch(error => {
+        console.log(error)
+        if (error.response.status == 403) {
+          navigate('/403');
+        }
       });
   }
 

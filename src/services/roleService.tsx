@@ -9,6 +9,7 @@ import { IRole } from '../models/interfaces/role/IRole';
 import { IRoleDetails } from '../models/interfaces/role/IRoleDetails';
 import { IRolePage } from '../models/interfaces/role/IRolePage';
 import { IRoleFilter } from '../models/interfaces/role/IRoleFilter';
+import { useNavigate } from 'react-router';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -74,6 +75,7 @@ export const useEdit = () => {
 
 export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
   const [page, setPage] = useState<IRolePage>(DEFAULT_PAGE);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchPage();
   }, [refresh]);
@@ -89,7 +91,12 @@ export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
           setPage(response.data)
           
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)
+          if (error.response.status == 403) {
+            navigate('/403');
+          }
+        })
     }
     loadPage();      
     return page;

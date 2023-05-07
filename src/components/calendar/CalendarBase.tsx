@@ -214,7 +214,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
 
-            <Grid item direction="row" >
+            <Grid item  >
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                     <DateCalendar
@@ -258,7 +258,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             <Grid item>
 
 
-                <Grid item direction="row" marginLeft="60%" >
+                <Grid item marginLeft="60%" >
                     <IconButton onClick={handleShowClick} >
                         <Tooltip title={t('AddRequests.AddRequest')}><ControlPointIcon style={{ color: grey[700], fontSize: "medium" }} /></Tooltip>
                     </IconButton>

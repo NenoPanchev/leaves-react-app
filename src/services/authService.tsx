@@ -23,6 +23,7 @@ export const useLogin = () => {
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
         userDetails.setId(response.data.id!);
+        userDetails.setName(response.data.name);
 
         localStorage.setItem("SavedToken", 'Bearer ' + token);
         localStorage.setItem("Authenticated", 'true');

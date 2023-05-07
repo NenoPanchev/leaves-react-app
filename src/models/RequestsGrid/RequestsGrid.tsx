@@ -14,10 +14,12 @@ import ILeaveRequestPage from '../interfaces/request/ILeaveRequestPage';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 import ApproveRequestDialog from './ApproveRequestDialog';
 import ListAllFilter from './ListAllFilter';
+import { useNavigate } from 'react-router';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
   const [t, i18n] = useTranslation();
+  const navigate = useNavigate();
   const [leaveRequestFilter, setLeaveRequestFilter] = useState<Filter>({
     id: [],
     dateCreated: [],
@@ -55,8 +57,11 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         setRows(response.data.content)
         setNotLoaded(false)
       })
-      .catch((e: Error) => {
-        console.log(e);
+      .catch(error => {
+        console.log(error)
+        if (error.response.status == 403) {
+          navigate('/403');
+        }
       });
 
       return () => controller.abort();
@@ -71,10 +76,10 @@ const RequestsGrid: React.FC = (): JSX.Element => {
           page.totalElements = page.totalElements - 1;
         })
         .catch((e: AxiosError<any, any>) => {
+        
           if (e.response) {
             setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
           }
-
         });
     }
   };
@@ -93,6 +98,12 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       .catch((e: AxiosError<any, any>) => {
         if (e.response) {
           setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: e.response.data.type })
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.response.status == 403) {
+          navigate('/403');
         }
       });
     }

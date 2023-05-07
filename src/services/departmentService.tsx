@@ -6,6 +6,7 @@ import { IDepartment } from '../models/interfaces/department/IDepartment';
 import { IDepartmentDetails } from '../models/interfaces/department/IDepartmentDetails';
 import { IDepartmentPage } from '../models/interfaces/department/IDepartmentPage';
 import { IDepartmentFilter } from '../models/interfaces/department/IDepartmentFilter';
+import { useNavigate } from 'react-router';
 
 export const useFetchAll = (refresh: number) => {
   const [department, setDepartment] = useState<IDepartment[]>([]);
@@ -71,6 +72,7 @@ export const useEdit = () => {
 
 export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
   const [page, setPage] = useState<IDepartmentPage>(DEFAULT_PAGE);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchPage();
   }, [refresh]);
@@ -84,7 +86,12 @@ export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
           setPage(response.data)
 
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)
+          if (error.response.status == 403) {
+            navigate('/403');
+          }
+        })
     }
     loadPage();
     return page;

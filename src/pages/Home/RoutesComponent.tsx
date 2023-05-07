@@ -14,6 +14,7 @@ import NotFound from '../NotFound';
 import SignIn from '../SignIn';
 import './Home.css';
 import Contracts from '../../models/contracts/AllContracts';
+import AccessDenied from '../AccessDenied';
 
 function RoutesComponent() {
     return (
@@ -30,6 +31,7 @@ function RoutesComponent() {
                 <Route path='/login' Component={SignIn}></Route>
                 <Route path='/logout' Component={LogOut}></Route>
                 <Route path="/404" Component={NotFound}></Route>
+                <Route path="/403" Component={AccessDenied}></Route>
                 <Route path="*" element={<Navigate to="/404" replace />}></Route>
               </Routes>
             </Grid>

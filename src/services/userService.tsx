@@ -12,6 +12,7 @@ import { IUserFilter } from '../models/interfaces/user/IUserFilter';
 import { ILeavesAnnualReport } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReport';
 import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
 import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
+import { useNavigate } from 'react-router';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -117,6 +118,7 @@ export const useCreate = () => {
 
 export const useFetchPage = (refreshCounter: number, filter: IUserFilter) => {
   const [page, setPage] = useState<IUserPage>(DEFAULT_PAGE);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchPage();
   }, [refreshCounter, filter]);
@@ -130,7 +132,12 @@ export const useFetchPage = (refreshCounter: number, filter: IUserFilter) => {
           setPage(response.data)
 
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)
+          if (error.response.status == 403) {
+            navigate('/403');
+          }
+        })
     }
     loadPage();
     return page;
