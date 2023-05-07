@@ -102,8 +102,15 @@ function ContractFilter(props: IContractFilterProps) {
             case 'LESS':
                 return '<'
             default:
-                break;
+                return operator;
         }
+    }
+
+    function isNullOrNotNull(operator: string) {
+        if (operator === 'NULL' || operator === 'NOT_NULL') {
+            return true;
+        }
+        return false;
     }
     return (
         <React.Fragment>
@@ -155,6 +162,11 @@ function ContractFilter(props: IContractFilterProps) {
                                     <DatePicker label={t('Start date')}
                                         value={startDate}
                                         sx={{ marginTop: '10px', marginBottom: '5px' }}
+                                        slotProps={{
+                                            actionBar: {
+                                                actions: ['clear']
+                                            }
+                                        }}
                                         onChange={(newValue) => setStartDate(newValue)} />
 
                                 </LocalizationProvider>
@@ -172,7 +184,7 @@ function ContractFilter(props: IContractFilterProps) {
                                                 </IconButton>
                                             }>
                                             <ListItemText
-                                                primary={getOperatorSign(comparison.operator) + ' ' + comparison.date}
+                                                primary={!isNullOrNotNull(getOperatorSign(comparison.operator)) ? getOperatorSign(comparison.operator) + ' ' + comparison.date : comparison.operator}
                                                 sx={{ textAlign: 'center' }}
                                             />
                                         </ListItem>
@@ -184,7 +196,11 @@ function ContractFilter(props: IContractFilterProps) {
                                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
                                     <DatePicker label={t('End date')}
                                         value={endDate}
-
+                                        slotProps={{
+                                            actionBar: {
+                                                actions: ['clear']
+                                            }
+                                        }}
                                         sx={{ marginTop: '10px', marginBottom: '5px' }}
                                         onChange={(newValue) => setEndDate(newValue)} />
 
@@ -203,7 +219,7 @@ function ContractFilter(props: IContractFilterProps) {
                                                 </IconButton>
                                             }>
                                             <ListItemText
-                                                primary={getOperatorSign(comparison.operator) + ' ' + comparison.date}
+                                                primary={!isNullOrNotNull(getOperatorSign(comparison.operator)) ? getOperatorSign(comparison.operator) + ' ' + comparison.date : comparison.operator}
                                                 sx={{ textAlign: 'center' }}
                                             />
                                         </ListItem>
@@ -231,6 +247,8 @@ function ContractFilter(props: IContractFilterProps) {
                                         <MenuItem value={"NOT_EQUAL"}>{'≠'}</MenuItem>
                                         <MenuItem value={"LESS_OR_EQUAL"}>{'≤'}</MenuItem>
                                         <MenuItem value={"LESS"}>{'<'}</MenuItem>
+                                        <MenuItem value={"NULL"}>{'NULL'}</MenuItem>
+                                        <MenuItem value={"NOT_NULL"}>{'NOT_NULL'}</MenuItem>
                                     </Select>
                                 </FormControl>
 

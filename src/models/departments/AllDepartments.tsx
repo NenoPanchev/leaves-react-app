@@ -129,6 +129,11 @@ export default function Departments() {
           rows={rows}
           columns={columns}
           rowCount={page.totalElements}
+          localeText={{
+            toolbarColumns: t(`DataGridToolBar.Columns`)!,
+            toolbarDensity: t(`DataGridToolBar.Density`)!,
+            toolbarExport: t(`DataGridToolBar.Export`)!
+          }}
           pagination
           pageSizeOptions={[5, 10, 25, 50, 100]}
           paginationModel={{ page: page.number, pageSize: page.size }}
