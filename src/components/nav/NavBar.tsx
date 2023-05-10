@@ -1,4 +1,5 @@
-import { IconButton, Toolbar, Typography, styled } from "@mui/material";
+import { Grid, IconButton, Theme, Toolbar, Typography, styled, useTheme } from "@mui/material";
+import { createStyles, makeStyles } from '@mui/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useRef, useState } from "react";
@@ -36,35 +37,42 @@ interface NavMenuProps {
 }
 export interface NavBarRef {
     open: () => void;
-   
+
 
 }
-function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
+function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
     const { user } = React.useContext(AuthContext);
     const [lang, setLang] = React.useState('en');
     let path = useLocation().pathname.replaceAll('/', '');
     const { t, i18n } = useTranslation();
     const navBarHeightRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(true);
+    useEffect(() => {
+
+        if (navBarHeightRef.current) {
+            localStorage.setItem('navBarHeight', navBarHeightRef.current.offsetHeight.toString() + 'px');
+        }
+    }, []);
+
 
     React.useImperativeHandle(ref, () => {
         return {
             open: openNav
         }
     }, [open])
-    
+
     const openNav = () => {
-      setOpen(!open);
+        setOpen(!open);
     };
-    
+
     const adjustPathToLocaleKey = (path: string): string => {
         path = path.charAt(0).toUpperCase() + path.slice(1);
-        if(!Number.isNaN(parseInt(path.charAt(path.length-1))))
-        console.log(path);
+        if (!Number.isNaN(parseInt(path.charAt(path.length - 1))))
+            console.log(path);
         // {
         //     path=path.substring(0,path.length-1)
         // }
-        
+
         if (path.startsWith('Contracts')) {
             path = 'Contracts'
         } else if (path.startsWith('Requestsemployee')) {
@@ -80,7 +88,7 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
             case 'Types':
                 path = 'LeaveType'
                 break;
-  
+
             default:
                 break;
         }
@@ -142,3 +150,5 @@ function NavBar(props: NavMenuProps,ref:React.ForwardedRef<NavBarRef>) {
 }
 
 export default React.forwardRef(NavBar);
+
+

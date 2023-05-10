@@ -1,11 +1,11 @@
 export const PERMISSIONS = ['READ', 'WRITE', 'DELETE'];
 
 export const BASE_URL = 'http://localhost:8080';
-export const BASE_ROLE_URL = 'http://localhost:8080/roles/';
-export const BASE_DEPARTMENT_URL = 'http://localhost:8080/departments/';
-export const BASE_CONTRACT_URL = 'http://localhost:8080/contracts/';
-export const BASE_USER_URL = 'http://localhost:8080/users/';
-export const LOGIN_URL = "http://localhost:8080/authenticate";
+export const BASE_ROLE_URL = BASE_URL + '/roles/';
+export const BASE_DEPARTMENT_URL = BASE_URL + '/departments/';
+export const BASE_CONTRACT_URL = BASE_URL + '/contracts/';
+export const BASE_USER_URL = BASE_URL + '/users/';
+export const LOGIN_URL = BASE_URL + "/authenticate";
 export const DEFAULT_OFFSET = 0;
 export const DEFAULT_LIMIT = 10;
 export const WITH_JSON_HEADER = {
