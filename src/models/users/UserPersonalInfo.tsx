@@ -102,7 +102,7 @@ const handleClose = () => {
       open={open}
       onClose={handleClose}
       fullWidth
-      maxWidth="sm"
+      maxWidth="md"
     >
 
         <DialogContent>
@@ -169,7 +169,7 @@ const handleClose = () => {
           >
             <Grid item>
               <Grid container direction="row">
-              <Typography  marginTop="5%" >Save Information :</Typography>
+              <Typography  marginTop="3%" >Save Information :</Typography>
               <Checkbox  checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
               </Grid>
             </Grid>

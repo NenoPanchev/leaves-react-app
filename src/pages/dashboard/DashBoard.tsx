@@ -50,8 +50,6 @@ export default function DashBoard() {
                     <Grid item mt="2%" ml="5%" >
                         <DashBoardRequestsComponent onShow={updateDetails} />
                     </Grid>
-
-                     {/* LeavesReport */}
                 </Grid>
 
             }
