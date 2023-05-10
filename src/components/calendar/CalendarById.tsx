@@ -100,7 +100,7 @@ const CalendarById = (props: CalendarByIdProps): JSX.Element => {
             return initialheight + parseInt(calendarDaysAndWeekLabels) + parseInt(calendarDaysAndWeekLabels);
         }
         else {
-            return initialheight + parseInt(calendarDaysAndWeekLabels) + parseInt(calendarDaysAndWeekLabels) + 70;
+            return initialheight + parseInt(calendarDaysAndWeekLabels) + parseInt(calendarDaysAndWeekLabels) + 80;
         }
 
     }
