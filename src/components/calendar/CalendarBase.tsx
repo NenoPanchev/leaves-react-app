@@ -267,7 +267,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                     </IconButton>
                 </Grid>
 
-                <Grid item marginTop="30%" marginBottom="auto" marginRight={1}>
+                <Grid item marginTop="2vh" marginBottom="auto" marginRight={1}>
 
 
                     <Grid container direction="row" marginBottom={2}  >
