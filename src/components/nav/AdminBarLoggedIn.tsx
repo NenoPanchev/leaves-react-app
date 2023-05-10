@@ -108,7 +108,7 @@ const AdminBarLoggedIn = () => {
                     </>}
             </Grid>
 
-            <Grid item sx={{mt: user?.hasRole('ADMIN') ? '90%' : '200%'}} >
+            <Grid item sx={{mt: user?.hasRole('ADMIN') ? '33vh' : '63vh'}} >
                 < Divider sx={{ my: 1 }} />
 
                 < ListSubheader component="div" inset>
