@@ -1,5 +1,4 @@
 import { Grid, IconButton, Theme, Toolbar, Typography, styled, useTheme } from "@mui/material";
-import { createStyles, makeStyles } from '@mui/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useRef, useState } from "react";
