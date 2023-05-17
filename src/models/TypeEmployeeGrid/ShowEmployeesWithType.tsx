@@ -1,5 +1,5 @@
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import { Divider, Grid, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material';
+import { Divider, Grid, List, ListItem, ListItemText, TextField, Tooltip, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,6 +12,7 @@ import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
 import AuthContext from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import IEmploeeGet from '../interfaces/employeeInfo/IEmployeeGet';
+import { useState } from 'react';
 
 type ShowEmployeesWithTypeProps = {
     typeEmployee: ITypeEmploeeGet,
@@ -23,6 +24,7 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
     const handleClickOpen = () => {
         setOpen(true);
     };
+    const [filteredList, setFilteredList] = useState<Array<IEmploeeGet>>(props.typeEmployee.employeeWithType);
     const commonStyles = {
         bgcolor: 'background.paper',
         m: 1,
@@ -64,7 +66,10 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
     const handleClose = () => {
         setOpen(false);
     };
-
+  
+    const filterList = (name:string) => {
+        setFilteredList(props.typeEmployee.employeeWithType.filter(s=>s.name.toLocaleUpperCase().includes(name.toLocaleUpperCase())))
+    };
     return (
         <div>
             <Button startIcon={<Tooltip title={t('showEmployees')}><RecentActorsIcon /></Tooltip>} onClick={handleClickOpen}></Button>
@@ -90,13 +95,15 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                 </DialogTitle>
 
                 <DialogContent>
-                    <Grid container alignContent="center" justifyContent="center" width="100%">
-
-
+                    <Grid container alignContent="center" justifyContent="center" width="100%" direction="column" mt="1%">
+                    <Grid item>
+                    <TextField id="outlined-search" label="Search field" type="search"  onChange={(e) => filterList(e.target.value)} />
+                    </Grid>
+                    <Grid item>
                         <List>
-                            {props.typeEmployee.employeeWithType.map((item) => {
+                            {filteredList.map((item) => {
                                 return (
-                                    <Grid item width="100%" >
+                                    <Grid item width="100%" justifyContent="center" >
                                         <ListItem key={item.id}>
                                             {renderEmployeeLink(item)}
                                         </ListItem>
@@ -105,6 +112,7 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                                 )
                             })}
                         </List>
+                    </Grid>
                     </Grid>
                 </DialogContent>
 
