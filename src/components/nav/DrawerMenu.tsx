@@ -75,7 +75,7 @@ function DrawerMenu(props: NavMenuProps , ref: React.ForwardedRef<DrawerMenuRef>
                 </IconButton>
             </Toolbar>
             <Divider />
-            <Grid container sx={{overflow: "hidden"}}>
+            <Grid container sx={{overflow: "hidden" }} height="100%">
             <List component="nav">
                 <AdminBar />
             </List>

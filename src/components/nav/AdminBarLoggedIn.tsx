@@ -18,8 +18,8 @@ const AdminBarLoggedIn = () => {
     const { t } = useTranslation();
 
     return (
-        <Grid container sx={{ overflow: "hidden" }} direction="column" >
-            <Grid item  mt="20%">
+        <Grid container sx={{ overflow: "hidden",height:"100%" }} direction="column"  height="100%" >
+            <Grid item  mt="20%" flex={1}>
                 <Link to='/' style={{
                     textDecoration: 'none',
                     color: 'black'
@@ -108,9 +108,9 @@ const AdminBarLoggedIn = () => {
                     </>}
             </Grid>
 
-            <Grid item sx={{mt: user?.hasRole('ADMIN') ? '33vh' : '63vh'}} >
-                < Divider sx={{ my: 1 }} />
-
+            <Grid item >
+            < Divider sx={{ my: 1 }} />
+                
                 < ListSubheader component="div" inset>
                     {t('Authentication')}
                 </ ListSubheader>
@@ -128,7 +128,7 @@ const AdminBarLoggedIn = () => {
                         < ListItemText primary={t('Logout')} />
                     </ListItemButton>
                 </ Link>
-            </Grid>
+                </Grid>
         </Grid>
     );
 }
