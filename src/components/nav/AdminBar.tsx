@@ -13,7 +13,7 @@ const AdminBar = () => {
 
   if (!loggedIn) {
     return (
-      <Grid sx={{overflow:"hidden"}} height="100%">
+      <Grid sx={{overflow:"hidden"}} height="100%" width="100%">
         <ListSubheader component="div" inset>
           {t('Authentication')}
         </ListSubheader>
