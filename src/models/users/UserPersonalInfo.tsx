@@ -34,7 +34,8 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
     department: "",
     roles: [{
       name: "",
-      permissions: [{name:""}]}],
+      permissions: [{ name: "" }]
+    }],
     createdAt: "",
     createdBy: "",
     lastModifiedAt: "",
@@ -45,10 +46,9 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
 
   React.useEffect(() => {
     const controller = new AbortController();
-    if(user!=null)
-    { 
-      
-        userService.getUserByEmail(user?.getEmail(),controller)
+    if (user != null) {
+
+      userService.getUserByEmail(user?.getEmail(), controller)
         .then((r) => {
           setUserDetails(r.data);
           console.log(r.data)
@@ -57,9 +57,9 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
         .catch((e) => {
           console.log(e);
         });
-      
+
     }
-      return () => controller.abort();
+    return () => controller.abort();
   }, []);
 
 
@@ -87,23 +87,23 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
 
   const handleClickOpen = () => {
     setOpen(true);
-};
+  };
 
-const handleClose = () => {
+  const handleClose = () => {
     setOpen(false);
-};
+  };
 
   return (
     <>
-    <Button  startIcon={<InfoIcon style={{ color: grey[700] }} />} onClick={handleClickOpen}>
-                <Typography variant="overline" color={grey[700]} >{t('personalInfo')}</Typography>
-             </Button>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullWidth
-      maxWidth="md"
-    >
+      <Button startIcon={<InfoIcon style={{ color: grey[700] }} />} onClick={handleClickOpen}>
+        <Typography variant="overline" color={grey[700]} >{t('personalInfo')}</Typography>
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+      >
 
         <DialogContent>
 
@@ -117,7 +117,7 @@ const handleClose = () => {
               width: 'fit-content',
             }}>
             <CardHeader
-              title={t('personalInfo')+":"} sx={{marginRight:"auto",marginLeft:"auto"}}/>
+              title={t('personalInfo') + ":"} sx={{ marginRight: "auto", marginLeft: "auto" }} />
             <CardContent sx={{ pt: 0 }}>
               <Box sx={{ m: -1.5 }}>
                 <Grid
@@ -136,10 +136,10 @@ const handleClose = () => {
                       margin={'normal'}
                       label="Address"
                       name="address"
-                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.address]: userDetails.employeeInfo.address=event.target.value})}
+                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.address]: userDetails.employeeInfo.address = event.target.value })}
                       value={userDetails?.employeeInfo.address}
                       required />
-                  </Grid> 
+                  </Grid>
                   <Grid
                     item
                     xs={10}
@@ -150,8 +150,8 @@ const handleClose = () => {
                       margin={'normal'}
                       label="Ssn"
                       name="userDetails.employeeInfo.ssn"
-                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.ssn]: userDetails.employeeInfo.ssn=event.target.value})}
-                      value={userDetails?.employeeInfo.ssn }
+                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.ssn]: userDetails.employeeInfo.ssn = event.target.value })}
+                      value={userDetails?.employeeInfo.ssn}
                       type="number" />
                   </Grid>
                 </Grid>
@@ -169,8 +169,8 @@ const handleClose = () => {
           >
             <Grid item>
               <Grid container direction="row">
-              <Typography  marginTop="3%" >Save Information :</Typography>
-              <Checkbox  checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
+                <Typography marginTop="5.5%" >Save Information :</Typography>
+                <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
               </Grid>
             </Grid>
 
