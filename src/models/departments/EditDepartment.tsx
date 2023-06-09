@@ -61,7 +61,7 @@ export default function EditDepartmentButton(props: IDepartmentEditButtonProps) 
 
         <React.Fragment>
             <GridActionsCellItem
-                icon={<Tooltip title={t('edit')}><EditIcon /></Tooltip>}
+                icon={<Tooltip title={t('Edit-tooltip')}><EditIcon /></Tooltip>}
                 label={t('Edit')}
                 onClick={handleClickOpen}
             />
