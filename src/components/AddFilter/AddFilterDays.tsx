@@ -134,8 +134,8 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
         }
         else if (props.operation === "RANGE") {
             return (
-                <Grid container width="100%" height="10vh">
-                    <Slider sx={{ marginTop: "5%" }}
+                <Grid container width="97%" height="10vh">
+                    <Slider sx={{ marginTop: "5%" ,width:'1' ,marginLeft:"1%"}}
                         getAriaLabel={() => 'Minimum distance shift'}
                         value={value}
                         onChange={handleChange}
@@ -190,13 +190,13 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
                 open={open}
                 onClose={handleClose}
                 fullWidth
-                maxWidth='xs'
+                maxWidth="sm"
             >
                 <DialogContent>
 
                     {renderDaysComponents()}
 
-                </DialogContent>
+                </DialogContent >
                 <Grid container
                     spacing={0}
                     direction="row"

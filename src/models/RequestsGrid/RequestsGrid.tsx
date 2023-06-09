@@ -34,9 +34,6 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     sort: "startDate",
     deleted: "false"
   });
-
-  // const ChildMemo = React.memo(ApproveRequestDialog);
-
   const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);
   const [notLoaded, setNotLoaded] = useState<boolean>(true);
 

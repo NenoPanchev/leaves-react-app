@@ -210,11 +210,11 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     }
     return (
 
-        <Grid container>
+        <Grid container >
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
 
-            <Grid item  >
+            <Grid item  minWidth="36vh">
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                     <DateCalendar

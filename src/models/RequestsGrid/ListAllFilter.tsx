@@ -283,6 +283,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                fullWidth
                 maxWidth='lg'
             >
                 <Grid container
@@ -297,7 +298,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                         alignItems="stretch"
                         justifyContent="space-evenly"
                         wrap='wrap'
-                        width="120vh"
+                        width="100%"
                     >
 
                         {/* Created By Filters */}

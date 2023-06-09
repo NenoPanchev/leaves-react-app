@@ -289,6 +289,7 @@ export default function ChangePasswordButton() {
                 open={open}
                 onClose={handleClose}
                 maxWidth='lg'
+                fullWidth
 
                 aria-labelledby="form-dialog-title"
             >
@@ -304,7 +305,7 @@ export default function ChangePasswordButton() {
 
                 <Grid component="form" container onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} justifyItems="center" alignItems="center">
                     <DialogContent>
-                        <Grid item marginLeft="auto" marginRight="auto" width="100vh">
+                        <Grid item marginLeft="auto" marginRight="auto" width="100%">
                             <Grid container direction="column" justifySelf="center">
 
                                 <Box sx={{ width: '100%' }}>

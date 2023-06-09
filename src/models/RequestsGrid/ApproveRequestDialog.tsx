@@ -91,11 +91,13 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
             <Dialog
                 open={open}
                 onClose={handleClose}
+                fullWidth
+                maxWidth="md"
             >
 
                 <DialogContent >
 
-                    <Grid container justifySelf="center" >
+                    <Grid container justifySelf="center"  width="78vh" ml="5%" mr="-2%">
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')! } >
                             <Grid item direction="row" marginBottom="1.5vh">
                                 <DatePicker label="Start date" defaultValue={dayjs(props.request.startDate)} disabled/>
