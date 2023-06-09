@@ -92,6 +92,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
   const handleSubmit = async () => {
     setOpen(false);
+    handleClose();
     setOpenBackdrop(true);
     await RequestService.getPdf(leaveRequest.id, requestForm)
       .then((response: any) => {
