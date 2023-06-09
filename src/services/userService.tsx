@@ -13,6 +13,7 @@ import { ILeavesAnnualReport } from '../models/interfaces/user/LeavesReport/ILea
 import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
 import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
 import { useNavigate } from 'react-router';
+import { IDaysUsedHistory } from '../models/interfaces/user/IDaysUsedHistory';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -275,4 +276,40 @@ export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualR
       .catch(error => console.log(error))
   }
   return report;
+}
+
+export const useFetchEmployeeInfoHistory = (props: number) => {
+  const [history, setHistory] = useState<IDaysUsedHistory>();
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const loadHistory = async () => {
+    const result = await axios.get(BASE_USER_URL + props + '/get-history')
+      .then(response => setHistory(response.data))
+      .catch(error => console.log(error))
+  }
+
+  return history;
+}
+
+export const useImportHistory = () => {
+  let serverResponse = '';
+
+  const importHistory = async (id: number, history: FormData) => {
+    const importUrl = BASE_USER_URL + id + '/import-history';
+
+    const result = await axios.post(importUrl, formToJSON(history))
+      .then(response => {
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.response) {
+          console.log(error)
+          serverResponse = error.response.data;          
+        }
+      })
+      return serverResponse;
+  }
+  return importHistory;
 }
