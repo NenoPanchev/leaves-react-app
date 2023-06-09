@@ -74,7 +74,7 @@ export default function EditContractButton(props: IContractEditButtonProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-                icon={<Tooltip title={t('edit')}><EditIcon /></Tooltip>}
+                icon={<Tooltip title={t('Edit-tooltip')}><EditIcon /></Tooltip>}
                 label={t('Edit')}
                 onClick={handleClickOpen}
             />
