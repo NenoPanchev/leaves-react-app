@@ -9,7 +9,6 @@ import { IUser } from '../models/interfaces/user/IUser';
 import { IUserDetails } from '../models/interfaces/user/IUserDetails';
 import { IUserPage } from '../models/interfaces/user/IUserPage';
 import { IUserFilter } from '../models/interfaces/user/IUserFilter';
-import { ILeavesAnnualReport } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReport';
 import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
 import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
 import { useNavigate } from 'react-router';
@@ -279,7 +278,7 @@ export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualR
 }
 
 export const useFetchEmployeeInfoHistory = (props: number) => {
-  const [history, setHistory] = useState<IDaysUsedHistory>();
+  const [history, setHistory] = useState<IDaysUsedHistory | undefined>(undefined);
   useEffect(() => {
     loadHistory();
   }, []);
@@ -296,17 +295,17 @@ export const useFetchEmployeeInfoHistory = (props: number) => {
 export const useImportHistory = () => {
   let serverResponse = '';
 
-  const importHistory = async (id: number, history: FormData) => {
+  const importHistory = async (id: number, daysUsedHistory: IDaysUsedHistory) => {
     const importUrl = BASE_USER_URL + id + '/import-history';
 
-    const result = await axios.post(importUrl, formToJSON(history))
+    const result = await axios.post(importUrl, JSON.stringify(daysUsedHistory))
       .then(response => {
       })
       .catch(error => {
         console.log(error)
         if (error.response) {
           console.log(error)
-          serverResponse = error.response.data;          
+          serverResponse = error.response.data.message;          
         }
       })
       return serverResponse;

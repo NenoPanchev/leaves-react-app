@@ -18,8 +18,9 @@ import AuthContext from '../../contexts/AuthContext';
 import TypeService from '../../services/TypeService';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
-import '../ViewAll.css';
 import { useNavigate } from 'react-router-dom';
+import ImportHistoryButton from "./ImportHistory";
+import '../ViewAll.css';
 
 export default function Users() {
   const [refreshCounter, setRefreshCounter] = React.useState(0);
@@ -78,6 +79,10 @@ export default function Users() {
   const renderEditButton = (user: IUserEdit, rowId: number) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} rowId={rowId} apiRef={apiRef.current} />
+  }
+
+  const renderImportHistoryButton = (id: number) => {
+    return <ImportHistoryButton id={id} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}/>
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
@@ -159,6 +164,7 @@ export default function Users() {
         renderViewButton(params.row.id),
         renderContractsButton(params.row.id),
         renderEditButton(params.row, params.row.id),
+        renderImportHistoryButton(params.row.id), 
         renderDeleteButton(params.row.id, refreshCounter, setRefreshCounter)
       ]
     },
