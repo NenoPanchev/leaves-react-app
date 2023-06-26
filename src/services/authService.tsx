@@ -13,7 +13,7 @@ export const useLogin = () => {
   var {user, setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const userDetails = new UserDetails();
-  
+  let serverResponse = '';
 
   const authenticate = async (userForm: FormData) => {
 
@@ -30,8 +30,11 @@ export const useLogin = () => {
         setUser(userDetails);  
         navigate('/')
       })
-      .catch(error => console.log(error)
-      )
+      .catch(error => {
+        console.log(error)
+        serverResponse = 'No connection to the server';          
+      })
+      return serverResponse;
   }
   return authenticate;
 }

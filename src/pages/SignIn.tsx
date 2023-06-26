@@ -12,31 +12,39 @@ export default function SignIn() {
   const { t } = useTranslation();
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
+  const [serverError, setServerError] = React.useState<boolean>(false);
   var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
   let eError = false;
   let pError = false;
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  let sError = false;
+  let serverResponse = '';
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const errors = validate(data);
-    
+    let errors = validate(data);
+
     if (!errors) {
-      authenticate(data);
+      serverResponse = await authenticate(data);
+      setServerErrorMessage(serverResponse);
+    }
+    if (errors == validate(data)) {
+      return;
     }
   };
 
   function validate(formData: FormData): boolean {
-    const email:string = JSON.parse(JSON.stringify(formData.get('email')));
-    const password:string = JSON.parse(JSON.stringify(formData.get('password')));
-      setEmailError(!regex.test(email));
-      eError = (!regex.test(email));
-      setPasswordError(password.length < 4 || password.length > 20);
-      pError = (password.length < 4 || password.length > 20);
-      
-    return eError || pError;
+    const email: string = JSON.parse(JSON.stringify(formData.get('email')));
+    const password: string = JSON.parse(JSON.stringify(formData.get('password')));
+    setEmailError(!regex.test(email));
+    eError = (!regex.test(email));
+    setPasswordError(password.length < 4 || password.length > 20);
+    pError = (password.length < 4 || password.length > 20);
+    sError = serverResponse !== '';
+    setServerError(serverResponse !== '');
+    return eError || pError || sError;
   }
-  
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -56,6 +64,9 @@ export default function SignIn() {
             {t('Sign in')}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            {serverError &&
+              <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
+            }
             <TextField
               margin="normal"
               required
@@ -89,7 +100,7 @@ export default function SignIn() {
             >
               {t('Sign in')}
             </Button>
-            
+
           </Box>
         </Box>
       </Container>

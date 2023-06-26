@@ -40,10 +40,16 @@ export class UserDetails {
     }
 
     public hasRole(role: string): boolean {
-        return this.authorities.includes('ROLE_' + role);
+        if (this.authorities) {
+            return this.authorities.includes('ROLE_' + role);
+        }
+        return false;
     }
 
-    public hasAuthority(authority: string): boolean {               
-        return this.authorities.includes(authority);
+    public hasAuthority(authority: string): boolean {     
+        if  (this.authorities) {
+            return this.authorities.includes(authority);
+        }          
+        return false;
     }
 }
