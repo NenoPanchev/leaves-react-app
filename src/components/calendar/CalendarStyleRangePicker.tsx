@@ -37,8 +37,6 @@ const CustomPickerDayRange = styled(PickersDay, {
 
     //RANGE PICKER FORM CHANGE    
     if (isFirstDayOfRange && isLastDayOfRange) {
-        //PROVERKA ZA HOLIDAYYYYYY
-
         return styl
     } else if (isFirstDayOfRange) {
 

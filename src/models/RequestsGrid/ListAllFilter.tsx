@@ -24,10 +24,10 @@ type ListAllFilterProps = {
     onSubmitChild: (e: { preventDefault: () => void; }) => void;
     onAdd: (filter: Filter) => void;
 }
-const calendarOperations ={
-    sDateEdate :  'Start date - End date',
-    sDateSdate : 'Start date - Start date',
-    eDateEdate : 'End date - End date'
+const calendarOperations = {
+    sDateEdate: 'Start date - End date',
+    sDateSdate: 'Start date - Start date',
+    eDateEdate: 'End date - End date'
 }
 const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
@@ -46,7 +46,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = async () => {
         setOpen(false);
     };
@@ -105,8 +104,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
 
 
     function changeOperation(txt: string) {
-        startDate.length=0;
-        endDate.length=0;
+        startDate.length = 0;
+        endDate.length = 0;
         setUserFilter({ ...filter, operation: txt })
         props.value.operation = txt;
     }
@@ -200,47 +199,45 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
 
         } else {
             return (
-                      <Grid item>
-
-                        <FormControl sx={{ m: 1, minWidth: 100 }}>
-                            <InputLabel id="range-label">{t('Range')}</InputLabel>
-                            <Select
-                                labelId="range-label"
-                                id="range-select"
-                                value={calendarOperation ? calendarOperation : " "}
-                                label="range"
-
-                                onChange={(event) => handleSelectChange(event.target.value)}
-                            >
-                                <MenuItem value={calendarOperations.sDateEdate}>{t('Start date - End Date')}</MenuItem>
-                                <MenuItem value={calendarOperations.sDateSdate}  >{t('Start date - Start Date')}</MenuItem>
-                                <MenuItem value={calendarOperations.eDateEdate}>{t('End date - End Date')}</MenuItem>
-                            </Select>
-                        </FormControl>
+                <Grid item>
+                    <FormControl sx={{ m: 1, minWidth: 100 }}>
+                        <InputLabel id="range-label">{t('Range')}</InputLabel>
+                        <Select
+                            labelId="range-label"
+                            id="range-select"
+                            value={calendarOperation ? calendarOperation : " "}
+                            label="range"
+                            onChange={(event) => handleSelectChange(event.target.value)}
+                        >
+                            <MenuItem value={calendarOperations.sDateEdate}>{t('Start date - End Date')}</MenuItem>
+                            <MenuItem value={calendarOperations.sDateSdate}  >{t('Start date - Start Date')}</MenuItem>
+                            <MenuItem value={calendarOperations.eDateEdate}>{t('End date - End Date')}</MenuItem>
+                        </Select>
+                    </FormControl>
 
 
-                        {calendarOperation === calendarOperations.sDateEdate &&
+                    {calendarOperation === calendarOperations.sDateEdate &&
 
                         <CalendarRangePicker onDateChange={updateFilterWithCalendar}
                             initialStartDate={ifMoreThanOneDateReturnNow(startDate)}
                             initialEndDate={ifMoreThanOneDateReturnNow(endDate)} />
-                        } 
+                    }
 
-                        {calendarOperation === calendarOperations.sDateSdate &&
+                    {calendarOperation === calendarOperations.sDateSdate &&
 
-                            <CalendarRangePicker onDateChange={updateFilterWithCalendar}
-                                initialStartDate={startDate[0]}
-                                initialEndDate={startDate[endDate.length - 1]} />
-                        }
+                        <CalendarRangePicker onDateChange={updateFilterWithCalendar}
+                            initialStartDate={startDate[0]}
+                            initialEndDate={startDate[endDate.length - 1]} />
+                    }
 
 
-                        {calendarOperation === calendarOperations.eDateEdate &&
+                    {calendarOperation === calendarOperations.eDateEdate &&
 
-                            <CalendarRangePicker onDateChange={updateFilterWithCalendar}
-                                initialStartDate={endDate[0]}
-                                initialEndDate={endDate[endDate.length - 1]} />
-                        } 
-                    </Grid>
+                        <CalendarRangePicker onDateChange={updateFilterWithCalendar}
+                            initialStartDate={endDate[0]}
+                            initialEndDate={endDate[endDate.length - 1]} />
+                    }
+                </Grid>
             )
 
         }
@@ -251,7 +248,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     }
 
     function handleUpdateFilterWithCalendar(sDate: string, eDate: string) {
-        console.log(calendarOperation)
 
         if (calendarOperation === calendarOperations.sDateEdate) {
             startDate.length = 0;
@@ -267,8 +263,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
             endDate.length = 0;
             setUserFilter({ ...filter, [sDate]: endDate.push(sDate), [eDate]: endDate.push(eDate) })
         }
-
-
     }
     return (
         <React.Fragment>

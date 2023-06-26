@@ -18,7 +18,7 @@ interface CustomPickerDayRangeProps extends PickersDayProps<Dayjs> {
     dayIsBetweenRange: boolean;
     isFirstDayOfRange: boolean;
     isLastDayOfRange: boolean;
-    isPurple:Array<boolean>;
+    isPurple: Array<boolean>;
 }
 const CustomPickerDayRange = styled(PickersDay, {
     shouldForwardProp: (prop) =>
@@ -36,7 +36,7 @@ const CustomPickerDayRange = styled(PickersDay, {
 })<CustomPickerDayRangeProps>(({ theme,
     dayIsBetween, isStart, isEnd, isRejected: isApproved, isRed: notRed,
     requestdayisholiday: requestDayIsHoliday, isHoliday,
-    dayIsBetweenRange, isFirstDayOfRange, isLastDayOfRange,isPurple }) => {
+    dayIsBetweenRange, isFirstDayOfRange, isLastDayOfRange, isPurple }) => {
     let counter = 0;
     let holidayCounter = 0;
     let styl = {
@@ -54,9 +54,10 @@ const CustomPickerDayRange = styled(PickersDay, {
     }
 
 
-    if (dayIsBetween) {
-        for (const dayIsBetweenItem of dayIsBetween) {
-
+    // if (dayIsBetween) {
+    for (const dayIsBetweenItem of dayIsBetween) {
+        if (dayIsBetweenItem===true) {
+            console.log(dayIsBetween);
             ////COLOR CHANGE
             if (isApproved[counter] === false) {
                 //
@@ -69,17 +70,18 @@ const CustomPickerDayRange = styled(PickersDay, {
                 //
                 //APPROVED
                 //
-
                 if (notRed[counter]) {
                     styl.backgroundColor = green[200];
                     styl['&:hover, &:focus'].backgroundColor = green[300];
+
                 }
                 else if (notRed[counter] === false) {
-
+                    console.log(dayIsBetweenItem);
+                    console.log(dayIsBetween);
+                    console.log("RED");
                     styl.backgroundColor = red[200];
                     styl['&:hover, &:focus'].backgroundColor = red[300];
                 }
-
             }
             else {
                 //
@@ -100,7 +102,7 @@ const CustomPickerDayRange = styled(PickersDay, {
             }
             //END OF COLOR CHANGE
 
-
+        }
 
 
             //START OF FORM CHANGE
@@ -128,13 +130,12 @@ const CustomPickerDayRange = styled(PickersDay, {
 
             counter++;
 
-        }
+      
 
     }
     for (const purpleDay of isPurple) {
-        if(purpleDay)
-        {
-        styl.backgroundColor = purple[300];
+        if (purpleDay) {
+            styl.backgroundColor = purple[300];
             styl['&:hover, &:focus'].backgroundColor = purple[400];
         }
 
@@ -175,11 +176,6 @@ const CustomPickerDayRange = styled(PickersDay, {
 
         holidayCounter++;
     }
-
-
-
-
-
 
     return {}
 }) as React.ComponentType<CustomPickerDayRangeProps>;
@@ -225,10 +221,9 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
 
         //without WEEKENDS 
         isHoliday.push(day.isSame(holiday, 'day'));
-        isPurple.push(day.isBetween(startDate, endDate, null, '[]')&&day.isSame(holiday, 'day'))
+        isPurple.push(day.isBetween(startDate, endDate, null, '[]') && day.isSame(holiday, 'day'))
     })
     requests.forEach(element => {
-
         dayIsBetween.push(day.isBetween(element.startDate, element.endDate, null, '[]'));
         isStart.push(day.isSame(element.startDate, 'day'));
         isEnd.push(day.isSame(element.endDate, 'day'));
@@ -239,8 +234,6 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
         else {
             isRed.push(null);
         }
-
-
         // isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
         requestDayIsHoliday.push(holidays.includes(day.format("YYYY-MM-DD")))
     }
@@ -264,7 +257,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
             requestdayisholiday={requestDayIsHoliday}
             isHoliday={isHoliday}
             isPurple={isPurple}
-             />
+        />
     );
 }
 export function disableWeekends(date: dayjs.Dayjs) {
