@@ -25,6 +25,7 @@ test:
     - echo "Test successfully!"
 
 sonarqube-check:
+  stage: sonar
   image: 
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
