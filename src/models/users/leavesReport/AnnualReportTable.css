@@ -1,0 +1,9 @@
+.report-table thead tr > *, .report-table tbody tr > * {
+    color: grey;
+    padding: 0;
+}
+
+.report-table {
+    overflow: clip;
+}
+

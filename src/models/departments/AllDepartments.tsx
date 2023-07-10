@@ -1,93 +1,108 @@
 import * as React from 'react';
-
-import { Container } from '@mui/system';
-import Title from '../../components/common/Title';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as departmentService from '../../services/departmentService';
-import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
-import { IDepartment } from '../interfaces//department/departmentInterfaces';
+import { IDepartment } from '../interfaces/department/IDepartment';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
-import { useFetchAllEmails as fetchUserEmails } from '../../services/userService';
+import { useFetchAllEmails as fetchUserEmails, getAllEmailsNotHook } from '../../services/userService';
 import { useFetchEmailsOfAvailableEmployees as fetchAvailableEmployeesEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 
+import { DEFAULT_DEPARTMENT_FILTER } from '../../constants/GlobalConstants';
+import { Grid } from '@mui/material';
+import CustomGridToolbar from '../../components/common/CustomGridToolbar';
+import { IDepartmentFilter } from '../interfaces/department/IDepartmentFilter';
 import '../ViewAll.css'
-
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
 
 
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
-  const [filteredDepartments, setFilteredDepartments] = React.useState<IDepartment[]>([]);
-  const [filter, setFilter] = React.useState<FormData>(new FormData);
-  const [shouldFilter, setShouldFilter] = React.useState<boolean>(false);
-  const departments = departmentService.useFetchAllOrFiltered(refreshCurrentState, filter, shouldFilter);
-  const userEmails = fetchUserEmails(refreshCurrentState);
+  const [departmentFilter, setDepartmentFilter] = React.useState<IDepartmentFilter>(DEFAULT_DEPARTMENT_FILTER);
+  // const [userEmails,setUserEmails] = fetchUserEmails(refreshCurrentState);
+  const [userEmails,setUserEmails] = React.useState<string[]>([]);
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
+  const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
   const { t } = useTranslation();
-  const name = t('Name');
-  const id = t('Id');
-  const admin = t('Admin');
-  const employees = t('Employees');
-  const actions = t('Actions');
+  const [notLoaded,setNotLoaded] = React.useState<boolean>(true);
+  React.useEffect(() => {
+  const controller = new AbortController();
+  if(notLoaded)
+  {
+    getAllEmailsNotHook(controller) 
+    .then((response: any) => {
+      setUserEmails(response.data)
+      setNotLoaded(notLoaded)
+    })
+    .catch((e: Error) => {
+      console.log(e);
+    });
+
+  }
+   
+       
+        return () => controller.abort();
+  }, []);
+
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
 
-  const renderEditButton = (department: IDepartment) => {  
-    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState} userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
+  const renderEditButton = (department: IDepartment) => {
+    return <EditDepartmentButton department={department} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState} userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />
   }
 
   const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
-    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState} 
-    refresh={setRefreshCurrentState}></DeleteButton>
+    return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
+      refresh={setRefreshCurrentState}></DeleteButton>
   }
 
-  
+  const myGridToolbarComponents = [
+    <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+      userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />,
+      <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+      filter={departmentFilter} setFilter={setDepartmentFilter} allEmails={userEmails}/>]
+
+  const handlePaginationModelChange = (paginationModel: any) => {
+    setDepartmentFilter({
+      ...departmentFilter, offset: paginationModel.pageSize * (paginationModel.page),
+      limit: paginationModel.pageSize
+    })
+    setRefreshCurrentState(refreshCurrentState + 1);
+  };
 
   const columns: GridColDef[] = [
-    { field: 'id',
-      headerName: id,
-      headerClassName: 'grid-header',
-      width: 70,
-      
-    },
     {
       field: 'name',
-      headerName: name,
+      headerName: t('Name')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'adminEmail',
-      headerName: admin,
+      headerName: t('Admin')!,
       headerClassName: 'grid-header',
       width: 150,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'employeeEmails',
-      headerName: employees,
+      headerName: t('Employees')!,
       headerClassName: 'grid-header',
-      // renderCell: (params) => renderEmployeeEmails(),
       width: 200,
-      flex: 1, 
+      flex: 1,
     },
     {
       field: 'actions',
-      headerName: actions,
+      headerName: t('Actions')!,
       headerClassName: 'grid-header',
       type: 'actions',
       width: 120,
-      flex: 1, 
+      flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
         renderEditButton(params.row),
@@ -98,9 +113,10 @@ export default function Departments() {
 
 
 
-  const rows = departments.map(dpt => {
+  const rows = page.content.map(dpt => {
     return {
-      id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail, 
+      key: dpt.id,
+      id: dpt.id, name: dpt.name, adminEmail: dpt.adminEmail,
       employeeEmails: dpt.employeeEmails ? dpt.employeeEmails.join(", \n") : ''
     }
   });
@@ -108,33 +124,31 @@ export default function Departments() {
 
   return (
     <React.Fragment>
-      <Container >
-        <Title>{t('Departments')}</Title>
-        <Box sx={{display: 'flex', flexDirection: 'row'}}>
-          <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} 
-          setRoles={setFilteredDepartments} setFilter={setFilter}
-          setShouldFilter={setShouldFilter}></DepartmentSearchFilter>
-        </Box>
-        <Box sx={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
-          userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails}/>
-        </Box>
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            disableRowSelectionOnClick
-          />
-        </Box>
-      </Container>
+      <Grid sx={{ width: '100%'}}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          rowCount={page.totalElements}
+          localeText={{
+            toolbarColumns: t(`DataGridToolBar.Columns`)!,
+            toolbarDensity: t(`DataGridToolBar.Density`)!,
+            toolbarExport: t(`DataGridToolBar.Export`)!
+          }}
+          pagination
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          paginationModel={{ page: page.number, pageSize: page.size }}
+          paginationMode='server'
+          onPaginationModelChange={handlePaginationModelChange}
+          disableRowSelectionOnClick
+          disableColumnMenu
+          slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+          sx={{
+            '& .MuiDataGrid-virtualScroller': {
+              overflow: "hidden"
+            }
+          }}
+        />
+      </Grid>
     </React.Fragment>
   );
 }

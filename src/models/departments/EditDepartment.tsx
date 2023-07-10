@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+    DialogTitle, Box, TextField, Autocomplete, Tooltip } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit, appendEmployeesToFormData } from '../../services/departmentService';
-import { EditDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { IDepartmentEditButtonProps } from '../interfaces/department/IDepartmentEditButtonProps';
 
-export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
+export default function EditDepartmentButton(props: IDepartmentEditButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.department.name);
@@ -23,8 +23,6 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
     const navigate = useNavigate();
     const editDepartment = useEdit();  
     const { t } = useTranslation();  
-    const adminPlaceholder = t('Admin');
-    const employeesPlaceholder = t('Employees');
     const availableEmployees = props.availableEmployeesEmails.concat(arr);
 
     const handleClickOpen = () => {
@@ -63,7 +61,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
 
         <React.Fragment>
             <GridActionsCellItem
-                icon={<EditIcon />}
+                icon={<Tooltip title={t('Edit-tooltip')}><EditIcon /></Tooltip>}
                 label={t('Edit')}
                 onClick={handleClickOpen}
             />
@@ -108,7 +106,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         name='adminEmail'
                                         margin='normal'
                                         label={t('Admin')}
-                                        placeholder={adminPlaceholder}
+                                        placeholder={t('Admin')!}
                                     />
                                 )}
                             />
@@ -128,7 +126,7 @@ export default function EditDepartmentButton(props: EditDepartmentButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Employees')}
-                                        placeholder={employeesPlaceholder}
+                                        placeholder={t('Employees')!}
                                     />
                                 )}
                             />

@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import { Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
 import AuthContext from './contexts/AuthContext';
 import { UserDetails } from './models/objects/UserDetails';
+import Home from './pages/Home/Home';
 import { useRefresh } from './services/authService';
 
 
@@ -23,7 +24,7 @@ function App() {
       const setRefreshedUser = async () => {
         const a = await refreshUser();
         setUser(a);
-        
+
       }
       setRefreshedUser();
     }
@@ -48,13 +49,13 @@ function App() {
 
   const value = { user, setUser };
   return (
-    <div>
+    <Grid >
       <Router>
         <AuthContext.Provider value={value}>
           <Home />
         </AuthContext.Provider>
       </Router>
-    </div>
+    </Grid>
   );
 }
 

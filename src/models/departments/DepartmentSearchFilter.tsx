@@ -1,154 +1,134 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { DepartmentSearchFilterProps } from '../interfaces/department/departmentInterfaces';
-import * as departmentService from '../../services/departmentService';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
+import { IDepartmentSearchFilterProps } from '../interfaces/department/IDepartmentSearchFilterProps';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import '../SearchFilter.css'
 
+function DepartmentSearchFilter(props: IDepartmentSearchFilterProps) {
+    const [open, setOpen] = React.useState(false);
+    const [name, setName] = React.useState(props.filter.name);
+    const [adminEmail, setAdminEmail] = React.useState(props.filter.adminEmail);
+    const [employeeEmails, setEmployeeEmails] = React.useState<string[]>(props.filter.employeeEmails);
 
-function DepartmentSearchFilter(props: DepartmentSearchFilterProps) {
-    const [name, setName] = React.useState('');
-    const [admin, setAdmin] = React.useState('');
-    const [employees, setEmployees] = React.useState<string[]>([]);
-    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
-    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
-    const fetchAllFiltered = departmentService.useFetchAllFiltered();
-    const userEmails = useFetchAllEmails(props.refreshCurrentState);    
+    const userEmails =props.allEmails;
     const { t } = useTranslation();
-    const employeesPlaceholder = t('Employees');
-
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();
-        const filter = new FormData(event.currentTarget);
-        
-        if(employees) {
-            employees.forEach(empl => {
-                filter.append('employees[]', empl);
-            })
-        }
-        
-        const departments = fetchAllFiltered(props.refreshCurrentState, filter);
-        props.setRoles(departments);
-        props.setFilter(filter);
-        props.setShouldFilter(true);
+        props.setFilter({
+            ...props.filter, name: name, adminEmail: adminEmail,
+            employeeEmails: employeeEmails, offset: DEFAULT_OFFSET
+        })
         props.refresh(props.refreshCurrentState + 1);
     }
     function clearFilter() {
-        setName('');  
-        setAdmin('');
-        setEmployees([]);
-        setOffset(DEFAULT_OFFSET);
-        setLimit(DEFAULT_LIMIT);
-        
-        props.setShouldFilter(false);
+        props.setFilter({
+            ...props.filter, name: '', adminEmail: '',
+            employeeEmails: [], offset: DEFAULT_OFFSET
+        })
         props.refresh(props.refreshCurrentState + 1);
-
     }
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <React.Fragment>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Button startIcon={<FilterListIcon />} onClick={handleClickOpen} >
 
-                <TextField
-                    margin="normal"
-                    size='small'
-                    required
-                    id="name"
-                    label={t('Name')}
-                    name="name"
-                    autoComplete="name"
-                    autoFocus
-                    value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    id="admin"
-                    label={t('Admin')}
-                    name="admin"
-                    autoComplete="admin"
-                    value={admin}
-                    onChange={(e) => {
-                        setAdmin(e.target.value);
-                    }}
-                />
-                <Autocomplete
-                    multiple
-                    id="employees"
-                    options={userEmails}
-                    size='small'
-                    sx={{minWidth: '30%'}}
-                    value={employees}
-                    onChange={( event, newValue) => {
-                        setEmployees(newValue)
-                    }}
-                    renderInput={(params) => (
+                <Typography variant="overline" >
+                    {t(`DataGridToolBar.ManageFilters`)!}
+                </Typography>
+
+            </Button>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth='lg'
+            >
+                <Grid container
+                    alignItems="center"
+                    justifyContent="center">
+                    <DialogTitle alignItems="center">{t(`ListAllFilters.Filter`)!}</DialogTitle>
+                </Grid>
+                <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate >
+                    <DialogContent className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
                         <TextField
-                            {...params}
-                            margin='normal'
-                            label={t('Employees')}
-                            placeholder={employeesPlaceholder}
+                            margin="normal"
+                            size='small'
+                            id="name"
+                            label={t('Name')}
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value);
+                            }}
                         />
-                    )}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="offset"
-                    label={t('Offset')}
-                    name="offset"
-                    type='number'
-                    autoComplete="offset"
-                    value={offset}
-                    onChange={(e) => {
-                        setOffset(Number(e.target.value));
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{width: '120px'}}
-                    id="limit"
-                    label={t('Limit')}
-                    name="limit"
-                    type='number'
-                    autoComplete="limit"
-                    value={limit}
-                    onChange={(e) => {
-                        setLimit(Number(e.target.value));
-                    }}
-                />
-                <Button
-                    type='submit'
-                    variant='outlined'
-                    color='success'
-                    size='small'
-                    sx={{marginTop: '16px', marginBottom: '8px'}}
-                >
-                    {t('Search')}
-                </Button>
-                <IconButton 
-                color='error'
-                type='reset'
-                sx={{marginTop: '16px',
-                        marginBottom: '8px'}}
-                onClick={clearFilter}
-                >
-                    <CloseIcon />
-                </IconButton>
-            </Box>
+                        <TextField
+                            margin="normal"
+                            size='small'
+                            id="admin"
+                            label={t('Admin')}
+                            name="adminEmail"
+                            autoComplete="admin"
+                            value={adminEmail}
+                            onChange={(e) => {
+                                setAdminEmail(e.target.value);
+                            }}
+                        />
+                        <Autocomplete
+                            multiple
+                            id="employeeEmails"
+                            options={userEmails}
+                            size='small'
+                            sx={{ minWidth: '30%' }}
+                            value={employeeEmails}
+                            onChange={(event, newValue) => {
+                                setEmployeeEmails(newValue)
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    margin='normal'
+                                    label={t('Employees')}
+                                    placeholder={t('Employees')!}
+                                />
+                            )}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Grid container direction={'row-reverse'}>
+                            <Button
+                                type='submit'
+                                onClick={clearFilter}>
+                                <CloseIcon />
+                                {t('Clear')}
+                            </Button>
+                            <Button
+                                type='submit'
+                                startIcon={<FilterAltIcon />}>
+                                {t('Filter')}
+                            </Button>
+                        </Grid>
+                    </DialogActions>
+                </Box>
+            </Dialog>
         </React.Fragment>
     )
 }

@@ -8,15 +8,21 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
-import { ViewProps } from '../../models/interfaces/common/commonInterfaces';
+import Tooltip from '@mui/material/Tooltip/Tooltip';
+import { useTranslation } from 'react-i18next';
+import { IViewProps } from '../../models/interfaces/common/IViewProps';
+import ContractView from '../../models/contracts/ContractView';
 
 
-export default function ViewButton(props: ViewProps) {
-    const path = useLocation().pathname;
+export default function ViewButton(props: IViewProps) {
+    let path = useLocation().pathname;
+    if (path.startsWith('/contracts')) {
+        path = '/contracts';
+    }
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+    const [t, i18n] = useTranslation();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -29,7 +35,7 @@ export default function ViewButton(props: ViewProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-                icon={<PreviewIcon />}
+                icon={<Tooltip title={t('seeDetails')}><PreviewIcon /></Tooltip>}
                 label="View"
                 onClick={handleClickOpen}
             />
@@ -48,6 +54,7 @@ export default function ViewButton(props: ViewProps) {
                         '/roles': <RoleView id={props.id} />,
                         '/departments': <DepartmentView id={props.id} />,
                         '/users': <UserView id={props.id} />,
+                        '/contracts': <ContractView id={props.id}/>
                     }[path]
                 }
             </Dialog>

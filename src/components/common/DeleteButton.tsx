@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDelete } from '../../services/deleteService';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 
@@ -15,17 +15,21 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import RoleView from '../../models/roles/RoleView';
 import DepartmentView from '../../models/departments/DepartmentView';
 import UserView from '../../models/users/UserView';
-import { DeleteButtonProps } from '../../models/interfaces/common/commonInterfaces';
 import AuthContext from '../../contexts/AuthContext';
+import Tooltip from '@mui/material/Tooltip/Tooltip';
+import { useTranslation } from 'react-i18next';
+import { IDeleteButtonProps } from '../../models/interfaces/common/IDeleteButtonProps';
 
-
-export default function DeleteButton(props: DeleteButtonProps) {
-    const path = useLocation().pathname;
+export default function DeleteButton(props: IDeleteButtonProps) {
+    let path = useLocation().pathname;
+    if (path.startsWith('/contracts')) {
+        path = '/contracts';
+    }
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
+    const [t, i18n] = useTranslation();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
-    const navigate = useNavigate();
     const {user} = React.useContext(AuthContext);
 
     const handleClickOpen = () => {
@@ -39,7 +43,6 @@ export default function DeleteButton(props: DeleteButtonProps) {
     function handleDelete() {
         deleteItem(props.id)
         .then(() => props.refresh(props.refreshCurrentState + 1))
-        .then(() => navigate(path));
     }
 
     if (!user?.hasAuthority('DELETE') || (props.id == 1 && path != '/departments')) {
@@ -49,7 +52,7 @@ export default function DeleteButton(props: DeleteButtonProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Tooltip title={t('delete')}><DeleteIcon /></Tooltip>}
           label="Delete"
           color='error'
           onClick={handleClickOpen}

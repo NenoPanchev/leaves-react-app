@@ -1,142 +1,115 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { RoleSearchFilterProps } from '../interfaces/role/roleInterfaces';
-import * as roleService from '../../services/roleService';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET, PERMISSIONS } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET, PERMISSIONS } from '../../constants/GlobalConstants';
 import { useTranslation } from 'react-i18next';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { IRoleSearchFilterProps } from '../interfaces/role/IRoleSearchFilterProps';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import '../SearchFilter.css'
 
 
-function RoleSearchFilter(props: RoleSearchFilterProps) {
-    const [name, setName] = React.useState('');
-    const [permissions, setPermissions] = React.useState<string[]>([]);
-    const [offset, setOffset] = React.useState(DEFAULT_OFFSET);
-    const [limit, setLimit] = React.useState<Number>(DEFAULT_LIMIT);
-    const fetchAllFiltered = roleService.useFetchAllFiltered();
+function RoleSearchFilter(props: IRoleSearchFilterProps) {
+    const [open, setOpen] = React.useState(false);
+    const [name, setName] = React.useState(props.filter.name);
+    const [permissions, setPermissions] = React.useState<string[]>(props.filter.permissions);
     const { t } = useTranslation();
-    const permissionsPlaceholder = t('Permissions');
-
 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.stopPropagation();
         event.preventDefault();
-        const filter = new FormData(event.currentTarget);
-
-        if (permissions) {
-            permissions.forEach(p => {
-                filter.append('permissions[]', p);
-            })
-
-        }
-
-        const roles = fetchAllFiltered(props.refreshCurrentState, filter);
-        props.setRoles(roles);
-        props.setFilter(filter);
-        props.setShouldFilter(true);
+        props.setFilter({ ...props.filter, name: name, permissions: permissions, offset: DEFAULT_OFFSET })
         props.refresh(props.refreshCurrentState + 1);
     }
 
     function clearFilter() {
-        setName('');
-        setPermissions([]);
-        setOffset(DEFAULT_OFFSET);
-        setLimit(DEFAULT_LIMIT);
-
-        props.setShouldFilter(false);
+        props.setFilter({ ...props.filter, name: '', permissions: [], offset: DEFAULT_OFFSET })
         props.refresh(props.refreshCurrentState + 1);
     }
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <React.Fragment>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Button startIcon={<FilterListIcon />} onClick={handleClickOpen} >
 
-                <TextField
-                    margin="normal"
-                    size='small'
-                    required
-                    id="name"
-                    label={t('Name')}
-                    name="name"
-                    autoComplete="name"
-                    autoFocus
-                    value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                />
-                <Autocomplete
-                    multiple
-                    id="permissions"
-                    options={PERMISSIONS}
-                    size='small'
-                    sx={{ minWidth: '40%' }}
-                    value={permissions}
-                    onChange={(event, newValue) => {
-                        setPermissions(newValue)
-                    }}
-                    renderInput={(params) => (
+                <Typography variant="overline" >
+                    {t(`DataGridToolBar.ManageFilters`)!}
+                </Typography>
+
+            </Button>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth='lg'
+            >
+                <Grid container
+                    alignItems="center"
+                    justifyContent="center">
+                    <DialogTitle alignItems="center">{t(`ListAllFilters.Filter`)!}</DialogTitle>
+                </Grid>
+                <Box className='searchForm' component="form" onSubmit={handleSubmit} noValidate >
+                    <DialogContent className='filterBar' sx={{ display: 'flex', flexDirection: 'row' }}>
                         <TextField
-                            {...params}
-                            margin='normal'
-                            label={t('Permissions')}
-                            placeholder={permissionsPlaceholder}
+                            margin="normal"
+                            size='small'
+                            id="name"
+                            label={t('Name')}
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value);
+                            }}
                         />
-                    )}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{ width: '120px' }}
-                    id="offset"
-                    label={t('Offset')}
-                    name="offset"
-                    type='number'
-                    autoComplete="offset"
-                    value={offset}
-                    onChange={(e) => {
-                        setOffset(Number(e.target.value));
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    size='small'
-                    sx={{ width: '120px' }}
-                    id="limit"
-                    label={t('Limit')}
-                    name="limit"
-                    type='number'
-                    autoComplete="limit"
-                    value={limit}
-                    onChange={(e) => {
-                        setLimit(Number(e.target.value));
-                    }}
-                />
-                <Button
-                    type='submit'
-                    variant='outlined'
-                    color='success'
-                    size='small'
-                    sx={{ marginTop: '16px', marginBottom: '8px' }}
-                >
-                    {t('Search')}
-                </Button>
-                <IconButton
-                    color='error'
-                    type='reset'
-                    sx={{
-                        marginTop: '16px',
-                        marginBottom: '8px'
-                    }}
-                    onClick={clearFilter}
-                >
-                    <CloseIcon />
-                </IconButton>
-            </Box>
+                        <Autocomplete
+                            multiple
+                            id="permissions"
+                            options={PERMISSIONS}
+                            size='small'
+                            sx={{ minWidth: '40%' }}
+                            value={permissions}
+                            onChange={(event, newValue) => {
+                                setPermissions(newValue)
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    margin='normal'
+                                    label={t('Permissions')}
+                                    placeholder={t('Permissions')!}
+                                />
+                            )}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Grid container direction={'row-reverse'}>
+                            <Button
+                                type='submit'
+                                onClick={clearFilter}>
+                                <CloseIcon />
+                                {t('Clear')}
+                            </Button>
+                            <Button
+                                type='submit'
+                                startIcon={<FilterAltIcon />}>
+                                {t('Filter')}
+                            </Button>
+                        </Grid>
+                    </DialogActions>
+                </Box>
+            </Dialog>
         </React.Fragment>
     )
 }

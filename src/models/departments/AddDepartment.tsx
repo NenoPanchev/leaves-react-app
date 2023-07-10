@@ -1,14 +1,16 @@
 import * as React from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, Box, TextField, Autocomplete
+    DialogTitle, Box, TextField, Autocomplete, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appendEmployeesToFormData, useCreate } from '../../services/departmentService';
-import { AddDepartmentButtonProps } from '../interfaces/department/departmentInterfaces';
+import { IDepartmentAddButtonProps } from '../interfaces/department/IDepartmentAddButtonProps';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
 
-export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
+
+export default function AddDepartmentButton(props: IDepartmentAddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
@@ -18,8 +20,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
     const navigate = useNavigate();
     const addDepartment = useCreate();
     const { t } = useTranslation();
-    const adminPlaceholder = t('Admin')
-    const employeesPlaceholder = t('Employees');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -52,12 +52,10 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
 
     return (
         <React.Fragment>
-            <Button
-                variant='outlined'
-                color='success'
-                onClick={handleClickOpen}
-            >
-                {t('Add Department')}
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Typography variant="overline" component="div">
+                    {t(`Add Department`)}
+                </Typography>
             </Button>
             <Dialog
 
@@ -66,8 +64,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                 maxWidth='md'
                 aria-labelledby="form-dialog-title"
             >
-                <React.Fragment>
-
                     <DialogTitle id="form-dialog-title">
                         {t('Add Department')}
                     </DialogTitle>
@@ -98,7 +94,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         name='adminEmail'
                                         margin='normal'
                                         label={t('Admin')}
-                                        placeholder={adminPlaceholder}
+                                        placeholder={t('Admin')!}
                                         onChange={(e) => e.target.value}
                                     />
                                 )}
@@ -118,7 +114,7 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Employees')}
-                                        placeholder={employeesPlaceholder}
+                                        placeholder={t('Employees')!}
                                     />
                                 )}
                             />
@@ -134,8 +130,6 @@ export default function AddDepartmentButton(props: AddDepartmentButtonProps) {
                             </Button>
                         </DialogActions>
                     </Box>
-                </ React.Fragment>
-
             </Dialog>
         </ React.Fragment>
     );

@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+    DialogTitle, Box, TextField, Autocomplete, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCreate } from '../../services/roleService';
-import { AddButtonProps, IPermission } from '../interfaces/common/commonInterfaces';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
 import { appendPermissionsToFormData } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
+import { IAddButtonProps } from '../interfaces/common/IAddButtonProps';
 
 
-export default function AddRoleButton(props: AddButtonProps) {
+export default function AddRoleButton(props: IAddButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [nameError, setNameError] = React.useState(false);
@@ -23,7 +24,6 @@ export default function AddRoleButton(props: AddButtonProps) {
 
     const navigate = useNavigate();
     const addRole = useCreate();
-    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,12 +61,10 @@ export default function AddRoleButton(props: AddButtonProps) {
 
     return (
         <React.Fragment>
-            <Button
-                variant='outlined'
-                color='success'
-                onClick={handleClickOpen}
-            >
-                {t('Add Role')}
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Typography variant="overline" component="div">
+                    {t(`Add Role`)}
+                </Typography>
             </Button>
             <Dialog
 
@@ -109,7 +107,7 @@ export default function AddRoleButton(props: AddButtonProps) {
                                     name='permissions'
                                     margin='normal'
                                     label={t('Permissions')}
-                                    placeholder={permissionsPlaceholder}
+                                    placeholder={t('Permissions')!}
                                 />
                             )}
                         />

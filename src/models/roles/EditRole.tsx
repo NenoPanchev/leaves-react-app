@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
-    DialogTitle, Box, TextField, Autocomplete } from '@mui/material';
+    DialogTitle, Box, TextField, Autocomplete, Tooltip } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEdit, appendPermissionsToFormData } from '../../services/roleService';
-import { EditRoleButtonProps } from '../interfaces/role/roleInterfaces';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import mapPermissionName from '../../services/permissionService'
 import { Permission } from '../objects/Permission';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { IEditRoleButtonProps } from '../interfaces/role/IRoleEditButtonProps';
 
 
-export default function EditRoleButton(props: EditRoleButtonProps) {
+export default function EditRoleButton(props: IEditRoleButtonProps) {
     const path = useLocation().pathname;
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(props.role.name);
@@ -27,7 +27,6 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     const str = props.role.permissions.toString();
     const arr = str.split(', ');
     const [permissionNames, setPermissionNames] = React.useState<string[] | null>(arr);
-    const permissionsPlaceholder = t('Permissions');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -66,7 +65,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
     return (
         <React.Fragment>
             <GridActionsCellItem
-                icon={<EditIcon />}
+                icon={<Tooltip title={t('Edit-tooltip')}><EditIcon /></Tooltip>}
                 label={t('Edit')}
                 onClick={handleClickOpen}
             />
@@ -116,7 +115,7 @@ export default function EditRoleButton(props: EditRoleButtonProps) {
                                         {...params}
                                         margin='normal'
                                         label={t('Permissions')}
-                                        placeholder={permissionsPlaceholder}
+                                        placeholder={t('Permissions')!}
                                     />
                                 )}
                             />

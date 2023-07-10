@@ -2,16 +2,18 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
-import { LOGIN_URL, WITH_AUTH_HEADER, WITH_TEXT_HEADER } from '../constants/GlobalConstants';
+import { LOGIN_URL } from '../constants/GlobalConstants';
 import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
 // import axios from 'axios';
 
+//TODO USER NOT REFRESHED ON LOGIN!!!!
 
 export const useLogin = () => {
   var {user, setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const userDetails = new UserDetails();
+  let serverResponse = '';
 
   const authenticate = async (userForm: FormData) => {
 
@@ -20,13 +22,19 @@ export const useLogin = () => {
         const token = response.data.jwt;
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
+        userDetails.setId(response.data.id!);
+        userDetails.setName(response.data.name);
+
         localStorage.setItem("SavedToken", 'Bearer ' + token);
         localStorage.setItem("Authenticated", 'true');
         setUser(userDetails);  
         navigate('/')
       })
-      .catch(error => console.log(error)
-      )
+      .catch(error => {
+        console.log(error)
+        serverResponse = 'No connection to the server';          
+      })
+      return serverResponse;
   }
   return authenticate;
 }
@@ -44,6 +52,7 @@ export const useRefresh = () => {
       .then((response) => {
         userDetails.setEmail(response.data.email);
         userDetails.setAuthorities(response.data.authorities);
+        userDetails.setId(response.data.id!);
         // setUser(userDetails);
         // navigate(path)
       })
