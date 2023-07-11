@@ -59,6 +59,6 @@ build-image-and-push:
       echo "192.168.20.94 zunregistry.com" >> /etc/hosts
       docker build -t vacation_management_ui:$TAG .
       docker tag vacation_management_ui:$TAG zunregistry.com/vacation_management_ui:$TAG
-      docker push zunregistry.com/vacation_management_service:$TAG
+      docker push zunregistry.com/vacation_management_ui:$TAG
   rules:
     - exists:
