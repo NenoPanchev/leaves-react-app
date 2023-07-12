@@ -1,6 +1,5 @@
 image: node:latest
 stages:
-  - test
   - build
   - sonar
   - push
@@ -16,14 +15,6 @@ build:
     - export NODE_OPTIONS=--openssl-legacy-provider
     - CI='false' npm run build
     - echo "Build successfully!"
-
-test:
-  stage: test
-  script:
-    - echo "Testing App"
-    - npm config set ignore-scripts false
-    #- CI=true npm test
-    - echo "Test successfully!"
 
 sonarqube-check:
   stage: sonar
