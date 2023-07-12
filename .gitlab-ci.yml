@@ -47,9 +47,8 @@ build-image-and-push:
       else
         TAG="$CI_COMMIT_REF_NAME"
       fi
-      echo "192.168.20.94 zunregistry.com" >> /etc/hosts
       docker build -t vacation_management_ui:$TAG .
-      docker tag vacation_management_ui:$TAG zunregistry.com/vacation_management_ui:$TAG
-      docker push zunregistry.com/vacation_management_ui:$TAG
+      docker tag vacation_management_ui:$TAG docker.regisrty.lightsoftbulgaria.com/vacation_management_ui:$TAG
+      docker push docker.regisrty.lightsoftbulgaria.com/vacation_management_ui:$TAG
   rules:
     - exists:
