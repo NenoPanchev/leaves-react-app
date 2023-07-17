@@ -5,7 +5,7 @@ FROM node:16.9.1
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY build/ /app/
+COPY build/ /app/build
 
 COPY run.sh/ /app/run.sh
 
