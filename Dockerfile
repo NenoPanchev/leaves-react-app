@@ -11,10 +11,7 @@ COPY build/ /app/
 # Build the frontend app
 RUN npm install -g serve
 
-RUN cat > run.sh <<EOF
-#!/bin/bash
-serve -s build -l $SERVER_PORT
-EOF
+RUN cat > run.sh <<EOF #!/bin/bash serve -s build -l $SERVER_PORT EOF
 
 RUN chmod +x run.sh
 
