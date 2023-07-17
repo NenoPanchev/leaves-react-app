@@ -1,7 +1,6 @@
 image: node:latest
 stages:
   - build
-  - sonar
   - push
 
 build:
@@ -21,7 +20,7 @@ build:
       - build/*
 
 sonarqube-check:
-  stage: sonar
+  stage: build
   image: 
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
