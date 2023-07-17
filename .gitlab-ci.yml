@@ -8,6 +8,7 @@ build:
   stage: build
   script: 
     - echo "Start building App"
+    - export REACT_APP_BASE_URL=http://192.168.20.109:80
     - npm --version
     - node -v
     - npm config set ignore-scripts false
@@ -15,6 +16,9 @@ build:
     - export NODE_OPTIONS=--openssl-legacy-provider
     - CI='false' npm run build
     - echo "Build successfully!"
+  artifacts:
+    paths:
+      - build/*
 
 sonarqube-check:
   stage: sonar
@@ -43,7 +47,7 @@ build-image-and-push:
   script:
     - |
       if [[ "$CI_COMMIT_REF_NAME" == "master" ]]; then
-        TAG="latest"
+        TAG="LATEST-SNAPSHOT"
       else
         TAG="$CI_COMMIT_REF_NAME"
       fi
@@ -52,3 +56,5 @@ build-image-and-push:
       docker push docker.regisrty.lightsoftbulgaria.com/vacation_management_ui:$TAG
   rules:
     - exists:
+  dependencies:
+    - "build"
