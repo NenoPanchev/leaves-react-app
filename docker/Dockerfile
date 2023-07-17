@@ -7,11 +7,10 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY build/ /app/
 
+COPY run.sh/ /app/run.sh
 
 # Build the frontend app
 RUN npm install -g serve
-
-RUN cat > run.sh <<EOF #!/bin/bash serve -s build -l $SERVER_PORT EOF
 
 RUN chmod +x run.sh
 
