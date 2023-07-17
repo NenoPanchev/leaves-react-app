@@ -17,4 +17,4 @@ ENV SERVER_PORT=80
 EXPOSE 80
 
 # Specify the command to start your frontend app server
-CMD ["serve -s build -l $SERVER_PORT"]
+RUN serve -s build -l $SERVER_PORT
