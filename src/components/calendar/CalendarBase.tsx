@@ -3,9 +3,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import WeekendIcon from '@mui/icons-material/Weekend';
+import HomeIcon from '@mui/icons-material/Home';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import { Avatar, Grid, IconButton, Tooltip, Typography } from '@mui/material';
-import { blue, green, grey, purple, red } from '@mui/material/colors';
+import { blue, green, grey, purple, red, yellow } from '@mui/material/colors';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -54,6 +55,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
+        requestType: '',
         startDate: "",
         endDate: "",
         approvedStartDate: "",
@@ -288,6 +290,10 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
                     <Grid container direction="row" marginBottom={2}  >
                         <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: purple[500] }} >< WeekendIcon /></Avatar>
                         <Typography marginLeft={1} marginTop={0.5} >{t('holiday')!}</Typography>
+                    </Grid>
+                    <Grid container direction="row" marginBottom={2}  >
+                        <Avatar sx={{ width: 35, height: 35 }} style={{ backgroundColor: yellow[600] }} >< HomeIcon /></Avatar>
+                        <Typography marginLeft={1} marginTop={0.5} >{t('Home office')!}</Typography>
                     </Grid>
                 </Grid>
             </Grid>

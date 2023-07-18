@@ -1,5 +1,6 @@
 export default interface IRequestDataGet {
     id: number,
+    requestType: string,
     startDate: string,
     endDate: string,
     approved?: boolean,

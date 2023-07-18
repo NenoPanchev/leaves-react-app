@@ -22,6 +22,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [leaveRequestFilter, setLeaveRequestFilter] = useState<Filter>({
     id: [],
+    requestType: '',
     dateCreated: [],
     createdBy: [],
     lastUpdated: [],
@@ -202,6 +203,11 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   };
 
   const columns: GridColDef[] = [
+    {
+      field: 'requestType',
+      headerName: t(`Requests.RequestType`)!,
+      flex: 0.45
+    },
     {
       field: 'startDate',
       headerName: t(`Requests.StartDate`)!,

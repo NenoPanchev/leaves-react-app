@@ -61,7 +61,7 @@ export default function UserView(props: IViewProps) {
                 color: 'black'
               }}>
 
-                <Button variant='outlined'>
+                <Button variant='outlined' sx={{marginRight: '5px'}}>
                   <Typography variant="overline" component="div">
                     {t(`Contracts`)!}
                   </Typography>

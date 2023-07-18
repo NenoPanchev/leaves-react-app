@@ -1,5 +1,5 @@
 
-import { red, green, blue, purple } from "@mui/material/colors";
+import { red, green, blue, purple, yellow } from "@mui/material/colors";
 import { PickersDay, PickersDayProps } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
@@ -15,6 +15,7 @@ interface CustomPickerDayRangeProps extends PickersDayProps<Dayjs> {
     isRed: Array<boolean | null>;
     requestdayisholiday: Array<boolean>;
     isHoliday: Array<boolean>;
+    isHome: Array<boolean>;
     dayIsBetweenRange: boolean;
     isFirstDayOfRange: boolean;
     isLastDayOfRange: boolean;
@@ -29,13 +30,14 @@ const CustomPickerDayRange = styled(PickersDay, {
         prop !== 'isRed' &&
         prop !== 'isBeforeToday' &&
         prop !== 'isHoliday' &&
+        prop !== 'isHome' &&
         prop !== 'isPurple' &&
         prop !== 'dayIsBetweenRange' &&
         prop !== 'isFirstDayOfRange' &&
         prop !== 'isLastDayOfRange',
 })<CustomPickerDayRangeProps>(({ theme,
     dayIsBetween, isStart, isEnd, isRejected: isApproved, isRed: notRed,
-    requestdayisholiday: requestDayIsHoliday, isHoliday,
+    requestdayisholiday: requestDayIsHoliday, isHoliday, isHome,
     dayIsBetweenRange, isFirstDayOfRange, isLastDayOfRange, isPurple }) => {
     let counter = 0;
     let holidayCounter = 0;
@@ -57,7 +59,6 @@ const CustomPickerDayRange = styled(PickersDay, {
     // if (dayIsBetween) {
     for (const dayIsBetweenItem of dayIsBetween) {
         if (dayIsBetweenItem===true) {
-            console.log(dayIsBetween);
             ////COLOR CHANGE
             if (isApproved[counter] === false) {
                 //
@@ -71,14 +72,15 @@ const CustomPickerDayRange = styled(PickersDay, {
                 //APPROVED
                 //
                 if (notRed[counter]) {
-                    styl.backgroundColor = green[200];
-                    styl['&:hover, &:focus'].backgroundColor = green[300];
-
+                    if (isHome[counter] === true) {
+                        styl.backgroundColor = yellow[600];
+                        styl['&:hover, &:focus'].backgroundColor = yellow[700];
+                    } else{
+                        styl.backgroundColor = green[200];
+                        styl['&:hover, &:focus'].backgroundColor = green[300];
+                    }
                 }
                 else if (notRed[counter] === false) {
-                    console.log(dayIsBetweenItem);
-                    console.log(dayIsBetween);
-                    console.log("RED");
                     styl.backgroundColor = red[200];
                     styl['&:hover, &:focus'].backgroundColor = red[300];
                 }
@@ -212,6 +214,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
     const isRed: Array<boolean | null> = [];
     const requestDayIsHoliday: Array<boolean> = [];
     const isHoliday: Array<boolean> = [];
+    const isHome: Array<boolean> = [];
     const isPurple: Array<boolean> = [];
 
 
@@ -236,6 +239,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
         }
         // isBeforeToday.push(day.isBefore(dayjs().subtract(1, 'day')))
         requestDayIsHoliday.push(holidays.includes(day.format("YYYY-MM-DD")))
+        isHome.push(element.requestType === 'HOME_OFFICE');
     }
     );
     const dayIsBetweenRange = day.isBetween(startDate, endDate, null, '[]');
@@ -256,6 +260,7 @@ export function DayWithRange(props: PickersDayProps<Dayjs> &
             isRed={isRed}
             requestdayisholiday={requestDayIsHoliday}
             isHoliday={isHoliday}
+            isHome={isHome}
             isPurple={isPurple}
         />
     );
