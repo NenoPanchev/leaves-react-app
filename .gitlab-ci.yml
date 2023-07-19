@@ -72,7 +72,9 @@ deploy-image-to-openstack-zun:
   image: docker.regisrty.lightsoftbulgaria.com/openstack_zun_deployer:1.0
   script:
     - |
-      echo "Deploying image...."  
+      echo "Start deploying"
+      python3 /app/main.py
+      echo "Deploy finished"  
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_TAG'
       when: manual
