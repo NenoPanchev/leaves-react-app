@@ -309,7 +309,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                 options={requestTypes}
                                 size='small'
                                 filterSelectedOptions
-                                sx={{ minWidth: '100px' }}
+                                sx={{ width: '200px' }}
                                 value={requestType}
                                 onChange={(event, newValue) => {
                                     setUserFilter({...filter, requestType: newValue!});
