@@ -1,5 +1,6 @@
 export default interface Filter {
     id: string[],
+    requestType: string,
     dateCreated: string[],
     createdBy: string[],
     lastUpdated: string[],

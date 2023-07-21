@@ -107,19 +107,20 @@
     "seeContracts": "See contracts",
     "holiday":"Non-working days",
     "Requests":{
-    "StartDate":"Start date",
-    "EndDate":"End Date",
-    "Approved":"Approved",
-    "approved":"Approved",
-    "Approve":"Approve",
-    "Rejected":"Rejected",
-    "notProcessed":"Not processed",
-    "rejectedS":"Rejected",
-    "notProcessedS":"Not processed",
-    "approvedS":"Approved",
-    "daysRequested":"Days requested",
-    "approvedStartDate":"Approved Start Date",
-    "approvedEndDate":"Approved End Date"
+        "StartDate":"Start date",
+        "EndDate":"End Date",
+        "Approved":"Approved",
+        "approved":"Approved",
+        "Approve":"Approve",
+        "Rejected":"Rejected",
+        "notProcessed":"Not processed",
+        "rejectedS":"Rejected",
+        "notProcessedS":"Not processed",
+        "approvedS":"Approved",
+        "daysRequested":"Days requested",
+        "approvedStartDate":"Approved Start Date",
+        "approvedEndDate":"Approved End Date",
+        "RequestType": "Request Type"
     },
     
         "alertMassageDuplicateEntity":"You have already requested leave from {{startDate}} to {{endDate}}!",
@@ -184,5 +185,7 @@
     "RequestInfo":"Request Info:",
     "User info:": "User info:",
     "Import history": "Import history",
-    "Import days used history of employees before using this app": "Import days used history of employees before using this app"
+    "Import days used history of employees before using this app": "Import days used history of employees before using this app",
+    "Leave": "Leave",
+    "Home office": "Home office"
 }

@@ -22,6 +22,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [leaveRequestFilter, setLeaveRequestFilter] = useState<Filter>({
     id: [],
+    requestType: '',
     dateCreated: [],
     createdBy: [],
     lastUpdated: [],
@@ -203,6 +204,11 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
+      field: 'requestType',
+      headerName: t(`Requests.RequestType`)!,
+      flex: 0.45
+    },
+    {
       field: 'startDate',
       headerName: t(`Requests.StartDate`)!,
       flex: 0.45
@@ -245,15 +251,36 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       flex: 0.40,
       cellClassName: 'actions',
       getActions: ({ row, id }) => {
-        return [
-          <ApproveRequestDialog request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild} />,
-          <GridActionsCellItem
-            icon={<Tooltip title={t('reject')}><CancelIcon /></Tooltip>}
-            label="Reject"
-            onClick={handleDisapproveClick(row, id)}
-            color="inherit"
-          />,
-        ];
+        const isApproved = row.approved === true;
+        const isRejected = row.approved === false;
+        const isPending = row.approved === null;
+        console.log('Row: ', row);
+        
+        // Create an array to store the action elements
+        const actions: JSX.Element[] = [];
+    
+        // Render ApproveRequestDialog only for rows with null or true approve value
+        if (isPending || isApproved) {
+          actions.push(
+            <ApproveRequestDialog key={id} request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild} />
+          );
+        }
+    
+        // Render GridActionsCellItem only for rows with null or false approve value
+        if (isPending || isRejected) {
+          actions.push(
+            <GridActionsCellItem
+              key={id}
+              icon={<Tooltip title={t('reject')}><CancelIcon /></Tooltip>}
+              label="Reject"
+              onClick={handleDisapproveClick(row, id)}
+              color="inherit"
+            />
+          );
+        }
+    
+        // Return the actions array after filtering out any null elements
+        return actions.filter((action) => action !== null);
       },
 
     },

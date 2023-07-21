@@ -118,7 +118,8 @@
     "notProcessed":"Не е обработен",
         "daysRequested": "Заявени дни",
         "approvedStartDate":"Одобренa стартова дата",
-        "approvedEndDate":"Одобренa крайна дата"
+        "approvedEndDate":"Одобренa крайна дата",
+        "RequestType": "Тип заявление"
     },
     "UserRequests": "Заявления",
     "alertMassageDuplicateEntity": "Вече имате заявление за отпуск от {{startDate}} до {{endDate}}!",
@@ -182,5 +183,7 @@
     "RequestInfo":"Информация за заявлението:",
     "User info:": "Информация за потребителя:",
     "Import history": "Импортиране на история",
-    "Import days used history of employees before using this app": "Входиране история на използваните дни от служители преди използване на приложението"
+    "Import days used history of employees before using this app": "Входиране история на използваните дни от служители преди използване на приложението",
+    "Leave": "Отпуск",
+    "Home office": "Работа от вкъщи"
 }
