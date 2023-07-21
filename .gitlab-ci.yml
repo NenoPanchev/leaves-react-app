@@ -52,6 +52,7 @@ build-image-and-push:
         TAG="$CI_COMMIT_REF_NAME"
       fi
       cp -rf build/ docker/
+      cp /certificates/vacation/ui/* docker/
       docker build -t vacation_management_ui:$TAG docker/
       docker tag vacation_management_ui:$TAG docker.regisrty.lightsoftbulgaria.com/vacation_management_ui:$TAG
       docker push docker.regisrty.lightsoftbulgaria.com/vacation_management_ui:$TAG
