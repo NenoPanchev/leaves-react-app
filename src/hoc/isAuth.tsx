@@ -16,8 +16,6 @@ const isAuth = (
                 navigate('/login')
         }, [])
         return null;
-
-
     }
 }
 

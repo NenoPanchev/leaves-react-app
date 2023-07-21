@@ -21,18 +21,18 @@ function RoutesComponent() {
             <Grid container >
               <Routes>
                 <Route index Component={isAuth(DashBoard)}></Route>
-                <Route path={"/requests/employee/:id"} Component={isAuth(DashBoardByEmployee)}></Route>
+                <Route path={'/requests/employee/:id'} Component={isAuth(DashBoardByEmployee)}></Route>
                 <Route path='/users' Component={isAuth(Users)}></Route>
                 <Route path='/departments' Component={isAuth(Departments)}></Route>
-                <Route path="/requests" Component={isAuth(RequestsGrid)} />
-                <Route path="/types" Component={isAuth(TypeEmployeeGrid)} />
+                <Route path='/requests' Component={isAuth(RequestsGrid)} />
+                <Route path='/types' Component={isAuth(TypeEmployeeGrid)} />
                 <Route path='/roles' Component={isAuth(Roles)}></Route>
                 <Route path='/contracts/employee/:id' Component={isAuth(Contracts)}></Route>
                 <Route path='/login' Component={SignIn}></Route>
                 <Route path='/logout' Component={LogOut}></Route>
-                <Route path="/404" Component={NotFound}></Route>
-                <Route path="/403" Component={AccessDenied}></Route>
-                <Route path="*" element={<Navigate to="/404" replace />}></Route>
+                <Route path='/404' Component={NotFound}></Route>
+                <Route path='/403' Component={AccessDenied}></Route>
+                <Route path='*' element={<Navigate to="/404" replace />}></Route>
               </Routes>
             </Grid>
  
