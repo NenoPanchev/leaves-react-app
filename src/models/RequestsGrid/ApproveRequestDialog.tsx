@@ -28,7 +28,7 @@ type ApproveRequestProps = {
 const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const [leaveRequestDto, setLeaveRequestDto] = React.useState<IRequestDataApprove>({
-
+        requestType: props.request.requestType,
         startDate: props.request.startDate,
         endDate: props.request.endDate,
         approvedStartDate: props.request.startDate,

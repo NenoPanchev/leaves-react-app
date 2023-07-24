@@ -197,8 +197,8 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                                 value={requestType}
                                                 onChange={handleChange}
                                             >
-                                                <FormControlLabel value="LEAVE" control={<Radio />} label={t('Leave')} />
-                                                <FormControlLabel value="HOME_OFFICE" control={<Radio />} label={t('Home office')} />
+                                                <FormControlLabel value='LEAVE' control={<Radio />} label={t('Leave')} />
+                                                <FormControlLabel value='HOME_OFFICE' control={<Radio />} label={t('Home office')} />
                                             </RadioGroup>
                                         </FormControl>
                                     </Grid>

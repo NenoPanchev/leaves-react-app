@@ -17,7 +17,6 @@ import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
 import Filter from '../interfaces/request/Filter';
 import dayjs, { Dayjs } from 'dayjs';
 import CalendarRangePicker from '../../components/calendar/CalendarRangePicker';
-import MyAddFilterRequestType from '../../components/AddFilter/AddFilterRequestType';
 
 
 type ListAllFilterProps = {
@@ -35,7 +34,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
 
     const [filter, setUserFilter] = React.useState<Filter>(props.value);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const [calendarOperation, setCalendarOperation] = React.useState<string>(calendarOperations.sDateEdate);
 
     const { id, dateCreated, requestType, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort, operation, deleted } = filter;
