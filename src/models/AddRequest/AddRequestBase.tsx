@@ -189,7 +189,6 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
                                 <Grid container direction="column"  >
                                     <Grid container direction="row" justifyContent="right" marginBottom={1}>
                                         <FormControl>
-                                            <FormLabel id="demo-controlled-radio-buttons-group">{t('Requests.RequestType')}</FormLabel>
                                             <RadioGroup
                                                 row
                                                 aria-labelledby="demo-controlled-radio-buttons-group"
