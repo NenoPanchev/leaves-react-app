@@ -23,7 +23,7 @@ export default function ContractTable(props: ILeavesAnnualReport) {
                             <TableCell colSpan={1} />
                             <TableCell align='center'>{t('Days used')}</TableCell>
                             <TableCell colSpan={1} />
-                            <TableCell align='center'>{t('Carryover days')}</TableCell>
+                            <TableCell align='center'>{t('Days left')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -37,7 +37,7 @@ export default function ContractTable(props: ILeavesAnnualReport) {
                             <TableCell align='center'>-</TableCell>
                             <TableCell align='center'>{props.daysUsed}</TableCell>
                             <TableCell align='center'>{'=>'}</TableCell>
-                            <TableCell align="center">{props.carryoverDays}</TableCell>
+                            <TableCell align="center">{props.daysLeft}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

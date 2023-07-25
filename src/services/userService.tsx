@@ -13,6 +13,7 @@ import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesRepor
 import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
 import { useNavigate } from 'react-router';
 import { IDaysUsedHistory } from '../models/interfaces/user/IDaysUsedHistory';
+import { IHistory } from '../models/interfaces/user/IHistory';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -278,7 +279,7 @@ export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualR
 }
 
 export const useFetchEmployeeInfoHistory = (props: number) => {
-  const [history, setHistory] = useState<IDaysUsedHistory | undefined>(undefined);
+  const [history, setHistory] = useState<IHistory[]>();
   useEffect(() => {
     loadHistory();
   }, []);
@@ -295,10 +296,10 @@ export const useFetchEmployeeInfoHistory = (props: number) => {
 export const useImportHistory = () => {
   let serverResponse = '';
 
-  const importHistory = async (id: number, daysUsedHistory: IDaysUsedHistory) => {
+  const importHistory = async (id: number, historyArray: IHistory[]) => {
     const importUrl = BASE_USER_URL + id + '/import-history';
 
-    const result = await axios.post(importUrl, JSON.stringify(daysUsedHistory))
+    const result = await axios.post(importUrl, JSON.stringify(historyArray))
       .then(response => {
       })
       .catch(error => {

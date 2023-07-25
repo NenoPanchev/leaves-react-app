@@ -75,3 +75,11 @@ export const DEFAULT_PAGE = {
   first: true,
   last: true
 }
+
+export const DEFAULT_HISTORY = {
+  calendarYear: 0,
+  daysFromPreviousYear: 0,
+  contractDays: 0,
+  daysUsed: 0,
+  daysLeft: 0
+}
