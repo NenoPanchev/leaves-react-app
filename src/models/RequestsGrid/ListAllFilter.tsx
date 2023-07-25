@@ -426,6 +426,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                 >
                                     <MenuItem value={"startDate"}>{t('Requests.StartDate')}</MenuItem>
                                     <MenuItem value={"endDate"}>{t('Requests.EndDate')}</MenuItem>
+                                    <MenuItem value={"approved"}>{t('Requests.Approved')}</MenuItem>
                                 </Select>
                             </FormControl>
                             <FormControl sx={{ m: 1, minWidth: 100 }}>
