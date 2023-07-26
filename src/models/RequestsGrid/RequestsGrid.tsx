@@ -253,9 +253,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       getActions: ({ row, id }) => {
         const isApproved = row.approved === true;
         const isRejected = row.approved === false;
-        const isPending = row.approved === null;
-        console.log('Row: ', row);
-        
+        const isPending = row.approved === null;  
         // Create an array to store the action elements
         const actions: JSX.Element[] = [];
     

@@ -124,29 +124,31 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     function openRequest(newValue: dayjs.Dayjs | null) {
         let isCurrentElement = false;
         for (const element of leaveRequests) {
-          
-
             if (element.approved) {
                 if (newValue?.isBetween(element.startDate, element.endDate, null, '[]') || newValue?.isSame(element.endDate, 'day')) {
-                    setLeaveRequest(element);
-                    setOpen(true);
+
+                    if (element.requestType !== "HOME_OFFICE") {
+                        setLeaveRequest(element);
+                        setOpen(true);
+                    }
+
                     return false;
                 }
             } else if (element.approved === null || element.approved === false) {
                 if (newValue?.isSame(element.endDate, 'day') || newValue?.isBetween(element.startDate, element.endDate, null, '[]')) {
-                    setOpen(false);
-                    setOpenAlert(true);
-
+                    if (element.requestType !== "HOME_OFFICE") {
+                        setOpen(false);
+                        setOpenAlert(true);
+                    }
                     return false;
                 }
             }
-        if ((dayjs(element.startDate).isBetween(startDate, newValue, null, '[]') || dayjs(element.endDate).isBetween(startDate, newValue, null, '[]'))) {
-            isCurrentElement=true;
-        }
+            if ((dayjs(element.startDate).isBetween(startDate, newValue, null, '[]') || dayjs(element.endDate).isBetween(startDate, newValue, null, '[]'))) {
+                isCurrentElement = true;
+            }
         }
 
-        if(isCurrentElement)
-        {
+        if (isCurrentElement) {
             setStartDate(newValue);
             setEndDate(newValue);
         }
@@ -216,7 +218,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
             <AlertMemo message={alertMassage} open={openAlert} onClose={updateAlertOpen}></AlertMemo>
             <ChildMemo open={openForm} onClose={updateFormOpen} leaveRequest={leaveRequest} />
 
-            <Grid item  minWidth="36vh">
+            <Grid item minWidth="36vh">
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                     <DateCalendar

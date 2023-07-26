@@ -28,30 +28,28 @@ type ApproveRequestProps = {
 const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const [leaveRequestDto, setLeaveRequestDto] = React.useState<IRequestDataApprove>({
-
+        requestType: props.request.requestType,
         startDate: props.request.startDate,
         endDate: props.request.endDate,
         approvedStartDate: props.request.startDate,
         approvedEndDate: props.request.endDate,
 
     })
-    const maxDate=dayjs(props.request.endDate)
-    const minDate=dayjs(props.request.startDate)
+    const maxDate = dayjs(props.request.endDate)
+    const minDate = dayjs(props.request.startDate)
     const [alertProps, setAlertProps] = useState<IAlertProps>(
         {
-          hasError: false,
-          message: "",
-          type: "",
-          open: false
+            hasError: false,
+            message: "",
+            type: "",
+            open: false
         }
-      );
+    );
     const [t, i18n] = useTranslation();
     const handleClickOpen = () => {
-        if(props.request.approved==null)
-        {
+        if (props.request.approved == null) {
             setOpen(true);
-        }else
-        {
+        } else {
             props.onClick({ ...alertProps, message: "", hasError: true, open: true, type: "Approve" })
         }
 
@@ -64,9 +62,11 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
     const handleApprove = async () => {
         await RequestService.approve(props.request.id, leaveRequestDto)
             .then((_response: any) => {
-                props.apiRef.updateRows([{ id: props.rowId, approved: true
-                    , approvedStartDate:leaveRequestDto.approvedStartDate?.toString()
-                    ,approvedEndDate:leaveRequestDto.approvedEndDate?.toString() }]);
+                props.apiRef.updateRows([{
+                    id: props.rowId, approved: true
+                    , approvedStartDate: leaveRequestDto.approvedStartDate?.toString()
+                    , approvedEndDate: leaveRequestDto.approvedEndDate?.toString()
+                }]);
             })
             .catch((e: AxiosError<any, any>) => {
                 if (e.response) {
@@ -91,31 +91,30 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
             <Dialog
                 open={open}
                 onClose={handleClose}
-                fullWidth
                 maxWidth="md"
             >
 
                 <DialogContent >
 
-                    <Grid container justifySelf="center"  width="78vh" ml="5%" mr="-2%">
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')! } >
+                    <Grid container justifySelf="center" direction="row" width="70%" ml="15%" mr="-100%" marginBottom="-1.5%">
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
                             <Grid item direction="row" marginBottom="1.5vh">
-                                <DatePicker label="Start date" defaultValue={dayjs(props.request.startDate)} disabled/>
+                                <DatePicker sx={{ marginRight: "3px" }} label="Start date" defaultValue={dayjs(props.request.startDate)} disabled />
                                 <DatePicker label="End date" defaultValue={dayjs(props.request.endDate)} disabled />
-                                
                             </Grid>
 
                             <Grid item direction="row">
                                 <DatePicker label="Approved start date"
+                                    sx={{ marginRight: "3px" }}
                                     value={dayjs(leaveRequestDto.approvedStartDate)}
                                     minDate={minDate}
                                     maxDate={dayjs(leaveRequestDto.approvedEndDate)}
-                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedStartDate: newValue?.format("YYYY-MM-DD")})} />
+                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedStartDate: newValue?.format("YYYY-MM-DD") })} />
                                 <DatePicker label="Approved end date"
                                     value={dayjs(leaveRequestDto.approvedEndDate)}
                                     minDate={minDate}
                                     maxDate={maxDate}
-                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedEndDate: newValue?.format("YYYY-MM-DD")})} />
+                                    onChange={(newValue) => setLeaveRequestDto({ ...leaveRequestDto, approvedEndDate: newValue?.format("YYYY-MM-DD") })} />
                             </Grid>
                         </LocalizationProvider>
                     </Grid>
@@ -126,8 +125,8 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
 
                 <DialogActions >
                     <Grid container justifyContent="flex-end">
-                    <Button onClick={handleApprove} >{t(`Approve`)!}</Button>
-                    <Button onClick={handleClose} >{t(`Close`)!}</Button>
+                        <Button onClick={handleApprove} >{t(`Approve`)!}</Button>
+                        <Button onClick={handleClose} >{t(`Close`)!}</Button>
                     </Grid>
                 </DialogActions>
 
