@@ -21,11 +21,13 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
     let sError = false;
     const { user } = React.useContext(AuthContext);
     const [historyArray, setHistoryArray] = React.useState<IHistory[]>([]);
+    const [initialHistoryArray, setInitialHistoryArray] = React.useState<IHistory[]>([]);
     const history = useFetchEmployeeInfoHistory(props.id);
     const importHistory = useImportHistory();
     useEffect(() => {
         if (history) {
             setHistoryArray(history);
+            setInitialHistoryArray(history)
         }
     }, [history]);
     let serverResponse = '';
@@ -38,15 +40,30 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
         setOpen(false);
     };
 
-    const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const handleReset = () => {
+        setHistoryArray(initialHistoryArray);
+    };
+
+    const handleFieldChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number
+      ) => {
         const { name, value } = event.target;
         setHistoryArray((prevHistoryArray) => {
-            const updatedHistoryArray = [...prevHistoryArray];
-            const updatedHistory = { ...updatedHistoryArray[index], [name]: value };
-            updatedHistoryArray[index] = updatedHistory;
-            return updatedHistoryArray;
+          const updatedHistoryArray = [...prevHistoryArray];
+          const updatedHistory = {
+            ...updatedHistoryArray[index],
+            [name]: parseInt(value),
+          };
+          updatedHistory.daysLeft =
+            updatedHistory.daysFromPreviousYear +
+            updatedHistory.contractDays -
+            updatedHistory.daysUsed;
+          updatedHistoryArray[index] = updatedHistory;
+          return updatedHistoryArray;
         });
-    };
+      };
+    
 
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -67,9 +84,15 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
     }
 
     function validate(): boolean {
+        const hasNegativeValue = historyArray.some(
+            (history) =>
+              history.daysFromPreviousYear < 0 ||
+              history.contractDays < 0 ||
+              history.daysUsed < 0
+          );
         sError = serverResponse !== '';
         setServerError(serverResponse !== '');
-        return sError;
+        return sError || hasNegativeValue;
     }
 
     if (!user?.hasAuthority('WRITE')) {
@@ -86,20 +109,20 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                maxWidth='md'
+                maxWidth='xl'
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">
                     {t('Import days used history of employees before using this app')}
                 </DialogTitle>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                     <DialogContent>
                         {serverError &&
                             <Typography component="h2" variant="subtitle2" color="red" align='center'>{serverErrorMessage}</Typography>
                         }
                         {historyArray.map((history, index) => (
                             <Grid container direction="row" key={index}>
-                                <Typography component="h2" variant="subtitle2" color="red" align='center' margin={'auto'}>{history.calendarYear}</Typography>
+                                <Typography component="h2" variant="subtitle2" color="red" align='center' marginTop={'auto'} marginBottom={'auto'} marginRight={'5px'}>{history.calendarYear}</Typography>
                                 <TextField
                                     margin="dense"
                                     required
@@ -108,6 +131,8 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
                                     value={history.daysFromPreviousYear}
                                     type="number"
                                     onChange={(event) => handleFieldChange(event, index)}
+                                    error={history.daysFromPreviousYear < 0}
+                                    helperText={history.daysFromPreviousYear < 0 ? 'Negative numbers are not allowed': null}
                                 />
 
                                 <TextField
@@ -118,6 +143,8 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
                                     value={history.contractDays}
                                     type="number"
                                     onChange={(event) => handleFieldChange(event, index)}
+                                    error={history.contractDays < 0}
+                                    helperText={history.contractDays < 0 ? 'Negative numbers are not allowed': null}
                                 />
                                 <TextField
                                     margin="dense"
@@ -127,12 +154,29 @@ export default function ImportHistoryButton(props: IDeleteButtonProps) {
                                     value={history.daysUsed}
                                     type="number"
                                     onChange={(event) => handleFieldChange(event, index)}
+                                    error={history.daysUsed < 0}
+                                    helperText={history.daysUsed < 0 ? 'Negative numbers are not allowed': null}
+                                />
+                                <TextField
+                                    margin="dense"
+                                    required
+                                    disabled
+                                    label={t('Days left')}
+                                    name='daysUsed'
+                                    value={history.daysLeft}
+                                    type="number"
+                                    onChange={(event) => handleFieldChange(event, index)}
+                                    error={history.daysLeft < 0}
+                                    helperText={history.daysLeft < 0 ? 'Negative numbers are not allowed': null}
                                 />
                             </Grid>
 
                         ))}
                     </DialogContent>
                     <DialogActions>
+                    <Button autoFocus onClick={handleReset}>
+                            {t('Reset')}
+                        </Button>
                         <Button autoFocus onClick={handleClose}>
                             {t('Close')}
                         </Button>

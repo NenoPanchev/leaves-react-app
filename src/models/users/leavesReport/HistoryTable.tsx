@@ -5,11 +5,11 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 
 import { useTranslation } from 'react-i18next';
-import { ILeavesAnnualReport } from '../../interfaces/user/LeavesReport/ILeavesAnnualReport';
-import './AnnualReportTable.css'
+import { IHistory } from '../../interfaces/user/IHistory';
+import './HistoryTable.css'
 
 
-export default function ContractTable(props: ILeavesAnnualReport) {
+export default function HistoryTable(props: IHistory) {
     const { t } = useTranslation();
     return (
         <React.Fragment>
@@ -31,7 +31,7 @@ export default function ContractTable(props: ILeavesAnnualReport) {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell align='center' component="th" scope="row">
-                                {props.fromPreviousYear}</TableCell>
+                                {props.daysFromPreviousYear}</TableCell>
                             <TableCell >+</TableCell>
                             <TableCell align='center'>{Math.round(props.contractDays)}</TableCell>
                             <TableCell align='center'>-</TableCell>

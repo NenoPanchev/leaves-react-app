@@ -9,8 +9,8 @@ import { IUser } from '../models/interfaces/user/IUser';
 import { IUserDetails } from '../models/interfaces/user/IUserDetails';
 import { IUserPage } from '../models/interfaces/user/IUserPage';
 import { IUserFilter } from '../models/interfaces/user/IUserFilter';
-import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
-import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
+import { IHistoryFilter } from '../models/interfaces/user/LeavesReport/IHistoryFilter';
+import { IHistoryPage } from '../models/interfaces/user/LeavesReport/IHistoryPage';
 import { useNavigate } from 'react-router';
 import { IDaysUsedHistory } from '../models/interfaces/user/IDaysUsedHistory';
 import { IHistory } from '../models/interfaces/user/IHistory';
@@ -264,8 +264,8 @@ export const useChangePassword = () => {
   return editPassword;
 }
 
-export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualReportFilter) => {
-  const [report, setReport] = useState<ILeavesReportPage>(DEFAULT_PAGE);
+export const useFetchLeavesAnnualReport = (props: number, filter: IHistoryFilter) => {
+  const [report, setReport] = useState<IHistoryPage>(DEFAULT_PAGE);
   useEffect(() => {
     loadReport();
   }, [filter]);
