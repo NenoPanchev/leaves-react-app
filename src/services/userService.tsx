@@ -9,10 +9,10 @@ import { IUser } from '../models/interfaces/user/IUser';
 import { IUserDetails } from '../models/interfaces/user/IUserDetails';
 import { IUserPage } from '../models/interfaces/user/IUserPage';
 import { IUserFilter } from '../models/interfaces/user/IUserFilter';
-import { ILeavesAnnualReportFilter } from '../models/interfaces/user/LeavesReport/ILeavesAnnualReportFilter';
-import { ILeavesReportPage } from '../models/interfaces/user/LeavesReport/ILeavesReportPage';
+import { IHistoryFilter } from '../models/interfaces/user/LeavesReport/IHistoryFilter';
+import { IHistoryPage } from '../models/interfaces/user/LeavesReport/IHistoryPage';
 import { useNavigate } from 'react-router';
-import { IDaysUsedHistory } from '../models/interfaces/user/IDaysUsedHistory';
+import { IHistory } from '../models/interfaces/user/IHistory';
 
 
 export const useFetchAll = (refresh: number) => {
@@ -24,7 +24,7 @@ export const useFetchAll = (refresh: number) => {
   }, [refresh]);
 
   const loadUsers = async () => {
-    const result = await axios.get(BASE_USER_URL)
+    await axios.get(BASE_USER_URL)
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
 
@@ -43,7 +43,7 @@ export const useFetchOne = (props: number) => {
 
 
   const loadUser = async () => {
-    const result = await axios.get(BASE_USER_URL + props)
+    await axios.get(BASE_USER_URL + props)
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
   }
@@ -60,7 +60,7 @@ export const useFetchOneEmail = (props: string) => {
 
 
   const loadUser = async () => {
-    const result = await axios.post(BASE_USER_URL + "email", props)
+    await axios.post(BASE_USER_URL + "email", props)
       .then(response => setUser(response.data))
       .catch(error => console.log(error))
   }
@@ -96,12 +96,12 @@ export const validateUserPasswordChangeTokenById = async (id: number, token: str
 }
 
 export const updatePersonalInfo = (data: any) => {
-  return axios.put<any>(`http://localhost:8080/users/personal-info`,data)
+  return axios.put<any>(BASE_USER_URL + `personal-info`,data)
 };
 export const useCreate = () => {
   let serverResponse = '';
   const addUser = async (user: FormData) => {
-    const result = await axios.post(BASE_USER_URL, formToJSON(user))
+    await axios.post(BASE_USER_URL, formToJSON(user))
       .then(response => {
       })
       .catch(error => {
@@ -126,7 +126,7 @@ export const useFetchPage = (refreshCounter: number, filter: IUserFilter) => {
   const fetchPage = () => {
 
     const loadPage = async () => {
-      const result = await axios.post(BASE_USER_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
+      await axios.post(BASE_USER_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
         .then(response => {
 
           setPage(response.data)
@@ -151,7 +151,7 @@ export const useEdit = () => {
   const editUser = async (id: number, role: FormData) => {
     const updateUrl = BASE_USER_URL + id;
 
-    const result = await axios.put(updateUrl, formToJSON(role))
+    await axios.put(updateUrl, formToJSON(role))
       .then(response => {
       })
       .catch(error => {
@@ -174,7 +174,7 @@ export const useFetchAllEmails = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_USER_URL + 'emails')
+    await axios.get(BASE_USER_URL + 'emails')
       .then(response => setUserEmails(response.data))
       .catch(error => console.log(error))
   }
@@ -192,7 +192,7 @@ export const useFetchEmailsOfAvailableEmployees = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_USER_URL + 'available')
+    await axios.get(BASE_USER_URL + 'available')
       .then(response => setUserEmails(response.data))
       .catch(error => console.log(error))
   }
@@ -221,7 +221,7 @@ export function appendEmployeeInfoToFormData(formData: FormData, startDate: Dayj
   let dateString = startDate!.format('DD.MM.YYYY');
   employeeInfo.setTypeName(type!);
   formData.append('employeeInfo[typeName]', type!)
-  formData.append('employeeInfo[contractStartDate]', dateString!)
+  formData.append('employeeInfo[contractStartDate]', dateString)
   console.log(formData);
 }
 
@@ -233,7 +233,7 @@ export const useFetchAllTypeNames = (refresh: number) => {
   }, [refresh]);
 
   const loadTypeNames = async () => {
-    const result = await axios.get(BASE_URL + '/api/types/names')
+    await axios.get(BASE_URL + '/api/types/names')
       .then(response => setTypeNames(response.data))
       .catch(error => console.log(error))
   }
@@ -249,7 +249,7 @@ export const useChangePassword = () => {
 
     const passwordChangeUrl = BASE_USER_URL + 'change-password/' + id;
 
-    const result = await axios.put(passwordChangeUrl, formToJSON(passwordDto))
+    await axios.put(passwordChangeUrl, formToJSON(passwordDto))
       .then(response => { })
       .catch((e: AxiosError<any, any>) => {
         if (e.response) {
@@ -263,14 +263,14 @@ export const useChangePassword = () => {
   return editPassword;
 }
 
-export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualReportFilter) => {
-  const [report, setReport] = useState<ILeavesReportPage>(DEFAULT_PAGE);
+export const useFetchLeavesAnnualReport = (props: number, filter: IHistoryFilter) => {
+  const [report, setReport] = useState<IHistoryPage>(DEFAULT_PAGE);
   useEffect(() => {
     loadReport();
   }, [filter]);
 
   const loadReport = async () => {
-    const result = await axios.post(BASE_USER_URL + 'leaves-report/' + props, filter)
+    await axios.post(BASE_USER_URL + 'leaves-report/' + props, filter)
       .then(response => setReport(response.data))
       .catch(error => console.log(error))
   }
@@ -278,13 +278,13 @@ export const useFetchLeavesAnnualReport = (props: number, filter: ILeavesAnnualR
 }
 
 export const useFetchEmployeeInfoHistory = (props: number) => {
-  const [history, setHistory] = useState<IDaysUsedHistory | undefined>(undefined);
+  const [history, setHistory] = useState<IHistory[]>();
   useEffect(() => {
     loadHistory();
   }, []);
 
   const loadHistory = async () => {
-    const result = await axios.get(BASE_USER_URL + props + '/get-history')
+    await axios.get(BASE_USER_URL + props + '/get-history')
       .then(response => setHistory(response.data))
       .catch(error => console.log(error))
   }
@@ -295,10 +295,10 @@ export const useFetchEmployeeInfoHistory = (props: number) => {
 export const useImportHistory = () => {
   let serverResponse = '';
 
-  const importHistory = async (id: number, daysUsedHistory: IDaysUsedHistory) => {
+  const importHistory = async (id: number, historyArray: IHistory[]) => {
     const importUrl = BASE_USER_URL + id + '/import-history';
 
-    const result = await axios.post(importUrl, JSON.stringify(daysUsedHistory))
+    await axios.post(importUrl, JSON.stringify(historyArray))
       .then(response => {
       })
       .catch(error => {

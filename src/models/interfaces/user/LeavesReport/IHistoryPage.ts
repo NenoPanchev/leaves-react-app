@@ -1,7 +1,7 @@
-import { ILeavesAnnualReport } from "./ILeavesAnnualReport";
+import { IHistory } from "../IHistory";
 
-export interface ILeavesReportPage {
-    content: ILeavesAnnualReport[],
+export interface IHistoryPage {
+    content: IHistory[],
     totalElements: number,
     totalPages: number,
     numberOfElements: number,

@@ -1,8 +1,7 @@
-import { DataGrid, GridActionsCellItem, GridColDef, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import * as React from 'react';
 import DeleteButton from '../../components/common/DeleteButton';
 import ViewButton from '../../components/common/ViewButton';
-import ArticleIcon from '@mui/icons-material/Article';
 import { getAllDepartmentNamesNoRefresh } from '../../services/departmentService';
 import { getAllRoleNamesNoRefresh } from '../../services/roleService';
 import * as userService from '../../services/userService';
@@ -10,7 +9,7 @@ import AddUserButton from './AddUser';
 import EditUserButton from './EditUser';
 import UserSearchFilter from './UserSearchFilter';
 
-import { Grid, Tooltip } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
@@ -66,15 +65,6 @@ export default function Users() {
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>
   }
-
-  const renderContractsButton = (id: number) => {
-    return <GridActionsCellItem
-      icon={<Tooltip title={t('seeContracts')}><ArticleIcon /></Tooltip>}
-      label="View"
-      onClick={(e) => redirectToContracts(id)}
-    />;
-  }
-
 
   const renderEditButton = (user: IUserEdit, rowId: number) => {
     return <EditUserButton user={user} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
@@ -162,7 +152,6 @@ export default function Users() {
       flex: 1,
       getActions: (params) => [
         renderViewButton(params.row.id),
-        renderContractsButton(params.row.id),
         renderEditButton(params.row, params.row.id),
         renderImportHistoryButton(params.row.id), 
         renderDeleteButton(params.row.id, refreshCounter, setRefreshCounter)

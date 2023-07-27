@@ -166,6 +166,7 @@
     "Days": "Дни",
     "Contract days": "Дни по договор",
     "Days used": "Използвани дни",
+    "Days left": "Оставащи дни",
     "Leaves report": "Отчет на отпуски",
     "From previous year": "Oт предходната година",
     "Carryover days": "Дни за прехвърляне",
@@ -182,7 +183,7 @@
     "DocumentFields": "Полета за документa:",
     "RequestInfo":"Информация за заявлението:",
     "User info:": "Информация за потребителя:",
-    "Import history": "Импортиране на история",
+    "Import history": "Входиране на история",
     "Import days used history of employees before using this app": "Входиране история на използваните дни от служители преди използване на приложението",
     "Leave": "Отпуск",
     "Home office": "Работа от вкъщи"
