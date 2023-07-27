@@ -32,7 +32,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     offset: 0,
     limit: 10,
     operation: "EQUAL",
-    sort: "startDate",
+    sort: "approved",
     deleted: "false"
   });
   const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);

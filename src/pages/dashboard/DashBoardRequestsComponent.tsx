@@ -44,8 +44,8 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
         props.onShow()
 
         if (requestsComponentHeight === "auto" && requestsComponentWidth === "auto") {
-            setRequestsComponentHeight("85vh")
-            setRequestsComponentWidth("173vh")
+            setRequestsComponentHeight("100%")
+            setRequestsComponentWidth("100%")
         }
         else {
             setRequestsComponentHeight("auto")
@@ -79,7 +79,7 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     );
 
     return (
-        <Grid container justifyContent="center" height={requestsComponentHeight} width={requestsComponentWidth} >
+        <Grid container justifyContent="center"minWidth="620px" height={requestsComponentHeight} width={requestsComponentWidth} >
             <Paper sx={{ height: "fit-content" }} >
                 <Grid item>
                     <CalendarBase ref={calendarRef} onDateChange={changeDate} onShow={handleZoomClick} onShowAddRequest={showAddRequestFc} />
