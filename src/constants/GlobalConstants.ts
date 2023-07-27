@@ -1,6 +1,6 @@
 export const PERMISSIONS = ['READ', 'WRITE', 'DELETE'];
 
-export const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080';
+export const BASE_URL = process.env.REACT_APP_BASE_URL ?? 'http://localhost:8080';
 export const BASE_ROLE_URL = BASE_URL + '/roles/';
 export const BASE_DEPARTMENT_URL = BASE_URL + '/departments/';
 export const BASE_CONTRACT_URL = BASE_URL + '/contracts/';
