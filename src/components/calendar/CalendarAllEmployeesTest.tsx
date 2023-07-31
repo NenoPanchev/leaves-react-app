@@ -10,11 +10,11 @@ import RequestService from '../../services/RequestService';
 import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
-import { request } from 'http';
 import Tooltip from '@mui/material/Tooltip';
 import CustomPickerDayRange, { disableWeekends } from './CalendarStyleComponentAllEmployees';
 import HolidayService from '../../services/HolidayService';
 import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -24,17 +24,8 @@ function fetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
         const timeout = setTimeout(async () => {
             const daysInMonth = date.daysInMonth();
             var leaveRequests: Array<IRequestDataGet> = [];
-            // RequestService.getAllApproved()
-            //     .then((response: any) => {
-            //         leaveRequests = response.data;
-            //     })
-            //     .catch((e: Error) => {
-            //         console.log(e);
-            //     });
-
-            await RequestService.getAllByUserId(1)
+            await RequestService.getAllApprovedByMonth(date)
                 .then((response: any) => {
-
                     leaveRequests = response.data;
                 })
                 .catch((e: Error) => {
@@ -46,23 +37,18 @@ function fetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
                 daysToHighlight.set(i, new Array<IRequestDataGet>());
 
                 leaveRequests.forEach(request => {
-                    // dayjs('2022-04-17')
                     const month: number = date.month() + 1;
                     const day: Dayjs = dayjs(date.year().toString() + "-" + month + "-" + i.toString());
-                    if(request.approved)
-                    {
+                    if (request.approved) {
                         if (day.isBetween(request.approvedStartDate, request.approvedEndDate, null, '[]')) {
                             if (!daysToHighlight.get(i)?.includes(request)) {
                                 daysToHighlight.get(i)?.push(request)
                             }
                         }
-                    }  
+                    }
                 });
 
             }
-
-            //   const daysToHighlight = [1, 2, 3].map(() => getRandomNumber(1, daysInMonth));
-
             resolve({ daysToHighlight });
         }, 500);
 
@@ -76,11 +62,11 @@ function fetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
 
 const initialValue = dayjs();
 
-function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<number, Array<IRequestDataGet>> } & { holidays?: Array<string> } ) {
+function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<number, Array<IRequestDataGet>> } & { holidays?: Array<string> }) {
 
     const { highlightedDays = new Map(), day, outsideCurrentMonth, holidays, ...other } = props;
     if (holidays == null) {
-        return <PickersDay   outsideCurrentMonth={outsideCurrentMonth} day={day} {...other} />;
+        return <PickersDay outsideCurrentMonth={outsideCurrentMonth} day={day} {...other} />;
     }
 
     const isSelected =
@@ -101,75 +87,69 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
     const highlightedDataForDate = highlightedDays.get(props.day.date());
     const renderTooltipContent = () => {
         if (highlightedDataForDate) {
-          return (
-            <div>
-              {highlightedDataForDate.map((element :IRequestDataGet, index:number) => (
-                <div key={index}>
-                  {/* Customize the content to display relevant information */}
-                  {element.createdBy} - {element.requestType==="HOME_OFFICE"?"Home office":"Leave"} from {element.approvedStartDate} to {element.approvedEndDate}
+            return (
+                <div>
+                    {highlightedDataForDate.map((element: IRequestDataGet, index: number) => (
+                        <div key={index}>
+                            {/* Customize the content to display relevant information */}
+                            {element.createdBy} - {element.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave')} {element.approvedStartDate === element.approvedEndDate ? t('on ') + element.approvedStartDate : t('from ') + element.approvedStartDate + t(' to ') + element.approvedEndDate}
+                        </div>
+                    ))}
                 </div>
-              ))}
-            </div>
-          );
+            );
         }
         return null;
-      };
+    };
 
     const isHoliday: Array<boolean> = [];
     holidays.forEach(holiday => {
         isHoliday.push(day.isSame(holiday, 'day'));
     })
-      
-      if(isSelected){
+
+    if (isSelected) {
         return (
             <Tooltip title={renderTooltipContent()}>
-          <Badge
-            key={props.day.toString()}
-            overlap="circular"
-            badgeContent={setBadge(isSelected, containsHome, containsLeave)}
-          >
-        <CustomPickerDayRange
-            {...other}
-            outsideCurrentMonth={outsideCurrentMonth}
-            day={day}
-            disableMargin
-            isHoliday={isHoliday}
-        />
-          </Badge>
-        </Tooltip>
+                <Badge
+                    key={props.day.toString()}
+                    overlap="circular"
+                    badgeContent={setBadge(isSelected, containsHome, containsLeave)}
+                >
+                    <CustomPickerDayRange
+                        {...other}
+                        outsideCurrentMonth={outsideCurrentMonth}
+                        day={day}
+                        disableMargin
+                        isHoliday={isHoliday}
+                    />
+                </Badge>
+            </Tooltip>
         );
-      }
-      else
-      {
+    }
+    else {
         return (
             <CustomPickerDayRange
-            {...other}
-            outsideCurrentMonth={outsideCurrentMonth}
-            day={day}
-            disableMargin
-            isHoliday={isHoliday}
-        />
+                {...other}
+                outsideCurrentMonth={outsideCurrentMonth}
+                day={day}
+                disableMargin
+                isHoliday={isHoliday}
+            />
         )
-      }
+    }
 
-   
+
 }
-function setBadge(isSelected: boolean,containsHome: boolean,containsLeave: boolean) {
-    if(isSelected)
-    {
-        if(containsHome&&containsLeave)
-        {
+function setBadge(isSelected: boolean, containsHome: boolean, containsLeave: boolean) {
+    if (isSelected) {
+        if (containsHome && containsLeave) {
             return '🏝️🏡'
-        }else if(containsHome)
-        {
+        } else if (containsHome) {
             return '🏡'
-        }else
-        {
+        } else {
             return '🏝️'
         }
 
-    }else
-    {
+    } else {
         return undefined
     }
 }
@@ -178,7 +158,7 @@ const DateCalendarServerRequest = (): JSX.Element => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [highlightedDays, setHighlightedDays] = React.useState<Map<number, Array<IRequestDataGet>>>(new Map());
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const fetchHighlightedDays = (date: Dayjs) => {
         const controller = new AbortController();
         fetch(date, {
@@ -214,7 +194,15 @@ const DateCalendarServerRequest = (): JSX.Element => {
 
         setIsLoading(true);
         setHighlightedDays(new Map());
-        fetchHighlightedDays(date);
+        // Get the first day of the selected month
+        const firstDayOfMonth = date.startOf('month').tz('Europe/Sofia').add(5, 'hours');
+        console.log('First day of month', firstDayOfMonth);
+        
+        // Set the date to the first day of the month
+        // setInitialValue(firstDayOfMonth);
+
+        // Fetch the highlighted days for the selected month
+        fetchHighlightedDays(firstDayOfMonth);
     };
     const retriveHolidays = async () => {
         const controller = new AbortController();
