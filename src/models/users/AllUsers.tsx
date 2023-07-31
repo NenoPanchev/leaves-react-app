@@ -13,19 +13,15 @@ import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CustomGridToolbar from '../../components/common/CustomGridToolbar';
 import { DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
-import AuthContext from '../../contexts/AuthContext';
 import TypeService from '../../services/TypeService';
 import { IUserEdit } from '../interfaces/user/IUserEdit';
 import { IUserFilter } from '../interfaces/user/IUserFilter';
-import { useNavigate } from 'react-router-dom';
 import ImportHistoryButton from "./ImportHistory";
 import '../ViewAll.css';
 
 export default function Users() {
   const [refreshCounter, setRefreshCounter] = React.useState(0);
   const [userFilter, setUserFilter] = React.useState<IUserFilter>(DEFAULT_USER_FILTER);
-  const navigate = useNavigate();
-  const { user } = React.useContext(AuthContext);
 
   const [departmentNames, setDepartmentNames] = React.useState<string[]>([]);
   const [roleNames, setRoleNames] = React.useState<string[]>([]);
@@ -54,13 +50,8 @@ export default function Users() {
         setRoleNames(response.data)
       })
       .catch(error => console.log(error))
-    // const page = userService.useFetchPage(refreshCounter, userFilter);
 
   }, [setTypeNames,setRoleNames,setDepartmentNames]);
-
-  const redirectToContracts = (id: number) => {
-    navigate(`/contracts/employee/${id}`);
-  }
 
   const renderViewButton = (id: number) => {
     return <ViewButton id={id}></ViewButton>

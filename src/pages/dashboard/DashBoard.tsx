@@ -8,6 +8,7 @@ import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 import UserPersonalInfo from '../../models/users/UserPersonalInfo';
 import DateCalendarServerRequest from '../../components/calendar/CalendarAllEmployeesTest';
+import AllEmployeesHistory from './HistoryGrid';
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
 // const UserPersonalInfoMemo = React.memo(UserPersonalInfo);
@@ -17,47 +18,50 @@ export default function DashBoard() {
     const email = user?.getEmail();
 
     const { t, i18n } = useTranslation();
-    
+
     const [showDetails, setShowDetails] = useState(true)
 
 
     const updateDetails = useCallback(
-        (): void =>  setShowDetails(!showDetails),
+        (): void => setShowDetails(!showDetails),
         [showDetails]
     );
- 
+
     return (
         <React.Fragment>
             {user !== null &&
+                <React.Fragment>
+                    <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', width: '100%' }}>
 
-                <Grid container direction={'row'} justifyContent="center" sx={{ backgroundColor: 'white', textAlign: 'center', height: '100%', width: '100%' }}>
+                        {/* User Details */}
 
-                    {/* User Details */}
-
-                    {/* {showDetails && */}
-                        <Grid item mt="2%" sx={{display: !showDetails ? 'none' : undefined}}>
+                        {/* {showDetails && */}
+                        <Grid item mt="2%" sx={{ display: !showDetails ? 'none' : undefined }}>
                             <Paper>
                                 <Typography>{t('My info:')}</Typography>
                                 <Grid container direction="row" justifyContent="center">
-                                <UserPersonalInfo/>
-                                <LeavesReportDialogMemo id={user.getId()}/>
+                                    <UserPersonalInfo />
+                                    <LeavesReportDialogMemo id={user.getId()} />
                                 </Grid>
                                 <UserBaseDetailsMemo email={email!} />
                             </Paper>
                         </Grid>
-                    {/* } */}
+                        {/* } */}
 
-                    {/* Calendar */}
-                    <Grid item mt="2%" ml="5%" >
-                        <DashBoardRequestsComponent onShow={updateDetails} />
+                        {/* Calendar */}
+                        <Grid item mt="2%" ml="5%" >
+                            <DashBoardRequestsComponent onShow={updateDetails} />
+                        </Grid>
+
+                        <Grid item mt="2%" ml="5%" >
+                            <DateCalendarServerRequest />
+
+                        </Grid>
                     </Grid>
-
-                    <Grid item mt="2%" ml="5%" >
-                       <DateCalendarServerRequest/>
-
+                    <Grid container direction={'row'}>
+                        <AllEmployeesHistory/>
                     </Grid>
-                </Grid>
-
+                </React.Fragment>
             }
 
         </React.Fragment>

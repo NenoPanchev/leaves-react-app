@@ -1,0 +1,15 @@
+.bold-border {
+    border-left: 2px solid black;
+}
+
+.border {
+    border-left: 1px solid black;
+}
+
+.gray-background {
+    background-color: #d9d9d9;
+}
+
+table .border-bottom {
+    border-bottom: 1px solid black;
+}
