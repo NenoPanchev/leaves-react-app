@@ -6,5 +6,5 @@ export interface ILeavesAnnualReport {
     fromPreviousYear: number,
     daysUsed: number,
     contractDays: number,
-    carryoverDays: number
+    daysLeft: number
 }
