@@ -78,11 +78,7 @@ export default function Users() {
   const renderDeleteButton = (id: number, roles: string[], refreshCurrentState: number, refresh: (value: number) => void) => {
     if (roles.includes('SUPER_ADMIN')) {
       return <></>;
-    }
-    console.log(roles);
-    
-    console.log('Rendering delete button...');
-    
+    }    
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
       refresh={setRefreshCounter}></DeleteButton>
   }

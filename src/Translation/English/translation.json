@@ -188,5 +188,8 @@
     "Import history": "Import history",
     "Import days used history of employees before using this app": "Import days used history of employees before using this app",
     "Leave": "Leave",
-    "Home office": "Home office"
+    "Home office": "Home office",
+    "on ": "on ",
+    "from ": "from ",
+    " to ": " to "
 }

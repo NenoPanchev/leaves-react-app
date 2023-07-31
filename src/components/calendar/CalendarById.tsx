@@ -30,7 +30,7 @@ type CalendarByIdProps = {
 const CalendarById = (props: CalendarByIdProps): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const [calendarWidth, setCalendarWidth] = React.useState("auto");
     const [calendarHeight, setCalendarHeight] = React.useState("auto");

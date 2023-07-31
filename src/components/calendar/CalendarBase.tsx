@@ -39,7 +39,7 @@ const alertMassage = "You can not download Pdf of a request that is not approved
 const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRef>): JSX.Element => {
     const [leaveRequests, setLeaveRequests] = React.useState<Array<IRequestDataGet>>([]);
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const [openAlert, setOpenAlert] = React.useState<boolean>(false);
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const [endDate, setEndDate] = React.useState<Dayjs | null>(dayjs());

@@ -1,12 +1,12 @@
 
-import { BASE_URL, WITH_AUTH_HEADER } from "../constants/GlobalConstants";
+import { BASE_URL } from "../constants/GlobalConstants";
 import ILeaveRequestPage from "../models/interfaces/request/ILeaveRequestPage";
 import IRequestDataGet from "../models/interfaces/request/IRequestDataGet";
 import IRequestDataPost from "../models/interfaces/request/IRequestDataPost";
-import http from "../services/http-common";
 import { axiosInstance as axios} from '../config/AxiosConfig';
 import IRequestDataApprove from "../models/interfaces/request/IRequestDataAprove";
 import IRequestDataPostString from "../models/interfaces/request/IRequestDataPostString";
+import { Dayjs } from "dayjs";
 
 
 const getAll = () => {
@@ -35,8 +35,8 @@ const create = (data: IRequestDataPost) => {
 const getAllByUserId = (id: any) => {
   return axios.get<Array<IRequestDataGet>>(BASE_URL + `/api/requests/employee/${id}`)
 };
-const getAllApproved = () => {
-  return axios.get<Array<IRequestDataGet>>(BASE_URL + `/api/requests/approved`)
+const getAllApprovedByMonth = (date: Dayjs) => {
+  return axios.post<Array<IRequestDataGet>>(BASE_URL + `/api/requests/approved`, date)
 };
 const createRequestString = (data: IRequestDataPostString) => {
   return axios.post<ILeaveRequestPage>(BASE_URL + "/api/requests",data)
@@ -87,7 +87,7 @@ const TutorialService = {
   getAllByUserId,
   getPdf,
   createRequestString,
-  getAllApproved
+  getAllApprovedByMonth
 };
 
 export default TutorialService;

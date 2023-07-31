@@ -13,7 +13,7 @@ import { getUserById } from '../../services/userService';
 const LeavesReportDialogMemo = React.memo(LeavesReportDialog);
 export default function DashBoardByEmployee() {
     const [userByiId, setUser] = React.useState<IUserDetails>({} as IUserDetails)
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     let { id } = useParams();
 
     const [showDetails, setShowDetails] = useState(true)
@@ -51,7 +51,7 @@ export default function DashBoardByEmployee() {
 
                         <LeavesReportDialogMemo id={userByiId.id}/>
 
-                        <UserBaseDetailsMemo email={userByiId!.email} />
+                        <UserBaseDetailsMemo email={userByiId.email} />
 
 
                     </Paper>
@@ -62,6 +62,7 @@ export default function DashBoardByEmployee() {
                 <Grid item mt="2%" ml="5%" justifySelf="end">
                     <Paper sx={{ height: "fit-content", width: "fit-content" }} >
                         <CalendarById employeeId={parseInt(id!)} onShow={updateDetails} />
+                        
                     </Paper>
                 </Grid>
             </Grid>

@@ -186,5 +186,8 @@
     "Import history": "Входиране на история",
     "Import days used history of employees before using this app": "Входиране история на използваните дни от служители преди използване на приложението",
     "Leave": "Отпуск",
-    "Home office": "Работа от вкъщи"
+    "Home office": "Работа от вкъщи",
+    "on ": "на ",
+    "from ": "от ",
+    " to ": " до "
 }
