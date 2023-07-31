@@ -35,6 +35,9 @@ const create = (data: IRequestDataPost) => {
 const getAllByUserId = (id: any) => {
   return axios.get<Array<IRequestDataGet>>(BASE_URL + `/api/requests/employee/${id}`)
 };
+const getAllApproved = () => {
+  return axios.get<Array<IRequestDataGet>>(BASE_URL + `/api/requests/approved`)
+};
 const createRequestString = (data: IRequestDataPostString) => {
   return axios.post<ILeaveRequestPage>(BASE_URL + "/api/requests",data)
 
@@ -83,7 +86,8 @@ const TutorialService = {
   getAllByUser,
   getAllByUserId,
   getPdf,
-  createRequestString
+  createRequestString,
+  getAllApproved
 };
 
 export default TutorialService;

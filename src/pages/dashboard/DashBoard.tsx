@@ -7,6 +7,7 @@ import UserBaseDetails from '../../models/users/UserBaseDetails';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 import UserPersonalInfo from '../../models/users/UserPersonalInfo';
+import DateCalendarServerRequest from '../../components/calendar/CalendarAllEmployeesTest';
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
 // const UserPersonalInfoMemo = React.memo(UserPersonalInfo);
@@ -49,6 +50,11 @@ export default function DashBoard() {
                     {/* Calendar */}
                     <Grid item mt="2%" ml="5%" >
                         <DashBoardRequestsComponent onShow={updateDetails} />
+                    </Grid>
+
+                    <Grid item mt="2%" ml="5%" >
+                       <DateCalendarServerRequest/>
+
                     </Grid>
                 </Grid>
 
