@@ -75,7 +75,14 @@ export default function Users() {
     return <ImportHistoryButton id={id} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}/>
   }
 
-  const renderDeleteButton = (id: number, refreshCurrentState: number, refresh: (value: number) => void) => {
+  const renderDeleteButton = (id: number, roles: string[], refreshCurrentState: number, refresh: (value: number) => void) => {
+    if (roles.includes('SUPER_ADMIN')) {
+      return <></>;
+    }
+    console.log(roles);
+    
+    console.log('Rendering delete button...');
+    
     return <DeleteButton id={id} refreshCurrentState={refreshCurrentState}
       refresh={setRefreshCounter}></DeleteButton>
   }
@@ -154,11 +161,11 @@ export default function Users() {
         renderViewButton(params.row.id),
         renderEditButton(params.row, params.row.id),
         renderImportHistoryButton(params.row.id), 
-        renderDeleteButton(params.row.id, refreshCounter, setRefreshCounter)
+        renderDeleteButton(params.row.id, params.row.roles, refreshCounter, setRefreshCounter)
       ]
     },
   ];
-  const rows = page.content.map((user, index) => {
+  const rows = page.content.map((user) => {
     return {
       key: user.id, id: user.id, name: user?.name, email: user.email, department: user.department,
       roles: user.roles.map(role => role.name).join(', '), contractStartDate: user.employeeInfo.contractStartDate,

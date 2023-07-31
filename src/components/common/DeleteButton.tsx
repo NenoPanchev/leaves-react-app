@@ -22,24 +22,21 @@ import { IDeleteButtonProps } from '../../models/interfaces/common/IDeleteButton
 
 export default function DeleteButton(props: IDeleteButtonProps) {
     let path = useLocation().pathname;
-    if (path.startsWith('/contracts')) {
-        path = '/contracts';
-    }
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const deleteItem = useDelete({path: path});
     const {user} = React.useContext(AuthContext);
-
+    
     const handleClickOpen = () => {
         setOpen(true);
     };
-
+    
     const handleClose = () => {
         setOpen(false);
     };
-
+    
     function handleDelete() {
         deleteItem(props.id)
         .then(() => props.refresh(props.refreshCurrentState + 1))
@@ -49,6 +46,8 @@ export default function DeleteButton(props: IDeleteButtonProps) {
         return null;
     }
 
+    
+    
     return (
         <React.Fragment>
             <GridActionsCellItem

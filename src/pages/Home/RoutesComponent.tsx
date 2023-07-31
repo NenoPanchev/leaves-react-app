@@ -12,9 +12,8 @@ import DashBoard from '../dashboard/DashBoard';
 import DashBoardByEmployee from '../dashboard/DashBoardByEmployee';
 import NotFound from '../NotFound';
 import SignIn from '../SignIn';
-import './Home.css';
-import Contracts from '../../models/contracts/AllContracts';
 import AccessDenied from '../AccessDenied';
+import './Home.css';
 
 function RoutesComponent() {
     return (
@@ -27,7 +26,6 @@ function RoutesComponent() {
                 <Route path='/requests' Component={isAuth(RequestsGrid)} />
                 <Route path='/types' Component={isAuth(TypeEmployeeGrid)} />
                 <Route path='/roles' Component={isAuth(Roles)}></Route>
-                <Route path='/contracts/employee/:id' Component={isAuth(Contracts)}></Route>
                 <Route path='/login' Component={SignIn}></Route>
                 <Route path='/logout' Component={LogOut}></Route>
                 <Route path='/404' Component={NotFound}></Route>
