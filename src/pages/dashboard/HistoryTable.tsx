@@ -53,7 +53,7 @@ export default function AllEmployeesHistory() {
                 <Table sx={{ minWidth: 800 }} aria-label="vacation grid">
                     <TableHead className='gray-background'>
                         <TableRow>
-                            <TableCell />
+                            <TableCell className='border-bottom' />
                             {history.map((employee) => (
                                 <TableCell key={`vacations-header-${employee.name}`}
                                     align='center'
