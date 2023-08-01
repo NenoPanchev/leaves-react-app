@@ -52,14 +52,6 @@ export default function DashBoard() {
                         <Grid item mt="2%" ml="5%" >
                             <DashBoardRequestsComponent onShow={updateDetails} />
                         </Grid>
-
-                        <Grid item mt="2%" ml="5%" >
-                            <DateCalendarServerRequest />
-
-                        </Grid>
-                    </Grid>
-                    <Grid container direction={'row'}>
-                        <AllEmployeesHistory/>
                     </Grid>
                 </React.Fragment>
             }

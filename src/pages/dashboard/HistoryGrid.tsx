@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { TableCell, TableContainer, Paper, Table, TableHead, TableRow, TableBody } from '@mui/material';
+import { TableCell, TableContainer, Paper, Table, TableHead, TableRow, TableBody, Grid } from '@mui/material';
 import { t } from 'i18next';
 import './HistoryGrid.css'
 
@@ -57,15 +56,15 @@ export default function AllEmployeesHistory() {
         const cells = [];
         for (const employee of data) {
             cells.push(
-                <TableCell key={`vacations-${employee.name}`} className='bold-border' />
+                <TableCell key={`vacations-${employee.name}`} />
             );
             cells.push(
-                <TableCell key={`taken-${employee.name}`} align="center" className='border' >
+                <TableCell key={`taken-${employee.name}`} align="center"  >
                     1, 2, 3
                 </TableCell>
             );
             cells.push(
-                <TableCell key={`remaining-${employee.name}`} className='border' />
+                <TableCell key={`remaining-${employee.name}`} />
             );
         }
         return cells;
@@ -73,54 +72,35 @@ export default function AllEmployeesHistory() {
 
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size='small' aria-label="vacation grid">
-                <TableHead className='gray-background border-bottom'>
-                    <TableRow>
-                        <TableCell />
-                        {data.map((employee) => (
-                            <TableCell key={`vacations-header-${employee.name}`}
-                                colSpan={3}
-                                align='center'
-                                className='bold-border'
-                                sx={{borderBottom: '1px solid black'}}
-                                >
-                                {employee.name}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                    <TableRow>
-                        <TableCell />
-                        {data.map((employee) => (
-                            <React.Fragment key={`vacations-header-${employee.name}`}>
-                                <TableCell align='center' className='bold-border border-bottom' >{t('total')}</TableCell>
-                                <TableCell align='center' className='border border-bottom' >{t('used')}</TableCell>
-                                <TableCell align='center' className='border border-bottom' >{t('left')}</TableCell>
-                            </React.Fragment>
-                        ))}
-                    </TableRow>
+        <Grid direction={'row'}>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} size='small' aria-label="vacation grid">
+                    <TableHead >
+                        <TableRow>
+                            <TableCell />
+                            {data.map((employee) => (
+                                <TableCell key={`vacations-header-${employee.name}`}
+                                    colSpan={3}
+                                    align='center'
 
-                    <TableRow>
-                        <TableCell className='border-bottom' />
-                        {data.map((employee) => (
-                            <React.Fragment key={`vacations-header-${employee.name}`}>
-                                <TableCell align="center" className='bold-border border-bottom' >{employee.vacations}</TableCell>
-                                <TableCell align="center" className='border border-bottom' >{employee.taken}</TableCell>
-                                <TableCell align="center" className='border border-bottom' >{employee.remaining}</TableCell>
-                            </React.Fragment>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {months.map((month) => (
-                        <TableRow key={month}>
-                            <TableCell>{t(month)}</TableCell>
-                            {generateCells(data)}
+
+                                >
+                                    {employee.name}
+                                </TableCell>
+                            ))}
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {months.map((month) => (
+                            <TableRow key={month}>
+                                <TableCell>{t(month)}</TableCell>
+                                {generateCells(data)}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Grid>
     );
 
 }

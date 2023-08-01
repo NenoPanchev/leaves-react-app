@@ -11,6 +11,7 @@ import ListIcon from '@mui/icons-material/List';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import ChangePassword from "../../models/users/ChangePassword"
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const AdminBarLoggedIn = () => {
     const { user } = useContext(AuthContext);
@@ -31,6 +32,20 @@ const AdminBarLoggedIn = () => {
                             <DashboardIcon />
                         </ ListItemIcon>
                         < ListItemText primary={t('Dashboard')} />
+
+                    </ListItemButton>
+                </ Link>
+                <Link to='/leaves' style={{
+                    textDecoration: 'none',
+                    color: 'black'
+                }
+                }>
+                    <ListItemButton
+                        selected={currentLocation.pathname === '/leaves' ? true : false}>
+                        <ListItemIcon>
+                            <CalendarMonthIcon />
+                        </ ListItemIcon>
+                        < ListItemText primary={t('Leaves')} />
 
                     </ListItemButton>
                 </ Link>

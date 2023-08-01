@@ -13,6 +13,7 @@ import DashBoardByEmployee from '../dashboard/DashBoardByEmployee';
 import NotFound from '../NotFound';
 import SignIn from '../SignIn';
 import AccessDenied from '../AccessDenied';
+import Leaves from '../dashboard/Leaves';
 import './Home.css';
 
 function RoutesComponent() {
@@ -20,6 +21,7 @@ function RoutesComponent() {
             <Grid container >
               <Routes>
                 <Route index Component={isAuth(DashBoard)}></Route>
+                <Route path='/leaves' Component={isAuth(Leaves)}></Route>
                 <Route path={'/requests/employee/:id'} Component={isAuth(DashBoardByEmployee)}></Route>
                 <Route path='/users' Component={isAuth(Users)}></Route>
                 <Route path='/departments' Component={isAuth(Departments)}></Route>
