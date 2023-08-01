@@ -1,7 +1,7 @@
 import { Grid, IconButton } from '@mui/material';
 import { t } from 'i18next';
 import React from 'react';
-import AllEmployeesHistory from './HistoryGrid';
+import AllEmployeesHistory from './HistoryTable';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DateCalendarServerRequest from '../../components/calendar/CalendarAllEmployeesTest';
@@ -17,19 +17,21 @@ export default function Leaves() {
 
     return (
         <React.Fragment>
-            {view === 'calendar'
+            <Grid>
+                {view === 'calendar'
                     ? <IconButton onClick={onClickSetViewTable}>
-                        <TableChartIcon />
+                        <TableChartIcon fontSize='large' />
                     </IconButton>
                     : <IconButton onClick={onClickSetViewCalendar}>
-                        <CalendarMonthIcon />
+                        <CalendarMonthIcon fontSize='large' />
                     </IconButton>
                 }
+            </Grid>
             <Grid container direction={'row'} justifyContent={'center'}>
-            {view === 'calendar'
-                ? <DateCalendarServerRequest />
-                : <AllEmployeesHistory />
-            }
+                {view === 'calendar'
+                    ? <DateCalendarServerRequest />
+                    : <AllEmployeesHistory />
+                }
             </Grid>
         </React.Fragment>
     )

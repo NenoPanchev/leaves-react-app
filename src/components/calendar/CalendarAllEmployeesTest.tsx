@@ -108,7 +108,7 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
 
     if (isSelected) {
         return (
-            <Tooltip title={renderTooltipContent()}>
+            <Tooltip title={renderTooltipContent()} >
                 <Badge
                     key={props.day.toString()}
                     overlap="circular"
@@ -177,10 +177,6 @@ const DateCalendarServerRequest = (): JSX.Element => {
 
         requestAbortController.current = controller;
     };
-    const calendarStyle = {
-        width: '500px',
-        height: '500px',
-      };
 
     React.useEffect(() => {
         fetchHighlightedDays(initialValue);
@@ -216,11 +212,9 @@ const DateCalendarServerRequest = (): JSX.Element => {
         return () => controller.abort();
     }
     return (
-        // <Grid sx={{width: '500px', height: '500px'}}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
                 <DateCalendar
                     defaultValue={initialValue}
-                    loading={isLoading}
                     shouldDisableDate={disableWeekends}
                     onMonthChange={handleMonthChange}
                     renderLoading={() => <DayCalendarSkeleton />}
@@ -233,10 +227,29 @@ const DateCalendarServerRequest = (): JSX.Element => {
                             holidays
                         } as any,
                     }}
-                    sx={calendarStyle}
+                    sx={{
+                        width: '550px',
+                        // height: '600px',
+
+                        '& .MuiPickersDay-root': {
+                            width: '84px',
+                            height: '84px'
+                        },
+                        '& .MuiDayCalendar-weekDayLabel': {
+                            width: '84px',
+                            height: '90px'
+                        },
+                        '& .MuiDayCalendar-slideTransition': {
+                            minHeight: '450px',
+                            height: "auto"
+                        },
+                        '&':
+                        {
+                            maxHeight: "100% !important",
+                        },
+                    }}
                 />
             </LocalizationProvider>
-        // </Grid>
     );
 }
 export default DateCalendarServerRequest;

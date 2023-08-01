@@ -5,6 +5,7 @@ export const BASE_ROLE_URL = BASE_URL + '/roles/';
 export const BASE_DEPARTMENT_URL = BASE_URL + '/departments/';
 export const BASE_CONTRACT_URL = BASE_URL + '/contracts/';
 export const BASE_USER_URL = BASE_URL + '/users/';
+export const BASE_REQUEST_URL = BASE_URL + '/api/requests'
 export const LOGIN_URL = BASE_URL + "/authenticate";
 export const DEFAULT_OFFSET = 0;
 export const DEFAULT_LIMIT = 10;

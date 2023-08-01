@@ -8,7 +8,7 @@ import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 import UserPersonalInfo from '../../models/users/UserPersonalInfo';
 import DateCalendarServerRequest from '../../components/calendar/CalendarAllEmployeesTest';
-import AllEmployeesHistory from './HistoryGrid';
+import AllEmployeesHistory from './HistoryTable';
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
 // const UserPersonalInfoMemo = React.memo(UserPersonalInfo);
