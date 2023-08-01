@@ -177,6 +177,10 @@ const DateCalendarServerRequest = (): JSX.Element => {
 
         requestAbortController.current = controller;
     };
+    const calendarStyle = {
+        width: '500px',
+        height: '500px',
+      };
 
     React.useEffect(() => {
         fetchHighlightedDays(initialValue);
@@ -196,10 +200,6 @@ const DateCalendarServerRequest = (): JSX.Element => {
         setHighlightedDays(new Map());
         // Get the first day of the selected month
         const firstDayOfMonth = date.startOf('month').tz('Europe/Sofia').add(5, 'hours');
-        console.log('First day of month', firstDayOfMonth);
-        
-        // Set the date to the first day of the month
-        // setInitialValue(firstDayOfMonth);
 
         // Fetch the highlighted days for the selected month
         fetchHighlightedDays(firstDayOfMonth);
@@ -216,24 +216,27 @@ const DateCalendarServerRequest = (): JSX.Element => {
         return () => controller.abort();
     }
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
-            <DateCalendar
-                defaultValue={initialValue}
-                loading={isLoading}
-                shouldDisableDate={disableWeekends}
-                onMonthChange={handleMonthChange}
-                renderLoading={() => <DayCalendarSkeleton />}
-                slots={{
-                    day: ServerDay,
-                }}
-                slotProps={{
-                    day: {
-                        highlightedDays,
-                        holidays
-                    } as any,
-                }}
-            />
-        </LocalizationProvider>
+        // <Grid sx={{width: '500px', height: '500px'}}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
+                <DateCalendar
+                    defaultValue={initialValue}
+                    loading={isLoading}
+                    shouldDisableDate={disableWeekends}
+                    onMonthChange={handleMonthChange}
+                    renderLoading={() => <DayCalendarSkeleton />}
+                    slots={{
+                        day: ServerDay,
+                    }}
+                    slotProps={{
+                        day: {
+                            highlightedDays,
+                            holidays
+                        } as any,
+                    }}
+                    sx={calendarStyle}
+                />
+            </LocalizationProvider>
+        // </Grid>
     );
 }
 export default DateCalendarServerRequest;
