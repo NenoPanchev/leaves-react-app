@@ -1,9 +1,9 @@
 .bold-border {
-    border-left: 2px solid black;
+    border-left: 2px solid #e0e0e0;
 }
 
 .border {
-    border-left: 1px solid black;
+    border-left: 1px solid #e0e0e0;
 }
 
 .gray-background {
@@ -11,5 +11,9 @@
 }
 
 table .border-bottom {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.font-size .MuiTableCell-root {
+    font-size: 18px;
 }
