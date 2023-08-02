@@ -1,6 +1,6 @@
 import { TableCell, TableContainer, Paper, Table, TableHead, TableRow, TableBody, Grid, IconButton } from '@mui/material';
 import { t } from 'i18next';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IDaysUsedByMonth } from '../../models/interfaces/request/IDaysUsedByMonth';
 import RequestService from '../../services/RequestService';
 import './HistoryTable.css'
@@ -14,6 +14,7 @@ export default function AllEmployeesHistory() {
     const minYear = 2022;
     const maxYear = new Date().getMonth() === 11 ? currentYear + 1 : currentYear;
     const [year, setYear] = useState(currentYear);
+    const initialRender = useRef(true);
 
     const handlePrevYear = () => {
         setYear((prevYear) => Math.max(prevYear - 1, minYear));
@@ -22,15 +23,20 @@ export default function AllEmployeesHistory() {
     const handleNextYear = () => {
         setYear((prevYear) => Math.min(prevYear + 1, maxYear));
     };
-
-    RequestService.getAllInTableView(year)
-        .then((response: any) => {
-            setHistory(response.data);
-        })
-        .catch((e: Error) => {
-            console.log(e);
-        });
-
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+            return;
+        }
+        
+        RequestService.getAllInTableView(year)
+            .then((response: any) => {
+                setHistory(response.data);
+            })
+            .catch((e: Error) => {
+                console.log(e);
+            });
+    }, [year])
 
     const months: string[] = [
         'January',
