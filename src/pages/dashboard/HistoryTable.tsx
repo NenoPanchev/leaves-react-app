@@ -15,6 +15,10 @@ export default function AllEmployeesHistory() {
     const maxYear = new Date().getMonth() === 11 ? currentYear + 1 : currentYear;
     const [year, setYear] = useState(currentYear);
     const initialRender = useRef(true);
+    console.log(initialRender);
+    console.log(initialRender.current);
+    
+    
 
     const handlePrevYear = () => {
         setYear((prevYear) => Math.max(prevYear - 1, minYear));
@@ -28,7 +32,7 @@ export default function AllEmployeesHistory() {
             initialRender.current = false;
             return;
         }
-        
+
         RequestService.getAllInTableView(year)
             .then((response: any) => {
                 setHistory(response.data);
