@@ -15,6 +15,8 @@ import CustomPickerDayRange, { disableWeekends } from './CalendarStyleComponentA
 import HolidayService from '../../services/HolidayService';
 import { useTranslation } from 'react-i18next';
 import { t } from 'i18next';
+import { createStyles, makeStyles } from '@mui/material';
+import { ClassNames } from '@emotion/react';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -62,8 +64,8 @@ function fetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
 
 const initialValue = dayjs();
 
-function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<number, Array<IRequestDataGet>> } & { holidays?: Array<string> }) {
 
+function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<number, Array<IRequestDataGet>> } & { holidays?: Array<string> }) {
     const { highlightedDays = new Map(), day, outsideCurrentMonth, holidays, ...other } = props;
     if (holidays == null) {
         return <PickersDay outsideCurrentMonth={outsideCurrentMonth} day={day} {...other} />;
@@ -113,6 +115,14 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
                     key={props.day.toString()}
                     overlap="circular"
                     badgeContent={setBadge(isSelected, containsHome, containsLeave)}
+                    sx={{
+                        '& .MuiBadge-badge': {
+                          width: '30px',
+                          height: '30px',
+                          fontSize: '20px',
+                          fontWeight: 'bold',
+                        },
+                      }}
                 >
                     <CustomPickerDayRange
                         {...other}
@@ -159,6 +169,7 @@ const DateCalendarServerRequest = (): JSX.Element => {
     const [highlightedDays, setHighlightedDays] = React.useState<Map<number, Array<IRequestDataGet>>>(new Map());
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
     const [t] = useTranslation();
+
     const fetchHighlightedDays = (date: Dayjs) => {
         const controller = new AbortController();
         fetch(date, {
@@ -228,21 +239,31 @@ const DateCalendarServerRequest = (): JSX.Element => {
                         } as any,
                     }}
                     sx={{
-                        width: '550px',
-                        // height: '600px',
+                        width: '900px',
+
 
                         '& .MuiPickersDay-root': {
-                            width: '84px',
-                            height: '84px'
+                            width: '100px',
+                            height: '100px',
+                            fontSize: '25px',
+                            fontWeight: 'bold',
                         },
                         '& .MuiDayCalendar-weekDayLabel': {
-                            width: '84px',
-                            height: '90px'
+                            width: '100px',
+                            height: '100px',
+                            fontSize: '25px',
+                            fontWeight: 'bold',
                         },
                         '& .MuiDayCalendar-slideTransition': {
-                            minHeight: '450px',
+                            minHeight: '650px',
                             height: "auto"
                         },
+                        '& .MuiPickersCalendarHeader-label': {
+                            fontSize: '25px',
+                            minWidth: '010px',
+                            lineHeight: '40px',
+                            // Add any other custom styles for the month dropdown here
+                          },
                         '&':
                         {
                             maxHeight: "100% !important",

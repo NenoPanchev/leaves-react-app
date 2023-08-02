@@ -5,9 +5,10 @@ import { IDaysUsedByMonth } from '../../models/interfaces/request/IDaysUsedByMon
 import RequestService from '../../services/RequestService';
 import './HistoryTable.css'
 
+
+
 export default function AllEmployeesHistory() {
     const [history, setHistory] = useState<IDaysUsedByMonth[]>([]);
-
     RequestService.getAllInTableView(2023)
         .then((response: any) => {
             setHistory(response.data);
@@ -50,8 +51,11 @@ export default function AllEmployeesHistory() {
     return (
         <Grid direction={'row'} width={'90%'}>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 800 }} aria-label="vacation grid">
-                    <TableHead className='gray-background'>
+                <Table aria-label="vacation grid" className='font-size'
+                sx={{ 
+                    minWidth: 800
+                    }} >
+                    <TableHead className='font-bold'>
                         <TableRow>
                             <TableCell className='border-bottom' />
                             {history.map((employee) => (

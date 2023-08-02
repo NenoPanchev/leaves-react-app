@@ -1,23 +1,21 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../contexts/AuthContext';
 import UserBaseDetails from '../../models/users/UserBaseDetails';
 import DashBoardRequestsComponent from './DashBoardRequestsComponent';
 import LeavesReportDialog from '../../models/users/leavesReport/LeavesReportDialog';
 import UserPersonalInfo from '../../models/users/UserPersonalInfo';
-import DateCalendarServerRequest from '../../components/calendar/CalendarAllEmployeesTest';
-import AllEmployeesHistory from './HistoryTable';
+
 
 const UserBaseDetailsMemo = React.memo(UserBaseDetails);
-// const UserPersonalInfoMemo = React.memo(UserPersonalInfo);
 const LeavesReportDialogMemo = React.memo(LeavesReportDialog);
 export default function DashBoard() {
     const { user } = React.useContext(AuthContext);
     const email = user?.getEmail();
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [showDetails, setShowDetails] = useState(true)
 
