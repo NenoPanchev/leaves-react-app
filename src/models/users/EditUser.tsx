@@ -83,8 +83,8 @@ export default function EditUserButton(props: IUserEditButtonProps) {
     }
 
     function validate(): boolean {
-        nError = (name.length < 2 || name.length > 20);
-        setNameError(name.length < 2 || name.length > 20);
+        nError = (name.length < 2 || name.length > 70);
+        setNameError(name.length < 2 || name.length > 70);
 
         const regex = /^[a-zA-Z0-9.]+@(?:[a-zA-Z0-9]+.)+[A-Za-z]+$/;
         setEmailError(!regex.test(email));

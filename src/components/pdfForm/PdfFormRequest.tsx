@@ -190,7 +190,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                         <TextField
                           fullWidth
                           margin={'normal'}
-                          label="Year"
+                          label={t('Year')}
                           name="year"
                           onChange={handleChange}
                           required
@@ -204,7 +204,7 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                         <TextField
                           fullWidth
                           margin={'normal'}
-                          label="Request To"
+                          label={t('Request to')}
                           name="requestToName"
                           onChange={handleChange}
                           required

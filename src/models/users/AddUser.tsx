@@ -67,8 +67,8 @@ export default function AddUserButton(props: IUserAddButtonProps) {
 
     function validate(formData: FormData): boolean {
         const name: string = JSON.parse(JSON.stringify(formData.get('name')));
-        nError = (name.length < 2 || name.length > 20);
-        setNameError(name.length < 2 || name.length > 20);
+        nError = (name.length < 2 || name.length > 70);
+        setNameError(name.length < 2 || name.length > 70);
 
         const email: string = JSON.parse(JSON.stringify(formData.get('email')));
         var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
