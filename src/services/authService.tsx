@@ -61,6 +61,7 @@ export const useRefresh = () => {
     await axios.post(LOGIN_URL + '/refresh', { jwt: jwt })
       .then((response) => {
         userDetails.setEmail(response.data.email);
+        userDetails.setName(response.data.name);
         userDetails.setAuthorities(response.data.authorities);
         userDetails.setId(response.data.id!);
         // setUser(userDetails);

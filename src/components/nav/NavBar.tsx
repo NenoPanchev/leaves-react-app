@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import Flag from "react-world-flags";
 import AuthContext from "../../contexts/AuthContext";
+import {getFirstAndLastNameFromFullName} from "../../services/userService";
 
 const drawerWidth: number = 240;
 
@@ -47,12 +48,14 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
     const navBarHeightRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(true);
     useEffect(() => {
-
         if (navBarHeightRef.current) {
             localStorage.setItem('navBarHeight', navBarHeightRef.current.offsetHeight.toString() + 'px');
         }
     }, []);
+    console.log('User', user);
 
+    let userFullName = user?.getName() ? user?.getName() : '';
+    let userName = getFirstAndLastNameFromFullName(userFullName);
 
     React.useImperativeHandle(ref, () => {
         return {
@@ -66,15 +69,7 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
 
     const adjustPathToLocaleKey = (path: string): string => {
         path = path.charAt(0).toUpperCase() + path.slice(1);
-        if (!Number.isNaN(parseInt(path.charAt(path.length - 1))))
-            console.log(path);
-        // {
-        //     path=path.substring(0,path.length-1)
-        // }
-
-        if (path.startsWith('Contracts')) {
-            path = 'Contracts'
-        } else if (path.startsWith('Requestsemployee')) {
+         if (path.startsWith('Requestsemployee')) {
             path = 'Request'
         }
         switch (path) {
@@ -133,7 +128,7 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
                 >
                     {t(path)}
                 </Typography>
-                <Typography component={'h6'} variant='h6'>{user?.getName()}</Typography>
+                <Typography component={'h6'} variant='h6'>{userName}</Typography>
                 {lang === 'en'
                     ? <IconButton onClick={onClickSetLanguageBG}>
                         <Flag code='BG' height='16' />
@@ -142,7 +137,6 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
                         <Flag code='GB' height='16' />
                     </IconButton>
                 }
-
             </Toolbar>
         </AppBar>
     )

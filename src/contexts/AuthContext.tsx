@@ -7,7 +7,6 @@ interface IAuthContext {
 }
 const initUser = {
     user: new UserDetails(),
-
 };
 
 const AuthContext = createContext<IAuthContext>(

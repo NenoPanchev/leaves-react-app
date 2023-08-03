@@ -7,7 +7,6 @@ import * as React from 'react';
 import { useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../contexts/AuthContext';
-import IRequestDataGet from '../../models/interfaces/request/IRequestDataGet';
 import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
 import * as userService from '../../services/userService';
 import { updatePersonalInfo } from '../../services/userService';

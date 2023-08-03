@@ -5,6 +5,7 @@ import { IDaysUsedByMonth } from '../../models/interfaces/request/IDaysUsedByMon
 import RequestService from '../../services/RequestService';
 import './HistoryTable.css'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import {getFirstAndLastNameFromFullName} from "../../services/userService";
 
 
 
@@ -14,25 +15,29 @@ export default function AllEmployeesHistory() {
     const minYear = 2022;
     const maxYear = new Date().getMonth() === 11 ? currentYear + 1 : currentYear;
     const [year, setYear] = useState(currentYear);
-    const initialRender = useRef(true);
-    console.log(initialRender);
-    console.log(initialRender.current);
-    
-    
 
-    const handlePrevYear = () => {
-        setYear((prevYear) => Math.max(prevYear - 1, minYear));
+    const handlePrevYear = async () => {
+        const prevYear = Math.max(year - 1, minYear);
+        setYear(prevYear);
+        try {
+            const response = await RequestService.getAllInTableView(prevYear);
+            setHistory(response.data);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
-    const handleNextYear = () => {
-        setYear((prevYear) => Math.min(prevYear + 1, maxYear));
+    const handleNextYear = async () => {
+        const nextYear = Math.min(year + 1, maxYear);
+        setYear(nextYear);
+        try {
+            const response = await RequestService.getAllInTableView(nextYear);
+            setHistory(response.data);
+        } catch (e) {
+            console.log(e);
+        }
     };
     useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false;
-            return;
-        }
-
         RequestService.getAllInTableView(year)
             .then((response: any) => {
                 setHistory(response.data);
@@ -40,7 +45,7 @@ export default function AllEmployeesHistory() {
             .catch((e: Error) => {
                 console.log(e);
             });
-    }, [year])
+    }, [])
 
     const months: string[] = [
         'January',
@@ -73,7 +78,7 @@ export default function AllEmployeesHistory() {
 
 
     return (
-        <Grid direction={'row'} width={'90%'}>
+        <Grid container direction={'row'} width={'90%'}>
             <TableContainer component={Paper}>
                 <Table aria-label="vacation grid" className='font-size'
                     sx={{
@@ -95,7 +100,7 @@ export default function AllEmployeesHistory() {
                                     align='center'
                                     className='border border-bottom'
                                 >
-                                    {employee.name}
+                                    {getFirstAndLastNameFromFullName(employee.name)}
                                 </TableCell>
                             ))}
                         </TableRow>
