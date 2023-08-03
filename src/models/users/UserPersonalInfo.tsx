@@ -133,11 +133,11 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
                     <TextField
                       fullWidth
                       margin={'normal'}
-                      label="Address"
+                      label={t('Address')}
                       name="address"
                       onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.address]: userDetails.employeeInfo.address = event.target.value })}
                       value={userDetails?.employeeInfo.address}
-                      required />
+                    />
                   </Grid>
                   <Grid
                     item
@@ -147,7 +147,7 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
                     <TextField
                       fullWidth
                       margin={'normal'}
-                      label="Ssn"
+                      label={t('SSN')}
                       name="userDetails.employeeInfo.ssn"
                       onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.ssn]: userDetails.employeeInfo.ssn = event.target.value })}
                       value={userDetails?.employeeInfo.ssn}
@@ -169,7 +169,7 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
             <Grid item>
               <Grid container direction="row">
                 <Typography marginTop="3%" >Save Information :</Typography>
-                <Checkbox checked={checked} onChange={handleChangeCheckBox}  inputProps={{ 'aria-label': 'controlled' }} />
+                <Checkbox checked={checked} onChange={handleChangeCheckBox} inputProps={{ 'aria-label': 'controlled' }} />
               </Grid>
             </Grid>
 
