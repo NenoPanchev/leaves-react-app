@@ -1,6 +1,6 @@
 import { TableCell, TableContainer, Paper, Table, TableHead, TableRow, TableBody, Grid, IconButton } from '@mui/material';
 import { t } from 'i18next';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IDaysUsedByMonth } from '../../models/interfaces/request/IDaysUsedByMonth';
 import RequestService from '../../services/RequestService';
 import './HistoryTable.css'

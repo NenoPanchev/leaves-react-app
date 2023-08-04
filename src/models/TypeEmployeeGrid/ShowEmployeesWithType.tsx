@@ -1,5 +1,5 @@
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import { Divider, Grid, List, ListItem, ListItemText, TextField, Tooltip, Typography } from '@mui/material';
+import { Divider, Grid, List, ListItem, TextField, Tooltip, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,19 +19,13 @@ type ShowEmployeesWithTypeProps = {
 }
 const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const currentUser = React.useContext(AuthContext);
     const handleClickOpen = () => {
         setOpen(true);
     };
     const [filteredList, setFilteredList] = useState<Array<IEmploeeGet>>(props.typeEmployee.employeeWithType);
-    const commonStyles = {
-        bgcolor: 'background.paper',
-        m: 1,
-        border: 1,
-        width: '8rem',
-        height: '3rem',
-    };
+
     React.useEffect(() => {
 
     }, [currentUser.user]);
@@ -103,8 +97,8 @@ const ShowEmployeesWithType: React.FC<ShowEmployeesWithTypeProps> = (props): JSX
                         <List>
                             {filteredList.map((item) => {
                                 return (
-                                    <Grid item width="100%" justifyContent="center" >
-                                        <ListItem key={item.id}>
+                                    <Grid key={item.id} item width="100%" justifyContent="center" >
+                                        <ListItem>
                                             {renderEmployeeLink(item)}
                                         </ListItem>
                                         <Divider />

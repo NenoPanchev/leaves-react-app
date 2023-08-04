@@ -8,8 +8,7 @@ import { Role } from '../objects/Role';
 import { mapRoleName } from '../../services/roleService';
 import { useTranslation } from 'react-i18next';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddIcon from '@mui/icons-material/Add';
 import { IUserAddButtonProps } from '../interfaces/user/IUserAddButtonProps';
@@ -71,7 +70,7 @@ export default function AddUserButton(props: IUserAddButtonProps) {
         setNameError(name.length < 2 || name.length > 70);
 
         const email: string = JSON.parse(JSON.stringify(formData.get('email')));
-        var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
+        const regex = /^[a-zA-Z0-9.]+@(?:[a-zA-Z0-9]+.)+[A-Za-z]+$/;
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 

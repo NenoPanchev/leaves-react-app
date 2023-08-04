@@ -1,6 +1,5 @@
-import React, { ComponentType, FC, useContext, useEffect, useRef } from "react"
+import { ComponentType, FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../contexts/AuthContext"
 
 
 const isAuth = (

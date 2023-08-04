@@ -1,7 +1,5 @@
 import { GridToolbarContainer, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport } from "@mui/x-data-grid";
-import { ReactNode } from "react";
-import React from "react";
-
+import React, { ReactNode } from "react";
 
 interface CustomGridToolbarProps {
   components: ReactNode[];
@@ -12,8 +10,8 @@ const CustomGridToolbar: React.FC<CustomGridToolbarProps> = ({ components }) => 
 
     <GridToolbarContainer >
       <GridToolbarColumnsButton />
-      {components.map((component, index) => (
-        <React.Fragment key={index}>
+      {components.map((component) => (
+        <React.Fragment key={component?.toString()}>
           {component}
         </React.Fragment>
       ))}

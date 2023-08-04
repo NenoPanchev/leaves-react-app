@@ -20,7 +20,7 @@ const AddRequest3: React.FC = (): JSX.Element => {
         endDate: dayjs(),
     };
     const [open, setOpen] = React.useState(false);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const [startDate, SetStartDate] = React.useState<Dayjs | null>(dayjs());
     const [endDate, SetEndDate] = React.useState<Dayjs | null>(dayjs());
@@ -38,8 +38,7 @@ const AddRequest3: React.FC = (): JSX.Element => {
     const saveRequest = () => {
         request.startDate = startDate;
         request.endDate = endDate;
-        // request.startDate?.format('DD/MM/YYYY')
-        // request.endDate?.format('DD/MM/YYYY')
+
         RequestService.create(request)
             .then((response: any) => {
                 setRequest({
@@ -76,14 +75,7 @@ const AddRequest3: React.FC = (): JSX.Element => {
 
 
     );
-    const newRequest = () => {
-        setRequest(initialRequestState);
-        setSubmitted(false);
-    };
-    const ListAllTranslate = {
-        t: t,
-        i18n: i18n
-    }
+
     const AddRequestAlertProps = {
         alertPropsChild: { ...alertProps },
         onClose: updateSubmitted

@@ -46,14 +46,14 @@ const CustomPickersDay = styled(PickersDay, {
         ////COLOR CHANGE
 
 
-        if (isRejected[counter] == false) {
+        if (!isRejected[counter]) {
             //
             //REJECTED
             //
             styl.backgroundColor = red[200];
             styl['&:hover, &:focus'].backgroundColor = red[400];
 
-        } else if (isRejected[counter] == true) {
+        } else if (isRejected[counter]) {
             //
             //APPROVED
             //

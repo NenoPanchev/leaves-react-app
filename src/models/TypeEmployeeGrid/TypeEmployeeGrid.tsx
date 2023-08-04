@@ -1,7 +1,5 @@
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Button, Grid, IconButton, Tooltip } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef, GridRowId, GridRowsProp, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, useGridApiRef } from "@mui/x-data-grid";
 import { AxiosError } from "axios";
 import React, { useCallback, useEffect, useState } from 'react';
@@ -12,11 +10,6 @@ import AddType from "./AddType";
 import ListAllTypeFilter from "./ListAllTypeFilters";
 import RemoveType from "./RemoveType";
 import ShowEmployeesWithType from "./ShowEmployeesWithType";
-import LastPageIcon from '@mui/icons-material/LastPage';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import LimitDropDown from '../../components/CustomPaginationComponents/LimitDropdown';
 import ITypeEmploeeGet from '../interfaces/type/ITypeEmploeeGet';
 import ITypeEmploeePage from '../interfaces/type/ITypeEmploeePage';
 import ITypesFilter from '../interfaces/type/ITypesFilter';
@@ -26,9 +19,8 @@ import { useNavigate } from 'react-router';
 const TypeEmployeeGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
-  const [t, i18n] = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
-  const navBarHeight = localStorage.getItem('navBarHeight')!;
+  const [t] = useTranslation();
+  const [, setIsLoading] = useState(true);
   const [page, setPage] = useState<ITypeEmploeePage>(DEFAULT_PAGE);
   const navigate = useNavigate();
   const [typesFilter, setTypesFilter] = useState<ITypesFilter>({
@@ -45,26 +37,14 @@ const TypeEmployeeGrid: React.FC = (): JSX.Element => {
     deleted: "false"
   });
 
-  const { id, dateCreated, createdBy, lastUpdated, offset, limit, sort } = typesFilter;
   let numberOfElements = page.numberOfElements * (page.number + 1);
   useEffect(() => {
     retrivePage();
   }, [typesFilter]);
 
-  // const retrieveRequests = async () => {
-  //     await TypeService.getAll()
-  //         .then((response: any) => {
-  //             setRows(response.data);
-  //             console.log(response.data);
-  //         })
-  //         .catch((e: Error) => {
-  //             console.log(e);
-  //         });
-  // };
   const retrivePage = async () => {
     await TypeService.getAllFilterPage(typesFilter)
       .then((response: any) => {
-        // setRows(response.data);
         setPage(response.data);
         setRows(response.data.content)
         setIsLoading(false)

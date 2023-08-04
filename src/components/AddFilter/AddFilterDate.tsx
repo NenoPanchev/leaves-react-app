@@ -16,7 +16,7 @@ const MyAddFilterDate: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const[date,SetDate]=useState<Dayjs | null>(dayjs());
     let valueDate:any;
-    const[t,i18n]=useTranslation();
+    const[t]=useTranslation();
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
         if (date == null) return null;

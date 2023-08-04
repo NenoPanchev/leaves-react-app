@@ -27,7 +27,7 @@ const AdminBarLoggedIn = () => {
                 }
                 }>
                     <ListItemButton
-                        selected={currentLocation.pathname === '/' ? true : false}>
+                        selected={currentLocation.pathname === '/'}>
                         <ListItemIcon>
                             <DashboardIcon />
                         </ ListItemIcon>
@@ -41,7 +41,7 @@ const AdminBarLoggedIn = () => {
                 }
                 }>
                     <ListItemButton
-                        selected={currentLocation.pathname === '/leaves' ? true : false}>
+                        selected={currentLocation.pathname === '/leaves'}>
                         <ListItemIcon>
                             <CalendarMonthIcon />
                         </ ListItemIcon>
@@ -57,7 +57,7 @@ const AdminBarLoggedIn = () => {
                         }}>
 
                             <ListItemButton
-                                selected={currentLocation.pathname === '/types' ? true : false}>
+                                selected={currentLocation.pathname === '/types'}>
 
                                 <ListItemIcon>
                                     <BadgeIcon />
@@ -71,7 +71,7 @@ const AdminBarLoggedIn = () => {
                             color: 'black'
                         }}>
                             <ListItemButton
-                                selected={currentLocation.pathname === '/requests' ? true : false}>
+                                selected={currentLocation.pathname === '/requests'}>
 
                                 <ListItemIcon>
                                     <ListIcon />
@@ -85,7 +85,7 @@ const AdminBarLoggedIn = () => {
                             color: 'black'
                         }}>
                             <ListItemButton
-                                selected={currentLocation.pathname === '/users' ? true : false}>
+                                selected={currentLocation.pathname === '/users'}>
                                 <ListItemIcon>
                                     <PeopleIcon />
 
@@ -98,7 +98,7 @@ const AdminBarLoggedIn = () => {
                             color: 'black'
                         }}>
                             <ListItemButton
-                                selected={currentLocation.pathname === '/departments' ? true : false}>
+                                selected={currentLocation.pathname === '/departments'}>
 
 
                                 <ListItemIcon>
@@ -113,7 +113,7 @@ const AdminBarLoggedIn = () => {
                             color: 'black'
                         }}>
                             <ListItemButton
-                                selected={currentLocation.pathname === '/roles' ? true : false}>
+                                selected={currentLocation.pathname === '/roles'}>
                                 <ListItemIcon>
                                     <AccountTreeIcon />
                                 </ ListItemIcon>

@@ -4,8 +4,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AdminBar from './AdminBar';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const drawerWidth: number = 240;
 

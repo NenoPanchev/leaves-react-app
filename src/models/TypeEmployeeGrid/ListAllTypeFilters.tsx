@@ -3,7 +3,7 @@ import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Slider, Typography } from '@mui/material';
+import { FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,14 +23,10 @@ type ListAllTypeFilterProps = {
 }
 const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const [filter, setUserFilter] = useState<ITypesFilter>(props.value);
-    const { id, dateCreated, createdBy, lastUpdated, daysLeave, typeName, offset, limit, sort, operation, deleted } = filter;
+    const { createdBy, daysLeave, typeName, sort, operation, deleted } = filter;
 
-    const onAdd = async () => {
-        props.onAdd(filter);
-        setOpen(false);
-    };
     const onSubmitChild = async (e: { preventDefault: () => void; }) => {
 
         e.preventDefault();
@@ -44,7 +40,6 @@ const ListAllTypeFilter: React.FC<ListAllTypeFilterProps> = (props): JSX.Element
     };
 
     const handleClose = () => {
-        // props.onAdd(filter);
         setOpen(false);
     };
     function checkForSameString(txt: string, list: string[]) {

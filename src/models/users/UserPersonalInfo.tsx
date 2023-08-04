@@ -1,10 +1,10 @@
 import InfoIcon from '@mui/icons-material/Info';
-import { Backdrop, Button, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Grid, TextField, Typography } from '@mui/material';
+import { Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, Grid, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import grey from '@mui/material/colors/grey';
 import * as React from 'react';
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '../../contexts/AuthContext';
 import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
@@ -24,7 +24,7 @@ const states = [
 ];
 const UserPersonalInfo: React.FC = (): JSX.Element => {
   const [open, setOpen] = React.useState(false);
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const { user } = useContext(AuthContext);
   const [userDetails, setUserDetails] = React.useState<IUserDetails>({
     id: -1,
@@ -135,8 +135,8 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
                       margin={'normal'}
                       label={t('Address')}
                       name="address"
-                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.address]: userDetails.employeeInfo.address = event.target.value })}
                       value={userDetails?.employeeInfo.address}
+                      onChange={(event) => setUserDetails({ ...userDetails, [userDetails.employeeInfo.address]: userDetails.employeeInfo.address = event.target.value })}
                     />
                   </Grid>
                   <Grid

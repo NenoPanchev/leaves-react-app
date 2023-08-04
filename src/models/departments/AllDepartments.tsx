@@ -7,8 +7,7 @@ import AddDepartmentButton from './AddDepartment';
 import EditDepartmentButton from './EditDepartment';
 import { IDepartment } from '../interfaces/department/IDepartment';
 import DepartmentSearchFilter from './DepartmentSearchFilter';
-import { useFetchAllEmails as fetchUserEmails, getAllEmailsNotHook } from '../../services/userService';
-import { useFetchEmailsOfAvailableEmployees as fetchAvailableEmployeesEmails } from '../../services/userService';
+import { getAllEmailsNotHook, useFetchEmailsOfAvailableEmployees as fetchAvailableEmployeesEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_DEPARTMENT_FILTER } from '../../constants/GlobalConstants';
@@ -21,20 +20,17 @@ import '../ViewAll.css'
 export default function Departments() {
   const [refreshCurrentState, setRefreshCurrentState] = React.useState(0);
   const [departmentFilter, setDepartmentFilter] = React.useState<IDepartmentFilter>(DEFAULT_DEPARTMENT_FILTER);
-  // const [userEmails,setUserEmails] = fetchUserEmails(refreshCurrentState);
   const [userEmails,setUserEmails] = React.useState<string[]>([]);
   const availableEmployeesEmails = fetchAvailableEmployeesEmails(refreshCurrentState);
   const page = departmentService.useFetchPage(refreshCurrentState, departmentFilter);
   const { t } = useTranslation();
-  const [notLoaded,setNotLoaded] = React.useState<boolean>(true);
+  const [notLoaded] = React.useState<boolean>(true);
   React.useEffect(() => {
   const controller = new AbortController();
-  if(notLoaded)
-  {
+  if(notLoaded) {
     getAllEmailsNotHook(controller) 
     .then((response: any) => {
       setUserEmails(response.data)
-      setNotLoaded(notLoaded)
     })
     .catch((e: Error) => {
       console.log(e);
@@ -61,9 +57,9 @@ export default function Departments() {
   }
 
   const myGridToolbarComponents = [
-    <AddDepartmentButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    <AddDepartmentButton key={'addButton'} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       userEmails={userEmails} availableEmployeesEmails={availableEmployeesEmails} />,
-      <DepartmentSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+      <DepartmentSearchFilter key={'searchFilter'} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
       filter={departmentFilter} setFilter={setDepartmentFilter} allEmails={userEmails}/>]
 
   const handlePaginationModelChange = (paginationModel: any) => {

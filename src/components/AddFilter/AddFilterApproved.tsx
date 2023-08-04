@@ -11,7 +11,7 @@ type AddFilterProps = {
 const MyAddFilterApproved: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     const [value, setVlaue] = React.useState("null")
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
 

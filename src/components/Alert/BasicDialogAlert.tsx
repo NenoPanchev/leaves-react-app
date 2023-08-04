@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { t } from 'i18next';
 import * as React from 'react';
 type BasicDialogAlertProps = {
-    message: String,
+    message: string,
     open:boolean,
     onClose: (newValue: boolean) => void;
 }

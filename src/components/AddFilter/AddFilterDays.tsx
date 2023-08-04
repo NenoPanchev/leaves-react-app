@@ -19,7 +19,7 @@ function valuetext(value: number) {
 const minDistance = 0;
 const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     let valueOneAdd = '1'
     const [value, setValue] = React.useState<number[]>(
         [Number.isNaN(parseInt(props.initialStart)) ? 20 : parseInt(props.initialStart), Number.isNaN(parseInt(props.initialEnd)) ? 40 : parseInt(props.initialEnd)]
@@ -47,7 +47,7 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
                 setValue([clamped - minDistance, clamped]);
             }
         } else {
-            setValue(newValue as number[]);
+            setValue(newValue);
         }
     };
 
@@ -76,7 +76,7 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
                 setValue([clamped - minDistance, clamped]);
             }
         } else {
-            setValue(newValue as number[]);
+            setValue(newValue);
         }
 
         console.log(newValue[0])
@@ -94,13 +94,6 @@ const MyAddFilterDays: React.FC<AddFilterProps> = (props): JSX.Element => {
 
         }
         else if (props.operation === "RANGE") {
-            // if(value[0]<1||Number.isNaN(value[0]))
-            // {
-            //     props.onChangeSlider("1", value[1].toString())
-            // }else if(value[0]>90)
-            // {
-            //     props.onChangeSlider("90", value[1].toString())
-            // }
             props.onChangeSlider(value[0].toString(), value[1].toString())
         }
         setOpen(false);

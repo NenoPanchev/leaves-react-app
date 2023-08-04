@@ -314,7 +314,7 @@ export const useImportHistory = () => {
 }
 
 export function getFirstAndLastNameFromFullName(fullName: string) {
-  let strings = fullName.split(new RegExp('\\s'));
+  let strings = fullName.split(/\s/);
   if (strings.length === 3) {
     return strings[0] + ' ' + strings[2];
   }

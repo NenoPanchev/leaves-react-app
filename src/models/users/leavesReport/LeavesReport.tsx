@@ -1,9 +1,7 @@
-import { Typography, Accordion, AccordionSummary, AccordionDetails, Box, TablePagination } from '@mui/material';
+import { Typography, Accordion, AccordionSummary, Box, TablePagination } from '@mui/material';
 import * as userService from '../../../services/userService';
 import { useTranslation } from 'react-i18next';
 import { IViewProps } from '../../interfaces/common/IViewProps';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import './LeavesReport.css'
 import React from 'react';
 import { IHistoryFilter } from '../../interfaces/user/LeavesReport/IHistoryFilter';
 import { DEFAULT_LEAVES_REPORT_FILTER } from '../../../constants/GlobalConstants';
@@ -33,9 +31,9 @@ export default function LeavesReport(props: IViewProps) {
     return (
         <Box marginTop={'15px'} marginBottom={'5px'} >
             <Typography>{t('Leaves report')}</Typography>
-            {reportsPage?.content.map((report, index) => {
+            {reportsPage?.content.map((report) => {
                 return (
-                    <Accordion key={index} TransitionProps={{ unmountOnExit: true }}>
+                    <Accordion key={report.id} TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             className='accordion-summary'
                             aria-controls="panel1a-content"

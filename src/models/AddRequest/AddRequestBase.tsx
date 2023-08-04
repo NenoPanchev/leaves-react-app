@@ -1,5 +1,5 @@
 
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Typography } from '@mui/material';
+import { Button, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -32,7 +32,7 @@ const AddRequestBase = (props: AddRequestBaseProps, ref: React.ForwardedRef<AddR
         startDate: dayjs().format("YYYY-MM-DD"),
         endDate: dayjs().format("YYYY-MM-DD"),
     };
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const [requestType, setRequestType] = React.useState<string>('LEAVE');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(props.initialStartDate);

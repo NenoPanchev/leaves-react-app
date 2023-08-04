@@ -5,9 +5,6 @@ interface IAuthContext {
     user: UserDetails | null;
     setUser: React.Dispatch<React.SetStateAction<UserDetails | null>>
 }
-const initUser = {
-    user: new UserDetails(),
-};
 
 const AuthContext = createContext<IAuthContext>(
     {} as IAuthContext

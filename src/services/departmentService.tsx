@@ -17,7 +17,7 @@ export const useFetchAll = (refresh: number) => {
   }, [refresh]);
 
   const loadDepartments = async () => {
-    const result = await axios.get(BASE_DEPARTMENT_URL)
+    await axios.get(BASE_DEPARTMENT_URL)
       .then(response => setDepartment(response.data))
       .catch(error => console.log(error))
 
@@ -35,7 +35,7 @@ export const useFetchOne = (props: number) => {
 
 
   const loadDepartment = async () => {
-    const result = await axios.get(BASE_DEPARTMENT_URL + props)
+    await axios.get(BASE_DEPARTMENT_URL + props)
       .then(response => setDepartment(response.data))
       .catch(error => console.log(error))
   }
@@ -46,7 +46,7 @@ export const useCreate = () => {
 
   const addDepartment = async (department: FormData) => {
 
-    const result = await axios.post(BASE_DEPARTMENT_URL, formToJSON(department))
+    await axios.post(BASE_DEPARTMENT_URL, formToJSON(department))
       .then(response => {
         console.log(response.data)
       })
@@ -61,7 +61,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_DEPARTMENT_URL + id;
 
-    const result = await axios.put(updateUrl, formToJSON(role))
+    await axios.put(updateUrl, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -80,7 +80,7 @@ export const useFetchPage = (refresh: number, filter: IDepartmentFilter) => {
   const fetchPage = () => {
 
     const loadPage = async () => {
-      const result = await axios.post(BASE_DEPARTMENT_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
+      await axios.post(BASE_DEPARTMENT_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
         .then(response => {
 
           setPage(response.data)
@@ -107,7 +107,7 @@ export const useFetchAllNames = (refresh: number) => {
   }, [refresh]);
 
   const loadDepartment = async () => {
-    const result = await axios.get(BASE_DEPARTMENT_URL + 'names')
+    await axios.get(BASE_DEPARTMENT_URL + 'names')
       .then(response => setDepartmentNames(response.data))
       .catch(error => console.log(error))
   }

@@ -37,7 +37,7 @@ const CalendarById = (props: CalendarByIdProps): JSX.Element => {
     const [calendarDaysAndWeekLabels, setCalendarDaysAndWeekLabels] = React.useState("36px");
     const [calendarWeekLabelHeight, setCalendarWeekLabelHeight] = React.useState("40px");
 
-    const [leaveRequest, setLeaveRequest] = React.useState<IRequestDataGet>({
+    const [, setLeaveRequest] = React.useState<IRequestDataGet>({
 
         id: -1,
         requestType: '',

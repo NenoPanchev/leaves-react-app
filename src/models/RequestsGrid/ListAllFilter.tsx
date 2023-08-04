@@ -3,19 +3,19 @@ import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Autocomplete, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
+import { Autocomplete, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import MyAddFilter from '../../components/AddFilter/AddFilter';
 import MyAddFilterApproved from '../../components/AddFilter/AddFilterApproved';
 import MyAddFilterDate from '../../components/AddFilter/AddFilterDate';
 import Filter from '../interfaces/request/Filter';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import CalendarRangePicker from '../../components/calendar/CalendarRangePicker';
 
 
@@ -37,7 +37,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     const [t] = useTranslation();
     const [calendarOperation, setCalendarOperation] = React.useState<string>(calendarOperations.sDateEdate);
 
-    const { id, dateCreated, requestType, createdBy, lastUpdated, startDate, endDate, approved, offset, limit, sort, operation, deleted } = filter;
+    const { requestType, createdBy, startDate, endDate, approved, sort, operation, deleted } = filter;
 
     const onSubmitChild = async (e: { preventDefault: () => void; }) => {
         props.onAdd(filter);
@@ -54,11 +54,6 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
         if (!list.includes(txt)) {
             return list.push(txt);
         }
-    }
-    function handleRequestTypeUpdate(event: React.FormEvent<HTMLFormElement>) {
-        setUserFilter({
-            ...filter, requestType: requestType
-        })
     }
 
     const updateFilterCreatedBy = useCallback(
@@ -103,8 +98,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
     }
 
     function ifMoreThanOneDateReturnNow(dates: Array<string>) {
-
-        return dates.length > 1 ? dayjs().format('YYYY-MM-DD') : dates.length === 1 ? dates[0] : dayjs().format('YYYY-MM-DD');
+        const secondOption = dates.length === 1 ? dates[0] : dayjs().format('YYYY-MM-DD');
+        return dates.length > 1 ? dayjs().format('YYYY-MM-DD') : secondOption;
 
     }
 
@@ -148,8 +143,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                 nameOfField={t(`Requests.StartDate`)!}
                             />
                             <List>
-                                {startDate.map((item, index) => {
-                                    return (<ListItem key={index}
+                                {startDate.map((item) => {
+                                    return (<ListItem key={item}
                                         secondaryAction={
                                             <IconButton edge="end" aria-label="delete"
                                                 onClick={(_event) => setUserFilter({ ...filter, [item]: startDate.splice(startDate.indexOf(item), 1) })}>
@@ -182,8 +177,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                 nameOfField={t(`Requests.EndDate`)!}
                             />
                             <List>
-                                {endDate.map((item, index) => {
-                                    return (<ListItem key={index}
+                                {endDate.map((item) => {
+                                    return (<ListItem key={item}
                                         secondaryAction={
                                             <IconButton edge="end" aria-label="delete"
                                                 onClick={(_event) => setUserFilter({ ...filter, [item]: endDate.splice(endDate.indexOf(item), 1) })}>
@@ -211,7 +206,7 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                         <Select
                             labelId="range-label"
                             id="range-select"
-                            value={calendarOperation ? calendarOperation : " "}
+                            value={calendarOperation || ' '}
                             label="range"
                             onChange={(event) => handleSelectChange(event.target.value)}
                         >
@@ -339,8 +334,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                     nameOfField={t(`CreatedBy`)!} />
 
                                 <List>
-                                    {createdBy.map((item, index) => {
-                                        return (<ListItem key={index}
+                                    {createdBy.map((item) => {
+                                        return (<ListItem key={item}
                                             secondaryAction={
                                                 <IconButton edge="end" aria-label="delete"
                                                     onClick={(_event) => setUserFilter({ ...filter, [item]: createdBy.splice(createdBy.indexOf(item), 1) })}>
@@ -371,8 +366,8 @@ const ListAllFilter: React.FC<ListAllFilterProps> = (props): JSX.Element => {
                                     onChange={updateFilterApproved}
                                     nameOfField={t(`Requests.Aprooved`)!} />
                                 <List>
-                                    {approved.map((item, index) => {
-                                        return (<ListItem key={index}
+                                    {approved.map((item) => {
+                                        return (<ListItem key={item}
                                             secondaryAction={
                                                 <IconButton edge="end" aria-label="delete"
                                                     onClick={(_event) => setUserFilter({ ...filter, [item]: approved.splice(approved.indexOf(item), 1) })}>

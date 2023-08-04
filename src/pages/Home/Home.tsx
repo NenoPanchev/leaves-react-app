@@ -17,7 +17,7 @@ function HomeContent() {
   const DrawerMenuRef = React.useRef<DrawerMenuRef>(null);
   
   const toggleDrawer = () => {
-    if (navBarRef && navBarRef.current && DrawerMenuRef && DrawerMenuRef.current) {
+    if (navBarRef?.current && DrawerMenuRef?.current) {
       navBarRef.current.open();
       DrawerMenuRef.current.open();
     }

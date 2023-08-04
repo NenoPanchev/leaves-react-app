@@ -25,7 +25,7 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
     const [initialEndDate, setinitialEndDate] = React.useState<Dayjs | null>(dayjs());
 
     const reloadCalendar = () => {
-        if (calendarRef && calendarRef.current) {
+        if (calendarRef?.current) {
             calendarRef.current.reload();
         }
     }
@@ -53,7 +53,7 @@ const DashBoardRequestsComponent = (props: DashBoardRequestsComponentProps): JSX
         }
     }
     const calendarDayChange = (startDate: Dayjs | null, endDate: Dayjs | null) => {
-        if (AddRequestBaseRef && AddRequestBaseRef.current) {
+        if (AddRequestBaseRef?.current) {
             AddRequestBaseRef.current.onCalendarChange(startDate, endDate);
         }
     }

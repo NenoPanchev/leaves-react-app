@@ -69,11 +69,6 @@ const getAllInTableView = (year: number) => {
   return axios.post(BASE_REQUEST_URL + '/days-used-table', year)
 };
 
-
-// const findByTitle = (title: string) => {
-//   return http.get<Array<ITutorialData>>(`/tutorials?title=${title}`);
-// };
-
 const TutorialService = {
   getAll,
   get,

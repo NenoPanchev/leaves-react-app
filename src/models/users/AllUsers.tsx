@@ -75,9 +75,9 @@ export default function Users() {
   }
 
   const myGridToolbarComponents = [
-    <AddUserButton refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
+    <AddUserButton key={'addUserButton'} refreshCurrentState={refreshCounter} refresh={setRefreshCounter}
       departmentNames={departmentNames} roleNames={roleNames} typeNames={typeNames} />,
-    <UserSearchFilter refreshCurrentState={refreshCounter} refresh={setRefreshCounter} roleNames={roleNames}
+    <UserSearchFilter key={'searchFilter'} refreshCurrentState={refreshCounter} refresh={setRefreshCounter} roleNames={roleNames}
       filter={userFilter} setFilter={setUserFilter} typeNames={typeNames} departmentNames={departmentNames} />]
 
   const handlePaginationModelChange = (paginationModel: any) => {

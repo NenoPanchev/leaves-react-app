@@ -17,7 +17,7 @@ type TypeRemoveProps = {
 }
 const RemoveType: React.FC<TypeRemoveProps> = (props): JSX.Element => {
   const [open, setOpen] = React.useState(false);
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };

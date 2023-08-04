@@ -2,8 +2,7 @@ import * as React from 'react';
 import ViewButton from '../../components/common/ViewButton';
 import DeleteButton from '../../components/common/DeleteButton';
 import * as roleService from '../../services/roleService';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { GridRowParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import AddRoleButton from './AddRole';
 import EditRoleButton from './EditRole';
 import RoleSearchFilter from './RoleSearchFilter';
@@ -39,8 +38,8 @@ export default function Roles() {
   }
 
   const myGridToolbarComponents = [
-    <AddRoleButton refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />,
-    <RoleSearchFilter refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
+    <AddRoleButton key={'addButton'} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState} />,
+    <RoleSearchFilter key={'searchFilter'} refreshCurrentState={refreshCurrentState} refresh={setRefreshCurrentState}
             filter={roleFilter} setFilter={setRoleFilter}/>
   ]
 

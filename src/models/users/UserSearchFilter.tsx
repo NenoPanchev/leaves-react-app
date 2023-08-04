@@ -5,7 +5,7 @@ import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, FormCo
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_OFFSET, DEFAULT_USER_FILTER } from '../../constants/GlobalConstants';
+import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';
 import { IUserSearchFilterProps } from '../interfaces/user/IUserSearchFilterProps';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -176,7 +176,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                 filterSelectedOptions
                                 sx={{ minWidth: '20%' }}
                                 value={department}
-                                onChange={(event, newValue) => {
+                                onChange={(_event, newValue) => {
                                     setDepartment(newValue!);
                                 }}
                                 renderInput={(params) => (
@@ -196,7 +196,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                 size='small'
                                 sx={{ minWidth: '20%' }}
                                 value={roles}
-                                onChange={(event, newValue) => {
+                                onChange={(_event, newValue) => {
                                     setRoles(newValue)
                                 }}
                                 renderInput={(params) => (
@@ -215,7 +215,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                 filterSelectedOptions
                                 sx={{ minWidth: '20%' }}
                                 value={position}
-                                onChange={(event, newValue) => {
+                                onChange={(_event, newValue) => {
                                     setPosition(newValue!);
                                 }}
                                 renderInput={(params) => (
@@ -265,7 +265,7 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
                                 <TextField
                                     id="greaterThanOrEqualToPaidLeave"
                                     name='greaterThanOrEqualToPaidLeave'
-                                    label={t('Paid leave left')!}
+                                    label={t('Paid leave left')}
                                     type="number"
                                     value={daysLeave}
                                     InputLabelProps={{

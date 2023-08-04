@@ -9,7 +9,7 @@ type AddRequestAlertProps = {
 }
 const DialogAlerts: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(props.alertPropsChild.open);
-    const[t,i18n]=useTranslation();
+    const[t]=useTranslation();
     let sMessage: string = "";
     let eMessage: string = "";
     let TypeMessage: string = "";
@@ -81,7 +81,7 @@ const DialogAlerts: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
 
 
 
-    function getDateFromString(txt: String) {
+    function getDateFromString(txt: string) {
         let txtArr: string[];
         txtArr = txt.split('|');
         if (txtArr.length > 1) {

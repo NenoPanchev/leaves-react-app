@@ -8,7 +8,7 @@ type AddFilterProps = {
 }
 
 const LimitDropDown: React.FC<AddFilterProps> = (props): JSX.Element => {
-    const[t,i18n]=useTranslation();
+    const[t]=useTranslation();
     return (
         <React.Fragment>
             <Box noValidate component="form">

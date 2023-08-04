@@ -1,28 +1,16 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import { Button, Dialog, DialogContent, FormControl, Input, FormHelperText, DialogActions, Grid, Tooltip, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Button, Dialog, DialogContent, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import PreviewIcon from '@mui/icons-material/Preview';
 import LeavesReport from './LeavesReport';
 import grey from '@mui/material/colors/grey';
 type LeavesReportDialogProps = {
     id: number,
-    // onChange: (newValue: string) => void;
 }
 const LeavesReportMemo = React.memo(LeavesReport);
 const LeavesReportDialog: React.FC<LeavesReportDialogProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    let value: string = "";
-    const [t, i18n] = useTranslation();
-
-    const onSubmit = async (e: { preventDefault: () => void; }) => {
-        // if (!!!(value === "")) {
-        //     props.onChange(value);
-        // }
-
-        setOpen(false);
-    };
+    const [t] = useTranslation();
 
     const handleClickOpen = () => {
         setOpen(true);

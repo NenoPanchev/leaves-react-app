@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Divider, Grid, Table, TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
+import { Backdrop, Button, Card, CardContent, CardHeader, CircularProgress, Dialog, DialogActions, DialogContent, Grid, Table, TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,11 +30,10 @@ const states = [
 ];
 const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
   const [open, setOpen] = React.useState(props.open);
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const { user } = useContext(AuthContext);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
-  // let userDetails:IUserDetails | any = null;
-  const [userDetails, setUserDetails] = React.useState<IUserDetails | any>(null);
+  const [, setUserDetails] = React.useState<IUserDetails | null>(null);
 
 
   React.useEffect(() => {

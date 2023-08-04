@@ -1,15 +1,13 @@
 import * as React from 'react';
 
 import { Card, Grid, Table } from '@mui/material';
-
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import * as userService from '../../services/userService';
-
 import { useTranslation } from 'react-i18next';
-import '../SingleItemView.css';
 import { IUserDetails } from '../interfaces/user/IUserDetails';
+import '../SingleItemView.css';
 
 
 interface UserViewProp {

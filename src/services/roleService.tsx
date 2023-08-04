@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { axiosInstance as axios} from '../config/AxiosConfig';
+import { axiosInstance as axios } from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { BASE_ROLE_URL, DEFAULT_PAGE, WITH_JSON_HEADER } from '../constants/GlobalConstants';
 import { Permission } from '../models/objects/Permission';
@@ -21,7 +21,7 @@ export const useFetchAll = (refresh: number) => {
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_ROLE_URL)
+    await axios.get(BASE_ROLE_URL)
       .then(response => setRoles(response.data))
       .catch(error => console.log(error))
   }
@@ -38,7 +38,7 @@ export const useFetchOne = (props: number) => {
 
 
   const loadRole = async () => {
-    const result = await axios.get(BASE_ROLE_URL + props)
+    await axios.get(BASE_ROLE_URL + props)
       .then(response => setRole(response.data))
       .catch(error => console.log(error))
   }
@@ -49,7 +49,7 @@ export const useCreate = () => {
 
   const addRole = async (role: FormData) => {
 
-    const result = await axios.post(BASE_ROLE_URL, formToJSON(role))
+    await axios.post(BASE_ROLE_URL, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -64,7 +64,7 @@ export const useEdit = () => {
 
     const updateUrl = BASE_ROLE_URL + id;
 
-    const result = await axios.put(updateUrl, formToJSON(role))
+    await axios.put(updateUrl, formToJSON(role))
       .then(response => {
         console.log(response.data)
       })
@@ -81,15 +81,13 @@ export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
   }, [refresh]);
 
   const fetchPage = () => {
-    
-    
+
+
 
     const loadPage = async () => {
-      const result = await axios.post(BASE_ROLE_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
-        .then(response =>  {
-          
+      await axios.post(BASE_ROLE_URL + 'page', JSON.stringify(filter), WITH_JSON_HEADER)
+        .then(response => {
           setPage(response.data)
-          
         })
         .catch(error => {
           console.log(error)
@@ -98,7 +96,7 @@ export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
           }
         })
     }
-    loadPage();      
+    loadPage();
     return page;
   }
   return page;
@@ -106,14 +104,14 @@ export const useFetchPage = (refresh: number, filter: IRoleFilter) => {
 
 export const useFetchAllNames = (refresh: number) => {
   const [roleNames, setRoleNames] = useState<string[]>([]);
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     loadRoles();
   }, [refresh]);
 
   const loadRoles = async () => {
-    const result = await axios.get(BASE_ROLE_URL + 'names')
+    await axios.get(BASE_ROLE_URL + 'names')
       .then(response => {
         let initArr = (response.data).filter((names: string) => names !== 'SUPER_ADMIN');
         if (!user?.hasRole('SUPER_ADMIN')) {
@@ -128,16 +126,16 @@ export const useFetchAllNames = (refresh: number) => {
 }
 
 export const getAllRoleNamesNoRefresh = () => {
-    return axios.get(BASE_ROLE_URL + 'names');  
+  return axios.get(BASE_ROLE_URL + 'names');
 }
 export function appendPermissionsToFormData(formData: FormData, permissions: Permission[] | null) {
   if (permissions === null) {
     const perm = new Permission();
     perm.setName('READ');
     permissions = new Array();
-    permissions.push(perm);    
+    permissions.push(perm);
   }
-  permissions!.forEach((obj, index) => {
+  permissions.forEach((obj, index) => {
     Object.entries(obj).forEach(([key, value]) => {
       formData.append(`permissions[${index}][${key}]`, value.toString());
     });
@@ -147,11 +145,11 @@ export function appendPermissionsToFormData(formData: FormData, permissions: Per
 export function mapRoleName(roleNames: string[]) {
   let roleArray = new Array<Role>;
   if (roleNames) {
-      roleNames.forEach(name => {
-          let perm = new Role();
-          perm.setName(name)
-          roleArray.push(perm);
-      })
+    roleNames.forEach(name => {
+      let perm = new Role();
+      perm.setName(name)
+      roleArray.push(perm);
+    })
   }
   return roleArray;
 }

@@ -4,9 +4,6 @@ export class UserDetails {
     private email: string;
     private authorities: string[];
 
-    public UserDetails() {
-
-    }
     public getId(): number {
         return this.id;
     }

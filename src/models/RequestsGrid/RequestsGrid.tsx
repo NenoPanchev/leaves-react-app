@@ -19,7 +19,7 @@ import { getFirstAndLastNameFromFullName } from '../../services/userService';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const [leaveRequestFilter, setLeaveRequestFilter] = useState<Filter>({
     id: [],
@@ -37,7 +37,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     deleted: "false"
   });
   const [page, setPage] = useState<ILeaveRequestPage>(DEFAULT_PAGE);
-  const [notLoaded, setNotLoaded] = useState<boolean>(true);
+  const [, setNotLoaded] = useState<boolean>(true);
 
   useEffect(() => {
     retrivePage();
@@ -50,7 +50,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   const retrivePage = async () => {
     const controller = new AbortController();
 
-    await RequestService.getAllFilterPage(leaveRequestFilter,controller)
+    await RequestService.getAllFilterPage(leaveRequestFilter, controller)
       .then((response: any) => {
         const requestsArray = mapToFirstAndLastNames(response.data.content);
         setPage(response.data);
@@ -64,7 +64,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         }
       });
 
-      return () => controller.abort();
+    return () => controller.abort();
   }
   function mapToFirstAndLastNames(content: any) {
     content.forEach((request: { createdBy: string; }) => {
@@ -72,7 +72,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     });
     return content;
   }
-  
+
 
 
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {
@@ -84,7 +84,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
           page.totalElements = page.totalElements - 1;
         })
         .catch((e: AxiosError<any, any>) => {
-        
+
           if (e.response) {
             setAlertProps({ ...alertProps, message: e.response.data.message, hasError: true, open: true, type: e.response.data.type })
           }
@@ -93,34 +93,32 @@ const RequestsGrid: React.FC = (): JSX.Element => {
   };
 
   const handleDisapproveClick = (request: IRequestDataGet, rowId: GridRowId) => async () => {
-    if(request.approved!=null)
-    {
+    if (request.approved != null) {
       setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: "Approve" })
     }
-    else
-    {
+    else {
       await RequestService.disapprove(request.id)
-      .then((_response: any) => {
-        apiRef.current.updateRows([{ id: rowId, approved: false }]);
-      })
-      .catch((e: AxiosError<any, any>) => {
-        if (e.response) {
-          setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: e.response.data.type })
-        }
-      })
-      .catch(error => {
-        console.log(error)
-        if (error.response.status == 403) {
-          navigate('/403');
-        }
-      });
+        .then((_response: any) => {
+          apiRef.current.updateRows([{ id: rowId, approved: false }]);
+        })
+        .catch((e: AxiosError<any, any>) => {
+          if (e.response) {
+            setAlertProps({ ...alertProps, message: "", hasError: true, open: true, type: e.response.data.type })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          if (error.response.status == 403) {
+            navigate('/403');
+          }
+        });
     }
-   
+
   };
 
   const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    
+
     setAlertProps({ ...alertProps, message: "", hasError: false, open: false, type: "" })
     setLeaveRequestFilter({ ...leaveRequestFilter, offset: 0 })
   };
@@ -172,13 +170,14 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     alertPropsChild: alertProps,
     onClose: updateAlertOpen
   }
+
   function CustomToolbar() {
     return (
 
       <GridToolbarContainer >
         <GridToolbarColumnsButton />
         <ApproveDialogAlerts {...AlertProps} />
-        <ListAllFilter  {...ListAllFilterProps} />
+        <ListAllFilter {...ListAllFilterProps} />
         <GridToolbarDensitySelector />
         <GridToolbarExport />
       </GridToolbarContainer>
@@ -263,17 +262,17 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       getActions: ({ row, id }) => {
         const isApproved = row.approved === true;
         const isRejected = row.approved === false;
-        const isPending = row.approved === null;  
+        const isPending = row.approved === null;
         // Create an array to store the action elements
         const actions: JSX.Element[] = [];
-    
+
         // Render ApproveRequestDialog only for rows with null or true approve value
         if (isPending || isApproved) {
           actions.push(
             <ApproveRequestDialog key={id} request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild} />
           );
         }
-    
+
         // Render GridActionsCellItem only for rows with null or false approve value
         if (isPending || isRejected) {
           actions.push(
@@ -286,7 +285,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
             />
           );
         }
-    
+
         // Return the actions array after filtering out any null elements
         return actions.filter((action) => action !== null);
       },

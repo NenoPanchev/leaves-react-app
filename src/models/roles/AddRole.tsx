@@ -2,11 +2,10 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, 
     DialogTitle, Box, TextField, Autocomplete, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCreate } from '../../services/roleService';
+import { useCreate, appendPermissionsToFormData } from '../../services/roleService';
 import { PERMISSIONS } from '../../constants/GlobalConstants';
 import { Permission } from '../objects/Permission';
 import mapPermissionName from '../../services/permissionService'
-import { appendPermissionsToFormData } from '../../services/roleService';
 import AuthContext from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
@@ -55,7 +54,7 @@ export default function AddRoleButton(props: IAddButtonProps) {
         return nError;
     }
 
-    if (!user?.getAuthorities() === undefined && !user?.hasRole('SUPER_ADMIN')) {        
+    if (user?.getAuthorities() !== undefined && !user?.hasRole('SUPER_ADMIN')) {        
         return null;
     }
 

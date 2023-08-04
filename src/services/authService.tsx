@@ -1,16 +1,14 @@
 import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance as axios } from '../config/AxiosConfig';
 import { formToJSON } from 'axios';
 import { LOGIN_URL } from '../constants/GlobalConstants';
 import AuthContext from '../contexts/AuthContext';
 import { UserDetails } from '../models/objects/UserDetails';
-// import axios from 'axios';
 
-//TODO USER NOT REFRESHED ON LOGIN!!!!
 
 export const useLogin = () => {
-  var { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const userDetails = new UserDetails();
   let serverResponse = '';
@@ -50,9 +48,6 @@ export const useLogin = () => {
 }
 
 export const useRefresh = () => {
-  var { user, setUser } = useContext(AuthContext);
-  // const navigate = useNavigate();
-  // const path = useLocation().pathname;
   const userDetails = new UserDetails();
 
   const refreshUser = async () => {
@@ -64,8 +59,6 @@ export const useRefresh = () => {
         userDetails.setName(response.data.name);
         userDetails.setAuthorities(response.data.authorities);
         userDetails.setId(response.data.id!);
-        // setUser(userDetails);
-        // navigate(path)
       })
       .catch(error => console.log(error)
       )
@@ -76,7 +69,7 @@ export const useRefresh = () => {
 
 export const LogOut = () => {
   const navigate = useNavigate();
-  var { setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   localStorage.setItem("SavedToken", '');
   useEffect(() => {

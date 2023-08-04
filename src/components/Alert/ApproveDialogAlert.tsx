@@ -9,7 +9,7 @@ type ApproveDialogAlerts = {
 }
 const ApproveDialogAlerts: React.FC<ApproveDialogAlerts> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(props.alertPropsChild.open);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const handleClose = () => {
         props.onClose(false);

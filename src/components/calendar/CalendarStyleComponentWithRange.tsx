@@ -56,7 +56,6 @@ const CustomPickerDayRange = styled(PickersDay, {
     }
 
 
-    // if (dayIsBetween) {
     for (const dayIsBetweenItem of dayIsBetween) {
         if (dayIsBetweenItem===true) {
             ////COLOR CHANGE

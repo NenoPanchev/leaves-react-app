@@ -27,7 +27,7 @@ const AdminBar = () => {
         }}
         >
           <ListItemButton
-            selected={currentLocation.pathname === '/login' ? true : false}>
+            selected={currentLocation.pathname === '/login'}>
             <ListItemIcon>
               <LoginIcon />
             </ListItemIcon>

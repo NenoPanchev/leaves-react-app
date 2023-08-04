@@ -14,7 +14,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
   const [serverError, setServerError] = React.useState<boolean>(false);
-  var regex = new RegExp('^[a-zA-Z0-9\.]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$');
+  const regex = /^[a-zA-Z0-9.]+@(?:[a-zA-Z0-9]+.)+[A-Za-z]+$/
   let eError = false;
   let pError = false;
   let sError = false;

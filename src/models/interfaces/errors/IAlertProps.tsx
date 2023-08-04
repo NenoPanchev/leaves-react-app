@@ -1,6 +1,6 @@
 export default interface AddRequestAlertProps  {
     hasError:boolean,
-    message: String,
+    message: string,
     type:string,
     open:boolean
 }

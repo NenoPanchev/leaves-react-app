@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Button, Dialog, DialogActions, DialogContent,
+    Button, Dialog, DialogContent,
     DialogTitle, Box, TextField, ListItemButton, ListItemIcon, ListItemText, Typography, Grid, Stepper
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -218,7 +218,6 @@ export default function ChangePasswordButton() {
 
                 })
                 .catch((e: AxiosError<any, any>) => {
-                    // if (e.response) {
                     console.log(e)
                     setServerErrorMessage(e.response!.data.message)
 
@@ -273,8 +272,6 @@ export default function ChangePasswordButton() {
 
         setServerErrorMessage('');
         setServerError(false);
-        // sethasError(true);
-
     }, [activeStep]);
     return (
         <React.Fragment>
@@ -310,13 +307,13 @@ export default function ChangePasswordButton() {
 
                                 <Box sx={{ width: '100%' }}>
                                     <Stepper activeStep={activeStep}>
-                                        {steps.map((label, index) => {
+                                        {steps.map((label) => {
                                             const stepProps: { completed?: boolean } = {};
                                             const labelProps: {
                                             } = {};
 
                                             return (
-                                                <Step key={index} {...stepProps}>
+                                                <Step key={label} {...stepProps}>
                                                     <StepLabel {...labelProps}>{label}</StepLabel>
                                                 </Step>
                                             );

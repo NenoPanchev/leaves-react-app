@@ -11,10 +11,10 @@ type AddFilterProps = {
 const MyAddFilter: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
     let value: string = "";
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
-        if (!!!(value === "")) {
+        if (value !== "") {
             props.onChange(value);
         }
 

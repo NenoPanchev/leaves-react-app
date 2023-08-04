@@ -15,7 +15,7 @@ import IAlertProps from '../interfaces/errors/IAlertProps';
 import IRequestDataApprove from '../interfaces/request/IRequestDataAprove';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 
-var customParseFormat = require('dayjs/plugin/customParseFormat')
+const customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
 type ApproveRequestProps = {
@@ -37,7 +37,7 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
     })
     const maxDate = dayjs(props.request.endDate)
     const minDate = dayjs(props.request.startDate)
-    const [alertProps, setAlertProps] = useState<IAlertProps>(
+    const [alertProps] = useState<IAlertProps>(
         {
             hasError: false,
             message: "",
@@ -45,7 +45,7 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
             open: false
         }
     );
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const handleClickOpen = () => {
         if (props.request.approved == null) {
             setOpen(true);

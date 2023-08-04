@@ -15,8 +15,6 @@ import CustomPickerDayRange, { disableWeekends } from './CalendarStyleComponentA
 import HolidayService from '../../services/HolidayService';
 import { useTranslation } from 'react-i18next';
 import { t } from 'i18next';
-import { createStyles, makeStyles } from '@mui/material';
-import { ClassNames } from '@emotion/react';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -25,7 +23,7 @@ function fetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
     return new Promise<{ daysToHighlight: Map<number, Array<IRequestDataGet>> }>((resolve, reject) => {
         const timeout = setTimeout(async () => {
             const daysInMonth = date.daysInMonth();
-            var leaveRequests: Array<IRequestDataGet> = [];
+            let leaveRequests: Array<IRequestDataGet> = [];
             await RequestService.getAllApprovedByMonth(date)
                 .then((response: any) => {
                     leaveRequests = response.data;
@@ -73,8 +71,8 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
 
     const isSelected =
         !props.outsideCurrentMonth && highlightedDays.get(props.day.date())?.length > 0;
-    var containsHome = false;
-    var containsLeave = false;
+    let containsHome = false;
+    let containsLeave = false;
 
     highlightedDays.get(props.day.date())?.forEach((element: IRequestDataGet) => {
 
@@ -91,8 +89,8 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
         if (highlightedDataForDate) {
             return (
                 <div>
-                    {highlightedDataForDate.map((element: IRequestDataGet, index: number) => (
-                        <div key={index}>
+                    {highlightedDataForDate.map((element: IRequestDataGet) => (
+                        <div key={element.id}>
                             {/* Customize the content to display relevant information */}
                             {element.createdBy} - {element.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave')} {element.approvedStartDate === element.approvedEndDate ? t('on ') + element.approvedStartDate : t('from ') + element.approvedStartDate + t(' to ') + element.approvedEndDate}
                         </div>
@@ -165,7 +163,6 @@ function setBadge(isSelected: boolean, containsHome: boolean, containsLeave: boo
 }
 const DateCalendarServerRequest = (): JSX.Element => {
     const requestAbortController = React.useRef<AbortController | null>(null);
-    const [isLoading, setIsLoading] = React.useState(false);
     const [highlightedDays, setHighlightedDays] = React.useState<Map<number, Array<IRequestDataGet>>>(new Map());
     const [holidays, setHolidays] = React.useState<Array<string>>([]);
     const [t] = useTranslation();
@@ -177,7 +174,6 @@ const DateCalendarServerRequest = (): JSX.Element => {
         })
             .then(({ daysToHighlight }) => {
                 setHighlightedDays(daysToHighlight);
-                setIsLoading(false);
             })
             .catch((error) => {
                 // ignore the error if it's caused by `controller.abort`
@@ -203,7 +199,6 @@ const DateCalendarServerRequest = (): JSX.Element => {
             requestAbortController.current.abort();
         }
 
-        setIsLoading(true);
         setHighlightedDays(new Map());
         // Get the first day of the selected month
         const firstDayOfMonth = date.startOf('month').tz('Europe/Sofia').add(5, 'hours');

@@ -45,7 +45,7 @@ export default function EditRoleButton(props: IEditRoleButtonProps) {
             return;
         }
 
-        appendPermissionsToFormData(data, permissions!);
+        appendPermissionsToFormData(data, permissions);
         editRole(props.role.id, data)
             .then(() => props.refresh(props.refreshCurrentState + 1))
             .then(() => navigate(path))

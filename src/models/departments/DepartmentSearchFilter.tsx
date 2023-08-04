@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useFetchAllEmails } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import { DEFAULT_OFFSET } from '../../constants/GlobalConstants';

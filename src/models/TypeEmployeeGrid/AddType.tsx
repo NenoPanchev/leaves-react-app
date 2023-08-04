@@ -13,7 +13,7 @@ type RequestsGridProps = {
 }
 const AddType: React.FC<RequestsGridProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
     const [type, setType] = React.useState<ITypeEmployeePost>(
         {
             typeName: "",
@@ -23,7 +23,7 @@ const AddType: React.FC<RequestsGridProps> = (props): JSX.Element => {
     const [alertOpen, setAlertOpen] = React.useState(false);
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
-        if (!!!(type.typeName === "" || type.daysLeave === "")) {
+        if ((type.typeName !== "" && type.daysLeave !== "")) {
             await TypeService.create(type)
                 .then((response: any) => {
                     props.onAdd(response.data)
