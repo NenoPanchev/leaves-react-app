@@ -15,6 +15,7 @@ import IRequestDataGet from '../interfaces/request/IRequestDataGet';
 import ApproveRequestDialog from './ApproveRequestDialog';
 import ListAllFilter from './ListAllFilter';
 import { useNavigate } from 'react-router';
+import { getFirstAndLastNameFromFullName } from '../../services/userService';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -51,8 +52,9 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
     await RequestService.getAllFilterPage(leaveRequestFilter,controller)
       .then((response: any) => {
+        const requestsArray = mapToFirstAndLastNames(response.data.content);
         setPage(response.data);
-        setRows(response.data.content)
+        setRows(requestsArray)
         setNotLoaded(false)
       })
       .catch(error => {
@@ -64,6 +66,14 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
       return () => controller.abort();
   }
+  function mapToFirstAndLastNames(content: any) {
+    content.forEach((request: { createdBy: string; }) => {
+      request.createdBy = getFirstAndLastNameFromFullName(request.createdBy);
+    });
+    return content;
+  }
+  
+
 
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {
     if (!request.deleted) {
