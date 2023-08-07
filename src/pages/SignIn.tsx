@@ -14,7 +14,8 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [serverErrorMessage, setServerErrorMessage] = React.useState<string>('');
   const [serverError, setServerError] = React.useState<boolean>(false);
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,4}$/;
+
   let eError = false;
   let pError = false;
   let sError = false;

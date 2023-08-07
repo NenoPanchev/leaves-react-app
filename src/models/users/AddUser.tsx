@@ -70,7 +70,7 @@ export default function AddUserButton(props: IUserAddButtonProps) {
         setNameError(name.length < 2 || name.length > 70);
 
         const email: string = JSON.parse(JSON.stringify(formData.get('email')));
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,4}$/;
         setEmailError(!regex.test(email));
         eError = (!regex.test(email));
 
