@@ -78,7 +78,7 @@ export default function AllEmployeesHistory() {
 
 
     return (
-        <Grid container direction={'row'} width={'90%'}>
+        <Grid container direction={'row'} width={'95%'}>
             <TableContainer component={Paper}>
                 <Table aria-label="vacation grid" className='font-size'
                     sx={{
