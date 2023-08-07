@@ -238,7 +238,6 @@ export default function ChangePasswordButton() {
         }
         else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            console.log("a3")
         }
 
     };

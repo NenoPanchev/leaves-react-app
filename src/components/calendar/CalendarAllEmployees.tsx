@@ -15,6 +15,7 @@ import CustomPickerDayRange, { disableWeekends } from './CalendarStyleComponentA
 import HolidayService from '../../services/HolidayService';
 import { useTranslation } from 'react-i18next';
 import { t } from 'i18next';
+import { reformatDateString } from '../Utils/DateUtil';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -92,7 +93,7 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
                     {highlightedDataForDate.map((element: IRequestDataGet) => (
                         <div key={element.id}>
                             {/* Customize the content to display relevant information */}
-                            {element.createdBy} - {element.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave')} {element.approvedStartDate === element.approvedEndDate ? t('on ') + element.approvedStartDate : t('from ') + element.approvedStartDate + t(' to ') + element.approvedEndDate}
+                            {element.createdBy} - {element.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave')} {element.approvedStartDate === element.approvedEndDate ? t('on ') + reformatDateString(element.approvedStartDate) : t('from ') + reformatDateString(element.approvedStartDate) + t(' to ') + reformatDateString(element.approvedEndDate)}
                         </div>
                     ))}
                 </div>
@@ -100,6 +101,14 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
         }
         return null;
     };
+
+    function getTooltipString(request:IRequestDataGet) {
+        const startDate = reformatDateString(request.approvedStartDate);
+        const endDate = reformatDateString(request.approvedEndDate);
+        const type = request.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave');
+        const period = request.approvedStartDate === request.approvedEndDate ? t('on ') + startDate : t('from ') + startDate + t(' to ') + endDate;
+        return `${request.createdBy} - ${type} ${period}`;
+    }
 
     const isHoliday: Array<boolean> = [];
     holidays.forEach(holiday => {

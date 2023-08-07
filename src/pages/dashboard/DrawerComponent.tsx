@@ -70,9 +70,7 @@ type DrawerComponentProps = {
         (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
             setExpanded(newExpanded ? panel : false);
         };
-        React.useEffect(() => {
-            console.log("DrawerComponent")
-          }, [])
+
     return (
         <Grid item>
             <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>

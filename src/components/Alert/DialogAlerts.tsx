@@ -62,7 +62,6 @@ const DialogAlerts: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                         )
                     }
         }
-        console.log("sadsadsa")
     }
 
     function renderRequest(isError: boolean) {

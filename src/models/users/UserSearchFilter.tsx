@@ -70,8 +70,6 @@ function UserSearchFilter(props: IUserSearchFilterProps) {
     }
 
     function addDaysLeaveFilter(value: number) {
-        console.log('addDaysLeaveFilter method value: ', value);
-
         let arr = daysLeaveComparisons;
         const comparison: IDaysLeaveComparison = {
             operator: operator,

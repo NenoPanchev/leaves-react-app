@@ -50,8 +50,6 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
       userService.getUserByEmail(user?.getEmail(), controller)
         .then((r) => {
           setUserDetails(r.data);
-          console.log(r.data)
-          console.log(userDetails)
         })
         .catch((e) => {
           console.log(e);
@@ -66,7 +64,6 @@ const UserPersonalInfo: React.FC = (): JSX.Element => {
   const [checked, setChecked] = React.useState(false);
 
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(userDetails);
     setChecked(event.target.checked);
   };
 

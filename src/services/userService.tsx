@@ -222,7 +222,6 @@ export function appendEmployeeInfoToFormData(formData: FormData, startDate: Dayj
   employeeInfo.setTypeName(type!);
   formData.append('employeeInfo[typeName]', type!)
   formData.append('employeeInfo[contractStartDate]', dateString)
-  console.log(formData);
 }
 
 export const useFetchAllTypeNames = (refresh: number) => {

@@ -52,7 +52,6 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
             localStorage.setItem('navBarHeight', navBarHeightRef.current.offsetHeight.toString() + 'px');
         }
     }, []);
-    console.log('User', user);
 
     let userFullName = user?.getName() ? user?.getName() : '';
     let userName = getFirstAndLastNameFromFullName(userFullName);

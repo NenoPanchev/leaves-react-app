@@ -24,7 +24,6 @@ export default function DashBoardByEmployee() {
     const retriveEmpl = async () => {
        await getUserById(parseInt(id!))
             .then((response: any) => {
-                console.log(response.data);
                 setUser(response.data);
             })
             .catch((e: Error) => {

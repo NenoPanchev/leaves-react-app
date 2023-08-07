@@ -16,6 +16,7 @@ import ApproveRequestDialog from './ApproveRequestDialog';
 import ListAllFilter from './ListAllFilter';
 import { useNavigate } from 'react-router';
 import { getFirstAndLastNameFromFullName } from '../../services/userService';
+import { reformatDateString } from '../../components/Utils/DateUtil';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -52,7 +53,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
     await RequestService.getAllFilterPage(leaveRequestFilter, controller)
       .then((response: any) => {
-        const requestsArray = mapToFirstAndLastNames(response.data.content);
+        const requestsArray = reformat(response.data.content);
         setPage(response.data);
         setRows(requestsArray)
         setNotLoaded(false)
@@ -66,12 +67,17 @@ const RequestsGrid: React.FC = (): JSX.Element => {
 
     return () => controller.abort();
   }
-  function mapToFirstAndLastNames(content: any) {
-    content.forEach((request: { createdBy: string; }) => {
+  function reformat(content: any) {
+    content.forEach((request: IRequestDataGet) => {
       request.createdBy = getFirstAndLastNameFromFullName(request.createdBy);
+      request.startDate = reformatDateString(request.startDate);
+      request.endDate = reformatDateString(request.endDate);
+      request.approvedStartDate = reformatDateString(request.approvedStartDate);
+      request.approvedEndDate = reformatDateString(request.approvedEndDate);
     });
     return content;
   }
+
 
 
 
