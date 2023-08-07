@@ -14,8 +14,7 @@ type AddFilterProps = {
 }
 const MyAddFilterDate: React.FC<AddFilterProps> = (props): JSX.Element => {
     const [open, setOpen] = React.useState(false);
-    const[date,SetDate]=useState<Dayjs | null>(dayjs());
-    let valueDate:any;
+    const[date, setDate]=useState<Dayjs | null>(dayjs());
     const[t]=useTranslation();
 
     const onSubmit = async (e: { preventDefault: () => void; }) => {
@@ -44,7 +43,6 @@ const MyAddFilterDate: React.FC<AddFilterProps> = (props): JSX.Element => {
                 onClose={handleClose}
             >
                 <DialogContent>
-
                     <Box
                         noValidate
                         component="form"
@@ -55,12 +53,11 @@ const MyAddFilterDate: React.FC<AddFilterProps> = (props): JSX.Element => {
                             width: 'fit-content',
                         }}>
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker value={date}  onChange={(newValue) => SetDate(newValue)}  />
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
+                            <DatePicker value={date}  onChange={(newValue) => setDate(newValue)}  />
                         </LocalizationProvider>
 
                     </Box>
-
                 </DialogContent>
                 <Grid container
                     spacing={0}
@@ -79,7 +76,6 @@ const MyAddFilterDate: React.FC<AddFilterProps> = (props): JSX.Element => {
 
                     </Grid >
                 </Grid >
-
             </Dialog>
         </React.Fragment>
     );
