@@ -16,7 +16,7 @@ import ApproveRequestDialog from './ApproveRequestDialog';
 import ListAllFilter from './ListAllFilter';
 import { useNavigate } from 'react-router';
 import { getFirstAndLastNameFromFullName } from '../../services/userService';
-import { reformatDateString } from '../../components/Utils/DateUtil';
+import { reformatDateStringToBG } from '../../components/Utils/DateUtil';
 const RequestsGrid: React.FC = (): JSX.Element => {
   const [rows, setRows] = useState<Array<GridRowsProp>>([]);
   const apiRef = useGridApiRef();
@@ -68,18 +68,15 @@ const RequestsGrid: React.FC = (): JSX.Element => {
     return () => controller.abort();
   }
   function reformat(content: any) {
-    content.forEach((request: IRequestDataGet) => {
-      request.createdBy = getFirstAndLastNameFromFullName(request.createdBy);
-      request.startDate = reformatDateString(request.startDate);
-      request.endDate = reformatDateString(request.endDate);
-      request.approvedStartDate = reformatDateString(request.approvedStartDate);
-      request.approvedEndDate = reformatDateString(request.approvedEndDate);
-    });
-    return content;
+    return content.map((request: IRequestDataGet) => ({
+      ...request,
+      createdBy: getFirstAndLastNameFromFullName(request.createdBy),
+      startDate: reformatDateStringToBG(request.startDate),
+      endDate: reformatDateStringToBG(request.endDate),
+      approvedStartDate: reformatDateStringToBG(request.approvedStartDate),
+      approvedEndDate: reformatDateStringToBG(request.approvedEndDate),
+    }));
   }
-
-
-
 
   const handleDeleteClick = (request: IRequestDataGet, rowId: any) => async () => {
     if (!request.deleted) {

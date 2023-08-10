@@ -15,7 +15,8 @@ import CustomPickerDayRange, { disableWeekends } from './CalendarStyleComponentA
 import HolidayService from '../../services/HolidayService';
 import { useTranslation } from 'react-i18next';
 import { t } from 'i18next';
-import { reformatDateString } from '../Utils/DateUtil';
+import { reformatDateStringToBG } from '../Utils/DateUtil';
+import {getFirstAndLastNameFromFullName} from "../../services/userService";
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -92,8 +93,7 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
                 <div>
                     {highlightedDataForDate.map((element: IRequestDataGet) => (
                         <div key={element.id}>
-                            {/* Customize the content to display relevant information */}
-                            {element.createdBy} - {element.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave')} {element.approvedStartDate === element.approvedEndDate ? t('on ') + reformatDateString(element.approvedStartDate) : t('from ') + reformatDateString(element.approvedStartDate) + t(' to ') + reformatDateString(element.approvedEndDate)}
+                            {getTooltipString(element)}
                         </div>
                     ))}
                 </div>
@@ -103,11 +103,12 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
     };
 
     function getTooltipString(request:IRequestDataGet) {
-        const startDate = reformatDateString(request.approvedStartDate);
-        const endDate = reformatDateString(request.approvedEndDate);
+        const name = getFirstAndLastNameFromFullName(request.createdBy);
+        const startDate = reformatDateStringToBG(request.approvedStartDate);
+        const endDate = reformatDateStringToBG(request.approvedEndDate);
         const type = request.requestType === "HOME_OFFICE" ? t('Home office') : t('Leave');
         const period = request.approvedStartDate === request.approvedEndDate ? t('on ') + startDate : t('from ') + startDate + t(' to ') + endDate;
-        return `${request.createdBy} - ${type} ${period}`;
+        return `${name} - ${type} ${period}`;
     }
 
     const isHoliday: Array<boolean> = [];

@@ -14,6 +14,7 @@ import RequestService from '../../services/RequestService';
 import IAlertProps from '../interfaces/errors/IAlertProps';
 import IRequestDataApprove from '../interfaces/request/IRequestDataAprove';
 import IRequestDataGet from '../interfaces/request/IRequestDataGet';
+import {reformatDateStringToLocalDate} from "../../components/Utils/DateUtil";
 
 const customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
@@ -29,14 +30,15 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
     const [open, setOpen] = React.useState(false);
     const [leaveRequestDto, setLeaveRequestDto] = React.useState<IRequestDataApprove>({
         requestType: props.request.requestType,
-        startDate: props.request.startDate,
-        endDate: props.request.endDate,
-        approvedStartDate: props.request.startDate,
-        approvedEndDate: props.request.endDate,
-
+        startDate: reformatDateStringToLocalDate(props.request.startDate),
+        endDate: reformatDateStringToLocalDate(props.request.endDate),
+        approvedStartDate: reformatDateStringToLocalDate(props.request.startDate),
+        approvedEndDate: reformatDateStringToLocalDate(props.request.endDate),
     })
-    const maxDate = dayjs(props.request.endDate)
-    const minDate = dayjs(props.request.startDate)
+    console.log('props', props);
+    console.log('dto', leaveRequestDto);
+    const maxDate = dayjs(leaveRequestDto.endDate)
+    const minDate = dayjs(leaveRequestDto.startDate)
     const [alertProps] = useState<IAlertProps>(
         {
             hasError: false,
@@ -99,8 +101,8 @@ const ApproveRequestDialog: React.FC<ApproveRequestProps> = (props): JSX.Element
                     <Grid container justifySelf="center" direction="row" width="70%" ml="15%" mr="-100%" marginBottom="-1.5%">
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!} >
                             <Grid item direction="row" marginBottom="1.5vh">
-                                <DatePicker sx={{ marginRight: "3px" }} label="Start date" defaultValue={dayjs(props.request.startDate)} disabled />
-                                <DatePicker label="End date" defaultValue={dayjs(props.request.endDate)} disabled />
+                                <DatePicker sx={{ marginRight: "3px" }} label="Start date" defaultValue={dayjs(leaveRequestDto.startDate)} disabled />
+                                <DatePicker label="End date" defaultValue={dayjs(leaveRequestDto.endDate)} disabled />
                             </Grid>
 
                             <Grid item direction="row">

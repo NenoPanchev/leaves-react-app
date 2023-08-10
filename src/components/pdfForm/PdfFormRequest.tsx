@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import AuthContext from '../../contexts/AuthContext';
 import * as userService from '../../services/userService';
 import { IUserDetails } from '../../models/interfaces/user/IUserDetails';
-import { reformatDateString } from '../Utils/DateUtil';
+import { reformatDateStringToBG } from '../Utils/DateUtil';
 type AddRequestAlertProps = {
   open: boolean,
   onClose: (newValue: boolean) => void;
@@ -150,19 +150,19 @@ const PdfFormRequest: React.FC<AddRequestAlertProps> = (props): JSX.Element => {
                             <TableBody>
                               <TableRow>
                                 <TableCell className='tableHeader' variant='head'>{t('Requests.StartDate') + ':'}</TableCell>
-                                <TableCell>{reformatDateString(leaveRequest.startDate)}</TableCell>
+                                <TableCell>{reformatDateStringToBG(leaveRequest.startDate)}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className='tableHeader' variant='head'>{t('Requests.EndDate') + ':'}</TableCell>
-                                <TableCell>{reformatDateString(leaveRequest.endDate)}</TableCell>
+                                <TableCell>{reformatDateStringToBG(leaveRequest.endDate)}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className='tableHeader' variant='head'>{t('Requests.approvedStartDate') + ':'}</TableCell>
-                                <TableCell>{reformatDateString(leaveRequest.approvedStartDate)}</TableCell>
+                                <TableCell>{reformatDateStringToBG(leaveRequest.approvedStartDate)}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className='tableHeader' variant='head'>{t('Requests.approvedEndDate') + ':'}</TableCell>
-                                <TableCell>{reformatDateString(leaveRequest.approvedEndDate)}</TableCell>
+                                <TableCell>{reformatDateStringToBG(leaveRequest.approvedEndDate)}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className='tableHeader' variant='head'>{t('Requests.daysRequested') + ':'}</TableCell>
