@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import RequestService from "../../services/RequestService";
-import { Grid, IconButton, Paper, } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import { getFirstAndLastNameFromFullName } from "../../services/userService";
-import { t } from "i18next";
-import { IDaysUsedInMonth } from "../../models/interfaces/request/IDaysUsedInMonth";
+import {Grid, IconButton, Paper,} from "@mui/material";
+import {ChevronLeft, ChevronRight} from "@mui/icons-material";
+import {getFirstAndLastNameFromFullName} from "../../services/userService";
+import {t} from "i18next";
+import {IDaysUsedInMonth} from "../../models/interfaces/request/IDaysUsedInMonth";
 import dayjs from "dayjs";
 import './LeavesGrid.css'
-import { DataGrid, GridAlignment, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import {DataGrid, GridAlignment, GridCellParams, GridColDef} from "@mui/x-data-grid";
 import CustomGridToolbar from "../../components/common/CustomGridToolbar";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
 export default function LeavesGrid() {
     const [daysUsedInMonth, setDaysUsedInMonth] = useState<IDaysUsedInMonth[]>([]);
@@ -49,7 +51,7 @@ export default function LeavesGrid() {
             });
     }, [])
 
-
+// TODO add remaining days info to the grid or page
     const columns: GridColDef[] = [
         {
             field: 'date',
@@ -58,7 +60,7 @@ export default function LeavesGrid() {
             align: 'right',
             sortable: false,
             flex: 0.7,
-            renderHeader: getMonthWithPaginationElement 
+            renderHeader: renderMonthWithPaginationElement
         },
         ...daysUsedInMonth.map((element: IDaysUsedInMonth) => ({
             field: element.name,
@@ -85,20 +87,39 @@ export default function LeavesGrid() {
         });
         rows.push(row);
     }
-    function getMonthWithPaginationElement() {
+
+    function renderNameElement(element: IDaysUsedInMonth) {
+        return (
+            <>
+                <TableRow>{element.name}</TableRow>
+                <TableRow>
+                    <TableCell>{t('Total days:')}</TableCell>
+                    <TableCell>{t('Used:')}</TableCell>
+                    <TableCell>{t('Left:')}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{element.yearHistory.daysFromPreviousYear + element.yearHistory.contractDays}</TableCell>
+                    <TableCell>{element.yearHistory.daysUsed}</TableCell>
+                    <TableCell>{element.yearHistory.daysLeft}</TableCell>
+                </TableRow>
+            </>
+        )
+    }
+
+    function renderMonthWithPaginationElement() {
         const formattedDate = date.format('MMM YYYY')
         return (
             <Grid justifyContent={'center'}>
-                <IconButton onClick={handlePrevMonth} 
-                disabled={minDate.format('MMM YYYY') === formattedDate}
+                <IconButton onClick={handlePrevMonth}
+                            disabled={minDate.format('MMM YYYY') === formattedDate}
                 >
-                    <ChevronLeft />
+                    <ChevronLeft/>
                 </IconButton>
                 {formattedDate}
-                <IconButton onClick={handleNextMonth} 
-                disabled={maxDate.format('MMM YYYY') === formattedDate}
+                <IconButton onClick={handleNextMonth}
+                            disabled={maxDate.format('MMM YYYY') === formattedDate}
                 >
-                    <ChevronRight />
+                    <ChevronRight/>
                 </IconButton>
             </ Grid>
         )
@@ -107,8 +128,8 @@ export default function LeavesGrid() {
     function getDayCellString(day: number, dateString: string, formattedDateString: string, element: IDaysUsedInMonth) {
         console.log(dateString);
         console.log(formattedDateString);
-        
-        
+
+
         if (isWeekend(formattedDateString)) {
             return '';
         } else if (localStorage.getItem('Holidays')?.includes(dateString)) {
@@ -124,13 +145,15 @@ export default function LeavesGrid() {
             }
         }
     }
+
     function isWeekend(cellString: string) {
         return cellString.includes('Sat') || cellString.includes('Sun') || cellString.includes('Съб') || cellString.includes('Нед');
     }
-    const myGridToolbarComponents: JSX.Element[] = [];
 
+    const myGridToolbarComponents: JSX.Element[] = [];
+    // TODO add filter options to show/not admins; to show: only Leaves, only Home Office, both; to sort employees: alphabetically, by contract startDate
     return (
-        <Grid sx={{ width: '100%' }} component={Paper}>
+        <Grid sx={{width: '100%'}} component={Paper}>
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -139,7 +162,7 @@ export default function LeavesGrid() {
                     toolbarDensity: t(`DataGridToolBar.Density`)!,
                     toolbarExport: t(`DataGridToolBar.Export`)!
                 }}
-            
+
                 disableRowSelectionOnClick
                 disableColumnMenu
                 showColumnVerticalBorder
@@ -148,8 +171,8 @@ export default function LeavesGrid() {
                 density="compact"
                 hideFooter
                 getRowClassName={(params) => `${isWeekend(params.row.date) ? 'gray-background color-red' : ''
-                    } ${currentDate.format('ddd, MMM DD') === params.row.date ? 'bold-border' : ''}`}
-                slots={{ toolbar: () => <CustomGridToolbar components={myGridToolbarComponents} /> }}
+                } ${currentDate.format('ddd, MMM DD') === params.row.date ? 'bold-border' : ''}`}
+                slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
                 sx={{
                     height: 'auto',
                     '& .MuiDataGrid-virtualScroller': {
