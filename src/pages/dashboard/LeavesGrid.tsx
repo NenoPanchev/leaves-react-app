@@ -12,12 +12,11 @@ import CustomGridToolbar from "../../components/common/CustomGridToolbar";
 
 export default function LeavesGrid() {
     const [daysUsedInMonth, setDaysUsedInMonth] = useState<IDaysUsedInMonth[]>([]);
-
     const currentDate = dayjs();
     const [date, setDate] = useState(currentDate);
     const daysInMonth = date.daysInMonth();
     const minDate = dayjs('2023-01-01');
-    const maxDate = dayjs(`${currentDate.year() + 1}-01-31`)
+    const maxDate = currentDate.month() === 11 ? dayjs(`${currentDate.year() + 1}-01-31`) : dayjs(`${currentDate.year()}-12-31`)
     const prevMonth = date.subtract(1, 'month').isAfter(minDate) ? date.subtract(1, 'month') : minDate;
     const nextMonth = date.add(1, 'month').isBefore(maxDate) ? date.add(1, 'month') : maxDate;
     const handlePrevMonth = async () => {
