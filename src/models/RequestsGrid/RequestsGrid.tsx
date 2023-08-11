@@ -60,7 +60,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       })
       .catch(error => {
         console.log(error)
-        if (error.response.status == 403) {
+        if (error.response.status === 403) {
           navigate('/403');
         }
       });
@@ -111,7 +111,7 @@ const RequestsGrid: React.FC = (): JSX.Element => {
         })
         .catch(error => {
           console.log(error)
-          if (error.response.status == 403) {
+          if (error.response.status === 403) {
             navigate('/403');
           }
         });

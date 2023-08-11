@@ -100,6 +100,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
         await HolidayService.getAll(controller)
             .then((response: any) => {
                 setHolidays(response.data);
+                localStorage.setItem('Holidays', response.data.toString())
             })
             .catch((e: Error) => {
                 console.log(e);

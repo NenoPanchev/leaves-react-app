@@ -69,6 +69,10 @@ const getAllInTableView = (year: number) => {
   return axios.post(BASE_REQUEST_URL + '/days-used-table', year)
 };
 
+const getAllByMonthView = (date: Dayjs) => {
+  return axios.post(BASE_REQUEST_URL + '/days-used/per-month', date)
+};
+
 const TutorialService = {
   getAll,
   get,
@@ -85,7 +89,8 @@ const TutorialService = {
   getPdf,
   createRequestString,
   getAllApprovedByMonth,
-  getAllInTableView
+  getAllInTableView,
+  getAllByMonthView
 };
 
 export default TutorialService;
