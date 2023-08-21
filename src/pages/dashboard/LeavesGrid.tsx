@@ -11,51 +11,52 @@ import {DataGrid, GridAlignment, GridCellParams, GridColDef} from "@mui/x-data-g
 import CustomGridToolbar from "../../components/common/CustomGridToolbar";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import {ILeavesGridFilter} from "../../models/interfaces/request/ILeavesGridFilter";
+import {DEFAULT_LEAVES_GRID_FILTER} from "../../constants/GlobalConstants";
+import * as React from "react";
+import LeavesGridFilter from "./LeavesGridFilter";
 
 export default function LeavesGrid() {
     const [daysUsedInMonth, setDaysUsedInMonth] = useState<IDaysUsedInMonth[]>([]);
+    const [filter, setFilter] = useState<ILeavesGridFilter>(DEFAULT_LEAVES_GRID_FILTER);
     const currentDate = dayjs();
-    const [date, setDate] = useState(currentDate);
-    const daysInMonth = date.daysInMonth();
+    const daysInMonth = filter.date.daysInMonth();
     const minDate = dayjs('2023-01-01');
-    const maxDate = currentDate.month() === 11 ? dayjs(`${currentDate.year() + 1}-01-31`) : dayjs(`${currentDate.year()}-12-31`)
-    const prevMonth = date.subtract(1, 'month').isAfter(minDate) ? date.subtract(1, 'month') : minDate;
-    const nextMonth = date.add(1, 'month').isBefore(maxDate) ? date.add(1, 'month') : maxDate;
+    const maxDate = currentDate.month() === 11
+        ? dayjs(`${currentDate.year() + 1}-01-31`)
+        : dayjs(`${currentDate.year()}-12-31`);
+
+    const prevMonth = filter.date.subtract(1, 'month').isAfter(minDate)
+        ? filter.date.subtract(1, 'month')
+        : minDate;
+
+    const nextMonth = filter.date.add(1, 'month').isBefore(maxDate)
+        ? filter.date.add(1, 'month')
+        : maxDate;
+
     const handlePrevMonth = async () => {
-        setDate(prevMonth);
-        try {
-            const response = await RequestService.getAllByMonthView(prevMonth);
-            setDaysUsedInMonth(response.data);
-        } catch (e) {
-            console.log(e);
-        }
+        setFilter({...filter, date: prevMonth});
     };
 
     const handleNextMonth = async () => {
-        setDate(nextMonth);
-        try {
-            const response = await RequestService.getAllByMonthView(nextMonth);
-            setDaysUsedInMonth(response.data);
-        } catch (e) {
-            console.log(e);
-        }
+        setFilter({...filter, date: nextMonth});
     };
 
     useEffect(() => {
-        RequestService.getAllByMonthView(date)
+        RequestService.getAllByMonthView(filter)
             .then((response: any) => {
                 setDaysUsedInMonth(response.data);
             })
             .catch((e: Error) => {
                 console.log(e);
             });
-    }, [])
+    }, [filter])
 
 // TODO add remaining days info to the grid or page
     const columns: GridColDef[] = [
         {
             field: 'date',
-            headerName: date.format('MMMM'),
+            headerName: filter.date.format('MMMM'),
             headerClassName: 'grid-header',
             align: 'right',
             sortable: false,
@@ -76,7 +77,7 @@ export default function LeavesGrid() {
     ];
     const rows = [];
     for (let day = 1; day <= daysInMonth; day++) {
-        const dateString = `${date.year()}-${(date.month() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const dateString = `${filter.date.year()}-${(filter.date.month() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         const datejs = dayjs(dateString);
         const formattedDateString = datejs.format('ddd, MMM DD');
         const row: { [key: string]: any } = {
@@ -107,7 +108,7 @@ export default function LeavesGrid() {
     }
 
     function renderMonthWithPaginationElement() {
-        const formattedDate = date.format('MMM YYYY')
+        const formattedDate = filter.date.format('MMM YYYY')
         return (
             <Grid justifyContent={'center'}>
                 <IconButton onClick={handlePrevMonth}
@@ -150,8 +151,9 @@ export default function LeavesGrid() {
         return cellString.includes('Sat') || cellString.includes('Sun') || cellString.includes('Съб') || cellString.includes('Нед');
     }
 
-    const myGridToolbarComponents: JSX.Element[] = [];
-    // TODO add filter options to show/not admins; to show: only Leaves, only Home Office, both; to sort employees: alphabetically, by contract startDate
+    const myGridToolbarComponents: JSX.Element[] = [
+        <LeavesGridFilter key={'searchFilter'} filter={filter} setFilter={setFilter} />
+    ];
     return (
         <Grid sx={{width: '100%'}} component={Paper}>
             <DataGrid

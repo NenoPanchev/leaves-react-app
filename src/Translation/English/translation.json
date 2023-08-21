@@ -219,5 +219,7 @@
     "Fri": "Fri",
     "Sat": "Sat",
     "Sun": "Sun",
-    "locale": "uk"
+    "locale": "uk",
+    "Show admins": "Show admins",
+    "Show types": "Show types"
 }

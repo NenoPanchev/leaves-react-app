@@ -7,6 +7,7 @@ import { axiosInstance as axios} from '../config/AxiosConfig';
 import IRequestDataApprove from "../models/interfaces/request/IRequestDataAprove";
 import IRequestDataPostString from "../models/interfaces/request/IRequestDataPostString";
 import { Dayjs } from "dayjs";
+import {ILeavesGridFilter} from "../models/interfaces/request/ILeavesGridFilter";
 
 
 const getAll = () => {
@@ -69,8 +70,8 @@ const getAllInTableView = (year: number) => {
   return axios.post(BASE_REQUEST_URL + '/days-used-table', year)
 };
 
-const getAllByMonthView = (date: Dayjs) => {
-  return axios.post(BASE_REQUEST_URL + '/days-used/per-month', date)
+const getAllByMonthView = (filter: ILeavesGridFilter) => {
+  return axios.post(BASE_REQUEST_URL + '/days-used/per-month', filter)
 };
 
 const TutorialService = {

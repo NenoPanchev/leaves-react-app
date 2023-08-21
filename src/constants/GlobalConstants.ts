@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const PERMISSIONS = ['READ', 'WRITE', 'DELETE'];
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL ?? 'http://localhost:8080';
@@ -75,4 +77,11 @@ export const DEFAULT_PAGE = {
   size: DEFAULT_LIMIT,
   first: true,
   last: true
+}
+
+export const DEFAULT_LEAVES_GRID_FILTER = {
+  date: dayjs(),
+  showAdmins: true,
+  showType: 'ALL',
+  sortBy: 'NAME'
 }
