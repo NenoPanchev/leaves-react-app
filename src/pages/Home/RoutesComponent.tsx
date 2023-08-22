@@ -13,7 +13,7 @@ import DashBoardByEmployee from '../dashboard/DashBoardByEmployee';
 import NotFound from '../NotFound';
 import SignIn from '../SignIn';
 import AccessDenied from '../AccessDenied';
-import Leaves from '../dashboard/Leaves';
+import Leaves from '../Leaves/Leaves';
 import './Home.css';
 
 function RoutesComponent() {

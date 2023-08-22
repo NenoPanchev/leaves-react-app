@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Grid, IconButton } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -9,7 +9,13 @@ import LeavesGrid from "./LeavesGrid";
 
 export default function Leaves() {
     const [view, setView] = React.useState('calendar');
-
+    const topGridRef = useRef<HTMLDivElement>(null);
+    const topGridHeight = useRef<string>('');
+    useEffect(() => {
+        if (topGridRef.current) {
+            topGridHeight.current = `${topGridRef.current.offsetHeight.toString()}px`;
+        }
+    }, []);
     const onClickSetViewCalendar = (e: any) => {
         setView('calendar');
     }
@@ -18,8 +24,8 @@ export default function Leaves() {
     }
 
     return (
-        <React.Fragment>
-                <Grid >
+        <Grid container direction={'row'} width={'100%'}>
+                <Grid container direction={'row'} ref={topGridRef}>
                     {view === 'calendar'
                         ? <IconButton onClick={onClickSetViewTable}>
                             <TableChartIcon fontSize='large' />
@@ -29,12 +35,12 @@ export default function Leaves() {
                         </IconButton>
                     }
                 </Grid>
-                <Grid container  direction={'row'} >
+                <Grid container direction={'row'} >
                     {view === 'calendar'
                         ? <DateCalendarServerRequest />
-                        : <LeavesGrid />
+                        : <LeavesGrid clickerHeight={topGridHeight.current} />
                     }
                 </Grid>
-        </React.Fragment>
+        </Grid>
     )
 }

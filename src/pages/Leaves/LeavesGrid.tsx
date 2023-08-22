@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import RequestService from "../../services/RequestService";
-import {Grid, IconButton, Paper,} from "@mui/material";
+import {Grid, IconButton, Paper} from "@mui/material";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import {getFirstAndLastNameFromFullName} from "../../services/userService";
 import {t} from "i18next";
@@ -9,14 +9,13 @@ import dayjs from "dayjs";
 import './LeavesGrid.css'
 import {DataGrid, GridAlignment, GridCellParams, GridColDef} from "@mui/x-data-grid";
 import CustomGridToolbar from "../../components/common/CustomGridToolbar";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import {ILeavesGridFilter} from "../../models/interfaces/request/ILeavesGridFilter";
 import {DEFAULT_LEAVES_GRID_FILTER} from "../../constants/GlobalConstants";
 import * as React from "react";
 import LeavesGridFilter from "./LeavesGridFilter";
+import HistoryGrid from "./HistoryGrid";
 
-export default function LeavesGrid() {
+export default function LeavesGrid(props: {clickerHeight: string}) {
     const [daysUsedInMonth, setDaysUsedInMonth] = useState<IDaysUsedInMonth[]>([]);
     const [filter, setFilter] = useState<ILeavesGridFilter>(DEFAULT_LEAVES_GRID_FILTER);
     const currentDate = dayjs();
@@ -41,6 +40,9 @@ export default function LeavesGrid() {
     const handleNextMonth = async () => {
         setFilter({...filter, date: nextMonth});
     };
+    const historyGridHeight = '110px';
+    const navBarHeight = localStorage.getItem('navBarHeight')!;
+    let calcResult = `calc(100vh - ${navBarHeight} - ${props.clickerHeight} - ${historyGridHeight})`;
 
     useEffect(() => {
         RequestService.getAllByMonthView(filter)
@@ -52,7 +54,6 @@ export default function LeavesGrid() {
             });
     }, [filter])
 
-// TODO add remaining days info to the grid or page
     const columns: GridColDef[] = [
         {
             field: 'date',
@@ -89,24 +90,6 @@ export default function LeavesGrid() {
         rows.push(row);
     }
 
-    function renderNameElement(element: IDaysUsedInMonth) {
-        return (
-            <>
-                <TableRow>{element.name}</TableRow>
-                <TableRow>
-                    <TableCell>{t('Total days:')}</TableCell>
-                    <TableCell>{t('Used:')}</TableCell>
-                    <TableCell>{t('Left:')}</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>{element.yearHistory.daysFromPreviousYear + element.yearHistory.contractDays}</TableCell>
-                    <TableCell>{element.yearHistory.daysUsed}</TableCell>
-                    <TableCell>{element.yearHistory.daysLeft}</TableCell>
-                </TableRow>
-            </>
-        )
-    }
-
     function renderMonthWithPaginationElement() {
         const formattedDate = filter.date.format('MMM YYYY')
         return (
@@ -127,10 +110,6 @@ export default function LeavesGrid() {
     }
 
     function getDayCellString(day: number, dateString: string, formattedDateString: string, element: IDaysUsedInMonth) {
-        console.log(dateString);
-        console.log(formattedDateString);
-
-
         if (isWeekend(formattedDateString)) {
             return '';
         } else if (localStorage.getItem('Holidays')?.includes(dateString)) {
@@ -152,39 +131,42 @@ export default function LeavesGrid() {
     }
 
     const myGridToolbarComponents: JSX.Element[] = [
-        <LeavesGridFilter key={'searchFilter'} filter={filter} setFilter={setFilter} />
+        <LeavesGridFilter key={'searchFilter'} filter={filter} setFilter={setFilter}/>
     ];
     return (
         <Grid sx={{width: '100%'}} component={Paper}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                localeText={{
-                    toolbarColumns: t(`DataGridToolBar.Columns`)!,
-                    toolbarDensity: t(`DataGridToolBar.Density`)!,
-                    toolbarExport: t(`DataGridToolBar.Export`)!
-                }}
-
-                disableRowSelectionOnClick
-                disableColumnMenu
-                showColumnVerticalBorder
-                showCellVerticalBorder
-                disableColumnFilter
-                density="compact"
-                hideFooter
-                getRowClassName={(params) => `${isWeekend(params.row.date) ? 'gray-background color-red' : ''
-                } ${currentDate.format('ddd, MMM DD') === params.row.date ? 'bold-border' : ''}`}
-                slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
-                sx={{
-                    height: 'auto',
-                    '& .MuiDataGrid-virtualScroller': {
-                        overflow: "hidden"
-                    },
-                    '& .MuiDataGrid-columnHeaderTitleContainer': {
-                        justifyContent: 'center'
-                    }
-                }}
-            />
+            <Grid id={'historyGridId'} container direction={'row'} >
+                <HistoryGrid history={daysUsedInMonth}/>
+            </Grid>
+            <Grid container direction={'row'} height={calcResult}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    localeText={{
+                        toolbarColumns: t(`DataGridToolBar.Columns`)!,
+                        toolbarDensity: t(`DataGridToolBar.Density`)!,
+                        toolbarExport: t(`DataGridToolBar.Export`)!
+                    }}
+                    disableRowSelectionOnClick
+                    disableColumnMenu
+                    showColumnVerticalBorder
+                    showCellVerticalBorder
+                    disableColumnFilter
+                    density="compact"
+                    hideFooter
+                    getRowClassName={(params) => `${isWeekend(params.row.date) ? 'gray-background color-red' : ''
+                    } ${currentDate.format('ddd, MMM DD') === params.row.date ? 'bold-border' : ''}`}
+                    slots={{toolbar: () => <CustomGridToolbar components={myGridToolbarComponents}/>}}
+                    sx={{
+                        '& .MuiDataGrid-virtualScroller': {
+                            overflowX: "hidden"
+                        },
+                        '& .MuiDataGrid-columnHeaderTitleContainer': {
+                            justifyContent: 'center'
+                        },
+                    }}
+                />
+            </Grid>
         </Grid>
     );
 }
