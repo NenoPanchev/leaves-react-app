@@ -75,6 +75,9 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
         !props.outsideCurrentMonth && highlightedDays.get(props.day.date())?.length > 0;
     let containsHome = false;
     let containsLeave = false;
+    const isWeekend = day.day() === 6 || day.day() === 0;
+    const isPublicHoliday = holidays?.includes(day.format('YYYY-MM-DD'));
+    const isDayOff = isWeekend || isPublicHoliday;
 
     highlightedDays.get(props.day.date())?.forEach((element: IRequestDataGet) => {
 
@@ -116,7 +119,7 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: Map<numbe
         isHoliday.push(day.isSame(holiday, 'day'));
     })
 
-    if (isSelected) {
+    if (isSelected && !isDayOff) {
         return (
             <Tooltip title={renderTooltipContent()} >
                 <Badge

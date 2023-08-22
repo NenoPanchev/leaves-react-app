@@ -57,11 +57,9 @@ function LeavesGridFilter(props: ILeavesGridFilterProps) {
     return (
         <React.Fragment>
             <Button startIcon={<FilterListIcon />} onClick={handleClickOpen} >
-
                 <Typography variant="overline" >
                     {t(`DataGridToolBar.ManageFilters`)!}
                 </Typography>
-
             </Button>
 
             <Dialog
