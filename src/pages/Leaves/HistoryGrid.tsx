@@ -1,11 +1,12 @@
 import {t} from 'i18next';
 import {IDaysUsedInMonth} from "../../models/interfaces/request/IDaysUsedInMonth";
-import {DataGrid, GridAlignment, GridColDef} from "@mui/x-data-grid";
+import {DataGrid, GridAlignment, GridColDef, GridColumnVisibilityModel} from "@mui/x-data-grid";
 
 import * as React from "react";
 
 interface AllEmployeesHistoryProps {
     history: IDaysUsedInMonth[];
+    visibilityModel: GridColumnVisibilityModel;
 }
 export default function HistoryGrid(props: AllEmployeesHistoryProps) {
     const columns: GridColDef[] = [
@@ -71,6 +72,7 @@ export default function HistoryGrid(props: AllEmployeesHistoryProps) {
                 disableColumnFilter
                 density="compact"
                 hideFooter
+                columnVisibilityModel={props.visibilityModel}
                 localeText={{
                     toolbarColumns: t(`DataGridToolBar.Columns`)!,
                     toolbarDensity: t(`DataGridToolBar.Density`)!,

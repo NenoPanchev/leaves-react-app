@@ -3,19 +3,20 @@ import RequestService from "../../services/RequestService";
 import {Grid, IconButton, Paper} from "@mui/material";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import {getFirstAndLastNameFromFullName} from "../../services/userService";
-import {t} from "i18next";
 import {IDaysUsedInMonth} from "../../models/interfaces/request/IDaysUsedInMonth";
 import dayjs from "dayjs";
 import './LeavesGrid.css'
-import {DataGrid, GridAlignment, GridCellParams, GridColDef} from "@mui/x-data-grid";
+import {DataGrid, GridAlignment, GridCellParams, GridColDef, GridColumnVisibilityModel} from "@mui/x-data-grid";
 import CustomGridToolbar from "../../components/common/CustomGridToolbar";
 import {ILeavesGridFilter} from "../../models/interfaces/request/ILeavesGridFilter";
 import {DEFAULT_LEAVES_GRID_FILTER} from "../../constants/GlobalConstants";
 import * as React from "react";
 import LeavesGridFilter from "./LeavesGridFilter";
 import HistoryGrid from "./HistoryGrid";
+import {useTranslation} from "react-i18next";
 
 export default function LeavesGrid(props: {clickerHeight: string}) {
+    const { t } = useTranslation();
     const [daysUsedInMonth, setDaysUsedInMonth] = useState<IDaysUsedInMonth[]>([]);
     const [filter, setFilter] = useState<ILeavesGridFilter>(DEFAULT_LEAVES_GRID_FILTER);
     const currentDate = dayjs();
@@ -36,13 +37,13 @@ export default function LeavesGrid(props: {clickerHeight: string}) {
     const handlePrevMonth = async () => {
         setFilter({...filter, date: prevMonth});
     };
-
     const handleNextMonth = async () => {
         setFilter({...filter, date: nextMonth});
     };
     const historyGridHeight = '110px';
     const navBarHeight = localStorage.getItem('navBarHeight')!;
     let calcResult = `calc(100vh - ${navBarHeight} - ${props.clickerHeight} - ${historyGridHeight})`;
+    const [visibilityModel, setVisibilityModel] = React.useState<GridColumnVisibilityModel>({});
 
     useEffect(() => {
         RequestService.getAllByMonthView(filter)
@@ -61,6 +62,7 @@ export default function LeavesGrid(props: {clickerHeight: string}) {
             headerClassName: 'grid-header',
             align: 'right',
             sortable: false,
+            hideable: false,
             flex: 0.7,
             renderHeader: renderMonthWithPaginationElement
         },
@@ -136,7 +138,7 @@ export default function LeavesGrid(props: {clickerHeight: string}) {
     return (
         <Grid sx={{width: '100%'}} component={Paper}>
             <Grid id={'historyGridId'} container direction={'row'} >
-                <HistoryGrid history={daysUsedInMonth}/>
+                <HistoryGrid history={daysUsedInMonth} visibilityModel={visibilityModel}/>
             </Grid>
             <Grid container direction={'row'} height={calcResult}>
                 <DataGrid
@@ -165,6 +167,7 @@ export default function LeavesGrid(props: {clickerHeight: string}) {
                             justifyContent: 'center'
                         },
                     }}
+                    onColumnVisibilityModelChange={model => setVisibilityModel(model)}
                 />
             </Grid>
         </Grid>
