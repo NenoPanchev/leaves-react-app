@@ -263,21 +263,19 @@ const RequestsGrid: React.FC = (): JSX.Element => {
       flex: 0.40,
       cellClassName: 'actions',
       getActions: ({ row, id }) => {
-        const isApproved = row.approved === true;
-        const isRejected = row.approved === false;
         const isPending = row.approved === null;
         // Create an array to store the action elements
         const actions: JSX.Element[] = [];
 
-        // Render ApproveRequestDialog only for rows with null or true approve value
-        if (isPending || isApproved) {
+        // Render ApproveRequestDialog only for rows with null approve value
+        if (isPending) {
           actions.push(
             <ApproveRequestDialog key={id} request={row} rowId={id} apiRef={apiRef.current} onClick={updateAlertOpenFromChild} />
           );
         }
 
-        // Render GridActionsCellItem only for rows with null or false approve value
-        if (isPending || isRejected) {
+        // Render GridActionsCellItem only for rows with null approve value
+        if (isPending) {
           actions.push(
             <GridActionsCellItem
               key={id}
