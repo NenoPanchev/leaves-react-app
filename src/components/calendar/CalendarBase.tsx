@@ -22,6 +22,7 @@ import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import { disableWeekends } from './CalendarStyleComponent';
 import { DayWithRange } from './CalendarStyleComponentWithRange';
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
     reload: () => void;
@@ -218,8 +219,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
             <Grid item minWidth="36vh">
 
-                <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={t('Calendar Locale')}>
-                {/*<LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={'en-gb'}>*/}
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')}>
                     <DateCalendar
                         sx={{
                             width: "100%",
