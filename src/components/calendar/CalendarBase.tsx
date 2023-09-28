@@ -7,12 +7,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import { Avatar, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { blue, green, grey, purple, red, yellow } from '@mui/material/colors';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/bg';
-import 'dayjs/locale/en-gb';
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import * as React from 'react';
 import { useState } from 'react';
@@ -70,12 +68,12 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
     React.useImperativeHandle(ref, () => {
         return {
-            reload: retrivePage
+            reload: retrievePage
         }
     }, [])
 
     React.useEffect(() => {
-        retrivePage();
+        retrievePage();
         retriveHolidays();
     }, []);
 
@@ -84,7 +82,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     }, [startDate, endDate]);
 
 
-    const retrivePage = async () => {
+    const retrievePage = async () => {
         const controller = new AbortController();
         await RequestService.getAllByUser(controller)
             .then((response: any) => {
@@ -209,7 +207,6 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     }
 
 
-
     function handleShowClick() {
         props.onShowAddRequest(startDate, endDate)
     }
@@ -221,7 +218,8 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
             <Grid item minWidth="36vh">
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
+                <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={t('Calendar Locale')}>
+                {/*<LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={'en-gb'}>*/}
                     <DateCalendar
                         sx={{
                             width: "100%",

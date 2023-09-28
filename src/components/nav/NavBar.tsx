@@ -7,6 +7,9 @@ import { useLocation } from "react-router-dom";
 import Flag from "react-world-flags";
 import AuthContext from "../../contexts/AuthContext";
 import {getFirstAndLastNameFromFullName} from "../../services/userService";
+import moment from 'moment';
+import 'moment/locale/bg';
+import 'moment/locale/en-gb';
 
 const drawerWidth: number = 240;
 
@@ -93,10 +96,12 @@ function NavBar(props: NavMenuProps, ref: React.ForwardedRef<NavBarRef>) {
     const onClickSetLanguageEN = (e: any) => {
         i18n.changeLanguage('en'); //change the language  
         setLang('en');
+        moment.locale('en-gb')
     }
     const onClickSetLanguageBG = (e: any) => {
         i18n.changeLanguage('bg'); //change the language  
         setLang('bg');
+        moment.locale('bg')
     }
 
     return (
