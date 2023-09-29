@@ -22,7 +22,6 @@ import BasicDialogAlert from '../Alert/BasicDialogAlert';
 import PdfFormRequest from '../pdfForm/PdfFormRequest';
 import { disableWeekends } from './CalendarStyleComponent';
 import { DayWithRange } from './CalendarStyleComponentWithRange';
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 dayjs.extend(isBetweenPlugin);
 export interface CalendarBaseRef {
     reload: () => void;
@@ -159,18 +158,22 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
     const handleChange = (newValue: dayjs.Dayjs | null) => {
         if (openRequest(newValue)) {
-            if (newValue?.isSame(endDate)) {
+            if (newValue?.isSame(endDate, 'day')) {
+                console.log('Is same with end date. Setting start date...')
                 setStartDate(newValue)
             }
-            if (newValue?.isSame(startDate)) {
+            if (newValue?.isSame(startDate, 'day')) {
+                console.log('Is same with start date. Setting end date...')
                 setEndDate(newValue)
                 setStartDate(newValue)
             }
-            if (newValue?.isAfter(startDate)) {
+            if (newValue?.isAfter(startDate, 'day')) {
+                console.log('Is after start date. Setting end date...')
                 setEndDate(newValue)
             }
 
-            if (newValue?.isBefore(startDate)) {
+            if (newValue?.isBefore(startDate, 'day')) {
+                console.log('Is before start date. Setting both days...')
                 setStartDate(newValue)
                 setEndDate(newValue)
             }
@@ -219,7 +222,7 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
 
             <Grid item minWidth="36vh">
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')}>
+                <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={t('Calendar Locale')}>
                     <DateCalendar
                         sx={{
                             width: "100%",

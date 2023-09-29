@@ -1,15 +1,13 @@
 
 import { Grid } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/bg';
-import 'dayjs/locale/en-gb';
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CalendarStyleRangePicker } from './CalendarStyleRangePicker';
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 dayjs.extend(isBetweenPlugin);
 
 type CustomDayProps = {
@@ -27,25 +25,25 @@ const CalendarRangePicker = (props: CustomDayProps): JSX.Element => {
         let sDate=startDate;
         let eDate=endDate;
         console.log("handleChange")
-            if (newValue?.isSame(endDate)) {
+            if (newValue?.isSame(endDate, 'day')) {
                 console.log("first")
                 sDate=newValue;
                 setStartDate(newValue)
             }
-            if (newValue?.isSame(startDate)) {
+            if (newValue?.isSame(startDate, 'day')) {
                 console.log("second")
                 sDate=newValue;
                 eDate=newValue;
                 setEndDate(newValue)
                 setStartDate(newValue)
             }
-            if (newValue?.isAfter(startDate)) {
+            if (newValue?.isAfter(startDate, 'day')) {
                 console.log("third")
                 eDate=newValue;
                 setEndDate(newValue)
             }
 
-            if (newValue?.isBefore(startDate)) {
+            if (newValue?.isBefore(startDate, 'day')) {
                 console.log("Fourth")
                 sDate=newValue;
                 eDate=newValue;
@@ -61,7 +59,7 @@ const CalendarRangePicker = (props: CustomDayProps): JSX.Element => {
         <Grid container>
             <Grid item direction="row" >
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={t('Calendar Locale')!}>
+                <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={t('Calendar Locale')!}>
                     <DateCalendar
                         sx={{
                             width: "100%",
