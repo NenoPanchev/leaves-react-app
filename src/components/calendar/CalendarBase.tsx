@@ -159,21 +159,17 @@ const CustomDay = (props: CustomDayProps, ref: React.ForwardedRef<CalendarBaseRe
     const handleChange = (newValue: dayjs.Dayjs | null) => {
         if (openRequest(newValue)) {
             if (newValue?.isSame(endDate, 'day')) {
-                console.log('Is same with end date. Setting start date...')
                 setStartDate(newValue)
             }
             if (newValue?.isSame(startDate, 'day')) {
-                console.log('Is same with start date. Setting end date...')
                 setEndDate(newValue)
                 setStartDate(newValue)
             }
             if (newValue?.isAfter(startDate, 'day')) {
-                console.log('Is after start date. Setting end date...')
                 setEndDate(newValue)
             }
 
             if (newValue?.isBefore(startDate, 'day')) {
-                console.log('Is before start date. Setting both days...')
                 setStartDate(newValue)
                 setEndDate(newValue)
             }
